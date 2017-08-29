@@ -7,7 +7,7 @@
  * Text Domain:     gfexcel
  * Version:         1.0.0
  *
- * @package         Gf_Excel
+ * @package         GFExcel
  */
 
 
