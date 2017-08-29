@@ -1,0 +1,20 @@
+{
+    "name": "doekenorg/gf-excel",
+    "type": "plugin",
+    "license": "GMT",
+    "authors": [
+        {
+            "name": "Doeke Norg | SQUID Media",
+            "email": "doeke@squidmedia.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "phpoffice/phpexcel": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "GFExcel\\": "src/"
+        }
+    }
+}
