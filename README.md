@@ -20,4 +20,4 @@ out more.
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
-![Logo](https://raw.githubusercontent.com/squidmedia/gfexcel/master/assets/logo-256x256.png)
+![Logo](https://raw.githubusercontent.com/squidmedia/gfexcel/master/assets/icon-256x256.png)
