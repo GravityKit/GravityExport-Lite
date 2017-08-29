@@ -74,7 +74,7 @@ class GFExcelAdmin extends GFAddOn
     public function initialize()
     {
         if (!self::$file) {
-            self::$file = realpath(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "gf-excel.php");
+            self::$file = realpath(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "gfexcel.php");
         }
         register_activation_hook(self::$file, array($this, "activate"));
         register_deactivation_hook(self::$file, array($this, "deactivate"));
