@@ -16,8 +16,8 @@ class GFExcelOutput
     private $fields;
     private $entries;
 
-    private $columns = [];
-    private $rows = [];
+    private $columns = array();
+    private $rows = array();
 
     public function __construct($form_id)
     {
