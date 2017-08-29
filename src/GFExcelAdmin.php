@@ -52,7 +52,7 @@ class GFExcelAdmin extends GFAddOn
 
         printf(
             "<p>
-                <a class='button-primary gfbutton' href='%s' target='_blank'>%s</a>
+                <a class='button-primary' href='%s' target='_blank'>%s</a>
             </p>",
             $url,
             esc_html__('Download', 'gfexcel')
