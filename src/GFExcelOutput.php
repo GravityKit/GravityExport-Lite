@@ -114,7 +114,9 @@ class GFExcelOutput
                 "key" => "date_created",
                 "direction" => "ASC"
             );
-            $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting);
+            $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
+            $paging = array("offset" => 0, "page_size" => $total_entries_count);
+            $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
         }
         return $this->entries;
     }
