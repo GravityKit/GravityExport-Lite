@@ -5,7 +5,7 @@
  * Author:          SQUID Media
  * Author URI:      https://www.squidmedia.nl
  * Text Domain:     gfexcel
- * Version:         1.0.1
+ * Version:         1.0.2
  *
  * @package         GFExcel
  */

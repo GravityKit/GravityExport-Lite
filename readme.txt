@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.8.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,10 @@ Also you can update title, subject and description metadata of the document by u
 2. There is your url! Just copy and paste to the browser (or click the download button)
 
 == Changelog ==
+
+= 1.0.2 =
+* Bugfix: Only 20 results were beging returned by the GFAPI
+* The title of a form could not be longer than 31 characters
 
 = 1.0.1 =
 * Updated readme
