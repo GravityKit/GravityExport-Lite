@@ -59,7 +59,6 @@ class PHPExcelRenderer implements RendererInterface
         );
 
         $this->PHPExcel->getProperties()->setTitle($title);
-        $this->worksheet->setTitle($title);
         return $this;
     }
 
