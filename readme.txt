@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.8.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,10 @@ Also you can update title, subject and description metadata of the document by u
 2. There is your url! Just copy and paste to the browser (or click the download button)
 
 == Changelog ==
+
+= 1.0.3 =
+* Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
+* Update: the entry file so it waits for other plugins to load. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
 
 = 1.0.2 =
 * Bugfix: Only 20 results were beging returned by the GFAPI

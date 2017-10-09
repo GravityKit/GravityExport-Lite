@@ -8,10 +8,9 @@ use GFFormsModel;
 
 class GFExcel
 {
-
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.0.2";
+    public static $version = "1.0.3";
     public static $slug = "gfexcel";
 
     public function __construct()
@@ -29,15 +28,18 @@ class GFExcel
         $blogurl = get_bloginfo("url");
         $permalink = "/index.php?gfexcel_action=%s&gfexcel_hash=%s";
 
-        if (get_option('permalink_structure')) {
-            $permalink = "/%s/%s";
-        }
-
         $action = self::$slug;
         $hash = self::getHash($form['id']);
 
+        if (get_option('permalink_structure')) {
+            $permalink = "/%s/%s";
+        } else {
+            $hash = urlencode($hash);
+        }
+
         return $blogurl . sprintf($permalink, $action, $hash);
     }
+
 
     private static function getHash($form_id)
     {

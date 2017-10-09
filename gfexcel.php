@@ -5,7 +5,7 @@
  * Author:          SQUID Media
  * Author URI:      https://www.squidmedia.nl
  * Text Domain:     gfexcel
- * Version:         1.0.2
+ * Version:         1.0.3
  *
  * @package         GFExcel
  */
@@ -16,15 +16,16 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-if (!class_exists("GFForms")) {
-    return;
-}
+add_action("plugins_loaded", function () {
+    if (!class_exists("GFForms")) {
+        return '';
+    }
 
-require "vendor/autoload.php";
+    require "vendor/autoload.php";
 
-if (is_admin()) {
-    return new GFExcelAdmin();
-}
+    if (is_admin()) {
+        return new GFExcelAdmin();
+    }
 
-
-return new GFExcel();
+    return new GFExcel();
+});
