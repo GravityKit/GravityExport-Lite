@@ -95,7 +95,7 @@ class GFExcel
      */
     private function updateCounter($form_id)
     {
-        $key = 'gf_excel_download_count';
+        $key = 'gfexcel_download_count';
         $form_meta = GFFormsModel::get_form_meta($form_id);
         if (!array_key_exists($key, $form_meta)) {
             $form_meta[$key] = 0;

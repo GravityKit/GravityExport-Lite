@@ -103,8 +103,8 @@ class GFExcelAdmin extends GFAddOn
      */
     private function download_count($form)
     {
-        if (array_key_exists("gf_excel_download_count", $form)) {
-            return (int)$form['gf_excel_download_count'];
+        if (array_key_exists("gfexcel_download_count", $form)) {
+            return (int) $form['gfexcel_download_count'];
         }
 
         return 0;
