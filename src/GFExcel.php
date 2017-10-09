@@ -4,6 +4,7 @@ namespace GFExcel;
 
 use GFAPI;
 use GFCommon;
+use GFFormsModel;
 
 class GFExcel
 {
@@ -64,6 +65,7 @@ class GFExcel
         }
 
         $output = new GFExcelOutput($form_id);
+        $this->updateCounter($form_id);
         return $output->render();
 
     }
@@ -83,6 +85,22 @@ class GFExcel
         }
 
         return false;
+    }
+
+    /**
+     * @param $form_id
+     * @void
+     */
+    private function updateCounter($form_id)
+    {
+        $key = 'gf_excel_download_count';
+        $form_meta = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists($key, $form_meta)) {
+            $form_meta[$key] = 0;
+        }
+        $form_meta[$key] += 1;
+
+        GFFormsModel::update_form_meta($form_id, $form_meta);
     }
 
 }

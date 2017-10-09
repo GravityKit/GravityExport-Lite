@@ -43,6 +43,7 @@ class GFExcelAdmin extends GFAddOn
 
         $url = GFExcel::url($form);
 
+
         printf(
             "<p>
                 <input style='width:80%%;' type='text' value='%s' readonly />
@@ -53,10 +54,13 @@ class GFExcelAdmin extends GFAddOn
         printf(
             "<p>
                 <a class='button-primary' href='%s' target='_blank'>%s</a>
+                " . __("Download count", "gfexcel") . ": %d
             </p>",
             $url,
-            esc_html__('Download', 'gfexcel')
+            esc_html__('Download', 'gfexcel'),
+            $this->download_count($form)
         );
+
 
     }
 
@@ -84,11 +88,25 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the url "gfexcel/{encrypted_url}" to the permalinksystem
+     * @void
      */
     public function add_permalink_rule()
     {
         add_rewrite_rule("^" . $this->_slug . "/(.+)/?$",
             'index.php?gfexcel_action=' . $this->_slug . '&gfexcel_hash=$matches[1]', 'top');
+    }
 
+    /**
+     * Returns the number of downloads
+     * @param $form
+     * @return int
+     */
+    private function download_count($form)
+    {
+        if (array_key_exists("gf_excel_download_count", $form)) {
+            return (int)$form['gf_excel_download_count'];
+        }
+
+        return 0;
     }
 }
