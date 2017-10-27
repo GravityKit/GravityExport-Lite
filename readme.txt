@@ -101,7 +101,8 @@ Also you can update title, subject and description metadata of the document by u
 
 = 1.1.0 =
 * Feature: Download counter (starts counting as of this version)
-* Feature: SectionField added to disable empty section columns. Enable with `gfexcel_field_section_enabled` hook.
+* Feature: SectionField added to disable empty section columns. Disabled by default. Enable with `gfexcel_field_section_enabled` hook (return true).
+* Feature: FileUploadField added to disable file upload columns. Enabled by default. Dnable with `gfexcel_field_fileuploads_enabled` hook (return false).
 * Update: Wait until plugins are loaded. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
 * Bugfix: Changed the permalink registration so it works with multisite combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
 * Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
