@@ -4,7 +4,7 @@ Donate link: https://www.squidmedia.nl/
 Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 4.8.1
+Tested up to: 4.8.2
 Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -103,6 +103,7 @@ Also you can update title, subject and description metadata of the document by u
 * Feature: Download counter (starts counting as of this version)
 * Feature: SectionField added to disable empty section columns. Enable with `gfexcel_field_section_enabled` hook.
 * Update: Wait until plugins are loaded. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
+* Bugfix: Changed the permalink registration so it works with multisite combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
 * Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
 
 = 1.0.2 =

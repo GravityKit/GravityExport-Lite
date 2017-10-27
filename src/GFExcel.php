@@ -10,11 +10,12 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.0.3";
+    public static $version = "1.1.0";
     public static $slug = "gfexcel";
 
     public function __construct()
     {
+        add_action("init", array($this, "add_permalink_rule"));
         add_action("request", array($this, "request"));
         add_filter("query_vars", array($this, "query_vars"));
     }
@@ -51,6 +52,18 @@ class GFExcel
         $hash = GFCommon::encrypt($form_id);
         return $hash;
     }
+
+    public function add_permalink_rule()
+    {
+        add_rewrite_rule("^" . GFExcel::$slug . "/(.+)/?$",
+            'index.php?gfexcel_action=' . GFExcel::$slug . '&gfexcel_hash=$matches[1]', 'top');
+
+        $rules = get_option('rewrite_rules');
+        if (!isset($rules["^" . GFExcel::$slug . "/(.+)/?$"])) {
+            flush_rewrite_rules();
+        }
+    }
+
 
     public function request($query_vars)
     {

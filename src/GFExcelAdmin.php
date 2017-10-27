@@ -25,8 +25,6 @@ class GFExcelAdmin extends GFAddOn
         $this->_short_title = GFExcel::$shortname;
         $this->_slug = GFExcel::$slug;
 
-        $this->initialize();
-
         parent::__construct();
     }
 
@@ -62,38 +60,6 @@ class GFExcelAdmin extends GFAddOn
         );
 
 
-    }
-
-    public function activate()
-    {
-        $this->add_permalink_rule();
-        flush_rewrite_rules();
-    }
-
-    public function deactivate()
-    {
-        flush_rewrite_rules();
-    }
-
-    public function initialize()
-    {
-        if (!self::$file) {
-            self::$file = realpath(__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "gfexcel.php");
-        }
-        register_activation_hook(self::$file, array($this, "activate"));
-        register_deactivation_hook(self::$file, array($this, "deactivate"));
-
-        add_action("wp_loaded", array($this, "add_permalink_rule"));
-    }
-
-    /**
-     * Adds the url "gfexcel/{encrypted_url}" to the permalinksystem
-     * @void
-     */
-    public function add_permalink_rule()
-    {
-        add_rewrite_rule("^" . $this->_slug . "/(.+)/?$",
-            'index.php?gfexcel_action=' . $this->_slug . '&gfexcel_hash=$matches[1]', 'top');
     }
 
     /**
