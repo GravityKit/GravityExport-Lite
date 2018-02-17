@@ -44,33 +44,32 @@ class GFExcelOutput
         $form = $this->getForm();
         $rows = $this->getRows();
         $columns = $this->getColumns();
-        
-        $rows = gf_apply_filters(
-            array(
-                "gfexcel_output_rows",
-                $form['id'],
-            ),
-            $rows, $form
-        );
-        $columns = gf_apply_filters(
-            array(
-                "gfexcel_output_columns",
-                $form['id'],
-            ),
-            $columns, $form
-        );
 
         return $this->renderer->handle($form, $columns, $rows);
     }
 
     public function getRows()
     {
-        return $this->rows;
+        return gf_apply_filters(
+            array(
+                "gfexcel_output_rows",
+                $this->form_id,
+            ),
+            $this->rows,
+            $this->form_id
+        );
     }
 
     public function getColumns()
     {
-        return $this->columns;
+        return gf_apply_filters(
+            array(
+                "gfexcel_output_columns",
+                $this->form_id
+            ),
+            $this->columns,
+            $this->form_id
+        );
     }
 
     private function setColumns()
