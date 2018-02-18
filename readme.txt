@@ -99,6 +99,9 @@ Also you can update title, subject and description metadata of the document by u
 
 == Changelog ==
 
+= 1.2.0 =
+* Feature: Added `gfexcel_output_rows` and `gfexcel_output_columns` filters to have more control over output. Thanks @mircobabini.
+
 = 1.1.0 =
 * Feature: Download counter (starts counting as of this version)
 * Feature: SectionField added to disable empty section columns. Disabled by default. Enable with `gfexcel_field_section_enabled` hook (return true).
