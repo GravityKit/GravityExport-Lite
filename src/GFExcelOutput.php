@@ -26,6 +26,31 @@ class GFExcelOutput
         $this->form_id = $form_id;
     }
 
+    public static function getSortField($form_id)
+    {
+        $value = 'date_created';
+
+        $form = \GFAPI::get_form($form_id);
+        if (array_key_exists("gfexcel_output_sort_field", $form)) {
+            $value = $form["gfexcel_output_sort_field"];
+        }
+
+        return gf_apply_filters(array('gfexcel_output_sort_field', $form['id']), $value);
+    }
+
+    public static function getSortOrder($form_id)
+    {
+        $value = 'ASC'; //default
+        $form = \GFAPI::get_form($form_id);
+
+        if (array_key_exists("gfexcel_output_sort_order", $form)) {
+            $value = $form["gfexcel_output_sort_order"];
+        }
+        $value = gf_apply_filters(array('gfexcel_output_sort_order', $form['id']), $value);
+        //force either ASC or DESC
+        return stripos($value, "ASC") !== false ? "ASC" : "DESC";
+    }
+
     public function getFields()
     {
         if (empty($this->fields)) {
@@ -124,10 +149,7 @@ class GFExcelOutput
     {
         if (empty($this->entries)) {
             $search_criteria['status'] = 'active';
-            $sorting = array(
-                "key" => "date_created",
-                "direction" => "ASC"
-            );
+            $sorting = $this->get_sorting($this->form_id);
             $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
             $paging = array("offset" => 0, "page_size" => $total_entries_count);
             $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
@@ -172,6 +194,14 @@ class GFExcelOutput
                 $this->form_id
             ),
             true
+        );
+    }
+
+    private function get_sorting($form_id)
+    {
+        return array(
+            "key" => self::getSortField($form_id),
+            "direction" => self::getSortOrder($form_id)
         );
     }
 }

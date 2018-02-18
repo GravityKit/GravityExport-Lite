@@ -3,11 +3,10 @@
 namespace GFExcel;
 
 use GFAddOn;
+use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
 {
-    private static $file;
-
     protected $_version;
 
     protected $_min_gravityforms_version = "1.9";
@@ -30,6 +29,11 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
+        if ($this->is_postback()) {
+            $this->saveSettings($form);
+            $form = GFFormsModel::get_form_meta($form['id']);
+        }
+
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, 'gfexcel')
@@ -40,7 +44,6 @@ class GFExcelAdmin extends GFAddOn
         );
 
         $url = GFExcel::url($form);
-
 
         printf(
             "<p>
@@ -58,8 +61,17 @@ class GFExcelAdmin extends GFAddOn
             esc_html__('Download', 'gfexcel'),
             $this->download_count($form)
         );
+        echo "<br/>";
 
+        echo "<form method=\"post\">";
+        echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", "gfexcel") . "</h4>";
+        printf("<p>" . __("Order by: ") . "%s %s",
+            $this->select_sort_field_options($form),
+            $this->select_order_options($form)
+        );
+        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", "gfexcel") . "</button></p>";
 
+        echo "</form>";
     }
 
     /**
@@ -70,9 +82,45 @@ class GFExcelAdmin extends GFAddOn
     private function download_count($form)
     {
         if (array_key_exists("gfexcel_download_count", $form)) {
-            return (int) $form['gfexcel_download_count'];
+            return (int) $form["gfexcel_download_count"];
         }
 
         return 0;
+    }
+
+    private function select_sort_field_options($form)
+    {
+        $value = GFExcelOutput::getSortField($form['id']);
+        $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
+            $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
+            return $options;
+        }, "<option value=\"date_created\">" . __("Date of entry", "gfexcel") . "</option>");
+
+        return "<select name=\"gfexcel_output_sort_field\">" . $options . "</select>";
+    }
+
+    private function select_order_options($form)
+    {
+        $value = GFExcelOutput::getSortOrder($form['id']);
+        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending", "gfexcel") . " </option >
+                    <option value = \"DESC\"" . ($value === "DESC" ? " selected" : "") . ">" . __("Descending",
+                "gfexcel") . "</option>";
+
+        return "<select name=\"gfexcel_output_sort_order\">" . $options . "</select>";
+    }
+
+    private function saveSettings($form)
+    {
+        /** php5.3 proof. */
+        $gfexcel_keys = array_filter(array_keys($_POST), function ($key) {
+            return stripos($key, 'gfexcel_') === 0;
+        });
+
+        $form_meta = GFFormsModel::get_form_meta($form['id']);
+
+        foreach ($gfexcel_keys as $key) {
+            $form_meta[$key] = $_POST[$key];
+        }
+        GFFormsModel::update_form_meta($form['id'], $form_meta);
     }
 }

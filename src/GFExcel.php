@@ -44,12 +44,11 @@ class GFExcel
 
     private static function getHash($form_id)
     {
-
         if (!GFAPI::form_id_exists($form_id)) {
             return false;
         }
 
-        $hash = GFCommon::encrypt($form_id);
+        $hash = @GFCommon::encrypt($form_id);
         return $hash;
     }
 
@@ -63,7 +62,6 @@ class GFExcel
             flush_rewrite_rules();
         }
     }
-
 
     public function request($query_vars)
     {
@@ -94,7 +92,7 @@ class GFExcel
 
     private function getFormIdByHash($hash)
     {
-        $result = GFCommon::decrypt($hash);
+        $result = @GFCommon::decrypt($hash);
         if (is_numeric($result)) {
             return $result;
         }
