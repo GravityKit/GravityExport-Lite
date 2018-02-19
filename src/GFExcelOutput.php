@@ -51,6 +51,9 @@ class GFExcelOutput
         return stripos($value, "ASC") !== false ? "ASC" : "DESC";
     }
 
+    /**
+     * @return GF_Field[]
+     */
     public function getFields()
     {
         if (empty($this->fields)) {
@@ -58,7 +61,15 @@ class GFExcelOutput
             $this->fields = $form['fields'];
         }
 
-        return $this->fields;
+
+        return array_filter($this->fields, function (GF_Field $field) {
+            return !gf_apply_filters(
+                array(
+                    "gfexcel_field_disable",
+                    $field->get_input_type(),
+                    $field->id,
+                ), false, $field);
+        });
     }
 
     public function render()

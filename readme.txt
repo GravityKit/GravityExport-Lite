@@ -1,11 +1,10 @@
 === Gravity Forms Entries in Excel ===
-Contributors: doekenorg
-Donate link: https://www.squidmedia.nl/
-Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries
+Donate link: https://www.paypal.me/doekenorg
+Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.8.2
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +99,7 @@ Also you can update title, subject and description metadata of the document by u
 == Changelog ==
 
 = 1.2.0 =
+* Feature: Added `gfexcel_field_disable` filter to disable all fields you want. Fields will be filtered out before handling.
 * Feature: Added `gfexcel_output_rows` and `gfexcel_output_columns` filters to have more control over output. Thanks @mircobabini.
 * Feature: Added a setting for sort order per form. Also contains some hooks to override that work!
 

@@ -15,9 +15,12 @@ out more.
 * PHP 5.3 or higher (tested on PHP7 too)
 * Gravity Forms 2.0 or higher
 
+### Like the plugin? Buy me a drink ☕!
+Do you find the plugin helpful? Cool, glad to hear! If you'd like, you can [buy me a drink](https://www.paypal.me/doekenorg). 
+Being hydrated makes it easier to update the plugin. But no pressure!
 
 ### Credits
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
-![Logo](https://raw.githubusercontent.com/squidmedia/gfexcel/master/assets/icon-256x256.png)
+![Logo](https://raw.githubusercontent.com/doekenorg/gf-entries-in-excel/development/assets/icon.svg)
