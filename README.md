@@ -23,4 +23,4 @@ Being hydrated makes it easier to update the plugin. But no pressure!
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
-![Logo](https://raw.githubusercontent.com/doekenorg/gf-entries-in-excel/development/assets/icon.svg)
+<img src="https://raw.githubusercontent.com/doekenorg/gf-entries-in-excel/master/assets/icon-256x256.png" width="128">
