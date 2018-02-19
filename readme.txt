@@ -101,6 +101,7 @@ Also you can update title, subject and description metadata of the document by u
 
 = 1.2.0 =
 * Feature: Added `gfexcel_output_rows` and `gfexcel_output_columns` filters to have more control over output. Thanks @mircobabini.
+* Feature: Added a setting for sort order per form. Also contains some hooks to override that work!
 
 = 1.1.0 =
 * Feature: Download counter (starts counting as of this version)
