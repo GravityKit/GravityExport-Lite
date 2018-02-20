@@ -56,11 +56,11 @@ The field object is provided as parameter, so you can check for type and stuff p
 
 = I want to change the value of a field in Excel, can this be done? =
 
-Do you even need to ask? Of course this can be done!
+Do you even need to ask? Of course it can!
 
- You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`, `gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
+You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`, `gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
 
- The entry array is provided as a parameter, so you can combine fields if need be.
+The entry array is provided as a parameter, so you can combine fields if need be.
 
 = Can I seperate the fields of an address into multiple columns? =
 
@@ -90,6 +90,13 @@ By now you really should know you can change almost every aspect of this plugin.
 
 Also you can update title, subject and description metadata of the document by using `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and `gfexcel_renderer_description(_{form_id})`
 
+= Can I change the sort order of a Field? =
+
+Sure, why not. By default we sort on date of entry in acending order. You can change this, per form, on the Form settings page (Results in Excel) under "settings".
+
+= I want to download directly from the forms table without the url! =
+
+Allright! No need to yell! For those situation we've added a bulk option on the forms table. As a bonus, you can select multiple forms, and it will download all results in one file, on multiple worksheets (oohhh yeah!)
 
 == Screenshots ==
 
@@ -99,6 +106,7 @@ Also you can update title, subject and description metadata of the document by u
 == Changelog ==
 
 = 1.2.0 =
+* (Very cool) Feature: Download Excel output directly from forms table, and (drumroll), download multiple forms in one file!
 * Feature: Added `gfexcel_field_disable` filter to disable all fields you want. Fields will be filtered out before handling.
 * Feature: Added `gfexcel_output_rows` and `gfexcel_output_columns` filters to have more control over output. Thanks @mircobabini.
 * Feature: Added a setting for sort order per form. Also contains some hooks to override that work!

@@ -5,6 +5,7 @@ namespace GFExcel;
 use GF_Field;
 use GFAPI;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
 
 class GFExcelOutput
@@ -19,10 +20,10 @@ class GFExcelOutput
     private $columns = array();
     private $rows = array();
 
-    public function __construct($form_id)
+    public function __construct($form_id, RendererInterface $renderer)
     {
         $this->transformer = new Transformer();
-        $this->renderer = new PHPExcelRenderer();
+        $this->renderer = $renderer;
         $this->form_id = $form_id;
     }
 

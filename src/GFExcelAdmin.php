@@ -3,10 +3,15 @@
 namespace GFExcel;
 
 use GFAddOn;
+use GFCommon;
+use GFExcel\Renderer\PHPExcelMultisheetRenderer;
+use GFExcel\Renderer\PHPExcelRenderer;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
 {
+    const BULK_DOWNLOAD = 'gfexcel_download';
+
     protected $_version;
 
     protected $_min_gravityforms_version = "1.9";
@@ -24,6 +29,9 @@ class GFExcelAdmin extends GFAddOn
         $this->_short_title = GFExcel::$shortname;
         $this->_slug = GFExcel::$slug;
 
+        add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
+
+        $this->handle_bulk_actions();
         parent::__construct();
     }
 
@@ -72,6 +80,63 @@ class GFExcelAdmin extends GFAddOn
         echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", "gfexcel") . "</button></p>";
 
         echo "</form>";
+    }
+
+
+    public function handle_bulk_actions()
+    {
+        if (!current_user_can('editor') &&
+            !current_user_can('administrator') &&
+            !GFCommon::current_user_can_any('gravityforms_export_entries')) {
+            return false; // How you doin?
+        }
+
+        if ($this->current_action() === self::BULK_DOWNLOAD && array_key_exists('form', $_REQUEST)) {
+            $form_ids = (array) $_REQUEST['form'];
+            if (count($form_ids) < 1) {
+                return false;
+            }
+            $renderer = count($form_ids) > 1
+                ? new PHPExcelMultisheetRenderer()
+                : new PHPExcelRenderer();
+
+            foreach ($form_ids as $form_id) {
+                $output = new GFExcelOutput($form_id, $renderer);
+                $output->render();
+            }
+
+            return $renderer->renderOutput();
+        }
+
+        return false; // i'm DONE!
+    }
+
+    /**
+     * Add GFExcel download option to bulk actions dropdown
+     * @param $actions
+     * @return array
+     */
+    public function bulk_actions($actions)
+    {
+        $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', 'gfexcel');
+        return $actions;
+    }
+
+    private function current_action()
+    {
+        if (isset($_REQUEST['filter_action']) && !empty($_REQUEST['filter_action'])) {
+            return false;
+        }
+
+        if (isset($_REQUEST['action']) && -1 != $_REQUEST['action']) {
+            return $_REQUEST['action'];
+        }
+
+        if (isset($_REQUEST['action2']) && -1 != $_REQUEST['action2']) {
+            return $_REQUEST['action2'];
+        }
+
+        return false;
     }
 
     /**
