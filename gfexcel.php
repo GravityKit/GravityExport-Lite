@@ -2,10 +2,10 @@
 /**
  * Plugin Name:     Gravity Forms Entries in Excel
  * Description:     Download all entries for a form using a unique and hashed URL
- * Author:          SQUID Media
- * Author URI:      https://www.squidmedia.nl
+ * Author:          Doeke Norg
+ * Author URI:      https://paypal.me/doekenorg
  * Text Domain:     gfexcel
- * Version:         1.1.0
+ * Version:         1.2.0
  *
  * @package         GFExcel
  */
