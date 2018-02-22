@@ -113,9 +113,9 @@ class GFExcelOutput
     {
         if ($this->useMetaData()) {
             $this->addColumns(array(
-                __('ID', 'gfexcel'),
-                __('Date', 'gfexcel'),
-                __('IP address', 'gfexcel'),
+                __('ID', GFExcel::$slug),
+                __('Date', GFExcel::$slug),
+                __('IP address', GFExcel::$slug),
             ));
         }
 

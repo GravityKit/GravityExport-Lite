@@ -44,11 +44,11 @@ class GFExcelAdmin extends GFAddOn
 
         printf(
             '<h3>%s</h3>',
-            esc_html__(GFExcel::$name, 'gfexcel')
+            esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
         printf('<p>%s</p>',
-            esc_html__('Download url:', 'gfexcel')
+            esc_html__('Download url:', GFExcel::$slug)
         );
 
         $url = GFExcel::url($form);
@@ -63,21 +63,21 @@ class GFExcelAdmin extends GFAddOn
         printf(
             "<p>
                 <a class='button-primary' href='%s' target='_blank'>%s</a>
-                " . __("Download count", "gfexcel") . ": %d
+                " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
             $url,
-            esc_html__('Download', 'gfexcel'),
+            esc_html__('Download', GFExcel::$slug),
             $this->download_count($form)
         );
         echo "<br/>";
 
         echo "<form method=\"post\">";
-        echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", "gfexcel") . "</h4>";
-        printf("<p>" . __("Order by: ") . "%s %s",
+        echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
+        printf("<p>" . __("Order by: ", GFExcel::$slug) . "%s %s",
             $this->select_sort_field_options($form),
             $this->select_order_options($form)
         );
-        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", "gfexcel") . "</button></p>";
+        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", GFExcel::$slug) . "</button></p>";
 
         echo "</form>";
     }
@@ -118,7 +118,7 @@ class GFExcelAdmin extends GFAddOn
      */
     public function bulk_actions($actions)
     {
-        $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', 'gfexcel');
+        $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', GFExcel::$slug);
         return $actions;
     }
 
@@ -159,7 +159,7 @@ class GFExcelAdmin extends GFAddOn
         $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
             $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
             return $options;
-        }, "<option value=\"date_created\">" . __("Date of entry", "gfexcel") . "</option>");
+        }, "<option value=\"date_created\">" . __("Date of entry", GFExcel::$slug) . "</option>");
 
         return "<select name=\"gfexcel_output_sort_field\">" . $options . "</select>";
     }
@@ -167,9 +167,9 @@ class GFExcelAdmin extends GFAddOn
     private function select_order_options($form)
     {
         $value = GFExcelOutput::getSortOrder($form['id']);
-        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending", "gfexcel") . " </option >
+        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending", GFExcel::$slug) . " </option >
                     <option value = \"DESC\"" . ($value === "DESC" ? " selected" : "") . ">" . __("Descending",
-                "gfexcel") . "</option>";
+                GFExcel::$slug) . "</option>";
 
         return "<select name=\"gfexcel_output_sort_order\">" . $options . "</select>";
     }

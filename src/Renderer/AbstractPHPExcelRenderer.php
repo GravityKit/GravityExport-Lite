@@ -11,10 +11,7 @@ abstract class AbstractPHPExcelRenderer
 {
     /** @var \PHPExcel */
     protected $PHPExcel;
-
-
-    // Returns the columnname based on the input; (A -> ZZ)
-
+    
     public function renderOutput()
     {
         header('Content-Type: application/vnd.ms-excel');

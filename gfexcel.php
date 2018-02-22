@@ -4,7 +4,7 @@
  * Description:     Download all entries for a form using a unique and hashed URL
  * Author:          Doeke Norg
  * Author URI:      https://paypal.me/doekenorg
- * Text Domain:     gfexcel
+ * Text Domain:     gf-entries-in-excel
  * Version:         1.2.0
  *
  * @package         GFExcel
