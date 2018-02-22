@@ -11,7 +11,7 @@ abstract class AbstractPHPExcelRenderer
 {
     /** @var \PHPExcel */
     protected $PHPExcel;
-    
+
     public function renderOutput()
     {
         header('Content-Type: application/vnd.ms-excel');

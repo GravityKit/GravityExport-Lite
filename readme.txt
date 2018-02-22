@@ -20,7 +20,7 @@ The plugin also has a few plugin hooks to make your excel output exactly how you
 
 = Requirements =
 
-* PHP 5.3 or higher (tested on PHP7 too)
+* PHP 5.3 or higher (for now; will be dropping 5.3 in near future)
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
@@ -29,8 +29,8 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `gf-excel` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Make use you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons
-1. Go to Forms > Settings > Results in Excel to obtain your url
+1. Make sure you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons!
+1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
 1. Download that excel file!
 
 == Frequently Asked Questions ==
@@ -102,6 +102,7 @@ Allright! No need to yell! For those situation we've added a bulk option on the 
 
 1. A 'Results in Excel' link is added to the form settings
 2. There is your url! Just copy and paste to the browser (or click the download button)
+3. Or download it from the list via the bulk selector
 
 == Changelog ==
 
