@@ -4,14 +4,15 @@ namespace GFExcel;
 
 use GFAPI;
 use GFCommon;
+use GFExcel\Renderer\PHPExcelRenderer;
 use GFFormsModel;
 
 class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.1.0";
-    public static $slug = "gfexcel";
+    public static $version = "1.2.0";
+    public static $slug = "gf-entries-in-excel";
 
     public function __construct()
     {
@@ -44,12 +45,12 @@ class GFExcel
 
     private static function getHash($form_id)
     {
-
         if (!GFAPI::form_id_exists($form_id)) {
             return false;
         }
 
-        $hash = GFCommon::encrypt($form_id);
+        $hash = @GFCommon::encrypt($form_id);
+
         return $hash;
     }
 
@@ -63,7 +64,6 @@ class GFExcel
             flush_rewrite_rules();
         }
     }
-
 
     public function request($query_vars)
     {
@@ -79,22 +79,24 @@ class GFExcel
             return $query_vars;
         }
 
-        $output = new GFExcelOutput($form_id);
+        $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
         $this->updateCounter($form_id);
-        return $output->render();
 
+        return $output->render();
     }
 
     public function query_vars($vars)
     {
         $vars[] = "gfexcel_action";
         $vars[] = "gfexcel_hash";
+
         return $vars;
     }
 
+
     private function getFormIdByHash($hash)
     {
-        $result = GFCommon::decrypt($hash);
+        $result = @GFCommon::decrypt($hash);
         if (is_numeric($result)) {
             return $result;
         }

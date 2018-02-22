@@ -1,11 +1,10 @@
 === Gravity Forms Entries in Excel ===
-Contributors: doekenorg
-Donate link: https://www.squidmedia.nl/
-Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries
+Donate link: https://www.paypal.me/doekenorg
+Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.8.2
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +20,7 @@ The plugin also has a few plugin hooks to make your excel output exactly how you
 
 = Requirements =
 
-* PHP 5.3 or higher (tested on PHP7 too)
+* PHP 5.3 or higher (for now; will be dropping 5.3 in near future)
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
@@ -30,8 +29,8 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `gf-excel` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Make use you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons
-1. Go to Forms > Settings > Results in Excel to obtain your url
+1. Make sure you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons!
+1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
 1. Download that excel file!
 
 == Frequently Asked Questions ==
@@ -57,11 +56,11 @@ The field object is provided as parameter, so you can check for type and stuff p
 
 = I want to change the value of a field in Excel, can this be done? =
 
-Do you even need to ask? Of course this can be done!
+Do you even need to ask? Of course it can!
 
- You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`, `gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
+You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`, `gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
 
- The entry array is provided as a parameter, so you can combine fields if need be.
+The entry array is provided as a parameter, so you can combine fields if need be.
 
 = Can I seperate the fields of an address into multiple columns? =
 
@@ -91,13 +90,27 @@ By now you really should know you can change almost every aspect of this plugin.
 
 Also you can update title, subject and description metadata of the document by using `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and `gfexcel_renderer_description(_{form_id})`
 
+= Can I change the sort order of a Field? =
+
+Sure, why not. By default we sort on date of entry in acending order. You can change this, per form, on the Form settings page (Results in Excel) under "settings".
+
+= I want to download directly from the forms table without the url! =
+
+Allright! No need to yell! For those situation we've added a bulk option on the forms table. As a bonus, you can select multiple forms, and it will download all results in one file, on multiple worksheets (oohhh yeah!)
 
 == Screenshots ==
 
 1. A 'Results in Excel' link is added to the form settings
 2. There is your url! Just copy and paste to the browser (or click the download button)
+3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.2.0 =
+* (Very cool) Feature: Download Excel output directly from forms table, and (drumroll), download multiple forms in one file!
+* Feature: Added `gfexcel_field_disable` filter to disable all fields you want. Fields will be filtered out before handling.
+* Feature: Added `gfexcel_output_rows` and `gfexcel_output_columns` filters to have more control over output. Thanks @mircobabini.
+* Feature: Added a setting for sort order per form. Also contains some hooks to override that work!
 
 = 1.1.0 =
 * Feature: Download counter (starts counting as of this version)

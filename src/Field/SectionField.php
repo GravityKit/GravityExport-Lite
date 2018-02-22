@@ -20,6 +20,7 @@ class SectionField extends BaseField
         if (!$this->showSectionAsColumn()) {
             return array(); // no cells
         }
+
         return parent::getCells($entry);
     }
 
@@ -28,15 +29,15 @@ class SectionField extends BaseField
         if (!$this->showSectionAsColumn()) {
             return array(); // no columns
         }
-        return parent::getColumns();
 
+        return parent::getColumns();
     }
 
     private function showSectionAsColumn()
     {
         return gf_apply_filters(
             array(
-                "gfexcel_field_section_enabled",
+                "ßßgfexcel_field_section_enabled",
                 $this->field->formId
             ),
             $this->section_enabled);
