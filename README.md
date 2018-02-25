@@ -12,7 +12,7 @@ out more.
 
 ### Requirements
 
-* PHP 5.3 or higher (tested on PHP7 too)
+* PHP 5.3 or higher (for now; will be dropping 5.3 in near future)
 * Gravity Forms 2.0 or higher
 
 ### Like the plugin? Buy me a drink ☕!

@@ -105,7 +105,8 @@ class GFExcelAdmin extends GFAddOn
                 $output->render();
             }
 
-            return $renderer->renderOutput();
+            $renderer->renderOutput();
+            return true;
         }
 
         return false; // i'm DONE!

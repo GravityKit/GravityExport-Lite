@@ -1,9 +1,10 @@
 === Gravity Forms Entries in Excel ===
+Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 4.8.2
+Tested up to: 4.9.4
 Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -106,8 +107,9 @@ Allright! No need to yell! For those situation we've added a bulk option on the 
 
 == Changelog ==
 
-= 1.3.0 =
-* Feature: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
+= 1.2.1 =
+* Translation: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
+* Enhancement: Worksheets now have a title, and of course a `gfexcel_renderer_worksheet_title` hook.
 
 = Apology =
 With the release of 1.2.0 the download url has been updated to reflect to plugin name. This is partly because of the translation.
