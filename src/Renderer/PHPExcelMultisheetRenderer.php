@@ -35,7 +35,8 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
         $worksheet = $this->PHPExcel->getActiveSheet();
 
         $this->addCellsToWorksheet($worksheet, $rows, $columns)
-            ->autoSizeColumns($worksheet, $columns);
+            ->autoSizeColumns($worksheet, $columns)
+            ->setWorksheetTitle($worksheet, $form);
     }
 
     protected function getFileName()
@@ -76,6 +77,20 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
         $description = gf_apply_filters(array("gfexcel_renderer_description"), $description);
         $this->PHPExcel->getProperties()->setDescription($description);
 
+        return $this;
+    }
+
+    private function setWorksheetTitle(\PHPExcel_Worksheet $worksheet, $form)
+    {
+        $worksheet_title = substr(gf_apply_filters(
+            array(
+                "gfexcel_renderer_worksheet_title",
+                $form['id'],
+            ),
+            $form['title'], $form
+        ), 0, 30);
+
+        $worksheet->setTitle($worksheet_title);
         return $this;
     }
 }

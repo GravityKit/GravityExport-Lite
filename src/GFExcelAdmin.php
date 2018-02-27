@@ -25,8 +25,8 @@ class GFExcelAdmin extends GFAddOn
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = GFExcel::$name;
-        $this->_short_title = GFExcel::$shortname;
+        $this->_title = __(GFExcel::$name, GFExcel::$slug);
+        $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
@@ -47,8 +47,8 @@ class GFExcelAdmin extends GFAddOn
             esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
-        printf('<p>%s</p>',
-            esc_html__('Download url:', GFExcel::$slug)
+        printf('<p>%s:</p>',
+            esc_html__('Download url', GFExcel::$slug)
         );
 
         $url = GFExcel::url($form);
@@ -73,7 +73,7 @@ class GFExcelAdmin extends GFAddOn
 
         echo "<form method=\"post\">";
         echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
-        printf("<p>" . __("Order by: ", GFExcel::$slug) . "%s %s",
+        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s",
             $this->select_sort_field_options($form),
             $this->select_order_options($form)
         );
@@ -105,7 +105,8 @@ class GFExcelAdmin extends GFAddOn
                 $output->render();
             }
 
-            return $renderer->renderOutput();
+            $renderer->renderOutput();
+            return true;
         }
 
         return false; // i'm DONE!
@@ -167,7 +168,8 @@ class GFExcelAdmin extends GFAddOn
     private function select_order_options($form)
     {
         $value = GFExcelOutput::getSortOrder($form['id']);
-        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending", GFExcel::$slug) . " </option >
+        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending",
+                GFExcel::$slug) . " </option >
                     <option value = \"DESC\"" . ($value === "DESC" ? " selected" : "") . ">" . __("Descending",
                 GFExcel::$slug) . "</option>";
 

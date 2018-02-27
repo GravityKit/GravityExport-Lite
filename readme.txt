@@ -1,10 +1,11 @@
 === Gravity Forms Entries in Excel ===
+Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
 Requires at least: 4.0
 Requires PHP: 5.3
-Tested up to: 4.8.2
-Stable tag: 1.2.0
+Tested up to: 4.9.4
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +28,7 @@ The plugin also has a few plugin hooks to make your excel output exactly how you
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `gf-excel` to the `/wp-content/plugins/` directory
+1. Upload `gf-entries-in-excel` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Make sure you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons!
 1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
@@ -105,6 +106,17 @@ Allright! No need to yell! For those situation we've added a bulk option on the 
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.2.1 =
+* Translation: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
+* Enhancement: Worksheets now have a title, and of course a `gfexcel_renderer_worksheet_title` hook.
+
+= Apology =
+With the release of 1.2.0 the download url has been updated to reflect to plugin name. This is partly because of the translation.
+I figured I'd use the same slug everywhere, but forgot it was used in the actual download link. Sorry about that!
+
+That being said, I'm planning an update that regenerates the slug. This update will result in all current URL's being invalid.
+I understand that might be an inconvinience, but less so when someone can correctly guess your URL. Security first!
 
 = 1.2.0 =
 * (Very cool) Feature: Download Excel output directly from forms table, and (drumroll), download multiple forms in one file!

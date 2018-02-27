@@ -14,6 +14,7 @@ abstract class AbstractPHPExcelRenderer
 
     public function renderOutput()
     {
+        $this->PHPExcel->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
         header('Cache-Control: max-age=1');
