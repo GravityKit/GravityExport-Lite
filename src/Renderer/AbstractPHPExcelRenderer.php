@@ -58,9 +58,14 @@ abstract class AbstractPHPExcelRenderer
 
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
+
                 $cell = $worksheet->setCellValueExplicitByColumnAndRow($i, $x + 1, $value,
                     PHPExcel_Cell_DataType::TYPE_STRING,
                     true);
+
+                if ($this->_isUrl($value)) {
+                    $cell->getHyperlink()->setUrl(trim(strip_tags($value)));
+                }
                 $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
             }
         }
@@ -68,5 +73,15 @@ abstract class AbstractPHPExcelRenderer
     }
 
     abstract protected function getFileName();
+
+    /**
+     * Quick test if value is a url.
+     * @param $value
+     * @return bool
+     */
+    protected function _isUrl($value)
+    {
+        return !!preg_match('%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i', $value);
+    }
 
 }
