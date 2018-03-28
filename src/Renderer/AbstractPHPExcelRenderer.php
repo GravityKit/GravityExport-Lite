@@ -63,7 +63,7 @@ abstract class AbstractPHPExcelRenderer
                     PHPExcel_Cell_DataType::TYPE_STRING,
                     true);
 
-                if ($this->_isUrl($value)) {
+                if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
                     $cell->getHyperlink()->setUrl(trim(strip_tags($value)));
                 }
                 $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);

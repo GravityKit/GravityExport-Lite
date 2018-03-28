@@ -5,19 +5,23 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Download all entries for a specific form to an Excel-file (.xls) without being logged in via secret url.
+Export all Gravity Forms entries to Excel (.xls) via a download button OR via a secret (shareable) url.
 
 == Description ==
 
-Get realtime entries from your forms using a unique and secure url. No need to login, or create a user account for that one person who needs te results. Just copy the url, and give it to the guy who needs it. It's that simple.
+Export all entries from your forms directly to Excel, using a unique and secure url. No need to login, or create a
+user account for that one person who needs te results. Just copy the url, and give it to the guy who needs it.
+It's that simple.
 
-Using Gravity Forms you can always export a CSV file, and import it to Excel. But an admin always needs to be involved and using Excel to import a CSV is a pain in the butt.
+Using Gravity Forms you can export a CSV file, and import it to Excel. But an admin always needs to be involved
+and using Excel to import a CSV is a pain in the butt.
 
-The plugin also has a few plugin hooks to make your excel output exactly how you want it. Check out the FAQ to find out more.
+The plugin has a lot of event-hooks to make your Excel output exactly how you want it.
+Check out the FAQ to find out more.
 
 = Requirements =
 
@@ -32,7 +36,7 @@ This section describes how to install the plugin and get it working.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Make sure you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons!
 1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
-1. Download that excel file!
+1. Download that Excel file!
 
 == Frequently Asked Questions ==
 
@@ -47,25 +51,26 @@ Just add this to your `functions.php`:
 add_filter("gfexcel_output_meta_info","__return_false");
 `
 
-= I want to rename the label only in Excel, how would I do this? =
+= I want to rename the labels, but only in Excel, how can I do this? =
 
 Sure, makes sense. You can override the label hooking into
-`gfexcel_field_label`, `gfexcel_field_label_{type}`,
-`gfexcel_field_label_{type}_{form_id}` or `gfexcel_field_label_{type}_{form_id}_{field_id}`
+`gfexcel_field_label`, `gfexcel_field_label_{type}`, `gfexcel_field_label_{type}_{form_id}` or
+`gfexcel_field_label_{type}_{form_id}_{field_id}`
 
 The field object is provided as parameter, so you can check for type and stuff programatically.
 
-= I want to change the value of a field in Excel, can this be done? =
+= How can I change the value of a field in Excel? =
 
-Do you even need to ask? Of course it can!
+You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`,
+`gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
 
-You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field_value_{type}`, `gfexcel_field_value_{type}_{form_id}` or `gfexcel_field_value_{type}_{form_id}_{field_id}`
-
-The entry array is provided as a parameter, so you can combine fields if need be.
+The entry array is provided as a parameter, so you can combine fields if you want.
 
 = Can I seperate the fields of an address into multiple columns? =
 
-Great question! Yes you can! You can make use of the following hooks to get that working: `gfexcel_field_address_seperated`, `gfexcel_field_address_seperated_{form_id}` or `gfexcel_field_address_seperated_{form_id}_{field_id}`
+Great question! Yes you can! You can make use of the following hooks to get that working:
+`gfexcel_field_address_seperated`, `gfexcel_field_address_seperated_{form_id}` or
+`gfexcel_field_address_seperated_{form_id}_{field_id}`
 
 Just add this to your `functions.php`:
 
@@ -75,11 +80,13 @@ add_filter("gfexcel_field_address_seperated","__return_true");
 
 = I have a custom field. Can your plugin handle this? =
 
-Wow, it's almost as if you know the plugin. Spooky. But, yes you can. In multiple ways actually.
+You should ask yourself, if your field can handle this plugin! But, yes it can. In multiple ways actually.
 
-The default way the plugins renders the output, is by calling `get_value_export` on the field. All Gravity Forms fields need that function, so make sure that is implemented. The result is one column with the output combined to one cell per row.
+The default way the plugins renders the output, is by calling `get_value_export` on the field.
+All Gravity Forms fields need that function, so make sure that is implemented.
+The result is one column with the output combined to one cell per row.
 
-But you can also make your own field-renderer:
+But you can also make your own field-renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
@@ -87,17 +94,31 @@ But you can also make your own field-renderer:
 
 = I don't really like the downloaded file name! =
 
-By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
+By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using
+the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
 
-Also you can update title, subject and description metadata of the document by using `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and `gfexcel_renderer_description(_{form_id})`
+Also you can update title, subject and description metadata of the document by using
+`gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and
+`gfexcel_renderer_description(_{form_id})`.
 
-= Can I change the sort order of a Field? =
+= Can I change the sort order of the rows? =
 
-Sure, why not. By default we sort on date of entry in acending order. You can change this, per form, on the Form settings page (Results in Excel) under "settings".
+Sure, why not. By default we sort on date of entry in acending order. You can change this, per form,
+on the Form settings page (Results in Excel) under "Settings".
 
 = I want to download directly from the forms table without the url! =
 
-Allright! No need to yell! For those situation we've added a bulk option on the forms table. As a bonus, you can select multiple forms, and it will download all results in one file, on multiple worksheets (oohhh yeah!)
+Allright! No need to yell! For those situation we've added a bulk option on the forms table.
+As a bonus, you can select multiple forms, and it will download all results in one file,
+on multiple worksheets (oohhh yeah!)
+
+= How can I disable the hyperlinks on URL-only cells? =
+You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks`-hook.
+
+`
+//add this to your functions.php
+add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
+`
 
 == Screenshots ==
 
@@ -106,6 +127,9 @@ Allright! No need to yell! For those situation we've added a bulk option on the 
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.2.2 =
+* Enhancement: If a cell only contains a URL, that URL is set as a link on that cell, for easy access.
 
 = 1.2.1 =
 * Translation: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
