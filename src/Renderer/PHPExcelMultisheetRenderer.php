@@ -80,17 +80,4 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
         return $this;
     }
 
-    private function setWorksheetTitle(\PHPExcel_Worksheet $worksheet, $form)
-    {
-        $worksheet_title = substr(gf_apply_filters(
-            array(
-                "gfexcel_renderer_worksheet_title",
-                $form['id'],
-            ),
-            $form['title'], $form
-        ), 0, 30);
-
-        $worksheet->setTitle($worksheet_title);
-        return $this;
-    }
 }

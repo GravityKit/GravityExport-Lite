@@ -4,7 +4,6 @@ namespace GFExcel;
 
 use GF_Field;
 use GFAPI;
-use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
 
