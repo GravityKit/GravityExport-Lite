@@ -84,4 +84,24 @@ abstract class AbstractPHPExcelRenderer
         return !!preg_match('%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i', $value);
     }
 
+    protected function setWorksheetTitle(\PHPExcel_Worksheet $worksheet, $form)
+    {
+        $invalidCharacters = $worksheet::getInvalidCharacters();
+        //First strip form title, so we still have 30 charachters.
+        $form_title = str_replace($invalidCharacters, '', $form['title']);
+
+        $worksheet_title = substr(gf_apply_filters(
+            array(
+                "gfexcel_renderer_worksheet_title",
+                $form['id'],
+            ),
+            $form_title, $form
+        ), 0, 30);
+
+        // Protect users from accidental override with invalid characters.
+        $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
+        $worksheet->setTitle($worksheet_title);
+        return $this;
+    }
+
 }

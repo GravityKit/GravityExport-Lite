@@ -72,16 +72,9 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
             $title, $this->form
         );
 
-        $worksheet_title = substr(gf_apply_filters(
-            array(
-                "gfexcel_renderer_worksheet_title",
-                $this->form['id'],
-            ),
-            $title, $this->form
-        ), 0, 30);
-
+        $this->setWorksheetTitle($this->worksheet, $this->form);
         $this->PHPExcel->getProperties()->setTitle($title);
-        $this->worksheet->setTitle($worksheet_title);
+
         return $this;
     }
 
