@@ -1,20 +1,18 @@
 <?php
-
-
 namespace GFExcel\Renderer;
 
-
-use PHPExcel_Cell_DataType;
-use PHPExcel_IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 abstract class AbstractPHPExcelRenderer
 {
-    /** @var \PHPExcel */
-    protected $PHPExcel;
+    /** @var \spreadsheet */
+    protected $spreadsheet;
 
     public function renderOutput()
     {
-        $this->PHPExcel->setActiveSheetIndex(0);
+        $this->spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
         header('Cache-Control: max-age=1');
@@ -24,7 +22,7 @@ abstract class AbstractPHPExcelRenderer
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header('Pragma: public'); // HTTP/1.0
 
-        $objWriter = PHPExcel_IOFactory::createWriter($this->PHPExcel, 'Excel5');
+        $objWriter = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
         $objWriter->save('php://output');
 
         exit; // stop rest
@@ -44,7 +42,7 @@ abstract class AbstractPHPExcelRenderer
         return strtoupper($letters[$rows - 1] . $letters[$remainder]);
     }
 
-    protected function autoSizeColumns(\PHPExcel_Worksheet $worksheet, $columns)
+    protected function autoSizeColumns(Worksheet $worksheet, $columns)
     {
         for ($i = 0; $i < count($columns); $i++) {
             $worksheet->getColumnDimension($this->getLetter($i))->setAutoSize(true);
@@ -52,7 +50,7 @@ abstract class AbstractPHPExcelRenderer
         return $this;
     }
 
-    protected function addCellsToWorksheet(\PHPExcel_Worksheet $worksheet, $rows, $columns)
+    protected function addCellsToWorksheet(Worksheet $worksheet, $rows, $columns)
     {
         array_unshift($rows, $columns);
 
@@ -60,7 +58,7 @@ abstract class AbstractPHPExcelRenderer
             foreach ($row as $i => $value) {
 
                 $cell = $worksheet->setCellValueExplicitByColumnAndRow($i, $x + 1, $value,
-                    PHPExcel_Cell_DataType::TYPE_STRING,
+                    DataType::TYPE_STRING,
                     true);
 
                 if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
@@ -84,7 +82,7 @@ abstract class AbstractPHPExcelRenderer
         return !!preg_match('%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i', $value);
     }
 
-    protected function setWorksheetTitle(\PHPExcel_Worksheet $worksheet, $form)
+    protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
         $invalidCharacters = $worksheet::getInvalidCharacters();
         //First strip form title, so we still have 30 charachters.

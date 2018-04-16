@@ -3,12 +3,12 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use PHPExcel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
     /**
-     * @var PHPExcel
+     * @var spreadsheet
      */
     private $columns;
     private $rows;
@@ -20,9 +20,9 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
      */
     public function __construct()
     {
-        $this->PHPExcel = new PHPExcel();
-        $this->PHPExcel->setActiveSheetIndex(0);
-        $this->worksheet = $this->PHPExcel->getActiveSheet();
+        $this->spreadsheet = new Spreadsheet();
+        $this->spreadsheet->setActiveSheetIndex(0);
+        $this->worksheet = $this->spreadsheet->getActiveSheet();
     }
 
     /**
@@ -73,7 +73,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         );
 
         $this->setWorksheetTitle($this->worksheet, $this->form);
-        $this->PHPExcel->getProperties()->setTitle($title);
+        $this->spreadsheet->getProperties()->setTitle($title);
 
         return $this;
     }
@@ -87,13 +87,13 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
             ),
             $title, $this->form
         );
-        $this->PHPExcel->getProperties()->setSubject($title);
+        $this->spreadsheet->getProperties()->setSubject($title);
         return $this;
     }
 
     private function setProperties()
     {
-        $this->PHPExcel->getProperties()
+        $this->spreadsheet->getProperties()
             ->setCreator(GFExcel::$name)
             ->setLastModifiedBy(GFExcel::$name);
 
@@ -114,7 +114,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
             $description, $this->form
         );
 
-        $this->PHPExcel->getProperties()
+        $this->spreadsheet->getProperties()
             ->setDescription($description);
         return $this;
     }
