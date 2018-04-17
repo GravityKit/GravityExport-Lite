@@ -5,7 +5,7 @@
  * Author:          Doeke Norg
  * Author URI:      https://paypal.me/doekenorg
  * Text Domain:     gf-entries-in-excel
- * Version:         1.3.0
+ * Version:         1.2.4
  *
  * @package         GFExcel
  */
