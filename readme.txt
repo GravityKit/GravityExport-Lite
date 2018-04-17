@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -127,6 +127,10 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.2.4 =
+* Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony)
+* Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock
 
 = 1.2.3 =
 * Bugfix: Worksheets could contain invalid characters, and break download.

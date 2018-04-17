@@ -6,3 +6,4 @@ vendor/
 *.tar.gz
 deploy.sh
 .idea
+composer.lock

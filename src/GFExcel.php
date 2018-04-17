@@ -11,7 +11,7 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.2.0";
+    public static $version = "1.2.4";
     public static $slug = "gf-entries-in-excel";
 
     public function __construct()
