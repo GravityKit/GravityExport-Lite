@@ -3,7 +3,6 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
@@ -14,7 +13,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      */
     public function __construct()
     {
-        $this->spreadsheet = new Spreadsheet();
+        parent::__construct();
         $this->setProperties();
     }
 
@@ -22,7 +21,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      * @param $form
      * @param $columns
      * @param $rows
-     * @throws \PhpOffice\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle($form, $columns, $rows)
     {

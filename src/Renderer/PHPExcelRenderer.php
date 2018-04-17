@@ -7,9 +7,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
-    /**
-     * @var spreadsheet
-     */
+
     private $columns;
     private $rows;
     private $form;
@@ -20,7 +18,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
      */
     public function __construct()
     {
-        $this->spreadsheet = new Spreadsheet();
+        parent::__construct();
         $this->spreadsheet->setActiveSheetIndex(0);
         $this->worksheet = $this->spreadsheet->getActiveSheet();
     }

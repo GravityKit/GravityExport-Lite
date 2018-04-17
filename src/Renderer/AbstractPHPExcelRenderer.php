@@ -1,14 +1,22 @@
 <?php
+
 namespace GFExcel\Renderer;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 abstract class AbstractPHPExcelRenderer
 {
-    /** @var \spreadsheet */
+    /** @var Spreadsheet */
     protected $spreadsheet;
+
+
+    public function __construct()
+    {
+        $this->spreadsheet = new Spreadsheet();
+    }
 
     public function renderOutput()
     {
@@ -57,13 +65,14 @@ abstract class AbstractPHPExcelRenderer
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
 
-                $cell = $worksheet->setCellValueExplicitByColumnAndRow($i, $x + 1, $value,
-                    DataType::TYPE_STRING,
-                    true);
+                $worksheet->setCellValueExplicitByColumnAndRow($i, $x + 1, $value,
+                    DataType::TYPE_STRING);
+                $cell = $worksheet->getCellByColumnAndRow($i, $x + 1);
 
                 if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
                     $cell->getHyperlink()->setUrl(trim(strip_tags($value)));
                 }
+
                 $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
             }
         }
