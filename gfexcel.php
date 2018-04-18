@@ -16,14 +16,13 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-add_action("plugins_loaded", function () {
+add_action("wp_loaded", function () {
     if (!class_exists("GFForms")) {
         return '';
     }
-    if(!class_exists("GFExport")) {
-        require_once( GFCommon::get_base_path() . '/export.php' );
+    if (!class_exists("GFExport")) {
+        require_once(GFCommon::get_base_path() . '/export.php');
     }
-
     require "vendor/autoload.php";
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');

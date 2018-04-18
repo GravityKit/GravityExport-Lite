@@ -132,6 +132,7 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony)
 * Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
+* Bugfix: Plugin hooks later, so filters also work on bulk-download files
 
 = 1.2.3 =
 * Bugfix: Worksheets could contain invalid characters, and break download.

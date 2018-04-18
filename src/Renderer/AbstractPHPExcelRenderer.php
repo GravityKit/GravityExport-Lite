@@ -36,6 +36,11 @@ abstract class AbstractPHPExcelRenderer
         exit; // stop rest
     }
 
+    /**
+     * @todo there is a function on PHPSpreadsheet that does the same
+     * @param $i
+     * @return string
+     */
     protected function getLetter($i)
     {
         $letters = range("a", "z");

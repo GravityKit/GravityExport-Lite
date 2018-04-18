@@ -101,7 +101,7 @@ class GFExcelAdmin extends GFAddOn
                 : new PHPExcelRenderer();
 
             foreach ($form_ids as $form_id) {
-                $output = new GFExcelOutput($form_id, $renderer);
+                $output = new GFExcelOutput((int) $form_id, $renderer);
                 $output->render();
             }
 
