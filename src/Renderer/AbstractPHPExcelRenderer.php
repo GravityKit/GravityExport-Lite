@@ -65,9 +65,9 @@ abstract class AbstractPHPExcelRenderer
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
 
-                $worksheet->setCellValueExplicitByColumnAndRow($i, $x + 1, $value,
+                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $value,
                     DataType::TYPE_STRING);
-                $cell = $worksheet->getCellByColumnAndRow($i, $x + 1);
+                $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
 
                 if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
                     $cell->getHyperlink()->setUrl(trim(strip_tags($value)));

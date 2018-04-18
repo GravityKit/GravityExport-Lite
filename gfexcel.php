@@ -20,6 +20,9 @@ add_action("plugins_loaded", function () {
     if (!class_exists("GFForms")) {
         return '';
     }
+    if(!class_exists("GFExport")) {
+        require_once( GFCommon::get_base_path() . '/export.php' );
+    }
 
     require "vendor/autoload.php";
 
