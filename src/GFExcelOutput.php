@@ -227,6 +227,7 @@ class GFExcelOutput
         if (empty($this->meta_fields)) {
             $form = GFExport::add_default_export_fields(array('id' => $this->form_id, 'fields' => array()));
             $this->meta_fields = array_reduce($form['fields'], function ($carry, GF_Field $field) {
+                $field->type = 'meta';
                 $carry[$field->id] = $field;
                 return $carry;
             });

@@ -5,7 +5,7 @@
  * Author:          Doeke Norg
  * Author URI:      https://paypal.me/doekenorg
  * Text Domain:     gf-entries-in-excel
- * Version:         1.2.4
+ * Version:         1.3.0
  *
  * @package         GFExcel
  */
@@ -16,7 +16,7 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-add_action("wp_loaded", function () {
+add_action("plugins_loaded", function () {
     if (!class_exists("GFForms")) {
         return '';
     }
