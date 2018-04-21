@@ -128,14 +128,14 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 
 == Changelog ==
 
-= 1.3.0 =
-* Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony)
+= 1.2.4 =
+* Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
 * Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock.
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
 * Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-seperated values per column.
-* Feature: New meta fields transformers. Special filter hooks for meta fields with `gfexcel_meta_value`.
-* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_seperated_seperated` to split date and time in 2 columns.
-* Bugfix: Plugin hooks later, so filters also work on bulk-download files
+* Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
+* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_seperated` to split date and time in 2 columns.
+* Bugfix: Plugin hooks later, so filters also work on bulk-download files.
 
 = 1.2.3 =
 * Bugfix: Worksheets could contain invalid characters, and break download.
