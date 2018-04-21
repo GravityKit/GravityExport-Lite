@@ -3,7 +3,6 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use PHPExcel;
 
 class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
@@ -14,7 +13,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      */
     public function __construct()
     {
-        $this->PHPExcel = new PHPExcel();
+        parent::__construct();
         $this->setProperties();
     }
 
@@ -22,17 +21,17 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      * @param $form
      * @param $columns
      * @param $rows
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle($form, $columns, $rows)
     {
         $this->current_sheet_id += 1;
         if ($this->current_sheet_id > 0) {
-            $this->PHPExcel->createSheet();
+            $this->spreadsheet->createSheet();
         }
-        $this->PHPExcel->setActiveSheetIndex($this->current_sheet_id);
+        $this->spreadsheet->setActiveSheetIndex($this->current_sheet_id);
 
-        $worksheet = $this->PHPExcel->getActiveSheet();
+        $worksheet = $this->spreadsheet->getActiveSheet();
 
         $this->addCellsToWorksheet($worksheet, $rows, $columns)
             ->autoSizeColumns($worksheet, $columns)
@@ -49,7 +48,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
     private function setTitle($title)
     {
         $title = gf_apply_filters(array("gfexcel_renderer_title"), $title);
-        $this->PHPExcel->getProperties()->setTitle($title);
+        $this->spreadsheet->getProperties()->setTitle($title);
 
         return $this;
     }
@@ -57,14 +56,14 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
     private function setSubject($title)
     {
         $title = gf_apply_filters(array("gfexcel_renderer_subject"), $title);
-        $this->PHPExcel->getProperties()->setSubject($title);
+        $this->spreadsheet->getProperties()->setSubject($title);
 
         return $this;
     }
 
     private function setProperties()
     {
-        $this->PHPExcel->getProperties()->setCreator(GFExcel::$name)->setLastModifiedBy(GFExcel::$name);
+        $this->spreadsheet->getProperties()->setCreator(GFExcel::$name)->setLastModifiedBy(GFExcel::$name);
 
         $title = GFExcel::$name . ' downloaded forms';
         $this->setTitle($title)->setSubject($title)->setDescription('');
@@ -75,7 +74,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
     private function setDescription($description)
     {
         $description = gf_apply_filters(array("gfexcel_renderer_description"), $description);
-        $this->PHPExcel->getProperties()->setDescription($description);
+        $this->spreadsheet->getProperties()->setDescription($description);
 
         return $this;
     }

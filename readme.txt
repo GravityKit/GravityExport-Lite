@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.3
 Tested up to: 4.9.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,6 +128,15 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 
 == Changelog ==
 
+= 1.2.4 =
+* Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
+* Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock.
+* Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
+* Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-seperated values per column.
+* Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
+* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_seperated` to split date and time in 2 columns.
+* Bugfix: Plugin hooks later, so filters also work on bulk-download files.
+
 = 1.2.3 =
 * Bugfix: Worksheets could contain invalid characters, and break download.
 
@@ -137,13 +146,6 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 = 1.2.1 =
 * Translation: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
 * Enhancement: Worksheets now have a title, and of course a `gfexcel_renderer_worksheet_title` hook.
-
-= Apology =
-With the release of 1.2.0 the download url has been updated to reflect to plugin name. This is partly because of the translation.
-I figured I'd use the same slug everywhere, but forgot it was used in the actual download link. Sorry about that!
-
-That being said, I'm planning an update that regenerates the slug. This update will result in all current URL's being invalid.
-I understand that might be an inconvinience, but less so when someone can correctly guess your URL. Security first!
 
 = 1.2.0 =
 * (Very cool) Feature: Download Excel output directly from forms table, and (drumroll), download multiple forms in one file!

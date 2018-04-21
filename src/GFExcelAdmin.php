@@ -30,8 +30,8 @@ class GFExcelAdmin extends GFAddOn
         $this->_slug = GFExcel::$slug;
 
         add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
+        add_action("wp_loaded", array($this, 'handle_bulk_actions'));
 
-        $this->handle_bulk_actions();
         parent::__construct();
     }
 
@@ -101,7 +101,7 @@ class GFExcelAdmin extends GFAddOn
                 : new PHPExcelRenderer();
 
             foreach ($form_ids as $form_id) {
-                $output = new GFExcelOutput($form_id, $renderer);
+                $output = new GFExcelOutput((int) $form_id, $renderer);
                 $output->render();
             }
 

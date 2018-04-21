@@ -11,6 +11,8 @@ class Transformer implements TransformerInterface
 
     protected $fields = array(
         'address' => 'GFExcel\Field\AddressField',
+        'meta' => 'GFExcel\Field\MetaField',
+        'list' => 'GFExcel\Field\ListField',
         'section' => 'GFExcel\Field\SectionField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
     );
