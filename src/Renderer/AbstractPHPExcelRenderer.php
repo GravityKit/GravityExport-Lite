@@ -2,6 +2,7 @@
 
 namespace GFExcel\Renderer;
 
+use GFExcel\Values\BaseValue;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -70,8 +71,8 @@ abstract class AbstractPHPExcelRenderer
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
 
-                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $value,
-                    DataType::TYPE_STRING);
+                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $this->getCellValue($value),
+                    $this->getCellType($value));
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
 
                 if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
@@ -114,6 +115,29 @@ abstract class AbstractPHPExcelRenderer
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
         $worksheet->setTitle($worksheet_title);
         return $this;
+    }
+
+    private function getCellType($value)
+    {
+        if ($value instanceof BaseValue) {
+            if ($value->isNumeric()) {
+                return DataType::TYPE_NUMERIC;
+            }
+            if ($value->isBool()) {
+                return DataType::TYPE_BOOL;
+            }
+        }
+
+        return DataType::TYPE_STRING;
+    }
+
+    private function getCellValue($value)
+    {
+        if ($value instanceof BaseValue) {
+            return $value->getValue();
+        }
+
+        return $value;
     }
 
 }

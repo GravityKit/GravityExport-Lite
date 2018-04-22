@@ -3,9 +3,9 @@ Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
 Requires at least: 4.0
-Requires PHP: 5.3
+Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,6 +128,14 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 
 == Changelog ==
 
+= 1.3.0 =
+* Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
+* Feature: NumberField added that uses the NumberValue type for Excel
+* Feature: Added filters to typehint cell values. See FAQ for more info.
+* Todo: add FAQ items cell typehinting
+* Upgraded to PHP 5.6 for minimal dependancy. Last version with PHP 5.3 was 1.2.3
+(sorry for the mixup, the new renderer forced my hand, and I forgot about this, otherwise the verisoning had gone up sooner.)
+
 = 1.2.4 =
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
 * Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock.
@@ -139,6 +147,7 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 
 = 1.2.3 =
 * Bugfix: Worksheets could contain invalid characters, and break download.
+* Last version to use PHP 5.3
 
 = 1.2.2 =
 * Enhancement: If a cell only contains a URL, that URL is set as a link on that cell, for easy access.
