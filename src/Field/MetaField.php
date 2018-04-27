@@ -3,6 +3,7 @@
 namespace GFExcel\Field;
 
 use GF_Field;
+use GFExcel\Values\BaseValue;
 
 class MetaField extends BaseField
 {
@@ -34,13 +35,24 @@ class MetaField extends BaseField
         $value = gf_apply_filters(
             array(
                 "gfexcel_meta_value",
-                $this->field->get_input_type(),
+                $this->field->id,
                 $this->field->formId,
-                $this->field->id
             ),
             $value, $entry);
 
-        return array($value);
+        return $this->wrap(array($value));
+    }
+
+    public function getValueType()
+    {
+        if (in_array($this->field->id, array(
+            'id',
+            'form_id',
+            'created_by'
+        ))) {
+            return BaseValue::TYPE_NUMERIC;
+        }
+        return BaseValue::TYPE_STRING;
     }
 
     private function getSubFieldsClasses()

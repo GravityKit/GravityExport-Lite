@@ -22,7 +22,7 @@ class BaseField extends AbstractField
             ),
             $value, $entry);
 
-        return array($value);
+        return $this->wrap(array($value));
     }
 
 }

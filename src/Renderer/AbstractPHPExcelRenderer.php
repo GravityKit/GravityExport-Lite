@@ -2,6 +2,9 @@
 
 namespace GFExcel\Renderer;
 
+use GFExcel\Values\BaseValue;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -20,7 +23,6 @@ abstract class AbstractPHPExcelRenderer
 
     public function renderOutput()
     {
-        $this->spreadsheet->setActiveSheetIndex(0);
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
         header('Cache-Control: max-age=1');
@@ -30,8 +32,12 @@ abstract class AbstractPHPExcelRenderer
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header('Pragma: public'); // HTTP/1.0
 
-        $objWriter = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
-        $objWriter->save('php://output');
+        try {
+            $this->spreadsheet->setActiveSheetIndex(0);
+            $objWriter = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
+            $objWriter->save('php://output');
+        } catch (Exception $e) {
+        }
 
         exit; // stop rest
     }
@@ -70,31 +76,22 @@ abstract class AbstractPHPExcelRenderer
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
 
-                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $value,
-                    DataType::TYPE_STRING);
+                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $this->getCellValue($value),
+                    $this->getCellType($value));
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
 
-                if ($this->_isUrl($value) && !gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)) {
-                    $cell->getHyperlink()->setUrl(trim(strip_tags($value)));
-                }
+                $this->setCellUrl($cell, $value);
 
-                $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
+                try {
+                    $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
+                } catch (Exception $e) {
+                }
             }
         }
         return $this;
     }
 
     abstract protected function getFileName();
-
-    /**
-     * Quick test if value is a url.
-     * @param $value
-     * @return bool
-     */
-    protected function _isUrl($value)
-    {
-        return !!preg_match('%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i', $value);
-    }
 
     protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
@@ -114,6 +111,65 @@ abstract class AbstractPHPExcelRenderer
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
         $worksheet->setTitle($worksheet_title);
         return $this;
+    }
+
+    /**
+     * Get Cell type based on value booleans
+     * @param $value
+     * @return string
+     */
+    private function getCellType($value)
+    {
+        if ($value instanceof BaseValue) {
+            if ($value->isNumeric()) {
+                return DataType::TYPE_NUMERIC;
+            }
+            if ($value->isBool()) {
+                return DataType::TYPE_BOOL;
+            }
+        }
+
+        return DataType::TYPE_STRING;
+    }
+
+    /**
+     * Retrieve the correctly formatted value of the cell
+     * @param $value
+     * @return string
+     */
+    private function getCellValue($value)
+    {
+        if ($value instanceof BaseValue) {
+            return $value->getValue();
+        }
+
+        return $value;
+    }
+
+    /**
+     * Set url on the cell if value has a url.
+     *
+     * @param Cell $cell
+     * @param $value
+     * @return bool
+     */
+    private function setCellUrl(Cell $cell, $value)
+    {
+        if (
+            !$value instanceof BaseValue or
+            !$value->getUrl() or
+            gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)
+        ) {
+            return false;
+        }
+
+        try {
+            $cell->getHyperlink()->setUrl($value->getUrl());
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+
     }
 
 }
