@@ -8,6 +8,9 @@ use GFExport;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
 
+/**
+ * The point where data is tranformed, and is send to the renderer.
+ */
 class GFExcelOutput
 {
     private $transformer;
@@ -30,6 +33,11 @@ class GFExcelOutput
         $this->form_id = $form_id;
     }
 
+    /**
+     * Get field to sort the data by
+     * @param $form_id
+     * @return mixed
+     */
     public static function getSortField($form_id)
     {
         $value = 'date_created';
@@ -42,6 +50,11 @@ class GFExcelOutput
         return gf_apply_filters(array('gfexcel_output_sort_field', $form['id']), $value);
     }
 
+    /**
+     * In what order should the data be sorted
+     * @param $form_id
+     * @return string
+     */
     public static function getSortOrder($form_id)
     {
         $value = 'ASC'; //default
@@ -80,6 +93,7 @@ class GFExcelOutput
                     array(
                         "gfexcel_field_disable",
                         $field->get_input_type(),
+                        $field->formId,
                         $field->id,
                     ), false, $field);
             });
@@ -87,6 +101,11 @@ class GFExcelOutput
         return $this->fields;
     }
 
+    /**
+     * The renderer is invoked and send all the data it needs to preform it's task.
+     * It returns the actual Excel as a download
+     * @return mixed
+     */
     public function render()
     {
         $this->setColumns();
@@ -99,6 +118,10 @@ class GFExcelOutput
         return $this->renderer->handle($form, $columns, $rows);
     }
 
+    /**
+     * Retrieve the set rows, but it can be filtered.
+     * @return array
+     */
     public function getRows()
     {
         return gf_apply_filters(
@@ -111,6 +134,10 @@ class GFExcelOutput
         );
     }
 
+    /**
+     * Retrieve the set columns, but it can be filtered.
+     * @return array
+     */
     public function getColumns()
     {
         return gf_apply_filters(
@@ -123,6 +150,10 @@ class GFExcelOutput
         );
     }
 
+    /**
+     * Add all columns a field needs to the array in order.
+     * @return $this
+     */
     private function setColumns()
     {
         $fields = $this->getFields();
@@ -146,6 +177,11 @@ class GFExcelOutput
         return $this->form;
     }
 
+    /**
+     * Add multiple columns at once
+     * @param array $columns
+     * @internal
+     */
     private function addColumns(array $columns)
     {
         foreach ($columns as $column) {
@@ -163,6 +199,10 @@ class GFExcelOutput
         return $fieldClass->getColumns();
     }
 
+    /**
+     * Retrieves al rows for a form, and fills every column with the data.
+     * @return $this
+     */
     private function setRows()
     {
         $entries = $this->getEntries();
@@ -172,6 +212,10 @@ class GFExcelOutput
         return $this;
     }
 
+    /**
+     * Returns all entries for a form, based on the sort settings
+     * @return array|\WP_Error
+     */
     private function getEntries()
     {
         if (empty($this->entries)) {
@@ -184,12 +228,24 @@ class GFExcelOutput
         return $this->entries;
     }
 
+    /**
+     * Foreach field a transformer is found, and it returns the needed columns(s).
+     * @param $field
+     * @param $entry
+     * @return array
+     */
     private function getFieldCells($field, $entry)
     {
         $fieldClass = $this->transformer->transform($field);
         return $fieldClass->getCells($entry);
     }
 
+    /**
+     * Just a helper to add a row to the array.
+     * @internal
+     * @param $entry
+     * @return $this
+     */
     private function addRow($entry)
     {
         $row = array();
@@ -206,7 +262,7 @@ class GFExcelOutput
     }
 
     /**
-     *
+     * Check if we want meta data, if so, add those fields and format them.
      * @internal
      * @return boolean
      */

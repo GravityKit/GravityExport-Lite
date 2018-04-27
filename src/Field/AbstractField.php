@@ -3,6 +3,7 @@
 namespace GFExcel\Field;
 
 use GF_Field;
+use GFExcel\Values\BaseValue;
 
 abstract class AbstractField implements FieldInterface
 {
@@ -43,6 +44,11 @@ abstract class AbstractField implements FieldInterface
      */
     abstract public function getCells($entry);
 
+    public function getValueType()
+    {
+        return BaseValue::TYPE_STRING;
+    }
+
     /**
      * @internal Get values of combined fields like address
      * @param array $entry
@@ -57,5 +63,17 @@ abstract class AbstractField implements FieldInterface
             }
         }
         return $subfields;
+    }
+
+    /**
+     * @param array $values
+     * @return array
+     */
+    protected function wrap($values)
+    {
+        $class = $this;
+        return array_map(function ($value) use ($class) {
+            return BaseValue::getValueObject($class, $value, $class->field);
+        }, (array) $values);
     }
 }
