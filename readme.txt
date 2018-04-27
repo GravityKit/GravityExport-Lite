@@ -120,6 +120,33 @@ You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks
 add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 `
 
+= My numbers are formatted as a string, how can I change the celltype?
+A numberfield is formatted as a number, but most fields default to a string.
+As of this moment, there are 3 field types. `Boolean`,`String` and `Numeric`. You can set these per field.
+`
+//add this to your functions.php
+use GFExcel\Values\BaseValue;
+
+add_filter('gfexcel_value_type',function($type, $field) {
+    if($field->formId == 1 && $field->id == 2) {
+        //Possible values are 'bool', 'string' or 'numeric',
+        //or, use the constant, preffered:
+        return BaseValue::TYPE_NUMERIC; //TYPE_STRING, TYPE_BOOL
+    }
+}, 10, 2);
+`
+
+= I'd like to add a hyperlink to a specific field
+Since most values are Value Objects, we can interact with them, and trigger a `setUrl` function on a value.
+`
+//add this to your functions.php
+add_filter('gfexcel_value_object',function($value, $field) {
+    if($field->formId == 1 && $field->id == 2) {
+        $value->setUrl('http://wordpress.org');
+    }
+}, 10, 2);
+`
+
 == Screenshots ==
 
 1. A 'Results in Excel' link is added to the form settings
@@ -132,7 +159,7 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 * Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
 * Feature: NumberField added that uses the NumberValue type for Excel
 * Feature: Added filters to typehint cell values. See FAQ for more info.
-* Todo: add FAQ items cell typehinting
+* Enhancement: updated cell > url implemntation. Each cell can be set individually now. See FAQ for more info.
 * Upgraded to PHP 5.6 for minimal dependancy. Last version with PHP 5.3 was 1.2.3
 (sorry for the mixup, the new renderer forced my hand, and I forgot about this, otherwise the verisoning had gone up sooner.)
 
