@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entrie
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -154,6 +154,9 @@ add_filter('gfexcel_value_object',function($value, $field) {
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.3.1 =
+* Feature: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
 
 = 1.3.0 =
 * Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
