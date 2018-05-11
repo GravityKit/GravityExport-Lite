@@ -37,7 +37,7 @@ class SectionField extends BaseField
     {
         return gf_apply_filters(
             array(
-                "ßßgfexcel_field_section_enabled",
+                "gfexcel_field_section_enabled",
                 $this->field->formId
             ),
             $this->section_enabled);

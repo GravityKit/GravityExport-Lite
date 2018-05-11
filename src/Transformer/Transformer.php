@@ -16,6 +16,7 @@ class Transformer implements TransformerInterface
         'list' => 'GFExcel\Field\ListField',
         'section' => 'GFExcel\Field\SectionField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
+        'notes' => 'GFExcel\Field\NotesField',
     );
 
     /**

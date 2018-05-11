@@ -79,6 +79,14 @@ class GFExcelOutput
 
             $fields = $form['fields'];
 
+            $fields = array_merge($fields, [
+                new GF_Field([
+                    'formId' => $this->form_id,
+                    'type' => 'notes',
+                    'label' => esc_html__('Notes', 'gravityforms'),
+                ])
+            ]);
+
             if ($this->useMetaData()) {
                 $fields_map = array('first' => array(), 'last' => array());
                 foreach ($this->meta_fields as $key => $field) {
@@ -86,7 +94,6 @@ class GFExcelOutput
                 }
                 $fields = array_merge($fields_map['first'], $fields, $fields_map['last']);
             }
-
 
             $this->fields = array_filter($fields, function (GF_Field $field) {
                 return !gf_apply_filters(
@@ -98,6 +105,7 @@ class GFExcelOutput
                     ), false, $field);
             });
         }
+
         return $this->fields;
     }
 
