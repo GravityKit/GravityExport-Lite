@@ -120,7 +120,7 @@ You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks
 add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 `
 
-= My numbers are formatted as a string, how can I change the celltype?
+= My numbers are formatted as a string, how can I change the celltype? =
 A numberfield is formatted as a number, but most fields default to a string.
 As of this moment, there are 3 field types. `Boolean`,`String` and `Numeric`. You can set these per field.
 `
@@ -136,7 +136,7 @@ add_filter('gfexcel_value_type',function($type, $field) {
 }, 10, 2);
 `
 
-= I'd like to add a hyperlink to a specific field
+= I'd like to add a hyperlink to a specific field =
 Since most values are Value Objects, we can interact with them, and trigger a `setUrl` function on a value.
 `
 //add this to your functions.php
@@ -145,6 +145,16 @@ add_filter('gfexcel_value_object',function($value, $field) {
         $value->setUrl('http://wordpress.org');
     }
 }, 10, 2);
+`
+
+= I've added some notes, where are they? =
+By default the notes are disabled for preformance. If you'd like to add these to the row you can activate this like so:
+
+`
+//add this to your functions.php
+add_filter('gfexcel_field_notes_enabled','__return_true');
+//or
+add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
 `
 
 == Screenshots ==
@@ -156,7 +166,8 @@ add_filter('gfexcel_value_object',function($value, $field) {
 == Changelog ==
 
 = 1.3.1 =
-* Feature: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
+* Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
+* Enhancement: Removed unneccecary files from the plugin to make it smaller.
 
 = 1.3.0 =
 * Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
