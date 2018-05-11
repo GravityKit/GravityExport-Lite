@@ -25,7 +25,7 @@ Check out the FAQ to find out more.
 
 = Requirements =
 
-* PHP 5.3 or higher (for now; will be dropping 5.3 in near future)
+* PHP 5.6 or higher (as of version 1.2.4+)
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
