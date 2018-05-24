@@ -1,11 +1,11 @@
 === Gravity Forms Entries in Excel ===
 Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
-Tags: Gravityforms, Excel, GF, GFExcel, Gravity, Forms, Output, Download, Entries, Export, CSV, Office, xlsx, xls
+Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Check out the FAQ to find out more.
 
 = Requirements =
 
-* PHP 5.3 or higher (for now; will be dropping 5.3 in near future)
+* PHP 5.6 or higher (PHP 7 Recommended)
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
@@ -164,6 +164,9 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.3.2 (WIP) =
+* Enhancement: Added error handling to provide better feedback and support
 
 = 1.3.1 =
 * Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
