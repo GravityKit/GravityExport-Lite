@@ -26,7 +26,11 @@ add_action("plugins_loaded", function () {
     if (!class_exists("GFExport")) {
         require_once(GFCommon::get_base_path() . '/export.php');
     }
-    require "vendor/autoload.php";
+
+    $autoload = __DIR__ .'/vendor/autoload.php';
+    if(file_exists($autoload)) {
+        require $autoload;
+    }
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
 
