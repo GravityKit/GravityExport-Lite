@@ -1,7 +1,7 @@
 {
-    "name": "doekenorg/gf-excel",
+    "name": "doekenorg/gf-entries-in-excel",
     "type": "wordpress-plugin",
-    "license": "GMT",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Doeke Norg",
