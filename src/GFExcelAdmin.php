@@ -37,10 +37,17 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
-        if ($this->is_postback()) {
+        if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
         }
+        if ($this->is_postback()) {
+            if (!rgempty('regenerate_hash')) {
+                $form = GFExcel::setHash($form['id']);
+            }
+
+        }
+
 
         printf(
             '<h3>%s</h3>',
@@ -60,9 +67,13 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
+        echo "<form method=\"post\">";
         printf(
             "<p>
-                <a class='button-primary' href='%s' target='_blank'>%s</a>
+                <input class='button' type='submit' name='regenerate_hash' value='" .
+            __('Regenerate url', GFExcel::$slug)
+            . "'/> 
+                <a class='button-primary' href=' % s' target='_blank'>%s</a>
                 " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
             $url,
@@ -71,13 +82,14 @@ class GFExcelAdmin extends GFAddOn
         );
         echo "<br/>";
 
-        echo "<form method=\"post\">";
+
         echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
-        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s",
+        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s <br/> %s",
             $this->select_sort_field_options($form),
-            $this->select_order_options($form)
+            $this->select_order_options($form),
+            $this->settings_save(['value' => __("Save settings", GFExcel::$slug)], false)
         );
-        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", GFExcel::$slug) . "</button></p>";
+
 
         echo "</form>";
     }
@@ -92,7 +104,7 @@ class GFExcelAdmin extends GFAddOn
         }
 
         if ($this->current_action() === self::BULK_DOWNLOAD && array_key_exists('form', $_REQUEST)) {
-            $form_ids = (array) $_REQUEST['form'];
+            $form_ids = (array)$_REQUEST['form'];
             if (count($form_ids) < 1) {
                 return false;
             }
@@ -101,7 +113,7 @@ class GFExcelAdmin extends GFAddOn
                 : new PHPExcelRenderer();
 
             foreach ($form_ids as $form_id) {
-                $output = new GFExcelOutput((int) $form_id, $renderer);
+                $output = new GFExcelOutput((int)$form_id, $renderer);
                 $output->render();
             }
 
@@ -148,7 +160,7 @@ class GFExcelAdmin extends GFAddOn
     private function download_count($form)
     {
         if (array_key_exists("gfexcel_download_count", $form)) {
-            return (int) $form["gfexcel_download_count"];
+            return (int)$form["gfexcel_download_count"];
         }
 
         return 0;
@@ -158,7 +170,7 @@ class GFExcelAdmin extends GFAddOn
     {
         $value = GFExcelOutput::getSortField($form['id']);
         $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
-            $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
+            $options .= "<option value=\"" . $field->id . "\"" . ((int)$value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
             return $options;
         }, "<option value=\"date_created\">" . __("Date of entry", GFExcel::$slug) . "</option>");
 

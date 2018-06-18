@@ -11,8 +11,11 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.3.0";
+    public static $version = "1.3.2";
     public static $slug = "gf-entries-in-excel";
+
+    const KEY_HASH = 'gfexcel_hash';
+    const KEY_COUNT = 'gfexcel_download_count';
 
     public function __construct()
     {
@@ -49,9 +52,41 @@ class GFExcel
             return false;
         }
 
-        $hash = @GFCommon::encrypt($form_id);
+        $meta = GFFormsModel::get_form_meta($form_id);
 
-        return $hash;
+        if (!array_key_exists(static::KEY_HASH, $meta)) {
+            $meta = static::setHash($form_id);
+        }
+
+        return $meta[static::KEY_HASH];
+    }
+
+    /**
+     * Save new hash to the form
+     * @return array metadata form
+     */
+    public static function setHash($form_id)
+    {
+        $meta = GFFormsModel::get_form_meta($form_id);
+
+        $meta[static::KEY_HASH] = static::generateHash($form_id);
+        GFFormsModel::update_form_meta($form_id, $meta);
+
+        return $meta;
+    }
+
+    private static function generateHash($form_id)
+    {
+        $meta = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists(static::KEY_COUNT, $meta) ||
+            array_key_exists(static::KEY_HASH, $meta)
+        ) {
+            //never downloaded before, or recreating hash
+            // so make a pretty new one
+            return bin2hex(openssl_random_pseudo_bytes(32));
+        }
+        // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maube insecure string
+        return @GFCommon::encrypt($form_id);
     }
 
     public function add_permalink_rule()
@@ -96,9 +131,24 @@ class GFExcel
 
     private function getFormIdByHash($hash)
     {
-        $result = @GFCommon::decrypt($hash);
-        if (is_numeric($result)) {
-            return $result;
+        global $wpdb;
+
+        $table_name = GFFormsModel::get_meta_table_name();
+        $wild = '%';
+        $like = $wild . $wpdb->esc_like($hash) . $wild;
+        if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
+            $result = @GFCommon::decrypt($hash);
+            if (is_numeric($result)) {
+                return $result;
+            }
+            return false; //bail
+        }
+
+        // possible match
+        // Loading main form object (supports serialized strings as well as JSON strings)
+        if (GFExcel::getHash($form_row['form_id']) === $hash) {
+            //only now are we home save.
+            return $form_row['form_id'];
         }
 
         return false;
@@ -110,12 +160,11 @@ class GFExcel
      */
     private function updateCounter($form_id)
     {
-        $key = 'gfexcel_download_count';
         $form_meta = GFFormsModel::get_form_meta($form_id);
-        if (!array_key_exists($key, $form_meta)) {
-            $form_meta[$key] = 0;
+        if (!array_key_exists(static::KEY_COUNT, $form_meta)) {
+            $form_meta[static::KEY_COUNT] = 0;
         }
-        $form_meta[$key] += 1;
+        $form_meta[static::KEY_COUNT] += 1;
 
         GFFormsModel::update_form_meta($form_id, $form_meta);
     }
