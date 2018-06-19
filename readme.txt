@@ -169,6 +169,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
 * Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
 This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
+* Feature: Disable fields with checkboxes on the settings page. Can still be overwritten with the hooks.
 * Enhancement: Added error handling to provide better feedback and support. This way I / we can better help you if you have an issue.
 
 
