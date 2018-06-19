@@ -37,6 +37,7 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
+
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -45,9 +46,11 @@ class GFExcelAdmin extends GFAddOn
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
+                GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
             }
         }
 
+        GFCommon::display_admin_message();
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, GFExcel::$slug)
@@ -69,9 +72,10 @@ class GFExcelAdmin extends GFAddOn
         echo "<form method=\"post\">";
         printf(
             "<p>
-                <input class='button' type='submit' name='regenerate_hash' value='" .
-            __('Regenerate url', GFExcel::$slug)
-            . "'/> 
+                <input 
+                onclick=\"return confirm('" . __('This changed the download url permanently!', GFExcel::$slug) . "');\" 
+                class='button' type='submit' name='regenerate_hash' 
+                value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
                 <a class='button-primary' href=' % s' target='_blank'>%s</a>
                 " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
@@ -81,6 +85,31 @@ class GFExcelAdmin extends GFAddOn
         );
         echo "<br/>";
 
+        $disabled_fields = GFExcel::get_disabled_fields($form);
+
+        $this->single_section([
+            'title' => __('Disable fields from export', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Select the fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce($form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+            ],
+        ]);
+
 
         echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
         printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s <br/> %s",
@@ -88,6 +117,7 @@ class GFExcelAdmin extends GFAddOn
             $this->select_order_options($form),
             $this->settings_save(['value' => __("Save settings", GFExcel::$slug)], false)
         );
+
 
         echo "</form>";
     }
@@ -199,6 +229,17 @@ class GFExcelAdmin extends GFAddOn
             $form_meta[$key] = $_POST[$key];
         }
 
+        foreach ($this->get_posted_settings() as $key => $value) {
+            if ($key === GFExcel::KEY_DISABLED_FIELDS) {
+                $value = implode(',', array_keys(array_filter($value)));
+            }
+
+            $form_meta[$key] = $value;
+        }
+
         GFFormsModel::update_form_meta($form['id'], $form_meta);
+        GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug), false);
     }
+
+
 }

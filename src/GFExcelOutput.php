@@ -95,14 +95,15 @@ class GFExcelOutput
                 $fields = array_merge($fields_map['first'], $fields, $fields_map['last']);
             }
 
-            $this->fields = array_filter($fields, function (GF_Field $field) {
+            $disabled_fields = GFExcel::get_disabled_fields($form);
+            $this->fields = array_filter($fields, function (GF_Field $field) use ($disabled_fields) {
                 return !gf_apply_filters(
                     array(
                         "gfexcel_field_disable",
                         $field->get_input_type(),
                         $field->formId,
                         $field->id,
-                    ), false, $field);
+                    ), in_array($field->id, $disabled_fields), $field);
             });
         }
 
