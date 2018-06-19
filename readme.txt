@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.3.2
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,6 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `gf-entries-in-excel` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Make sure you have a **unique** `NONCE_SALT` in your `wp-config.php` for security reasons!
 1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
 1. Download that Excel file!
 
@@ -148,7 +147,7 @@ add_filter('gfexcel_value_object',function($value, $field) {
 `
 
 = I've added some notes, where are they? =
-By default the notes are disabled for preformance. If you'd like to add these to the row you can activate this like so:
+By default the notes are disabled for performance. If you'd like to add these to the row you can activate this like so:
 
 `
 //add this to your functions.php
@@ -165,8 +164,13 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 
 == Changelog ==
 
-= 1.3.2 (WIP) =
-* Enhancement: Added error handling to provide better feedback and support
+= 1.4.0 (WIP) =
+* Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
+As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
+* Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
+This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
+* Enhancement: Added error handling to provide better feedback and support. This way I / we can better help you if you have an issue.
+
 
 = 1.3.1 =
 * Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
