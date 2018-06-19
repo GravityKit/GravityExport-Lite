@@ -128,30 +128,44 @@ class GFExcel
         return $vars;
     }
 
-
+    /**
+     * @param $hash
+     * @return bool|int
+     */
     private function getFormIdByHash($hash)
     {
         global $wpdb;
 
         $table_name = GFFormsModel::get_meta_table_name();
         $wild = '%';
-        $like = $wild . $wpdb->esc_like($hash) . $wild;
+        $like = $wild . $wpdb->esc_like(json_encode($hash)) . $wild;
+
         if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
             $result = @GFCommon::decrypt($hash);
-            if (is_numeric($result)) {
-                return $result;
+            if (!is_numeric($result)) {
+                return false;
             }
-            return false; //bail
+            if (!$form = GFFormsModel::get_form_meta($result)) {
+                //this form does not exist, so nope
+                return false;
+            }
+            if (array_key_exists(GFExcel::KEY_HASH, $form)) {
+                //this form already has a hash. So if you knew the hash, you wouldn't be here. Shame!
+                return false;
+            }
+            // Fallback to get the form id old fashion way. This should stop working asap.
+            return (int) $result;
         }
 
-        // possible match
-        // Loading main form object (supports serialized strings as well as JSON strings)
-        if (GFExcel::getHash($form_row['form_id']) === $hash) {
-            //only now are we home save.
-            return $form_row['form_id'];
+
+        // possible match on hash, so check against found form.
+        if (GFExcel::getHash($form_row['form_id']) !== $hash) {
+            //hash doesn't match, so it's probably a partial match
+            return false;
         }
 
-        return false;
+        //only now are we home save.
+        return (int) $form_row['form_id'];
     }
 
     /**

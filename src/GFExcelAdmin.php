@@ -41,13 +41,12 @@ class GFExcelAdmin extends GFAddOn
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
         }
+
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
             }
-
         }
-
 
         printf(
             '<h3>%s</h3>',
@@ -90,7 +89,6 @@ class GFExcelAdmin extends GFAddOn
             $this->settings_save(['value' => __("Save settings", GFExcel::$slug)], false)
         );
 
-
         echo "</form>";
     }
 
@@ -104,7 +102,7 @@ class GFExcelAdmin extends GFAddOn
         }
 
         if ($this->current_action() === self::BULK_DOWNLOAD && array_key_exists('form', $_REQUEST)) {
-            $form_ids = (array)$_REQUEST['form'];
+            $form_ids = (array) $_REQUEST['form'];
             if (count($form_ids) < 1) {
                 return false;
             }
@@ -113,7 +111,7 @@ class GFExcelAdmin extends GFAddOn
                 : new PHPExcelRenderer();
 
             foreach ($form_ids as $form_id) {
-                $output = new GFExcelOutput((int)$form_id, $renderer);
+                $output = new GFExcelOutput((int) $form_id, $renderer);
                 $output->render();
             }
 
@@ -160,7 +158,7 @@ class GFExcelAdmin extends GFAddOn
     private function download_count($form)
     {
         if (array_key_exists("gfexcel_download_count", $form)) {
-            return (int)$form["gfexcel_download_count"];
+            return (int) $form["gfexcel_download_count"];
         }
 
         return 0;
@@ -170,7 +168,7 @@ class GFExcelAdmin extends GFAddOn
     {
         $value = GFExcelOutput::getSortField($form['id']);
         $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
-            $options .= "<option value=\"" . $field->id . "\"" . ((int)$value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
+            $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
             return $options;
         }, "<option value=\"date_created\">" . __("Date of entry", GFExcel::$slug) . "</option>");
 
@@ -200,6 +198,7 @@ class GFExcelAdmin extends GFAddOn
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
         }
+
         GFFormsModel::update_form_meta($form['id'], $form_meta);
     }
 }
