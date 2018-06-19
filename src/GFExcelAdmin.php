@@ -56,7 +56,7 @@ class GFExcelAdmin extends GFAddOn
             esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
-        printf('<p>%s:</p>',
+        printf('<h4 class="gaddon-section-title gf_settings_subgroup_title">%s:</h4>',
             esc_html__('Download url', GFExcel::$slug)
         );
 
