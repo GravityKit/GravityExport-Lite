@@ -37,9 +37,15 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
-        if ($this->is_postback()) {
+        if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
+        }
+
+        if ($this->is_postback()) {
+            if (!rgempty('regenerate_hash')) {
+                $form = GFExcel::setHash($form['id']);
+            }
         }
 
         printf(
@@ -60,9 +66,13 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
+        echo "<form method=\"post\">";
         printf(
             "<p>
-                <a class='button-primary' href='%s' target='_blank'>%s</a>
+                <input class='button' type='submit' name='regenerate_hash' value='" .
+            __('Regenerate url', GFExcel::$slug)
+            . "'/> 
+                <a class='button-primary' href=' % s' target='_blank'>%s</a>
                 " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
             $url,
@@ -71,13 +81,13 @@ class GFExcelAdmin extends GFAddOn
         );
         echo "<br/>";
 
-        echo "<form method=\"post\">";
+
         echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
-        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s",
+        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s <br/> %s",
             $this->select_sort_field_options($form),
-            $this->select_order_options($form)
+            $this->select_order_options($form),
+            $this->settings_save(['value' => __("Save settings", GFExcel::$slug)], false)
         );
-        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", GFExcel::$slug) . "</button></p>";
 
         echo "</form>";
     }
@@ -188,6 +198,7 @@ class GFExcelAdmin extends GFAddOn
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
         }
+
         GFFormsModel::update_form_meta($form['id'], $form_meta);
     }
 }
