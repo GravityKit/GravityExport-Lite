@@ -42,7 +42,7 @@ This section describes how to install the plugin and get it working.
 = I don't want the the metadata like ID, date, and IP in my file =
 
 No problem. You can use the `gfexcel_output_meta_info` or `gfexcel_output_meta_info_{form_id}` hooks to disable
-this feature.
+this feature. Or (since version 1.4.0) you can select individual fields you want to exclude on the settings page.
 
 Just add this to your `functions.php`:
 
@@ -169,8 +169,8 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
 * Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
 This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
-* Feature: Disable fields with checkboxes on the settings page. Can still be overwritten with the hooks.
-* Enhancement: Added error handling to provide better feedback and support. This way I / we can better help you if you have an issue.
+* Feature: Disable fields and metadata with checkboxes on the settings page. Can still be overwritten with the hooks.
+* Enhancement: Added error handling to provide better feedback and support.
 
 
 = 1.3.1 =

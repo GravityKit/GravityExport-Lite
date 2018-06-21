@@ -2,6 +2,7 @@
 
 namespace GFExcel\Renderer;
 
+use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -69,29 +70,10 @@ abstract class AbstractPHPExcelRenderer
         }
     }
 
-    /**
-     * @todo there is a function on PHPSpreadsheet that does the same
-     * @param $i
-     * @return string
-     */
-    protected function getLetter($i)
-    {
-        $letters = range("a", "z");
-        $count = count($letters);
-        if ($i < $count) {
-            return strtoupper($letters[$i]);
-        }
-
-        $rows = ($i + 1) / $count;
-        $remainder = $i - (floor($rows) * $count);
-
-        return strtoupper($letters[$rows - 1] . $letters[$remainder]);
-    }
-
     protected function autoSizeColumns(Worksheet $worksheet, $columns)
     {
-        for ($i = 0; $i < count($columns); $i++) {
-            $worksheet->getColumnDimension($this->getLetter($i))->setAutoSize(true);
+        for ($i = 1; $i <= count($columns); $i++) {
+            $worksheet->getColumnDimensionByColumn($i)->setAutoSize(true);
         }
         return $this;
     }
@@ -211,8 +193,9 @@ abstract class AbstractPHPExcelRenderer
         echo "<p>Error message: " . $exception->getMessage() . " </p>";
         echo "<p>If you need support for this, please contact me via the <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> on the wordpress plugin.</p>";
         echo "<p>Check if someone else had the same error, before posting a new support question.<br/>And when opening a new question, ";
-        echo "please use the error message (".$exception->getMessage().") as the title,<br/> and include the following details in your message:</>";
+        echo "please use the error message (" . $exception->getMessage() . ") as the title,<br/> and include the following details in your message:</p>";
         echo "<ul>";
+        echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
         echo "<li>PHP Version: " . PHP_VERSION;
         if (version_compare(PHP_VERSION, '5.6.1', '<')) {
             echo " (this version is too low, please update to at least PHP 5.6)";
@@ -222,6 +205,7 @@ abstract class AbstractPHPExcelRenderer
         echo "<li>Error message: " . $exception->getMessage() . "</li>";
         echo "<li>Error stack trace:<br/><br/>" . nl2br($exception->getTraceAsString()) . "</li>";
         echo "</ul>";
+        exit;
     }
 
 }
