@@ -16,6 +16,7 @@ class GFExcel
 
     const KEY_HASH = 'gfexcel_hash';
     const KEY_COUNT = 'gfexcel_download_count';
+    const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
 
     public function __construct()
     {
@@ -85,17 +86,17 @@ class GFExcel
             // so make a pretty new one
             return bin2hex(openssl_random_pseudo_bytes(32));
         }
-        // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maube insecure string
+        // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maybe insecure string
         return @GFCommon::encrypt($form_id);
     }
 
     public function add_permalink_rule()
     {
-        add_rewrite_rule("^" . GFExcel::$slug . "/(.+)/?$",
-            'index.php?gfexcel_action=' . GFExcel::$slug . '&gfexcel_hash=$matches[1]', 'top');
+        add_rewrite_rule("^" . static::$slug . "/(.+)/?$",
+            'index.php?gfexcel_action=' . static::$slug . '&gfexcel_hash=$matches[1]', 'top');
 
         $rules = get_option('rewrite_rules');
-        if (!isset($rules["^" . GFExcel::$slug . "/(.+)/?$"])) {
+        if (!isset($rules["^" . static::$slug . "/(.+)/?$"])) {
             flush_rewrite_rules();
         }
     }
@@ -181,6 +182,25 @@ class GFExcel
         $form_meta[static::KEY_COUNT] += 1;
 
         GFFormsModel::update_form_meta($form_id, $form_meta);
+    }
+
+    /**
+     * Retrieve the disabled field id's in array
+     *
+     * @param $form
+     * @return array
+     */
+    public static function get_disabled_fields($form)
+    {
+        $result = [];
+        if (array_key_exists(static::KEY_DISABLED_FIELDS, $form)) {
+            $result = explode(',', $form[static::KEY_DISABLED_FIELDS]);
+        }
+
+        return gf_apply_filters([
+            "gfexcel_disabled_fields",
+            $form['id'],
+        ], $result);
     }
 
 }
