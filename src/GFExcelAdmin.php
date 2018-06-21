@@ -113,7 +113,7 @@ class GFExcelAdmin extends GFAddOn
                 ],
 
                 [
-                    'label' => __('Select the meta-fields to disable', GFExcel::$slug),
+                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
                     'name' => 'gfexcel_disable_fields[]',
                     'type' => 'checkbox',
                     'horizontal' => true,

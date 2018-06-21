@@ -63,6 +63,9 @@ msgstr "Schakel velden uit"
 msgid "Select the fields to disable"
 msgstr "Selecteer velden om uit te schakelen"
 
+msgid "Select the meta fields to disable"
+msgstr "Selecteer meta-velden om uit te schakelen"
+
 msgid "Regenerate url"
 msgstr "Stel url opnieuw in"
 
