@@ -6,6 +6,7 @@ use GFAddOn;
 use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExport;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -69,6 +70,8 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
+        echo "<style>.gaddon-setting-inline { display:inline-block; line-height: 26px; }</style>";
+
         echo "<form method=\"post\">";
         printf(
             "<p>
@@ -86,6 +89,7 @@ class GFExcelAdmin extends GFAddOn
         echo "<br/>";
 
         $disabled_fields = GFExcel::get_disabled_fields($form);
+        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
 
         $this->single_section([
             'title' => __('Disable fields from export', GFExcel::$slug),
@@ -97,6 +101,24 @@ class GFExcelAdmin extends GFAddOn
                     'horizontal' => true,
 
                     'choices' => array_reduce($form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+
+                [
+                    'label' => __('Select the meta-fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
                         $fields[] = [
                             'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
                             'value' => (int) in_array($field->id, $disabled_fields),
