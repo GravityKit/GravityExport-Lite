@@ -88,59 +88,11 @@ class GFExcelAdmin extends GFAddOn
         );
         echo "<br/>";
 
-        $disabled_fields = GFExcel::get_disabled_fields($form);
-        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
+        $this->generalSettings($form);
 
-        $this->single_section([
-            'title' => __('Disable fields from export', GFExcel::$slug),
-            'fields' => [
-                [
-                    'label' => __('Select the fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
+        $this->disableFields($form);
 
-                    'choices' => array_reduce($form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-
-                [
-                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
-
-                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-            ],
-        ]);
-
-
-        echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
-        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s <br/> %s",
-            $this->select_sort_field_options($form),
-            $this->select_order_options($form),
-            $this->settings_save(['value' => __("Save settings", GFExcel::$slug)], false)
-        );
-
-
+        $this->settings_save(['value' => __("Save settings", GFExcel::$slug)]);
         echo "</form>";
     }
 
@@ -218,24 +170,38 @@ class GFExcelAdmin extends GFAddOn
 
     private function select_sort_field_options($form)
     {
-        $value = GFExcelOutput::getSortField($form['id']);
-        $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
-            $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
-            return $options;
-        }, "<option value=\"date_created\">" . __("Date of entry", GFExcel::$slug) . "</option>");
+        $fields = array_merge([
+            [
+                'value' => 'date_created',
+                'label' => __("Date of entry", GFExcel::$slug),
+            ]
+        ], array_map(function ($field) {
+            return [
+                'value' => $field->id,
+                'label' => $field->label,
+            ];
+        }, $form['fields']));
 
-        return "<select name=\"gfexcel_output_sort_field\">" . $options . "</select>";
+        $this->settings_select([
+            'name' => 'gfexcel_output_sort_field',
+            'choices' => $fields,
+            'default_value' => GFExcelOutput::getSortField($form['id']),
+        ]);
     }
 
     private function select_order_options($form)
     {
-        $value = GFExcelOutput::getSortOrder($form['id']);
-        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending",
-                GFExcel::$slug) . " </option >
-                    <option value = \"DESC\"" . ($value === "DESC" ? " selected" : "") . ">" . __("Descending",
-                GFExcel::$slug) . "</option>";
-
-        return "<select name=\"gfexcel_output_sort_order\">" . $options . "</select>";
+        $this->settings_select([
+            'name' => 'gfexcel_output_sort_order',
+            'choices' => [[
+                'value' => 'ASC',
+                'label' => __("Acending", GFExcel::$slug)
+            ], [
+                'value' => 'DESC',
+                'label' => __("Descending", GFExcel::$slug)
+            ]],
+            'default_value' => GFExcelOutput::getSortOrder($form['id']),
+        ]);
     }
 
     private function saveSettings($form)
@@ -263,5 +229,82 @@ class GFExcelAdmin extends GFAddOn
         GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug), false);
     }
 
+    /**
+     * Add settings for disabling fields
+     * @param $form
+     */
+    private function disableFields($form)
+    {
+        $disabled_fields = GFExcel::get_disabled_fields($form);
+        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
 
+        $this->single_section([
+            'title' => __('Disable fields from export', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Select the fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce($form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+
+                [
+                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+            ],
+        ]);
+
+    }
+
+    private function generalSettings($form)
+    {
+        $this->single_section([
+            'title' => __('General settings', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Enable notes', GFExcel::$slug),
+                    'type' => 'checkbox',
+                    'choices' => [[
+                        'name' => GFExcel::KEY_ENABLED_NOTES,
+                        'label' => __('Yes, enable the notes for every entry', GFExcel::$slug),
+                        'value' => '1',
+                        'default_value' => (int) $form[GFExcel::KEY_ENABLED_NOTES],
+                    ]],
+                ],
+                [
+                    'label' => __("Order by", GFExcel::$slug),
+                    'callback' => function () use ($form) {
+                        $this->select_sort_field_options($form);
+                        echo ' ';
+                        $this->select_order_options($form);
+                    }
+                ]
+            ],
+        ]);
+    }
 }

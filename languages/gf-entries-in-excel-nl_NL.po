@@ -77,3 +77,12 @@ msgstr "De download-link is opnieuw ingesteld."
 
 msgid "The settings have been saved."
 msgstr "De instellingen zijn opgeslagen."
+
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+msgid "Enable notes"
+msgstr "Notities toevoegen"
+
+msgid "Yes, enable the notes for every entry"
+msgstr "Ja, voeg de notities toe aan elke inzending"

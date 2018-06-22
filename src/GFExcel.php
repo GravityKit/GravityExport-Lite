@@ -17,6 +17,7 @@ class GFExcel
     const KEY_HASH = 'gfexcel_hash';
     const KEY_COUNT = 'gfexcel_download_count';
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+    const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
 
     public function __construct()
     {
