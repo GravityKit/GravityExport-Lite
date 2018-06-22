@@ -45,11 +45,8 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
 
     protected function getFileName()
     {
-        $filename = sprintf("gfexcel-%d-%s-%s.xls",
-            $this->form['id'],
-            sanitize_title($this->form['title']),
-            date("Ymd")
-        );
+
+        $filename = GFExcel::getFilename($this->form['id']);
 
         return gf_apply_filters(
             array(
@@ -57,7 +54,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
                 $this->form['id'],
             ),
             $filename, $this->form
-        );
+        ).".xls";
     }
 
     private function setTitle($title)

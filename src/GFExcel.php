@@ -18,6 +18,7 @@ class GFExcel
     const KEY_COUNT = 'gfexcel_download_count';
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
     const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+    const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
 
     public function __construct()
     {
@@ -89,6 +90,25 @@ class GFExcel
         }
         // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maybe insecure string
         return @GFCommon::encrypt($form_id);
+    }
+
+    /**
+     * Return the custom filename if it has one
+     * @param $form_id
+     * @return bool|string
+     */
+    public static function getFilename($form_id)
+    {
+        $form = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
+            return sprintf("gfexcel-%d-%s-%s",
+                $form['id'],
+                sanitize_title($form['title']),
+                date("Ymd")
+            );
+        }
+
+        return $form[static::KEY_CUSTOM_FILENAME];
     }
 
     public function add_permalink_rule()

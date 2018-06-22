@@ -93,8 +93,7 @@ But you can also make your own field-renderer, like this:
 
 = I don't really like the downloaded file name! =
 
-By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using
-the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
+By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using the settings page, or by using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
 
 Also you can update title, subject and description metadata of the document by using
 `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and

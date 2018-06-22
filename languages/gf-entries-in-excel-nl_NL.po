@@ -86,3 +86,9 @@ msgstr "Notities toevoegen"
 
 msgid "Yes, enable the notes for every entry"
 msgstr "Ja, voeg de notities toe aan elke inzending"
+
+msgid "Custom filename"
+msgstr "Aangepaste bestandsnaam"
+
+msgid "Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default."
+msgstr "Alleen letters, nummers en streepjes zijn toegestaan. Bij leeg veld wordt de standaard waarde gebruikt."

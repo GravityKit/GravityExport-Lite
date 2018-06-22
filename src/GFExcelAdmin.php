@@ -180,7 +180,7 @@ class GFExcelAdmin extends GFAddOn
                 'value' => $field->id,
                 'label' => $field->label,
             ];
-        }, $form['fields']));
+        }, (array) $form['fields']));
 
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
@@ -221,7 +221,10 @@ class GFExcelAdmin extends GFAddOn
             if ($key === GFExcel::KEY_DISABLED_FIELDS) {
                 $value = implode(',', array_keys(array_filter($value)));
             }
-
+            if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
+                $value = preg_replace('/\.xlsx?$/is', '', $value);
+                $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
+            }
             $form_meta[$key] = $value;
         }
 
@@ -247,7 +250,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'checkbox',
                     'horizontal' => true,
 
-                    'choices' => array_reduce($form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                    'choices' => array_reduce((array) $form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
                         $fields[] = [
                             'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
                             'value' => (int) in_array($field->id, $disabled_fields),
@@ -281,6 +284,19 @@ class GFExcelAdmin extends GFAddOn
 
     }
 
+    /**
+     * Remove filename so it returns the newly formatted filename
+     *
+     * @return array
+     */
+    public function get_current_settings()
+    {
+        $settings = parent::get_current_settings();
+        unset($settings[GFExcel::KEY_CUSTOM_FILENAME]);
+
+        return $settings;
+    }
+
     private function generalSettings($form)
     {
         $this->single_section([
@@ -303,7 +319,15 @@ class GFExcelAdmin extends GFAddOn
                         echo ' ';
                         $this->select_order_options($form);
                     }
-                ]
+                ],
+                [
+                    'label' => __('Custom filename', GFExcel::$slug),
+                    'type' => 'text',
+                    'name' => GFExcel::KEY_CUSTOM_FILENAME,
+                    'value' => $form[GFExcel::KEY_CUSTOM_FILENAME],
+                    'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
+                ],
+
             ],
         ]);
     }
