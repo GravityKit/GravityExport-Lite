@@ -169,6 +169,8 @@ As a celebration gift I've added some new settings, making the plugin more user-
 * Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
 This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
 * Feature: Disable fields and metadata with checkboxes on the settings page. Can still be overwritten with the hooks.
+* Feature: Enable notes on the settings page. Can still be overwritten with the hook.
+* Feature: Added setting to set the custom filename. Can also still be overwritten with the hook.
 * Enhancement: Added error handling to provide better feedback and support.
 
 

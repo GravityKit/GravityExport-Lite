@@ -45,7 +45,6 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
 
     protected function getFileName()
     {
-
         $filename = GFExcel::getFilename($this->form['id']);
 
         return gf_apply_filters(
