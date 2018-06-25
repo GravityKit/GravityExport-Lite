@@ -17,6 +17,8 @@ class GFExcel
     const KEY_HASH = 'gfexcel_hash';
     const KEY_COUNT = 'gfexcel_download_count';
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+    const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+    const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
 
     public function __construct()
     {
@@ -90,6 +92,25 @@ class GFExcel
         return @GFCommon::encrypt($form_id);
     }
 
+    /**
+     * Return the custom filename if it has one
+     * @param $form_id
+     * @return bool|string
+     */
+    public static function getFilename($form_id)
+    {
+        $form = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
+            return sprintf("gfexcel-%d-%s-%s",
+                $form['id'],
+                sanitize_title($form['title']),
+                date("Ymd")
+            );
+        }
+
+        return $form[static::KEY_CUSTOM_FILENAME];
+    }
+
     public function add_permalink_rule()
     {
         add_rewrite_rule("^" . static::$slug . "/(.+)/?$",
@@ -138,8 +159,8 @@ class GFExcel
         global $wpdb;
 
         $table_name = GFFormsModel::get_meta_table_name();
-        $wild = '%';
-        $like = $wild . $wpdb->esc_like(json_encode($hash)) . $wild;
+        $wildcard = '%';
+        $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
         if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
             $result = @GFCommon::decrypt($hash);

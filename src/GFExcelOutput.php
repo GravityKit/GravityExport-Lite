@@ -34,6 +34,28 @@ class GFExcelOutput
     }
 
     /**
+     * Whether or not to show notes based on setting or filter
+     *
+     * @param $form_id
+     * @return bool
+     */
+    public static function showNotes($form_id)
+    {
+        $value = false;
+
+        $form = \GFAPI::get_form($form_id);
+        if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
+            $value = $form[GFExcel::KEY_ENABLED_NOTES];
+        }
+
+        return (bool) gf_apply_filters(
+            array(
+                "gfexcel_field_notes_enabled",
+                $form_id,
+            ), $value);
+    }
+
+    /**
      * Get field to sort the data by
      * @param $form_id
      * @return mixed
@@ -43,8 +65,8 @@ class GFExcelOutput
         $value = 'date_created';
 
         $form = \GFAPI::get_form($form_id);
-        if (array_key_exists("gfexcel_output_sort_field", $form)) {
-            $value = $form["gfexcel_output_sort_field"];
+        if (array_key_exists('gfexcel_output_sort_field', $form)) {
+            $value = $form['gfexcel_output_sort_field'];
         }
 
         return gf_apply_filters(array('gfexcel_output_sort_field', $form['id']), $value);
@@ -63,9 +85,10 @@ class GFExcelOutput
         if (array_key_exists("gfexcel_output_sort_order", $form)) {
             $value = $form["gfexcel_output_sort_order"];
         }
+
         $value = gf_apply_filters(array('gfexcel_output_sort_order', $form['id']), $value);
         //force either ASC or DESC
-        return stripos($value, "ASC") !== false ? "ASC" : "DESC";
+        return $value === "ASC" ? "ASC" : "DESC";
     }
 
     /**
@@ -83,9 +106,11 @@ class GFExcelOutput
                 new GF_Field([
                     'formId' => $this->form_id,
                     'type' => 'notes',
+                    'id' => 'notes',
                     'label' => esc_html__('Notes', 'gravityforms'),
                 ])
             ]);
+
 
             if ($this->useMetaData()) {
                 $fields_map = array('first' => array(), 'last' => array());
@@ -97,6 +122,7 @@ class GFExcelOutput
 
             $disabled_fields = GFExcel::get_disabled_fields($form);
             $this->fields = array_filter($fields, function (GF_Field $field) use ($disabled_fields) {
+
                 return !gf_apply_filters(
                     array(
                         "gfexcel_field_disable",

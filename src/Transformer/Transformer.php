@@ -20,7 +20,7 @@ class Transformer implements TransformerInterface
     );
 
     /**
-     * Transform GF_Field instance to a GFExel Field (FieldInterface)
+     * Transform GF_Field instance to a GFExcel Field (FieldInterface)
      * @param GF_Field $field
      * @return FieldInterface
      */

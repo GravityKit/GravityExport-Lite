@@ -93,8 +93,7 @@ But you can also make your own field-renderer, like this:
 
 = I don't really like the downloaded file name! =
 
-By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using
-the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
+By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using the settings page, or by using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
 
 Also you can update title, subject and description metadata of the document by using
 `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and
@@ -164,14 +163,15 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 
 == Changelog ==
 
-= 1.4.0 (WIP) =
+= 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
 * Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
 This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
 * Feature: Disable fields and metadata with checkboxes on the settings page. Can still be overwritten with the hooks.
-* Enhancement: Added error handling to provide better feedback and support.
-
+* Feature: Enable notes on the settings page. Can still be overwritten with the hook.
+* Feature: Added setting to set the custom filename. Can also still be overwritten with the hook.
+* Feature: Added error handling to provide better feedback and support.
 
 = 1.3.1 =
 * Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.

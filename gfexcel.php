@@ -29,7 +29,7 @@ add_action("plugins_loaded", function () {
 
     $autoload = __DIR__ .'/vendor/autoload.php';
     if(file_exists($autoload)) {
-        require $autoload;
+        require_once($autoload);
     }
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
