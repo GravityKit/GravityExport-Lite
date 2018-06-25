@@ -159,8 +159,8 @@ class GFExcel
         global $wpdb;
 
         $table_name = GFFormsModel::get_meta_table_name();
-        $wild = '%';
-        $like = $wild . $wpdb->esc_like(json_encode($hash)) . $wild;
+        $wildcard = '%';
+        $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
         if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
             $result = @GFCommon::decrypt($hash);

@@ -163,7 +163,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 
 == Changelog ==
 
-= 1.4.0 (WIP) =
+= 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
 * Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
@@ -171,8 +171,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: Disable fields and metadata with checkboxes on the settings page. Can still be overwritten with the hooks.
 * Feature: Enable notes on the settings page. Can still be overwritten with the hook.
 * Feature: Added setting to set the custom filename. Can also still be overwritten with the hook.
-* Enhancement: Added error handling to provide better feedback and support.
-
+* Feature: Added error handling to provide better feedback and support.
 
 = 1.3.1 =
 * Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
