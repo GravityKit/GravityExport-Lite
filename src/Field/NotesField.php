@@ -4,6 +4,7 @@ namespace GFExcel\Field;
 
 use GFCommon;
 use RGFormsModel;
+use GFExcel\GFExcelOutput;
 
 /**
  * Class SectionField
@@ -57,11 +58,6 @@ class NotesField extends BaseField
 
     private function showNotesAsColumn()
     {
-        return gf_apply_filters(
-            array(
-                "gfexcel_field_notes_enabled",
-                $this->field->formId
-            ),
-            false);
+        return GFExcelOutput::showNotes($this->field->formId);
     }
 }

@@ -11,8 +11,14 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.3.0";
+    public static $version = "1.4.0";
     public static $slug = "gf-entries-in-excel";
+
+    const KEY_HASH = 'gfexcel_hash';
+    const KEY_COUNT = 'gfexcel_download_count';
+    const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+    const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+    const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
 
     public function __construct()
     {
@@ -49,18 +55,69 @@ class GFExcel
             return false;
         }
 
-        $hash = @GFCommon::encrypt($form_id);
+        $meta = GFFormsModel::get_form_meta($form_id);
 
-        return $hash;
+        if (!array_key_exists(static::KEY_HASH, $meta)) {
+            $meta = static::setHash($form_id);
+        }
+
+        return $meta[static::KEY_HASH];
+    }
+
+    /**
+     * Save new hash to the form
+     * @return array metadata form
+     */
+    public static function setHash($form_id)
+    {
+        $meta = GFFormsModel::get_form_meta($form_id);
+
+        $meta[static::KEY_HASH] = static::generateHash($form_id);
+        GFFormsModel::update_form_meta($form_id, $meta);
+
+        return $meta;
+    }
+
+    private static function generateHash($form_id)
+    {
+        $meta = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists(static::KEY_COUNT, $meta) ||
+            array_key_exists(static::KEY_HASH, $meta)
+        ) {
+            //never downloaded before, or recreating hash
+            // so make a pretty new one
+            return bin2hex(openssl_random_pseudo_bytes(32));
+        }
+        // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maybe insecure string
+        return @GFCommon::encrypt($form_id);
+    }
+
+    /**
+     * Return the custom filename if it has one
+     * @param $form_id
+     * @return bool|string
+     */
+    public static function getFilename($form_id)
+    {
+        $form = GFFormsModel::get_form_meta($form_id);
+        if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
+            return sprintf("gfexcel-%d-%s-%s",
+                $form['id'],
+                sanitize_title($form['title']),
+                date("Ymd")
+            );
+        }
+
+        return $form[static::KEY_CUSTOM_FILENAME];
     }
 
     public function add_permalink_rule()
     {
-        add_rewrite_rule("^" . GFExcel::$slug . "/(.+)/?$",
-            'index.php?gfexcel_action=' . GFExcel::$slug . '&gfexcel_hash=$matches[1]', 'top');
+        add_rewrite_rule("^" . static::$slug . "/(.+)/?$",
+            'index.php?gfexcel_action=' . static::$slug . '&gfexcel_hash=$matches[1]', 'top');
 
         $rules = get_option('rewrite_rules');
-        if (!isset($rules["^" . GFExcel::$slug . "/(.+)/?$"])) {
+        if (!isset($rules["^" . static::$slug . "/(.+)/?$"])) {
             flush_rewrite_rules();
         }
     }
@@ -93,15 +150,44 @@ class GFExcel
         return $vars;
     }
 
-
+    /**
+     * @param $hash
+     * @return bool|int
+     */
     private function getFormIdByHash($hash)
     {
-        $result = @GFCommon::decrypt($hash);
-        if (is_numeric($result)) {
-            return $result;
+        global $wpdb;
+
+        $table_name = GFFormsModel::get_meta_table_name();
+        $wildcard = '%';
+        $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
+
+        if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
+            $result = @GFCommon::decrypt($hash);
+            if (!is_numeric($result)) {
+                return false;
+            }
+            if (!$form = GFFormsModel::get_form_meta($result)) {
+                //this form does not exist, so nope
+                return false;
+            }
+            if (array_key_exists(GFExcel::KEY_HASH, $form)) {
+                //this form already has a hash. So if you knew the hash, you wouldn't be here. Shame!
+                return false;
+            }
+            // Fallback to get the form id old fashion way. This should stop working asap.
+            return (int) $result;
         }
 
-        return false;
+
+        // possible match on hash, so check against found form.
+        if (GFExcel::getHash($form_row['form_id']) !== $hash) {
+            //hash doesn't match, so it's probably a partial match
+            return false;
+        }
+
+        //only now are we home save.
+        return (int) $form_row['form_id'];
     }
 
     /**
@@ -110,14 +196,32 @@ class GFExcel
      */
     private function updateCounter($form_id)
     {
-        $key = 'gfexcel_download_count';
         $form_meta = GFFormsModel::get_form_meta($form_id);
-        if (!array_key_exists($key, $form_meta)) {
-            $form_meta[$key] = 0;
+        if (!array_key_exists(static::KEY_COUNT, $form_meta)) {
+            $form_meta[static::KEY_COUNT] = 0;
         }
-        $form_meta[$key] += 1;
+        $form_meta[static::KEY_COUNT] += 1;
 
         GFFormsModel::update_form_meta($form_id, $form_meta);
+    }
+
+    /**
+     * Retrieve the disabled field id's in array
+     *
+     * @param $form
+     * @return array
+     */
+    public static function get_disabled_fields($form)
+    {
+        $result = [];
+        if (array_key_exists(static::KEY_DISABLED_FIELDS, $form)) {
+            $result = explode(',', $form[static::KEY_DISABLED_FIELDS]);
+        }
+
+        return gf_apply_filters([
+            "gfexcel_disabled_fields",
+            $form['id'],
+        ], $result);
     }
 
 }

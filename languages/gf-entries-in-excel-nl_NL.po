@@ -10,7 +10,7 @@ msgstr ""
 "charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: nl_NL\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.8\n"
 
 msgid "Download url"
 msgstr "Download pad"
@@ -56,3 +56,39 @@ msgstr "Datum"
 
 msgid "IP address"
 msgstr "IP-adres"
+
+msgid "Disable fields from export"
+msgstr "Schakel velden uit"
+
+msgid "Select the fields to disable"
+msgstr "Selecteer velden om uit te schakelen"
+
+msgid "Select the meta fields to disable"
+msgstr "Selecteer meta-velden om uit te schakelen"
+
+msgid "Regenerate url"
+msgstr "Stel url opnieuw in"
+
+msgid "This changed the download url permanently!"
+msgstr "Hiermee verandert u de download-link permanent!"
+
+msgid "The download url has been regenerated."
+msgstr "De download-link is opnieuw ingesteld."
+
+msgid "The settings have been saved."
+msgstr "De instellingen zijn opgeslagen."
+
+msgid "General settings"
+msgstr "Algemene instellingen"
+
+msgid "Enable notes"
+msgstr "Notities toevoegen"
+
+msgid "Yes, enable the notes for every entry"
+msgstr "Ja, voeg de notities toe aan elke inzending"
+
+msgid "Custom filename"
+msgstr "Aangepaste bestandsnaam"
+
+msgid "Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default."
+msgstr "Alleen letters, nummers en streepjes zijn toegestaan. Bij leeg veld wordt de standaard waarde gebruikt."

@@ -6,6 +6,7 @@ use GFAddOn;
 use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExport;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -37,17 +38,26 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
-        if ($this->is_postback()) {
+
+        if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
         }
 
+        if ($this->is_postback()) {
+            if (!rgempty('regenerate_hash')) {
+                $form = GFExcel::setHash($form['id']);
+                GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+            }
+        }
+
+        GFCommon::display_admin_message();
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
-        printf('<p>%s:</p>',
+        printf('<h4 class="gaddon-section-title gf_settings_subgroup_title">%s:</h4>',
             esc_html__('Download url', GFExcel::$slug)
         );
 
@@ -60,9 +70,16 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
+        echo "<style>.gaddon-setting-inline { display:inline-block; line-height: 26px; }</style>";
+
+        echo "<form method=\"post\">";
         printf(
             "<p>
-                <a class='button-primary' href='%s' target='_blank'>%s</a>
+                <input 
+                onclick=\"return confirm('" . __('This changed the download url permanently!', GFExcel::$slug) . "');\" 
+                class='button' type='submit' name='regenerate_hash' 
+                value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
+                <a class='button-primary' href=' % s' target='_blank'>%s</a>
                 " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
             $url,
@@ -71,14 +88,11 @@ class GFExcelAdmin extends GFAddOn
         );
         echo "<br/>";
 
-        echo "<form method=\"post\">";
-        echo "<h4 class='gf_settings_subgroup_title'>" . __("Settings", GFExcel::$slug) . "</h4>";
-        printf("<p>" . __("Order by", GFExcel::$slug) . ": %s %s",
-            $this->select_sort_field_options($form),
-            $this->select_order_options($form)
-        );
-        echo "<p><button type=\"submit\" class=\"button\">" . __("Save settings", GFExcel::$slug) . "</button></p>";
+        $this->generalSettings($form);
 
+        $this->disableFields($form);
+
+        $this->settings_save(['value' => __("Save settings", GFExcel::$slug)]);
         echo "</form>";
     }
 
@@ -156,24 +170,38 @@ class GFExcelAdmin extends GFAddOn
 
     private function select_sort_field_options($form)
     {
-        $value = GFExcelOutput::getSortField($form['id']);
-        $options = array_reduce($form["fields"], function ($options, \GF_Field $field) use ($value) {
-            $options .= "<option value=\"" . $field->id . "\"" . ((int) $value === $field->id ? " selected" : "") . ">" . $field->label . "</option>";
-            return $options;
-        }, "<option value=\"date_created\">" . __("Date of entry", GFExcel::$slug) . "</option>");
+        $fields = array_merge([
+            [
+                'value' => 'date_created',
+                'label' => __("Date of entry", GFExcel::$slug),
+            ]
+        ], array_map(function ($field) {
+            return [
+                'value' => $field->id,
+                'label' => $field->label,
+            ];
+        }, (array) $form['fields']));
 
-        return "<select name=\"gfexcel_output_sort_field\">" . $options . "</select>";
+        $this->settings_select([
+            'name' => 'gfexcel_output_sort_field',
+            'choices' => $fields,
+            'default_value' => GFExcelOutput::getSortField($form['id']),
+        ]);
     }
 
     private function select_order_options($form)
     {
-        $value = GFExcelOutput::getSortOrder($form['id']);
-        $options = "<option value=\"ASC\"" . ($value === "ASC" ? " selected" : "") . ">" . __("Acending",
-                GFExcel::$slug) . " </option >
-                    <option value = \"DESC\"" . ($value === "DESC" ? " selected" : "") . ">" . __("Descending",
-                GFExcel::$slug) . "</option>";
-
-        return "<select name=\"gfexcel_output_sort_order\">" . $options . "</select>";
+        $this->settings_select([
+            'name' => 'gfexcel_output_sort_order',
+            'choices' => [[
+                'value' => 'ASC',
+                'label' => __("Acending", GFExcel::$slug)
+            ], [
+                'value' => 'DESC',
+                'label' => __("Descending", GFExcel::$slug)
+            ]],
+            'default_value' => GFExcelOutput::getSortOrder($form['id']),
+        ]);
     }
 
     private function saveSettings($form)
@@ -188,6 +216,119 @@ class GFExcelAdmin extends GFAddOn
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
         }
+
+        foreach ($this->get_posted_settings() as $key => $value) {
+            if ($key === GFExcel::KEY_DISABLED_FIELDS) {
+                $value = implode(',', array_keys(array_filter($value)));
+            }
+            if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
+                $value = preg_replace('/\.xlsx?$/is', '', $value);
+                $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
+            }
+            $form_meta[$key] = $value;
+        }
+
         GFFormsModel::update_form_meta($form['id'], $form_meta);
+        GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug), false);
+    }
+
+    /**
+     * Add settings for disabling fields
+     * @param $form
+     */
+    private function disableFields($form)
+    {
+        $disabled_fields = GFExcel::get_disabled_fields($form);
+        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
+
+        $this->single_section([
+            'title' => __('Disable fields from export', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Select the fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce((array) $form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+
+                [
+                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disable_fields[]',
+                    'type' => 'checkbox',
+                    'horizontal' => true,
+
+                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
+                        $fields[] = [
+                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
+                            'value' => (int) in_array($field->id, $disabled_fields),
+                            'default_value' => (int) in_array($field->id, $disabled_fields),
+                            'label' => $field->label,
+                        ];
+
+                        return $fields;
+                    }, []),
+                ],
+            ],
+        ]);
+
+    }
+
+    /**
+     * Remove filename so it returns the newly formatted filename
+     *
+     * @return array
+     */
+    public function get_current_settings()
+    {
+        $settings = parent::get_current_settings();
+        unset($settings[GFExcel::KEY_CUSTOM_FILENAME]);
+
+        return $settings;
+    }
+
+    private function generalSettings($form)
+    {
+        $this->single_section([
+            'title' => __('General settings', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Enable notes', GFExcel::$slug),
+                    'type' => 'checkbox',
+                    'choices' => [[
+                        'name' => GFExcel::KEY_ENABLED_NOTES,
+                        'label' => __('Yes, enable the notes for every entry', GFExcel::$slug),
+                        'value' => '1',
+                        'default_value' => (int) $form[GFExcel::KEY_ENABLED_NOTES],
+                    ]],
+                ],
+                [
+                    'label' => __("Order by", GFExcel::$slug),
+                    'callback' => function () use ($form) {
+                        $this->select_sort_field_options($form);
+                        echo ' ';
+                        $this->select_order_options($form);
+                    }
+                ],
+                [
+                    'label' => __('Custom filename', GFExcel::$slug),
+                    'type' => 'text',
+                    'name' => GFExcel::KEY_CUSTOM_FILENAME,
+                    'value' => $form[GFExcel::KEY_CUSTOM_FILENAME],
+                    'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
+                ],
+
+            ],
+        ]);
     }
 }

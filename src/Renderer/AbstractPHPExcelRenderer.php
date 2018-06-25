@@ -2,13 +2,14 @@
 
 namespace GFExcel\Renderer;
 
+use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use Exception;
 
 abstract class AbstractPHPExcelRenderer
 {
@@ -23,48 +24,56 @@ abstract class AbstractPHPExcelRenderer
 
     public function renderOutput()
     {
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
-        header('Cache-Control: max-age=1');
+        register_shutdown_function([$this, "fatal_handler"]);
 
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-
+        $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
             $objWriter = IOFactory::createWriter($this->spreadsheet, 'Xlsx');
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
+            header('Cache-Control: max-age=1');
+
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
+
             $objWriter->save('php://output');
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
+            $exception = $e;
+        } catch (\Exception $e) {
+            //in case of php5.x
+            $exception = $e;
+        }
+
+        if ($exception) {
+            header('Content-Type: text/html');
+            header_remove('Content-Disposition');
+            $this->handleException($exception);
         }
 
         exit; // stop rest
     }
 
     /**
-     * @todo there is a function on PHPSpreadsheet that does the same
-     * @param $i
-     * @return string
+     * Handle fatal error during execution
+     * @throws \Exception
      */
-    protected function getLetter($i)
+    public function fatal_handler()
     {
-        $letters = range("a", "z");
-        $count = count($letters);
-        if ($i < $count) {
-            return strtoupper($letters[$i]);
+        $error = error_get_last();
+        if ($error['type'] === E_ERROR) {
+            $exception = new Exception($error['message']);
+            $this->handleException($exception);
         }
-
-        $rows = ($i + 1) / $count;
-        $remainder = $i - (floor($rows) * $count);
-
-        return strtoupper($letters[$rows - 1] . $letters[$remainder]);
     }
 
     protected function autoSizeColumns(Worksheet $worksheet, $columns)
     {
-        for ($i = 0; $i < count($columns); $i++) {
-            $worksheet->getColumnDimension($this->getLetter($i))->setAutoSize(true);
+        for ($i = 1; $i <= count($columns); $i++) {
+            $worksheet->getColumnDimensionByColumn($i)->setAutoSize(true);
         }
         return $this;
     }
@@ -85,6 +94,7 @@ abstract class AbstractPHPExcelRenderer
                 try {
                     $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
                 } catch (Exception $e) {
+                    $this->handleException($e);
                 }
             }
         }
@@ -170,6 +180,32 @@ abstract class AbstractPHPExcelRenderer
             return false;
         }
 
+    }
+
+    /**
+     * @param \Throwable|Exception $exception
+     */
+    private function handleException($exception)
+    {
+        global $wp_version;
+
+        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunantly something broke</strong></p>";
+        echo "<p>Error message: " . $exception->getMessage() . " </p>";
+        echo "<p>If you need support for this, please contact me via the <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> on the wordpress plugin.</p>";
+        echo "<p>Check if someone else had the same error, before posting a new support question.<br/>And when opening a new question, ";
+        echo "please use the error message (" . $exception->getMessage() . ") as the title,<br/> and include the following details in your message:</p>";
+        echo "<ul>";
+        echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
+        echo "<li>PHP Version: " . PHP_VERSION;
+        if (version_compare(PHP_VERSION, '5.6.1', '<')) {
+            echo " (this version is too low, please update to at least PHP 5.6)";
+        }
+        echo "</li>";
+        echo "<li>Wordpress Version: " . $wp_version . "</li>";
+        echo "<li>Error message: " . $exception->getMessage() . "</li>";
+        echo "<li>Error stack trace:<br/><br/>" . nl2br($exception->getTraceAsString()) . "</li>";
+        echo "</ul>";
+        exit;
     }
 
 }

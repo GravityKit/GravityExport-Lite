@@ -7,7 +7,8 @@
  * License:         GPL2
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gf-entries-in-excel
- * Version:         1.3.1
+ * Domain Path:     /languages
+ * Version:         1.4.0
  *
  * @package         GFExcel
  */
@@ -28,7 +29,7 @@ add_action("plugins_loaded", function () {
 
     $autoload = __DIR__ .'/vendor/autoload.php';
     if(file_exists($autoload)) {
-        require $autoload;
+        require_once($autoload);
     }
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
