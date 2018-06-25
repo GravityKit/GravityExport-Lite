@@ -303,16 +303,19 @@ class GFExcelAdmin extends GFAddOn
             'title' => __('General settings', GFExcel::$slug),
             'fields' => [
                 [
+                    'name' => 'enable_notes',
                     'label' => __('Enable notes', GFExcel::$slug),
                     'type' => 'checkbox',
                     'choices' => [[
                         'name' => GFExcel::KEY_ENABLED_NOTES,
                         'label' => __('Yes, enable the notes for every entry', GFExcel::$slug),
                         'value' => '1',
-                        'default_value' => (int) $form[GFExcel::KEY_ENABLED_NOTES],
+                        'default_value' => (int) @$form[GFExcel::KEY_ENABLED_NOTES],
                     ]],
                 ],
                 [
+                    'name' => 'order_by',
+                    'type' => 'callback',
                     'label' => __("Order by", GFExcel::$slug),
                     'callback' => function () use ($form) {
                         $this->select_sort_field_options($form);
@@ -324,7 +327,7 @@ class GFExcelAdmin extends GFAddOn
                     'label' => __('Custom filename', GFExcel::$slug),
                     'type' => 'text',
                     'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                    'value' => $form[GFExcel::KEY_CUSTOM_FILENAME],
+                    'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                     'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
                 ],
 
