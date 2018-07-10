@@ -267,7 +267,6 @@ class GFExcelAdmin extends GFAddOn
                     'name' => 'gfexcel_disable_fields[]',
                     'type' => 'checkbox',
                     'horizontal' => true,
-
                     'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
                         $fields[] = [
                             'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
@@ -330,6 +329,22 @@ class GFExcelAdmin extends GFAddOn
                     'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                     'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
                 ],
+                [
+                    'label' => __('File extension', GFExcel::$slug),
+                    'type' => 'select',
+                    'name' => GFExcel::KEY_FILE_EXTENSION,
+                    'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
+                    'choices' => [[
+                        'name' => GFExcel::KEY_FILE_EXTENSION,
+                        'label' => '.xlsx',
+                        'value' => 'xlsx',
+                    ], [
+                        'name' => GFExcel::KEY_FILE_EXTENSION,
+                        'label' => '.xls',
+                        'value' => 'xls',
+                    ]],
+                    'description' => __('For older versions of Excel use .xls', GFExcel::$slug),
+                ]
 
             ],
         ]);

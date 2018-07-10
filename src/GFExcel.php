@@ -11,7 +11,7 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Results in Excel';
     public static $shortname = 'Results in Excel';
-    public static $version = "1.4.0";
+    public static $version = "1.4.1";
     public static $slug = "gf-entries-in-excel";
 
     const KEY_HASH = 'gfexcel_hash';
@@ -19,6 +19,7 @@ class GFExcel
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
     const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
     const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
+    const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
 
     public function __construct()
     {
@@ -109,6 +110,23 @@ class GFExcel
         }
 
         return $form[static::KEY_CUSTOM_FILENAME];
+    }
+
+    /**
+     * Return the file extension to use for renderer and output
+     *
+     * @param $form_id
+     * @return string
+     */
+    public static function getFileExtension($form_id)
+    {
+        $form = GFFormsModel::get_form_meta($form_id);
+
+        if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
+            return 'xlsx'; //default
+        }
+
+        return $form[static::KEY_FILE_EXTENSION];
     }
 
     public function add_permalink_rule()

@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,9 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.4.1 (WIP) =
+* Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
 
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!

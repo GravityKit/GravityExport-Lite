@@ -12,6 +12,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
     private $rows;
     private $form;
     private $worksheet;
+    private $extension;
 
     /**
      * Renderer constructor.
@@ -40,20 +41,17 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         $this->addCellsToWorksheet($this->worksheet, $this->rows, $this->columns)
             ->autoSizeColumns($this->worksheet, $this->columns);
 
-        return $this->renderOutput();
+        return $this->renderOutput($this->extension);
     }
 
     protected function getFileName()
     {
         $filename = GFExcel::getFilename($this->form['id']);
 
-        return gf_apply_filters(
-            array(
+        return gf_apply_filters(array(
                 "gfexcel_renderer_filename",
                 $this->form['id'],
-            ),
-            $filename, $this->form
-        ).".xls";
+            ), $filename, $this->form) . "." . $this->extension;
     }
 
     private function setTitle($title)
@@ -94,6 +92,9 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         $this->setTitle($this->form['title'])
             ->setSubject($this->form['title'])
             ->setDescription($this->form['description']);
+
+
+        $this->extension = GFExcel::getFileExtension($this->form['id']);
 
         return $this;
     }
