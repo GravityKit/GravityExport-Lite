@@ -11,11 +11,6 @@ class MetaField extends BaseField
         'date_created' => 'GFExcel\Field\Meta\DateCreated',
     );
 
-    public function __construct(GF_Field $field)
-    {
-        parent::__construct($field);
-    }
-
     public function getColumns()
     {
         if ($subfield = $this->getSubField()) {
@@ -31,14 +26,14 @@ class MetaField extends BaseField
             return $subfield->getCells($entry);
         }
 
-        $value = $this->field->get_value_export($entry);
+        $value = $this->getFieldValue($entry);
         $value = gf_apply_filters(
             array(
                 "gfexcel_meta_value",
                 $this->field->id,
                 $this->field->formId,
             ),
-            $value, $entry);
+            $value, $entry, $this->field);
 
         return $this->wrap(array($value));
     }

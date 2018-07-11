@@ -166,6 +166,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 = 1.4.1 (WIP) =
 * Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
 * Bugfix: Lists with a single column could not be exported.
+* Enhancement: Added support for the Woocommerce add-on.
 * Todo: add translation extension options
 
 

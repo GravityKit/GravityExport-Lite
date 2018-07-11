@@ -22,7 +22,7 @@ class DateCreated extends BaseField
     public function getCells($entry)
     {
         if ($this->useSeperatedFields()) {
-            $value = $this->field->get_value_export($entry);
+            $value = $this->getFieldValue($entry);
 
             if ($date = date_create_from_format("Y-m-d H:i:s", $value)) {
                 return array($date->format("Y-m-d"), $date->format("H:i:s"));

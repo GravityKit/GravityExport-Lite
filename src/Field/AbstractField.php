@@ -66,6 +66,8 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
+     * Wrap a value within a value Object to get more info when rendering it.
+     *
      * @param array $values
      * @return array
      */
@@ -75,5 +77,21 @@ abstract class AbstractField implements FieldInterface
         return array_map(function ($value) use ($class) {
             return BaseValue::getValueObject($class, $value, $class->field);
         }, (array) $values);
+    }
+
+    /**
+     * Internal function to get the Field Value for an entry, and maybe override it.
+     *
+     * @param $entry
+     * @return array|string
+     */
+    protected function getFieldValue($entry)
+    {
+        $value = $this->field->get_value_export($entry);
+
+        // add gform export filters to get the same results as a normal export
+        $value = apply_filters( 'gform_export_field_value', $value, $this->field->formId, $this->field->id, $entry );
+
+        return $value;
     }
 }

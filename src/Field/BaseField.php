@@ -11,7 +11,7 @@ class BaseField extends AbstractField
      */
     public function getCells($entry)
     {
-        $value = $this->field->get_value_export($entry);
+        $value = $this->getFieldValue($entry);
 
         $value = gf_apply_filters(
             array(

@@ -44,7 +44,7 @@ class ListField extends BaseField
         }
 
         //Multiple columns, let's go
-        $value = $this->field->get_value_export($entry);
+        $value = $this->getFieldValue($entry);
         if (!$result = json_decode($value)) {
             //the value isn't json, so it's empty, we'll map every column as empty
             return array_map(function () {
