@@ -167,6 +167,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 * Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
 * Bugfix: Lists with a single column could not be exported.
 * Enhancement: Added support for the Woocommerce add-on.
+* Enhancement: You can now add .xls(x) to the end of your url. Some systems need this in order to figure out it's an excel file.
 * Todo: add translation extension options
 
 

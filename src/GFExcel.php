@@ -21,6 +21,9 @@ class GFExcel
     const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
     const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
 
+
+    private static $file_extension;
+
     public function __construct()
     {
         add_action("init", array($this, "add_permalink_rule"));
@@ -120,13 +123,18 @@ class GFExcel
      */
     public static function getFileExtension($form_id)
     {
-        $form = GFFormsModel::get_form_meta($form_id);
+        if (!static::$file_extension) {
+            $form = GFFormsModel::get_form_meta($form_id);
 
-        if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
-            return 'xlsx'; //default
+            if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
+                static::$file_extension = 'xlsx'; //default
+                return static::$file_extension;
+            }
+
+            static::$file_extension = $form[static::KEY_FILE_EXTENSION];
         }
 
-        return $form[static::KEY_FILE_EXTENSION];
+        return static::$file_extension;
     }
 
     public function add_permalink_rule()
@@ -175,6 +183,11 @@ class GFExcel
     private function getFormIdByHash($hash)
     {
         global $wpdb;
+
+        if (preg_match("/\.(xlsx?)$/is", $hash, $match)) {
+            $hash = str_replace($match[0], '', $hash);
+            static::$file_extension = $match[1];
+        };
 
         $table_name = GFFormsModel::get_meta_table_name();
         $wildcard = '%';
