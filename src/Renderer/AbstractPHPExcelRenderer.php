@@ -29,6 +29,9 @@ abstract class AbstractPHPExcelRenderer
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
+            if($extension === 'pdf') {
+                $extension = "tcpdf";
+            }
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
 
             header('Content-Type: application/vnd.ms-excel');

@@ -222,7 +222,7 @@ class GFExcelAdmin extends GFAddOn
                 $value = implode(',', array_keys(array_filter($value)));
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
-                $value = preg_replace('/\.xlsx?$/is', '', $value);
+                $value = preg_replace('/\.(xlsx?|csv)$/is', '', $value);
                 $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
             }
             $form_meta[$key] = $value;
@@ -334,19 +334,14 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'select',
                     'name' => GFExcel::KEY_FILE_EXTENSION,
                     'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
-                    'choices' => [[
-                        'name' => GFExcel::KEY_FILE_EXTENSION,
-                        'label' => '.xlsx',
-                        'value' => 'xlsx',
-                    ], [
-                        'name' => GFExcel::KEY_FILE_EXTENSION,
-                        'label' => '.xls',
-                        'value' => 'xls',
-                    ]],
-                    'description' => __('For older versions of Excel use .xls', GFExcel::$slug),
-                ]
-
-            ],
-        ]);
+                    'choices' => array_map(function ($extension) {
+                        return
+                            [
+                                'name' => GFExcel::KEY_FILE_EXTENSION,
+                                'label' => '.'.$extension,
+                                'value' => $extension,
+                            ];
+                    }, ['xlsx', 'xls', 'csv',]),
+                    'description' => __('Please note that .xls does not support unicode, and the output will not be readable.', GFExcel::$slug),]],]);
     }
 }

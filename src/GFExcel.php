@@ -184,7 +184,7 @@ class GFExcel
     {
         global $wpdb;
 
-        if (preg_match("/\.(xlsx?)$/is", $hash, $match)) {
+        if (preg_match("/\.(xlsx?|csv)$/is", $hash, $match)) {
             $hash = str_replace($match[0], '', $hash);
             static::$file_extension = $match[1];
         };
