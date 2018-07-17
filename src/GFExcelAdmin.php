@@ -6,6 +6,7 @@ use GFAddOn;
 use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExcel\Repository\FieldsRepository;
 use GFExport;
 use GFFormsModel;
 
@@ -32,6 +33,7 @@ class GFExcelAdmin extends GFAddOn
 
         add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
         add_action("wp_loaded", array($this, 'handle_bulk_actions'));
+        add_action("admin_head", array($this, 'set_scripts'));
 
         parent::__construct();
     }
@@ -70,7 +72,20 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
-        echo "<style>.gaddon-setting-inline { display:inline-block; line-height: 26px; }</style>";
+        echo "<style>
+                .gaddon-setting-inline { display:inline-block; line-height: 26px; }
+                span.gf_settings_description { font-size: smaller; } 
+                ul.fields-select {
+                    background-color: #FFF;
+                    padding: 3px 5px;
+                    border: 1px solid #E1E1E1;
+                }
+                ul.fields-select li {
+                    background-color: #f7f7f7;
+                    margin: 2px 0;
+                    padding: 3px;
+                }
+              </style>";
 
         echo "<form method=\"post\">";
         printf(
@@ -90,6 +105,7 @@ class GFExcelAdmin extends GFAddOn
 
         $this->generalSettings($form);
 
+        $this->sortableFields($form);
         $this->disableFields($form);
 
         $this->settings_save(['value' => __("Save settings", GFExcel::$slug)]);
@@ -338,10 +354,109 @@ class GFExcelAdmin extends GFAddOn
                         return
                             [
                                 'name' => GFExcel::KEY_FILE_EXTENSION,
-                                'label' => '.'.$extension,
+                                'label' => '.' . $extension,
                                 'value' => $extension,
                             ];
                     }, ['xlsx', 'xls', 'csv',]),
-                    'description' => __('Please note that .xls does not support unicode, and the output will not be readable.', GFExcel::$slug),]],]);
+                    'description' => __('Please note that .xls does not support unicode 😐, and the output will not be readable.', GFExcel::$slug),]],]);
+    }
+
+    private function sortableFields($form)
+    {
+        $repository = new FieldsRepository($form);
+        $disabled_fields = GFExcel::get_disabled_fields($form);
+        $all_fields = $repository->getFields($unfiltered = true);
+        $active_fields = $inactive_fields = [];
+        foreach ($all_fields as $field) {
+            $array_name = in_array($field->id, $disabled_fields) ? 'inactive_fields' : 'active_fields';
+            array_push($$array_name, $field);
+        }
+
+        $this->single_section([
+            'title' => __('Disable fields from export', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => __('Drop the fields to disable', GFExcel::$slug),
+                    'name' => 'gfexcel_disabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $field->label,
+                        ];
+                    }, $inactive_fields),
+                ], [
+                    'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
+                    'name' => 'gfexcel_enabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $field->label,
+                        ];
+                    }, $active_fields),
+                ],
+            ],
+        ]);
+    }
+
+    public function settings_sortable($field, $echo = true)
+    {
+        $attributes = $this->get_field_attributes($field);
+        $name = '' . esc_attr($field['name']);
+
+        // If no choices were provided and there is a no choices message, display it.
+        if ((empty($field['choices']) || !rgar($field, 'choices')) && rgar($field, 'no_choices')) {
+            $html = $field['no_choices'];
+        } else {
+
+            $html = sprintf(
+                '<input type="hidden" name="%1$s">
+                    <ul id="%2$s" %3$s>%4$s</ul>',
+                '_gaddon_setting_' . $name, $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) {
+                return sprintf('<li>%s</li>', $choice['label']);
+            }, $field['choices'])));
+
+            $html .= rgar($field, 'after_select');
+
+        }
+
+        if ($this->field_failed_validation($field)) {
+            $html .= $this->get_error_icon($field);
+        }
+
+        if ($echo) {
+            echo $html;
+        }
+
+        return $html;
+    }
+
+    private function sortable_script(array $ids, $connector_class = 'connected-sortable')
+    {
+        $ids = implode(', ', array_map(function ($id) {
+            return '#' . $id;
+        }, $ids));
+
+        return "
+<script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
+<script>(function($) {
+    $(document).ready(function() {
+           $('$ids').sortable({
+            connectWith: '.$connector_class'
+            }).disableSelection();
+           });
+        })(jQuery);</script>
+        ";
+    }
+
+    /**
+     * add scripts to header
+     */
+    public function set_scripts()
+    {
+        echo $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
     }
 }

@@ -170,6 +170,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 * Enhancement: You can now add .xls(x) or .csv to force that output. Also; some systems need this in order to figure out the file type.
 * Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
 * Todo: add translation extension options
+* Todo: fix gravity forms rights implementation
 
 
 = 1.4.0 =

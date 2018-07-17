@@ -4,6 +4,7 @@ namespace GFExcel;
 
 use GF_Field;
 use GFAPI;
+use GFExcel\Repository\FieldsRepository;
 use GFExport;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
@@ -91,49 +92,11 @@ class GFExcelOutput
         return $value === "ASC" ? "ASC" : "DESC";
     }
 
-    /**
-     * Get the fields to show in the excel. Fields can be disabled using the hook.
-     * @return GF_Field[]
-     */
     public function getFields()
     {
-        if (empty($this->fields)) {
-            $form = $this->getForm();
-
-            $fields = $form['fields'];
-
-            $fields = array_merge($fields, [
-                new GF_Field([
-                    'formId' => $this->form_id,
-                    'type' => 'notes',
-                    'id' => 'notes',
-                    'label' => esc_html__('Notes', 'gravityforms'),
-                ])
-            ]);
-
-
-            if ($this->useMetaData()) {
-                $fields_map = array('first' => array(), 'last' => array());
-                foreach ($this->meta_fields as $key => $field) {
-                    $fields_map[in_array($key, $this->getFirstMetaFields()) ? 'first' : 'last'][] = $field;
-                }
-                $fields = array_merge($fields_map['first'], $fields, $fields_map['last']);
-            }
-
-            $disabled_fields = GFExcel::get_disabled_fields($form);
-            $this->fields = array_filter($fields, function (GF_Field $field) use ($disabled_fields) {
-
-                return !gf_apply_filters(
-                    array(
-                        "gfexcel_field_disable",
-                        $field->get_input_type(),
-                        $field->formId,
-                        $field->id,
-                    ), in_array($field->id, $disabled_fields), $field);
-            });
-        }
-
-        return $this->fields;
+        $form = $this->getForm();
+        $repository = new FieldsRepository($form);
+        return $repository->getFields();
     }
 
     /**
@@ -296,36 +259,6 @@ class GFExcelOutput
         return $this;
     }
 
-    /**
-     * Check if we want meta data, if so, add those fields and format them.
-     * @internal
-     * @return boolean
-     */
-    private function useMetaData()
-    {
-        $use_metadata = (bool) gf_apply_filters(
-            array(
-                "gfexcel_output_meta_info",
-                $this->form_id
-            ),
-            true
-        );
-
-        if (!$use_metadata) {
-            return false;
-        }
-
-        if (empty($this->meta_fields)) {
-            $form = GFExport::add_default_export_fields(array('id' => $this->form_id, 'fields' => array()));
-            $this->meta_fields = array_reduce($form['fields'], function ($carry, GF_Field $field) {
-                $field->type = 'meta';
-                $carry[$field->id] = $field;
-                return $carry;
-            });
-        }
-
-        return $use_metadata;
-    }
 
     private function get_sorting($form_id)
     {
@@ -335,8 +268,4 @@ class GFExcelOutput
         );
     }
 
-    private function getFirstMetaFields()
-    {
-        return array('id', 'date_created', 'ip');
-    }
 }
