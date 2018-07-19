@@ -24,6 +24,8 @@ class GFExcelAdmin extends GFAddOn
 
     protected $_slug;
 
+    protected $_capabilities_form_settings = ['gravityforms_export_entries'];
+
     public function __construct()
     {
         $this->_version = GFExcel::$version;

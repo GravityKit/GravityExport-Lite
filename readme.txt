@@ -167,10 +167,10 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 * Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
 * Bugfix: Lists with a single column could not be exported.
 * Enhancement: Added support for the Woocommerce add-on.
+* Enhancement: Added support for the Members plugin. You need 'gravityforms_export_entries' role for this plugin now.
 * Enhancement: You can now add .xls(x) or .csv to force that output. Also; some systems need this in order to figure out the file type.
 * Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
 * Todo: add translation extension options
-* Todo: fix gravity forms rights implementation
 
 
 = 1.4.0 =
