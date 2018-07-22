@@ -172,7 +172,6 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 * Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
 * Todo: add translation extension options
 
-
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!

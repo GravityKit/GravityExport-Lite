@@ -4,6 +4,7 @@
 namespace GFExcel\Values;
 
 
+use GFExcel\Exception\WrongValueException;
 use GFExcel\Field\AbstractField;
 
 abstract class BaseValue
@@ -14,8 +15,12 @@ abstract class BaseValue
 
     protected $value = '';
     protected $is_numeric = false;
-    protected $is_bool = false;
+    protected $color = '#000000';
+    protected $is_bold = false;
+    protected $background_color = '';
 
+    protected $is_italic = false;
+    protected $is_bool = false;
     protected $url;
 
     public function __construct($value)
@@ -96,6 +101,54 @@ abstract class BaseValue
     }
 
     /**
+     * @return bool
+     */
+    public function isBold()
+    {
+        return (bool) $this->is_bold;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isItalic()
+    {
+        return (bool) $this->is_bold;
+    }
+
+    /**
+     * @return string
+     * @throws WrongValueException
+     */
+    public function getColor()
+    {
+        if (!$this->color) {
+            return false;
+        }
+        if (substr($this->color, 0, 1) !== "#" || strlen($this->color) != 7) {
+            throw new WrongValueException('The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.');
+        }
+
+        return substr($this->color, 1);
+    }
+
+    /**
+     * @return bool|string
+     * @throws WrongValueException
+     */
+    public function getBackgroundColor()
+    {
+        if (!$this->background_color) {
+            return false;
+        }
+        if (substr($this->background_color, 0, 1) !== "#" || strlen($this->background_color) != 7) {
+            throw new WrongValueException('The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.');
+        }
+
+        return substr($this->background_color, 1);
+    }
+
+    /**
      * @return string
      */
     public function getUrl()
@@ -114,5 +167,37 @@ abstract class BaseValue
     public function setUrl($url)
     {
         $this->url = $url;
+    }
+
+    /**
+     * Set the color of the value
+     * @param string $hexcode
+     */
+    public function setColor($hexcode = "#000000")
+    {
+        $this->color = $hexcode;
+    }
+
+    public function setBackgroundColor($color = '')
+    {
+        $this->background_color = $color;
+    }
+
+    /**
+     * Set the value to Bold
+     * @param bool $bold
+     */
+    public function setBold($bold = true)
+    {
+        $this->is_bold = (boolean) $bold;
+    }
+
+    /**
+     * Set the value to Bold
+     * @param bool $italic
+     */
+    public function setItalic($italic = true)
+    {
+        $this->is_italic = (boolean) $italic;
     }
 }
