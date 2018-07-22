@@ -84,7 +84,6 @@ abstract class AbstractPHPExcelRenderer
      * @param $rows
      * @param $columns
      * @return $this
-     * @throws \GFExcel\Exception\Exception
      */
     protected function addCellsToWorksheet(Worksheet $worksheet, $rows, $columns)
     {
@@ -96,7 +95,7 @@ abstract class AbstractPHPExcelRenderer
                 $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $this->getCellValue($value),
                     $this->getCellType($value));
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
-                
+
                 try {
                     $this->setProperties($cell, $value);
                     $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
