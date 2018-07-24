@@ -7,7 +7,6 @@ use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
-use GFExport;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -81,11 +80,46 @@ class GFExcelAdmin extends GFAddOn
                     background-color: #FFF;
                     padding: 3px 5px;
                     border: 1px solid #E1E1E1;
+                    min-height: 30px;
+                }
+                ul.fields-select li {
+                    display: flex;
+                }
+                ul.fields-select li div:not(.move) {
+                    flex: 1;
+                }
+                ul.fields-select li div.move { 
+                    font-weight: bold;
+                    padding: 0 5px;
+                    cursor: pointer;
+                }
+                ul.fields-select li div.move:hover {
+                    color: #006799;
+                }
+                .ui-sortable-handle {
+                    cursor: pointer;
+                    cursor: -webkit-grab;
+                }
+                .ui-sortable-helper {
+                    cursor: -webkit-grabbing;
                 }
                 ul.fields-select li {
                     background-color: #f7f7f7;
                     margin: 2px 0;
                     padding: 3px;
+                }
+                .gaddon-section.sortfields table {
+                    table-layout: fixed;
+                }
+                .gaddon-section.sortfields table td {
+                    padding-right: 10px;
+                }
+                .gaddon-section.sortfields table td + td {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+                .gaddon-section.sortfields p {
+                    margin-bottom: 10px;
                 }
               </style>";
 
@@ -108,7 +142,6 @@ class GFExcelAdmin extends GFAddOn
         $this->generalSettings($form);
 
         $this->sortableFields($form);
-        $this->disableFields($form);
 
         $this->settings_save(['value' => __("Save settings", GFExcel::$slug)]);
         echo "</form>";
@@ -250,56 +283,6 @@ class GFExcelAdmin extends GFAddOn
         GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug), false);
     }
 
-    /**
-     * Add settings for disabling fields
-     * @param $form
-     */
-    private function disableFields($form)
-    {
-        $disabled_fields = GFExcel::get_disabled_fields($form);
-        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
-
-        $this->single_section([
-            'title' => __('Disable fields from export', GFExcel::$slug),
-            'fields' => [
-                [
-                    'label' => __('Select the fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
-
-                    'choices' => array_reduce((array) $form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-
-                [
-                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
-                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-            ],
-        ]);
-
-    }
 
     /**
      * Remove filename so it returns the newly formatted filename
@@ -375,13 +358,16 @@ class GFExcelAdmin extends GFAddOn
         }
 
         $this->single_section([
-            'title' => __('Disable fields from export', GFExcel::$slug),
+            'title' => __('Disabled fields from export', GFExcel::$slug),
+            'class' => 'sortfields',
             'fields' => [
                 [
-                    'label' => __('Drop the fields to disable', GFExcel::$slug),
+                    'label' => __('Disabled fields', GFExcel::$slug),
                     'name' => 'gfexcel_disabled_fields',
+                    'move_to' => 'gfexcel_enabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
+                    'side' => 'left',
                     'choices' => array_map(function (\GF_Field $field) {
                         return [
                             'value' => $field->id,
@@ -391,8 +377,10 @@ class GFExcelAdmin extends GFAddOn
                 ], [
                     'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
+                    'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
+                    'side' => 'right',
                     'choices' => array_map(function (\GF_Field $field) {
                         return [
                             'value' => $field->id,
@@ -416,10 +404,10 @@ class GFExcelAdmin extends GFAddOn
 
             $html = sprintf(
                 '<input type="hidden" name="%1$s">
-                    <ul id="%2$s" %3$s>%4$s</ul>',
+                    <ul id="%2$s" %3$s data-send-to="%5$s">%4$s</ul>',
                 '_gaddon_setting_' . $name, $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) {
-                return sprintf('<li>%s</li>', $choice['label']);
-            }, $field['choices'])));
+                return sprintf('<li data-value="%s"><div>%s</div><div class="move">&times;</div></li>', $choice['value'], $choice['label']);
+            }, $field['choices'])), $field['move_to']);
 
             $html .= rgar($field, 'after_select');
 
@@ -436,6 +424,34 @@ class GFExcelAdmin extends GFAddOn
         return $html;
     }
 
+    public function single_setting_row_sortable($field)
+    {
+
+        $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
+
+        // Prepare setting description.
+        $description = rgar($field, 'description') ? '<span class="gf_settings_description">' . $field['description'] . '</span>' : null;
+
+        if (array_key_exists('side', $field) && $field['side'] === "left") {
+            ?>
+            <tr id="gaddon-setting-row-<?php echo $field['name'] ?>" <?php echo $display; ?>>
+        <?php } ?>
+        <td style="vertical-align: top; ">
+            <p><strong><?php $this->single_setting_label($field); ?></strong></p>
+            <?php
+            $this->single_setting($field);
+            echo $description;
+            ?>
+        </td>
+        <?php if (array_key_exists('side', $field) && $field['side'] === "right") { ?></tr><?php }
+    }
+
+    /**
+     * Adds javascript for the sortable to the page
+     * @param array $ids
+     * @param string $connector_class
+     * @return string
+     */
     private function sortable_script(array $ids, $connector_class = 'connected-sortable')
     {
         $ids = implode(', ', array_map(function ($id) {
@@ -443,15 +459,24 @@ class GFExcelAdmin extends GFAddOn
         }, $ids));
 
         return "
-<script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
-<script>(function($) {
-    $(document).ready(function() {
-           $('$ids').sortable({
-            connectWith: '.$connector_class'
-            }).disableSelection();
-           });
-        })(jQuery);</script>
-        ";
+        <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
+        <script>(function($) {
+            $(document).ready(function() {
+                $('$ids').sortable({
+                    connectWith: '.$connector_class'
+                }).disableSelection();
+               
+                $('$ids').on('click','.move',function() {
+                    var element = $(this).closest('li');
+                    element.appendTo($('#'+element.closest('ul').data('send-to')));
+                    $('$ids').sortable('refresh');
+                });
+                $('$ids').each(function(i, el) {
+                   // iets met update events, en dan per 'el' de sorting even ophalen en die verwerken in een input 
+                });
+            });
+                
+        })(jQuery);</script>";
     }
 
     /**
