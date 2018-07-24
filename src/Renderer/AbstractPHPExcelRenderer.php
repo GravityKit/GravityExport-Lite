@@ -195,7 +195,7 @@ abstract class AbstractPHPExcelRenderer
     {
         global $wp_version;
 
-        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunantly something broke</strong></p>";
+        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>";
         echo "<p>Error message: " . $exception->getMessage() . " </p>";
         echo "<p>If you need support for this, please contact me via the <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> on the wordpress plugin.</p>";
         echo "<p>Check if someone else had the same error, before posting a new support question.<br/>And when opening a new question, ";

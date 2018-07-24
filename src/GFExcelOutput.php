@@ -20,10 +20,8 @@ class GFExcelOutput
     private $form_id;
 
     private $form;
-    private $fields;
     private $entries;
 
-    private $meta_fields = array();
     private $columns = array();
     private $rows = array();
 

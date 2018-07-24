@@ -172,7 +172,7 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 * Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
 * Feature: Add colors and font styles to values use the `gfexcel_value_object`-hook.
 * Todo: add translation extension options
-* Todo: add documentation about colors and check if this is also avaialble for lables! It should!
+* Todo: add documentation about colors
 
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!

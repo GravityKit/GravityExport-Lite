@@ -15,7 +15,7 @@ abstract class BaseValue
 
     protected $value = '';
     protected $is_numeric = false;
-    protected $color = '#000000';
+    protected $color = '';
     protected $is_bold = false;
     protected $background_color = '';
 
@@ -34,9 +34,10 @@ abstract class BaseValue
      * @param AbstractField $field
      * @param string $value
      * @param \GF_Field $gf_field
+     * @param bool $is_label
      * @return BaseValue
      */
-    public static function getValueObject(AbstractField $field, $value, \GF_Field $gf_field)
+    public static function getValueObject(AbstractField $field, $value, \GF_Field $gf_field, $is_label = false)
     {
         $type = gf_apply_filters(
             array(
@@ -46,7 +47,12 @@ abstract class BaseValue
                 $gf_field->id
             ),
             $field->getValueType(),
-            $gf_field);
+            $gf_field,
+            $is_label);
+
+        if($is_label) {
+            $type = BaseValue::TYPE_STRING;
+        }
 
         $valueObject = new StringValue($value);
 
@@ -63,7 +69,8 @@ abstract class BaseValue
                 $gf_field->id
             ),
             $valueObject,
-            $gf_field);
+            $gf_field,
+            $is_label);
 
         return $valueObject;
     }
