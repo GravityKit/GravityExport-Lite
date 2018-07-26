@@ -28,7 +28,7 @@ class FieldsRepository
     {
         if (empty($this->fields)) {
 
-            $fields = $this->form['fields'];
+            $this->fields = $this->form['fields'];
             $this->addNotesField();
 
             if ($this->useMetaData()) {
@@ -36,13 +36,14 @@ class FieldsRepository
                 foreach ($this->meta_fields as $key => $field) {
                     $fields_map[in_array($key, $this->getFirstMetaFields()) ? 'first' : 'last'][] = $field;
                 }
-                $fields = array_merge($fields_map['first'], $fields, $fields_map['last']);
+                $this->fields = array_merge($fields_map['first'], $this->fields, $fields_map['last']);
             }
 
             if ($unfiltered) {
+                $fields = $this->fields;
+                $this->fields = []; //reset
                 return $fields;
             }
-            $this->fields = $fields;
 
             $this->filterDisabledFields();
             $this->fields = $this->sortFields();
@@ -99,14 +100,17 @@ class FieldsRepository
      */
     private function addNotesField()
     {
-        array_merge($this->fields, [
-            new GF_Field([
-                'formId' => $this->form['id'],
-                'type' => 'notes',
-                'id' => 'notes',
-                'label' => esc_html__('Notes', 'gravityforms'),
-            ])
-        ]);
+        $repository = new FormsRepository($this->form['id']);
+        if ($repository->showNotes()) {
+            $this->fields = array_merge($this->fields, [
+                new GF_Field([
+                    'formId' => $this->form['id'],
+                    'type' => 'notes',
+                    'id' => 'notes',
+                    'label' => esc_html__('Notes', 'gravityforms'),
+                ])
+            ]);
+        }
 
         return $this->fields;
     }
@@ -166,8 +170,7 @@ class FieldsRepository
      * @param array $fields
      * @return GF_Field[]
      */
-    public
-    function sortFields($fields = [])
+    public function sortFields($fields = [])
     {
         if (empty($fields)) {
             $fields = $this->fields;

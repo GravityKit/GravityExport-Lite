@@ -5,12 +5,13 @@ namespace GFExcel;
 use GF_Field;
 use GFAPI;
 use GFExcel\Repository\FieldsRepository;
+use GFExcel\Repository\FormsRepository;
 use GFExport;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
 
 /**
- * The point where data is tranformed, and is send to the renderer.
+ * The point where data is transformed, and is send to the renderer.
  */
 class GFExcelOutput
 {
@@ -30,64 +31,6 @@ class GFExcelOutput
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
-    }
-
-    /**
-     * Whether or not to show notes based on setting or filter
-     *
-     * @param $form_id
-     * @return bool
-     */
-    public static function showNotes($form_id)
-    {
-        $value = false;
-
-        $form = \GFAPI::get_form($form_id);
-        if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
-            $value = $form[GFExcel::KEY_ENABLED_NOTES];
-        }
-
-        return (bool) gf_apply_filters(
-            array(
-                "gfexcel_field_notes_enabled",
-                $form_id,
-            ), $value);
-    }
-
-    /**
-     * Get field to sort the data by
-     * @param $form_id
-     * @return mixed
-     */
-    public static function getSortField($form_id)
-    {
-        $value = 'date_created';
-
-        $form = \GFAPI::get_form($form_id);
-        if (array_key_exists('gfexcel_output_sort_field', $form)) {
-            $value = $form['gfexcel_output_sort_field'];
-        }
-
-        return gf_apply_filters(array('gfexcel_output_sort_field', $form['id']), $value);
-    }
-
-    /**
-     * In what order should the data be sorted
-     * @param $form_id
-     * @return string
-     */
-    public static function getSortOrder($form_id)
-    {
-        $value = 'ASC'; //default
-        $form = \GFAPI::get_form($form_id);
-
-        if (array_key_exists("gfexcel_output_sort_order", $form)) {
-            $value = $form["gfexcel_output_sort_order"];
-        }
-
-        $value = gf_apply_filters(array('gfexcel_output_sort_order', $form['id']), $value);
-        //force either ASC or DESC
-        return $value === "ASC" ? "ASC" : "DESC";
     }
 
     public function getFields()
@@ -260,10 +203,11 @@ class GFExcelOutput
 
     private function get_sorting($form_id)
     {
-        return array(
-            "key" => self::getSortField($form_id),
-            "direction" => self::getSortOrder($form_id)
-        );
+        $repository = new FormsRepository($form_id);
+        return [
+            "key" => $repository->getSortField(),
+            "direction" => $repository->getSortOrder()
+        ];
     }
 
 }

@@ -7,6 +7,7 @@ use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
+use GFExcel\Repository\FormsRepository;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -25,23 +26,26 @@ class GFExcelAdmin extends GFAddOn
 
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
+    private $repository;
+
     public function __construct()
     {
         $this->_version = GFExcel::$version;
         $this->_title = __(GFExcel::$name, GFExcel::$slug);
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
+        $form = $this->get_current_form();
+        $this->repository = new FormsRepository($form['id']);
 
-        add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
-        add_action("wp_loaded", array($this, 'handle_bulk_actions'));
-        add_action("admin_head", array($this, 'set_scripts'));
+        add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
+        add_action("wp_loaded", [$this, 'handle_bulk_actions']);
+        add_action("admin_enqueue_scripts", [$this, "register_assets"]);
 
         parent::__construct();
     }
 
     public function form_settings($form)
     {
-
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -72,56 +76,6 @@ class GFExcelAdmin extends GFAddOn
             </p>",
             $url
         );
-
-        echo "<style>
-                .gaddon-setting-inline { display:inline-block; line-height: 26px; }
-                span.gf_settings_description { font-size: smaller; } 
-                ul.fields-select {
-                    background-color: #FFF;
-                    padding: 3px 5px;
-                    border: 1px solid #E1E1E1;
-                    min-height: 30px;
-                }
-                ul.fields-select li {
-                    display: flex;
-                }
-                ul.fields-select li div:not(.move) {
-                    flex: 1;
-                }
-                ul.fields-select li div.move { 
-                    font-weight: bold;
-                    padding: 0 5px;
-                    cursor: pointer;
-                }
-                ul.fields-select li div.move:hover {
-                    color: #006799;
-                }
-                .ui-sortable-handle {
-                    cursor: pointer;
-                    cursor: -webkit-grab;
-                }
-                .ui-sortable-helper {
-                    cursor: -webkit-grabbing;
-                }
-                ul.fields-select li {
-                    background-color: #f7f7f7;
-                    margin: 2px 0;
-                    padding: 3px;
-                }
-                .gaddon-section.sortfields table {
-                    table-layout: fixed;
-                }
-                .gaddon-section.sortfields table td {
-                    padding-right: 10px;
-                }
-                .gaddon-section.sortfields table td + td {
-                    padding-left: 10px;
-                    padding-right: 10px;
-                }
-                .gaddon-section.sortfields p {
-                    margin-bottom: 10px;
-                }
-              </style>";
 
         echo "<form method=\"post\">";
         printf(
@@ -236,7 +190,7 @@ class GFExcelAdmin extends GFAddOn
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
             'choices' => $fields,
-            'default_value' => GFExcelOutput::getSortField($form['id']),
+            'default_value' => $this->repository->getSortField(),
         ]);
     }
 
@@ -251,7 +205,7 @@ class GFExcelAdmin extends GFAddOn
                 'value' => 'DESC',
                 'label' => __("Descending", GFExcel::$slug)
             ]],
-            'default_value' => GFExcelOutput::getSortOrder($form['id']),
+            'default_value' => $this->repository->getSortOrder(),
         ]);
     }
 
@@ -348,11 +302,15 @@ class GFExcelAdmin extends GFAddOn
                     'description' => __('Please note that .xls does not support unicode 😐, and the output will not be readable.', GFExcel::$slug),]],]);
     }
 
+    /**
+     * Adds the sortable fields section to the settings page
+     */
     private function sortableFields($form)
     {
         $repository = new FieldsRepository($form);
         $disabled_fields = $repository->get_disabled_fields();
         $all_fields = $repository->getFields($unfiltered = true);
+
         $active_fields = $inactive_fields = [];
         foreach ($all_fields as $field) {
             $array_name = in_array($field->id, $disabled_fields) ? 'inactive_fields' : 'active_fields';
@@ -397,6 +355,13 @@ class GFExcelAdmin extends GFAddOn
         ]);
     }
 
+    /**
+     * Renders the html for a single sortable fields.
+     * I don't like this inline html approach Gravity Forms uses.
+     * @param $field
+     * @param bool $echo
+     * @return string
+     */
     public function settings_sortable($field, $echo = true)
     {
         $attributes = $this->get_field_attributes($field);
@@ -416,7 +381,6 @@ class GFExcelAdmin extends GFAddOn
             }, $field['choices'])), $field['move_to']);
 
             $html .= rgar($field, 'after_select');
-
         }
 
         if ($this->field_failed_validation($field)) {
@@ -430,6 +394,10 @@ class GFExcelAdmin extends GFAddOn
         return $html;
     }
 
+    /**
+     * Renders the html for the sortable fields
+     * @param $field
+     */
     public function single_setting_row_sortable($field)
     {
         $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
@@ -463,39 +431,20 @@ class GFExcelAdmin extends GFAddOn
             return '#' . $id;
         }, $ids));
 
-        return '<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>(function($) {
-            $(document).ready(function() {
-                var $elements = $(\'' . $ids . '\');
-                var updateLists = function($elements) {
-                  $elements.each(function(i,el) {
-                    var $input = $(el).prev();
-                    $input.val($(el).sortable(\'toArray\',{ attribute: "data-value"}).join(","));                   
-                  })
-                };
-                $elements.sortable({
-                    connectWith: \'.' . $connector_class . '\',
-                    update: function(e,ui) {
-                       updateLists($elements);
-                    }
-                }).disableSelection();
-               
-                $elements.on(\'click\',\'.move\',function() {
-                    var element = $(this).closest(\'li\');
-                    element.appendTo($(\'#\'+element.closest(\'ul\').data(\'send-to\')));
-                    $elements.sortable(\'refresh\');
-                    updateLists($elements);
-                });
-            });
-                
-        })(jQuery);</script>';
+        wp_add_inline_script('gfexcel-js', '(function($) { $(document).ready(function() { gfexcel_sortable(\'' . $ids . '\',\'' . $connector_class . '\'); }); })(jQuery);');
     }
 
     /**
-     * add scripts to header
+     * Add javascript and custom css to the page
      */
-    public function set_scripts()
+    public function register_assets()
     {
-        echo $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+        $entry = plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
+        wp_enqueue_script('jquery-ui-sortable');
+        wp_enqueue_script('gfexcel-js', $entry . 'assets/js/gfexcel.js', ['jquery', 'jquery-ui-sortable']);
+        wp_enqueue_style('gfexcel-css', $entry . 'assets/css/gfexcel.css');
+
+        $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
     }
+
 }

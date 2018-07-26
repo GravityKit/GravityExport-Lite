@@ -3,6 +3,7 @@
 namespace GFExcel\Field;
 
 use GFCommon;
+use GFExcel\Repository\FormsRepository;
 use RGFormsModel;
 use GFExcel\GFExcelOutput;
 
@@ -58,6 +59,7 @@ class NotesField extends BaseField
 
     private function showNotesAsColumn()
     {
-        return GFExcelOutput::showNotes($this->field->formId);
+        $repository = new FormsRepository($this->field->formId);
+        return $repository->showNotes();
     }
 }
