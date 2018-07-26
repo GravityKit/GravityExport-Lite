@@ -371,6 +371,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
+                    'value' => $form['gfexcel_disabled_fields'],
                     'choices' => array_map(function (\GF_Field $field) {
                         return [
                             'value' => $field->id,
@@ -380,6 +381,7 @@ class GFExcelAdmin extends GFAddOn
                 ], [
                     'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
+                    'value' => $form['gfexcel_enabled_fields'],
                     'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
@@ -399,16 +401,17 @@ class GFExcelAdmin extends GFAddOn
     {
         $attributes = $this->get_field_attributes($field);
         $name = '' . esc_attr($field['name']);
+        $value = rgar($field, 'value'); //comma-separated list from database
 
         // If no choices were provided and there is a no choices message, display it.
         if ((empty($field['choices']) || !rgar($field, 'choices')) && rgar($field, 'no_choices')) {
             $html = $field['no_choices'];
         } else {
 
-            $html = sprintf(
-                '<input type="hidden" name="%1$s">
-                    <ul id="%2$s" %3$s data-send-to="%5$s">%4$s</ul>',
-                '_gaddon_setting_' . $name, $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) {
+            $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
+            $html .= sprintf(
+                '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
+                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) {
                 return sprintf('<li data-value="%s"><div>%s</div><div class="move">&times;</div></li>', $choice['value'], $choice['label']);
             }, $field['choices'])), $field['move_to']);
 
@@ -429,7 +432,6 @@ class GFExcelAdmin extends GFAddOn
 
     public function single_setting_row_sortable($field)
     {
-
         $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
 
         // Prepare setting description.
