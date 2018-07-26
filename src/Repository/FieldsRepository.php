@@ -4,13 +4,15 @@ namespace GFExcel\Repository;
 
 use GFExport;
 use GF_Field;
-use GFExcel\GFExcel;
 
 class FieldsRepository
 {
     private $fields = [];
     private $form = [];
     private $meta_fields = [];
+
+    const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+    const KEY_ENABLED_FIELDS = 'gfexcel_enabled_fields';
 
     public function __construct(array $form)
     {
@@ -27,16 +29,7 @@ class FieldsRepository
         if (empty($this->fields)) {
 
             $fields = $this->form['fields'];
-
-            $fields = array_merge($fields, [
-                new GF_Field([
-                    'formId' => $this->form['id'],
-                    'type' => 'notes',
-                    'id' => 'notes',
-                    'label' => esc_html__('Notes', 'gravityforms'),
-                ])
-            ]);
-
+            $this->addNotesField();
 
             if ($this->useMetaData()) {
                 $fields_map = ['first' => [], 'last' => []];
@@ -46,21 +39,13 @@ class FieldsRepository
                 $fields = array_merge($fields_map['first'], $fields, $fields_map['last']);
             }
 
-            if($unfiltered) {
+            if ($unfiltered) {
                 return $fields;
             }
+            $this->fields = $fields;
 
-            $disabled_fields = GFExcel::get_disabled_fields($this->form);
-            $this->fields = array_filter($fields, function (GF_Field $field) use ($disabled_fields) {
-
-                return !gf_apply_filters(
-                    [
-                        "gfexcel_field_disable",
-                        $field->get_input_type(),
-                        $field->formId,
-                        $field->id,
-                    ], in_array($field->id, $disabled_fields), $field);
-            });
+            $this->filterDisabledFields();
+            $this->fields = $this->sortFields();
         }
 
         return $this->fields;
@@ -97,9 +82,105 @@ class FieldsRepository
         return $use_metadata;
     }
 
+    /**
+     * Get the id's of the meta fields we want before the rest of the fields
+     * @return array
+     */
     private function getFirstMetaFields()
     {
         return ['id', 'date_created', 'ip'];
+    }
+
+    /**
+     * Add a notes field to the export.
+     * This isn't a normal field, that's why we add it our self
+     *
+     * @return array
+     */
+    private function addNotesField()
+    {
+        array_merge($this->fields, [
+            new GF_Field([
+                'formId' => $this->form['id'],
+                'type' => 'notes',
+                'id' => 'notes',
+                'label' => esc_html__('Notes', 'gravityforms'),
+            ])
+        ]);
+
+        return $this->fields;
+    }
+
+    /**
+     * Removes fields in disabled_fields array, or fields that are disabled by the hook
+     * @return array
+     */
+    private function filterDisabledFields()
+    {
+        $disabled_fields = $this->get_disabled_fields();
+        $this->fields = array_filter($this->fields, function (GF_Field $field) use ($disabled_fields) {
+            return !gf_apply_filters([
+                "gfexcel_field_disable",
+                $field->get_input_type(),
+                $field->formId,
+                $field->id,
+            ], in_array($field->id, $disabled_fields), $field);
+        });
+
+        return $this->fields;
+    }
+
+    /**
+     * Retrieve the disabled field id's in array
+     * @return array
+     */
+    public function get_disabled_fields()
+    {
+        $result = [];
+        if (array_key_exists(static::KEY_DISABLED_FIELDS, $this->form)) {
+            $result = explode(',', $this->form[static::KEY_DISABLED_FIELDS]);
+        }
+
+        return gf_apply_filters([
+            "gfexcel_disabled_fields",
+            $this->form['id'],
+        ], $result);
+    }
+
+    /**
+     * Return sorted array of the keys of enabled fields
+     * @return array
+     */
+    public function get_enabled_fields()
+    {
+        $result = [];
+        if (array_key_exists(static::KEY_ENABLED_FIELDS, $this->form)) {
+            $result = explode(',', $this->form[static::KEY_ENABLED_FIELDS]);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Sort fields according to sorted keys
+     * @param array $fields
+     * @return GF_Field[]
+     */
+    public
+    function sortFields($fields = [])
+    {
+        if (empty($fields)) {
+            $fields = $this->fields;
+        }
+
+        $sorted_keys = $this->get_enabled_fields();
+        $fields = array_reduce($fields, function ($carry, GF_Field $field) {
+            $carry[$field->id] = $field;
+            return $carry;
+        }, []);
+
+        $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'get_class'));
+        return $fields;
     }
 
 }

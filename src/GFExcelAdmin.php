@@ -269,8 +269,10 @@ class GFExcelAdmin extends GFAddOn
         }
 
         foreach ($this->get_posted_settings() as $key => $value) {
-            if ($key === GFExcel::KEY_DISABLED_FIELDS) {
-                $value = implode(',', array_keys(array_filter($value)));
+            if ($key === FieldsRepository::KEY_DISABLED_FIELDS) {
+                if (is_array($value)) {
+                    $value = implode(',', array_keys(array_filter($value)));
+                }
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
                 $value = preg_replace('/\.(xlsx?|csv)$/is', '', $value);
@@ -349,13 +351,14 @@ class GFExcelAdmin extends GFAddOn
     private function sortableFields($form)
     {
         $repository = new FieldsRepository($form);
-        $disabled_fields = GFExcel::get_disabled_fields($form);
+        $disabled_fields = $repository->get_disabled_fields();
         $all_fields = $repository->getFields($unfiltered = true);
         $active_fields = $inactive_fields = [];
         foreach ($all_fields as $field) {
             $array_name = in_array($field->id, $disabled_fields) ? 'inactive_fields' : 'active_fields';
             array_push($$array_name, $field);
         }
+        $active_fields = $repository->sortFields($active_fields);
 
         $this->single_section([
             'title' => __('Disabled fields from export', GFExcel::$slug),
@@ -458,25 +461,32 @@ class GFExcelAdmin extends GFAddOn
             return '#' . $id;
         }, $ids));
 
-        return "
-        <script src=\"https://code.jquery.com/ui/1.12.1/jquery-ui.js\"></script>
+        return '<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script>(function($) {
             $(document).ready(function() {
-                $('$ids').sortable({
-                    connectWith: '.$connector_class'
+                var $elements = $(\'' . $ids . '\');
+                var updateLists = function($elements) {
+                  $elements.each(function(i,el) {
+                    var $input = $(el).prev();
+                    $input.val($(el).sortable(\'toArray\',{ attribute: "data-value"}).join(","));                   
+                  })
+                };
+                $elements.sortable({
+                    connectWith: \'.' . $connector_class . '\',
+                    update: function(e,ui) {
+                       updateLists($elements);
+                    }
                 }).disableSelection();
                
-                $('$ids').on('click','.move',function() {
-                    var element = $(this).closest('li');
-                    element.appendTo($('#'+element.closest('ul').data('send-to')));
-                    $('$ids').sortable('refresh');
-                });
-                $('$ids').each(function(i, el) {
-                   // iets met update events, en dan per 'el' de sorting even ophalen en die verwerken in een input 
+                $elements.on(\'click\',\'.move\',function() {
+                    var element = $(this).closest(\'li\');
+                    element.appendTo($(\'#\'+element.closest(\'ul\').data(\'send-to\')));
+                    $elements.sortable(\'refresh\');
+                    updateLists($elements);
                 });
             });
                 
-        })(jQuery);</script>";
+        })(jQuery);</script>';
     }
 
     /**
