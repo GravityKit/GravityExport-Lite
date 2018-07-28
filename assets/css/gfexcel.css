@@ -63,3 +63,22 @@ ul.fields-select li {
 .gaddon-section.sortfields p {
     margin-bottom: 10px;
 }
+
+.sortfields .fa-bars {
+    color: #DDD;
+    margin-right: 5px;
+}
+
+.sortfields .field {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+#gfexcel_disabled_fields .move i.fa-close {
+    display: none;
+}
+
+#gfexcel_enabled_fields .move i.fa-arrow-right {
+    display: none;
+}

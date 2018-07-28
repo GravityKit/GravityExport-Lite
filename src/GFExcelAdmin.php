@@ -376,8 +376,17 @@ class GFExcelAdmin extends GFAddOn
             $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
             $html .= sprintf(
                 '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
-                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) {
-                return sprintf('<li data-value="%s"><div>%s</div><div class="move">&times;</div></li>', $choice['value'], $choice['label']);
+                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) use ($field) {
+                return sprintf(
+                    '<li data-value="%s">
+                        <div class="field"><i class="fa fa-bars"></i> %s</div>
+                        <div class="move">
+                            <i class="fa fa-arrow-right"></i>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </li>',
+                    $choice['value'], $choice['label']
+                );
             }, $field['choices'])), $field['move_to']);
 
             $html .= rgar($field, 'after_select');
