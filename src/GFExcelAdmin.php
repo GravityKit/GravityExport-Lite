@@ -38,11 +38,18 @@ class GFExcelAdmin extends GFAddOn
             $this->repository = new FormsRepository($form['id']);
         }
 
+        parent::__construct();
+    }
+
+    public function init_admin()
+    {
+        parent::init_admin();
+
         add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
         add_action("wp_loaded", [$this, 'handle_bulk_actions']);
         add_action("admin_enqueue_scripts", [$this, "register_assets"]);
+        add_action("gform_notification", [$this, 'handle_notification'], 10, 3);
 
-        parent::__construct();
     }
 
     public function form_settings($form)
@@ -330,7 +337,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
-                    'value' => $form['gfexcel_disabled_fields'],
+                    'value' => @$form['gfexcel_disabled_fields'] ?: '',
                     'choices' => array_map(function (\GF_Field $field) {
                         return [
                             'value' => $field->id,
@@ -340,7 +347,7 @@ class GFExcelAdmin extends GFAddOn
                 ], [
                     'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
-                    'value' => $form['gfexcel_enabled_fields'],
+                    'value' => @$form['gfexcel_enabled_fields'] ?: '',
                     'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
@@ -455,6 +462,40 @@ class GFExcelAdmin extends GFAddOn
         wp_enqueue_style('gfexcel-css', $entry . 'assets/css/gfexcel.css');
 
         $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+    }
+
+    /**
+     * @param $notification
+     * @param $form
+     * @param $entry
+     * @return mixed
+     */
+    public function handle_notification($notification, $form, $entry)
+    {
+
+        // get notification to add to by form setting
+
+        // create a file based on the settings in the form, with only 1 entry: $entry
+        $output = new GFExcelOutput($form['id'], new PHPExcelRenderer());
+        $output->setEntries([$entry]);
+
+        $file = $output->render($save = true);
+
+        // attach file to $notification['attachments'][]
+        $notification['attachments'][] = $file;
+
+        return $notification;
+    }
+
+    private static $_instance = null;
+
+    public static function get_instance()
+    {
+        if (self::$_instance == null) {
+            self::$_instance = new GFExcelAdmin();
+        }
+
+        return self::$_instance;
     }
 
 }

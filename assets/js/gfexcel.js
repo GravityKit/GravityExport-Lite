@@ -20,10 +20,10 @@ var gfexcel_sortable;
 
         $elements.on('click', '.move', function () {
             var element = $(this).closest('li');
-            element.appendTo($('#' + element.closest('ul').data('send-to')));
+            var send_to = '#' + element.closest('ul').data('send-to');
+            element.appendTo($(send_to));
             setTimeout(function () {
                 element.addClass('light-up');
-                // element.removeClass('light-up');
                 setTimeout(function () {
                     element.removeClass('light-up');
                 }, 200);

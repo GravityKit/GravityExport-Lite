@@ -43,9 +43,10 @@ class GFExcelOutput
     /**
      * The renderer is invoked and send all the data it needs to preform it's task.
      * It returns the actual Excel as a download
+     * @param bool $save
      * @return mixed
      */
-    public function render()
+    public function render($save = false)
     {
         $this->setColumns();
         $this->setRows();
@@ -54,7 +55,7 @@ class GFExcelOutput
         $rows = $this->getRows();
         $columns = $this->getColumns();
 
-        return $this->renderer->handle($form, $columns, $rows);
+        return $this->renderer->handle($form, $columns, $rows, $save);
     }
 
     /**
@@ -165,6 +166,17 @@ class GFExcelOutput
             $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
         }
         return $this->entries;
+    }
+
+    /**
+     * Actively set the entries for this output rendering
+     * @param array $entries
+     * @return $this
+     */
+    public function setEntries($entries = [])
+    {
+        $this->entries = $entries;
+        return $this;
     }
 
     /**
