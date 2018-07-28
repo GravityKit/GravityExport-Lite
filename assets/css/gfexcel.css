@@ -1,0 +1,94 @@
+.gaddon-setting-inline {
+    display: inline-block;
+    line-height: 26px;
+}
+
+span.gf_settings_description {
+    font-size: smaller;
+}
+
+ul.fields-select {
+    background-color: #FFF;
+    padding: 3px 5px;
+    border: 1px solid #E1E1E1;
+    min-height: 30px;
+}
+
+ul.fields-select li div:not(.move) {
+    flex: 1;
+}
+
+ul.fields-select li div.move {
+    font-weight: bold;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+ul.fields-select li div.move:hover {
+    color: #006799;
+}
+
+.ui-sortable-handle {
+    cursor: pointer;
+    cursor: -webkit-grab;
+}
+
+.ui-sortable-helper {
+    cursor: -webkit-grabbing;
+}
+
+ul.fields-select li {
+    display: flex;
+    background-color: #f7f7f7;
+    margin: 2px 0;
+    padding: 3px;
+    -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+    -ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
+    transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
+}
+
+.gaddon-section.sortfields table {
+    table-layout: fixed;
+}
+
+.gaddon-section.sortfields table td {
+    padding-right: 10px;
+}
+
+.gaddon-section.sortfields table td + td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.gaddon-section.sortfields p {
+    margin-bottom: 10px;
+}
+
+.sortfields .fa-bars {
+    color: #DDD;
+    margin-right: 5px;
+}
+
+.sortfields .field {
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.sortfields li.light-up {
+    background-color: #006799;
+    color: #FFF;
+}
+
+.sortfields li.light-up i {
+    color: #fff;
+}
+
+#gfexcel_disabled_fields .move i.fa-close {
+    display: none;
+}
+
+#gfexcel_enabled_fields .move i.fa-arrow-right {
+    display: none;
+}

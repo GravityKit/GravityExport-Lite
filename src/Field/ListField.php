@@ -4,6 +4,8 @@
 namespace GFExcel\Field;
 
 
+use GFExcel\Values\BaseValue;
+
 class ListField extends BaseField
 {
     private $columns;
@@ -28,7 +30,7 @@ class ListField extends BaseField
             }, (array) $this->field['choices']);
         }
 
-        return $this->columns;
+        return $this->wrap($this->columns, true);
     }
 
     /**
@@ -56,6 +58,9 @@ class ListField extends BaseField
         $component = $this; //php 5.3 compatible
         $result = array_values(array_reduce($result, function ($carry, $row) use ($component) {
             foreach ($component->getColumns() as $column) {
+                if($column instanceof BaseValue) {
+                    $column = $column->getValue();
+                }
                 if (!array_key_exists($column, $carry)) {
                     $carry[$column] = array();
                 }

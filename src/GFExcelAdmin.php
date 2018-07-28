@@ -6,7 +6,8 @@ use GFAddOn;
 use GFCommon;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
-use GFExport;
+use GFExcel\Repository\FieldsRepository;
+use GFExcel\Repository\FormsRepository;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -23,22 +24,29 @@ class GFExcelAdmin extends GFAddOn
 
     protected $_slug;
 
+    protected $_capabilities_form_settings = ['gravityforms_export_entries'];
+
+    private $repository;
+
     public function __construct()
     {
         $this->_version = GFExcel::$version;
         $this->_title = __(GFExcel::$name, GFExcel::$slug);
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
+        if ($form = $this->get_current_form()) {
+            $this->repository = new FormsRepository($form['id']);
+        }
 
-        add_action("bulk_actions-toplevel_page_gf_edit_forms", array($this, "bulk_actions"), 10, 2);
-        add_action("wp_loaded", array($this, 'handle_bulk_actions'));
+        add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
+        add_action("wp_loaded", [$this, 'handle_bulk_actions']);
+        add_action("admin_enqueue_scripts", [$this, "register_assets"]);
 
         parent::__construct();
     }
 
     public function form_settings($form)
     {
-
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -70,8 +78,6 @@ class GFExcelAdmin extends GFAddOn
             $url
         );
 
-        echo "<style>.gaddon-setting-inline { display:inline-block; line-height: 26px; }</style>";
-
         echo "<form method=\"post\">";
         printf(
             "<p>
@@ -90,7 +96,7 @@ class GFExcelAdmin extends GFAddOn
 
         $this->generalSettings($form);
 
-        $this->disableFields($form);
+        $this->sortableFields($form);
 
         $this->settings_save(['value' => __("Save settings", GFExcel::$slug)]);
         echo "</form>";
@@ -185,7 +191,7 @@ class GFExcelAdmin extends GFAddOn
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
             'choices' => $fields,
-            'default_value' => GFExcelOutput::getSortField($form['id']),
+            'default_value' => $this->repository->getSortField(),
         ]);
     }
 
@@ -200,7 +206,7 @@ class GFExcelAdmin extends GFAddOn
                 'value' => 'DESC',
                 'label' => __("Descending", GFExcel::$slug)
             ]],
-            'default_value' => GFExcelOutput::getSortOrder($form['id']),
+            'default_value' => $this->repository->getSortOrder(),
         ]);
     }
 
@@ -218,8 +224,10 @@ class GFExcelAdmin extends GFAddOn
         }
 
         foreach ($this->get_posted_settings() as $key => $value) {
-            if ($key === GFExcel::KEY_DISABLED_FIELDS) {
-                $value = implode(',', array_keys(array_filter($value)));
+            if ($key === FieldsRepository::KEY_DISABLED_FIELDS) {
+                if (is_array($value)) {
+                    $value = implode(',', array_keys(array_filter($value)));
+                }
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
                 $value = preg_replace('/\.(xlsx?|csv)$/is', '', $value);
@@ -232,56 +240,6 @@ class GFExcelAdmin extends GFAddOn
         GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug), false);
     }
 
-    /**
-     * Add settings for disabling fields
-     * @param $form
-     */
-    private function disableFields($form)
-    {
-        $disabled_fields = GFExcel::get_disabled_fields($form);
-        $meta = GFExport::add_default_export_fields(array('id' => $form['id'], 'fields' => array()));
-
-        $this->single_section([
-            'title' => __('Disable fields from export', GFExcel::$slug),
-            'fields' => [
-                [
-                    'label' => __('Select the fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
-
-                    'choices' => array_reduce((array) $form['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-
-                [
-                    'label' => __('Select the meta fields to disable', GFExcel::$slug),
-                    'name' => 'gfexcel_disable_fields[]',
-                    'type' => 'checkbox',
-                    'horizontal' => true,
-                    'choices' => array_reduce($meta['fields'], function ($fields, \GF_Field $field) use ($disabled_fields) {
-                        $fields[] = [
-                            'name' => GFExcel::KEY_DISABLED_FIELDS . '[' . $field->id . ']',
-                            'value' => (int) in_array($field->id, $disabled_fields),
-                            'default_value' => (int) in_array($field->id, $disabled_fields),
-                            'label' => $field->label,
-                        ];
-
-                        return $fields;
-                    }, []),
-                ],
-            ],
-        ]);
-
-    }
 
     /**
      * Remove filename so it returns the newly formatted filename
@@ -338,10 +296,165 @@ class GFExcelAdmin extends GFAddOn
                         return
                             [
                                 'name' => GFExcel::KEY_FILE_EXTENSION,
-                                'label' => '.'.$extension,
+                                'label' => '.' . $extension,
                                 'value' => $extension,
                             ];
                     }, ['xlsx', 'xls', 'csv',]),
-                    'description' => __('Please note that .xls does not support unicode, and the output will not be readable.', GFExcel::$slug),]],]);
+                    'description' => __('Please note that .xls does not support unicode 😐, and the output will not be readable.', GFExcel::$slug),]],]);
     }
+
+    /**
+     * Adds the sortable fields section to the settings page
+     */
+    private function sortableFields($form)
+    {
+        $repository = new FieldsRepository($form);
+        $disabled_fields = $repository->get_disabled_fields();
+        $all_fields = $repository->getFields($unfiltered = true);
+
+        $active_fields = $inactive_fields = [];
+        foreach ($all_fields as $field) {
+            $array_name = in_array($field->id, $disabled_fields) ? 'inactive_fields' : 'active_fields';
+            array_push($$array_name, $field);
+        }
+        $active_fields = $repository->sortFields($active_fields);
+
+        $this->single_section([
+            'title' => __('Disabled fields from export', GFExcel::$slug),
+            'class' => 'sortfields',
+            'fields' => [
+                [
+                    'label' => __('Disabled fields', GFExcel::$slug),
+                    'name' => 'gfexcel_disabled_fields',
+                    'move_to' => 'gfexcel_enabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'side' => 'left',
+                    'value' => $form['gfexcel_disabled_fields'],
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $field->label,
+                        ];
+                    }, $inactive_fields),
+                ], [
+                    'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
+                    'name' => 'gfexcel_enabled_fields',
+                    'value' => $form['gfexcel_enabled_fields'],
+                    'move_to' => 'gfexcel_disabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'side' => 'right',
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $field->label,
+                        ];
+                    }, $active_fields),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Renders the html for a single sortable fields.
+     * I don't like this inline html approach Gravity Forms uses.
+     * @param $field
+     * @param bool $echo
+     * @return string
+     */
+    public function settings_sortable($field, $echo = true)
+    {
+        $attributes = $this->get_field_attributes($field);
+        $name = '' . esc_attr($field['name']);
+        $value = rgar($field, 'value'); //comma-separated list from database
+
+        // If no choices were provided and there is a no choices message, display it.
+        if ((empty($field['choices']) || !rgar($field, 'choices')) && rgar($field, 'no_choices')) {
+            $html = $field['no_choices'];
+        } else {
+
+            $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
+            $html .= sprintf(
+                '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
+                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) use ($field) {
+                return sprintf(
+                    '<li data-value="%s">
+                        <div class="field"><i class="fa fa-bars"></i> %s</div>
+                        <div class="move">
+                            <i class="fa fa-arrow-right"></i>
+                            <i class="fa fa-close"></i>
+                        </div>
+                    </li>',
+                    $choice['value'], $choice['label']
+                );
+            }, $field['choices'])), $field['move_to']);
+
+            $html .= rgar($field, 'after_select');
+        }
+
+        if ($this->field_failed_validation($field)) {
+            $html .= $this->get_error_icon($field);
+        }
+
+        if ($echo) {
+            echo $html;
+        }
+
+        return $html;
+    }
+
+    /**
+     * Renders the html for the sortable fields
+     * @param $field
+     */
+    public function single_setting_row_sortable($field)
+    {
+        $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
+
+        // Prepare setting description.
+        $description = rgar($field, 'description') ? '<span class="gf_settings_description">' . $field['description'] . '</span>' : null;
+
+        if (array_key_exists('side', $field) && $field['side'] === "left") {
+            ?>
+            <tr id="gaddon-setting-row-<?php echo $field['name'] ?>" <?php echo $display; ?>>
+        <?php } ?>
+        <td style="vertical-align: top; ">
+            <p><strong><?php $this->single_setting_label($field); ?></strong></p>
+            <?php
+            $this->single_setting($field);
+            echo $description;
+            ?>
+        </td>
+        <?php if (array_key_exists('side', $field) && $field['side'] === "right") { ?></tr><?php }
+    }
+
+    /**
+     * Adds javascript for the sortable to the page
+     * @param array $ids
+     * @param string $connector_class
+     * @return string
+     */
+    private function sortable_script(array $ids, $connector_class = 'connected-sortable')
+    {
+        $ids = implode(', ', array_map(function ($id) {
+            return '#' . $id;
+        }, $ids));
+
+        wp_add_inline_script('gfexcel-js', '(function($) { $(document).ready(function() { gfexcel_sortable(\'' . $ids . '\',\'' . $connector_class . '\'); }); })(jQuery);');
+    }
+
+    /**
+     * Add javascript and custom css to the page
+     */
+    public function register_assets()
+    {
+        $entry = plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
+        wp_enqueue_script('jquery-ui-sortable');
+        wp_enqueue_script('gfexcel-js', $entry . 'assets/js/gfexcel.js', ['jquery', 'jquery-ui-sortable']);
+        wp_enqueue_style('gfexcel-css', $entry . 'assets/css/gfexcel.css');
+
+        $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+    }
+
 }

@@ -22,6 +22,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      * @param $columns
      * @param $rows
      * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \GFExcel\Exception\Exception
      */
     public function handle($form, $columns, $rows)
     {

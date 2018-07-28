@@ -16,7 +16,7 @@ class GFExcel
 
     const KEY_HASH = 'gfexcel_hash';
     const KEY_COUNT = 'gfexcel_download_count';
-    const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+
     const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
     const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
     const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
@@ -236,23 +236,6 @@ class GFExcel
         GFFormsModel::update_form_meta($form_id, $form_meta);
     }
 
-    /**
-     * Retrieve the disabled field id's in array
-     *
-     * @param $form
-     * @return array
-     */
-    public static function get_disabled_fields($form)
-    {
-        $result = [];
-        if (array_key_exists(static::KEY_DISABLED_FIELDS, $form)) {
-            $result = explode(',', $form[static::KEY_DISABLED_FIELDS]);
-        }
 
-        return gf_apply_filters([
-            "gfexcel_disabled_fields",
-            $form['id'],
-        ], $result);
-    }
 
 }

@@ -6,6 +6,7 @@ use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -29,9 +30,6 @@ abstract class AbstractPHPExcelRenderer
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
-            if($extension === 'pdf') {
-                $extension = "tcpdf";
-            }
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
 
             header('Content-Type: application/vnd.ms-excel');
@@ -81,6 +79,12 @@ abstract class AbstractPHPExcelRenderer
         return $this;
     }
 
+    /**
+     * @param Worksheet $worksheet
+     * @param $rows
+     * @param $columns
+     * @return $this
+     */
     protected function addCellsToWorksheet(Worksheet $worksheet, $rows, $columns)
     {
         array_unshift($rows, $columns);
@@ -92,9 +96,8 @@ abstract class AbstractPHPExcelRenderer
                     $this->getCellType($value));
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
 
-                $this->setCellUrl($cell, $value);
-
                 try {
+                    $this->setProperties($cell, $value);
                     $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
                 } catch (Exception $e) {
                     $this->handleException($e);
@@ -192,7 +195,7 @@ abstract class AbstractPHPExcelRenderer
     {
         global $wp_version;
 
-        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunantly something broke</strong></p>";
+        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>";
         echo "<p>Error message: " . $exception->getMessage() . " </p>";
         echo "<p>If you need support for this, please contact me via the <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> on the wordpress plugin.</p>";
         echo "<p>Check if someone else had the same error, before posting a new support question.<br/>And when opening a new question, ";
@@ -209,6 +212,56 @@ abstract class AbstractPHPExcelRenderer
         echo "<li>Error stack trace:<br/><br/>" . nl2br($exception->getTraceAsString()) . "</li>";
         echo "</ul>";
         exit;
+    }
+
+    /**
+     * @param Cell $cell
+     * @param $value
+     * @throws \GFExcel\Exception\Exception
+     */
+    private function setProperties(Cell $cell, $value)
+    {
+        $this->setCellUrl($cell, $value);
+        $this->setFontStyle($cell, $value);
+    }
+
+    /**
+     * @param Cell $cell
+     * @param $value
+     * @return bool
+     * @throws \GFExcel\Exception\Exception
+     */
+    private function setFontStyle(Cell $cell, $value)
+    {
+
+        if (!$value instanceof BaseValue) {
+            return false;
+        }
+
+        try {
+            if ($value->isBold()) {
+                $cell->getStyle()->getFont()->setBold(true);
+            }
+            if ($value->isItalic()) {
+                $cell->getStyle()->getFont()->setItalic(true);
+            }
+            if ($color = $value->getColor()) {
+                $color_field = $cell->getStyle()->getFont()->getColor();
+                $color_field->setRGB($color);
+                $cell->getStyle()->getFont()->setColor($color_field);
+            }
+            if ($color = $value->getBackgroundColor()) {
+                $fill = $cell->getStyle()->getFill()->setFillType(Fill::FILL_SOLID);
+                $color_field = $fill->getStartColor()->setRGB($color);
+                $fill->setStartColor($color_field);
+            }
+
+            return true;
+        } catch (\GFExcel\Exception\Exception $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
 }
