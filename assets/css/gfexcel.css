@@ -14,10 +14,6 @@ ul.fields-select {
     min-height: 30px;
 }
 
-ul.fields-select li {
-    display: flex;
-}
-
 ul.fields-select li div:not(.move) {
     flex: 1;
 }
@@ -42,9 +38,13 @@ ul.fields-select li div.move:hover {
 }
 
 ul.fields-select li {
+    display: flex;
     background-color: #f7f7f7;
     margin: 2px 0;
     padding: 3px;
+    -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+    -ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
+    transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
 }
 
 .gaddon-section.sortfields table {
@@ -75,6 +75,16 @@ ul.fields-select li {
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
+
+.sortfields li.light-up {
+    background-color: #006799;
+    color: #FFF;
+}
+
+.sortfields li.light-up i {
+    color: #fff;
+}
+
 #gfexcel_disabled_fields .move i.fa-close {
     display: none;
 }

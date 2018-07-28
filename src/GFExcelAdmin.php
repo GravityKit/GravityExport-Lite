@@ -34,8 +34,9 @@ class GFExcelAdmin extends GFAddOn
         $this->_title = __(GFExcel::$name, GFExcel::$slug);
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
-        $form = $this->get_current_form();
-        $this->repository = new FormsRepository($form['id']);
+        if ($form = $this->get_current_form()) {
+            $this->repository = new FormsRepository($form['id']);
+        }
 
         add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
         add_action("wp_loaded", [$this, 'handle_bulk_actions']);
