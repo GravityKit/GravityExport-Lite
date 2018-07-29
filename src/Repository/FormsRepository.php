@@ -69,6 +69,22 @@ class FormsRepository
         return $value === "ASC" ? "ASC" : "DESC";
     }
 
+    /**
+     * Return the notifications for this form
+     * @return array
+     */
+    public function getNotifications()
+    {
+        return rgar($this->form, 'notifications', []);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectedNotification()
+    {
+        return rgar($this->form, GFExcel::KEY_ATTACHMENT_NOTIFICATION, '');
+    }
 
     /**
      * Get the form instance

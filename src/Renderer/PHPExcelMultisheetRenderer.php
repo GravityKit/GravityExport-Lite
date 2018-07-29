@@ -21,10 +21,10 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
      * @param $form
      * @param $columns
      * @param $rows
+     * @param bool $save
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \GFExcel\Exception\Exception
      */
-    public function handle($form, $columns, $rows)
+    public function handle($form, $columns, $rows, $save = false)
     {
         $this->current_sheet_id += 1;
         if ($this->current_sheet_id > 0) {
@@ -41,7 +41,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
 
     protected function getFileName()
     {
-        $filename = sprintf("gfexcel-%s-%s.xls", sanitize_title("download"), date("Ymd"));
+        $filename = sprintf("gfexcel-%s-%s.xlsx", sanitize_title("download"), date("Ymd"));
 
         return gf_apply_filters(array("gfexcel_renderer_filename"), $filename);
     }

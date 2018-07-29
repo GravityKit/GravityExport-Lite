@@ -57,14 +57,14 @@ msgstr "Datum"
 msgid "IP address"
 msgstr "IP-adres"
 
-msgid "Disable fields from export"
-msgstr "Schakel velden uit"
+msgid "Field settings"
+msgstr "Veld-instellingen"
 
-msgid "Select the fields to disable"
-msgstr "Selecteer velden om uit te schakelen"
+msgid "Disabled fields"
+msgstr "Uitgeschakelde velden"
 
-msgid "Select the meta fields to disable"
-msgstr "Selecteer meta-velden om uit te schakelen"
+msgid "Enable & sort the fields"
+msgstr "Activeer en sorteer de velden"
 
 msgid "Regenerate url"
 msgstr "Stel url opnieuw in"
@@ -92,3 +92,12 @@ msgstr "Aangepaste bestandsnaam"
 
 msgid "Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default."
 msgstr "Alleen letters, nummers en streepjes zijn toegestaan. Bij leeg veld wordt de standaard waarde gebruikt."
+
+msgid "File extension"
+msgstr "Bestandsextensie"
+
+msgid "Attach single entry to notification"
+msgstr "Voeg bestand toe als bijlage aan melding"
+
+msgid "Select a notification"
+msgstr "Selecteer een melding"

@@ -19,24 +19,28 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-add_action("plugins_loaded", function () {
-    if (!class_exists("GFForms")) {
+add_action("gform_loaded", function () {
+    if (!class_exists('GFForms')) {
         return '';
     }
-    if (!class_exists("GFExport")) {
+    if (!class_exists('GFExport')) {
         require_once(GFCommon::get_base_path() . '/export.php');
     }
 
-    $autoload = __DIR__ .'/vendor/autoload.php';
-    if(file_exists($autoload)) {
+    $autoload = __DIR__ . '/vendor/autoload.php';
+    if (file_exists($autoload)) {
         require_once($autoload);
     }
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
 
-    if (is_admin()) {
-        return new GFExcelAdmin();
+    if (!method_exists('GFForms', 'include_addon_framework')) {
+        return false;
     }
 
-    return new GFExcel();
+    GFAddOn::register(GFExcelAdmin::class);
+
+    if (!is_admin()) {
+        new GFExcel();
+    }
 });

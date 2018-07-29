@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.4.1
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,27 @@ add_filter('gfexcel_field_notes_enabled','__return_true');
 add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
 `
 
+= It's all to blend in Excel. Can I use some colors? =
+Definitely! You get to change: text color, background color, bold and italic. If that is not enough, you probably just need to add those Clip Arts yourself!
+
+`
+//add this to your functions.php
+add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label) {
+    // Need to know if this field is a label?
+    if (!$is_label) {
+        return $value;
+    }
+
+    $value->setColor('#ffffff'); //font color, needs a six character color hexcode. #fff won't cut it here.
+    $value->setBold(true); // Bold text
+    $value->setItalic(true); // Italic text (to be combined with bold)
+    $value->setBackgroundColor('#0085BA'); // background color
+
+    // $field is the GF_Field object, so you can use that too for some checks.
+    return $value;
+}, 10, 3);
+`
+
 == Screenshots ==
 
 1. A 'Results in Excel' link is added to the form settings
@@ -163,16 +184,16 @@ add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexc
 
 == Changelog ==
 
-= 1.4.1 (WIP) =
-* Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
-* Bugfix: Lists with a single column could not be exported.
-* Enhancement: Added support for the Woocommerce add-on.
-* Enhancement: Added support for the Members plugin. You need 'gravityforms_export_entries' role for this plugin now.
-* Enhancement: You can now add .xls(x) or .csv to force that output. Also; some systems need this in order to figure out the file type.
+= 1.5.0 =
+* Awesome stuff: You can now set the order of the fields by sorting them, using drag and drop!
 * Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
 * Feature: Add colors and font styles to values use the `gfexcel_value_object`-hook.
-* Todo: add translation extension options
-* Todo: add documentation about colors
+* Feature: Append a single entry file to a notification e-mail
+* Enhancement: Added support for the Woocommerce add-on.
+* Enhancement: Added support for the Members plugin. You need 'gravityforms_export_entries' role for this plugin.
+* Enhancement: You can now add .xlsx or .csv to force that output. Also; some systems need this in order to figure out the file type.
+* Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
+* Bugfix: Lists with a single column could not be exported.
 
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!

@@ -28,8 +28,10 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
      * @param $form
      * @param $columns
      * @param $rows
+     * @param bool $save
+     * @return string
      */
-    public function handle($form, $columns, $rows)
+    public function handle($form, $columns, $rows, $save = false)
     {
         $this->form = $form;
         $this->columns = $columns;
@@ -41,7 +43,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         $this->addCellsToWorksheet($this->worksheet, $this->rows, $this->columns)
             ->autoSizeColumns($this->worksheet, $this->columns);
 
-        return $this->renderOutput($this->extension);
+        return $this->renderOutput($this->extension, $save);
     }
 
     protected function getFileName()

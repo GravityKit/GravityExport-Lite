@@ -21,16 +21,21 @@ abstract class AbstractPHPExcelRenderer
     public function __construct()
     {
         $this->spreadsheet = new Spreadsheet();
+        register_shutdown_function([$this, "fatal_handler"]);
     }
 
-    public function renderOutput($extension = 'xlsx')
+    public function renderOutput($extension = 'xlsx', $save = false)
     {
-        register_shutdown_function([$this, "fatal_handler"]);
-
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+
+            if ($save) {
+                $file = get_temp_dir() . $this->getFileName();
+                $objWriter->save($file);
+                return $file;
+            }
 
             header('Content-Type: application/vnd.ms-excel');
             header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');

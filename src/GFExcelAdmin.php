@@ -14,19 +14,17 @@ class GFExcelAdmin extends GFAddOn
 {
     const BULK_DOWNLOAD = 'gfexcel_download';
 
-    protected $_version;
+    private static $_instance = null;
 
     protected $_min_gravityforms_version = "1.9";
 
-    protected $_short_title;
-
-    protected $_title;
-
-    protected $_slug;
-
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
+    /** @var FormsRepository micro cache */
     private $repository;
+
+    /** @var string  micro cache for file name*/
+    private $_file = '';
 
     public function __construct()
     {
@@ -38,11 +36,24 @@ class GFExcelAdmin extends GFAddOn
             $this->repository = new FormsRepository($form['id']);
         }
 
+        parent::__construct();
+    }
+
+    public function init_admin()
+    {
+        parent::init_admin();
+
         add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
         add_action("wp_loaded", [$this, 'handle_bulk_actions']);
         add_action("admin_enqueue_scripts", [$this, "register_assets"]);
+    }
 
-        parent::__construct();
+    public function init()
+    {
+        parent::init();
+
+        add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
+        add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
     }
 
     public function form_settings($form)
@@ -230,7 +241,7 @@ class GFExcelAdmin extends GFAddOn
                 }
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
-                $value = preg_replace('/\.(xlsx?|csv)$/is', '', $value);
+                $value = preg_replace('/\.(xlsx|csv)$/is', '', $value);
                 $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
             }
             $form_meta[$key] = $value;
@@ -299,8 +310,17 @@ class GFExcelAdmin extends GFAddOn
                                 'label' => '.' . $extension,
                                 'value' => $extension,
                             ];
-                    }, ['xlsx', 'xls', 'csv',]),
-                    'description' => __('Please note that .xls does not support unicode 😐, and the output will not be readable.', GFExcel::$slug),]],]);
+                    }, ['xlsx', 'csv',]),
+                ],
+                [
+                    'label' => __('Attach single entry to notification', GFExcel::$slug),
+                    'type' => 'select',
+                    'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
+                    'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
+                    'choices' => $this->getNotifications(),
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -320,7 +340,7 @@ class GFExcelAdmin extends GFAddOn
         $active_fields = $repository->sortFields($active_fields);
 
         $this->single_section([
-            'title' => __('Disabled fields from export', GFExcel::$slug),
+            'title' => __('Field settings', GFExcel::$slug),
             'class' => 'sortfields',
             'fields' => [
                 [
@@ -330,7 +350,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
-                    'value' => $form['gfexcel_disabled_fields'],
+                    'value' => @$form['gfexcel_disabled_fields'] ?: '',
                     'choices' => array_map(function (\GF_Field $field) {
                         return [
                             'value' => $field->id,
@@ -338,9 +358,9 @@ class GFExcelAdmin extends GFAddOn
                         ];
                     }, $inactive_fields),
                 ], [
-                    'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
+                    'label' => __('Enable & sort the fields', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
-                    'value' => $form['gfexcel_enabled_fields'],
+                    'value' => @$form['gfexcel_enabled_fields'] ?: '',
                     'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
@@ -455,6 +475,68 @@ class GFExcelAdmin extends GFAddOn
         wp_enqueue_style('gfexcel-css', $entry . 'assets/css/gfexcel.css');
 
         $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+    }
+
+    /**
+     * @param $notification
+     * @param $form
+     * @param $entry
+     * @return mixed
+     */
+    public function handle_notification($notification, $form, $entry)
+    {
+        // get notification to add to by form setting
+        if ($this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+            //Not the right notification
+            return $notification;
+        }
+
+        // create a file based on the settings in the form, with only this entry.
+        $output = new GFExcelOutput($form['id'], new PHPExcelRenderer());
+        $output->setEntries([$entry]);
+
+        // save the file to a temporary file
+        $this->_file = $output->render($save = true);
+        if (!file_exists($this->_file)) {
+            return $notification;
+        }
+        // attach file to $notification['attachments'][]
+        $notification['attachments'][] = $this->_file;
+
+        return $notification;
+    }
+
+
+    public static function get_instance()
+    {
+        if (self::$_instance == null) {
+            self::$_instance = new GFExcelAdmin();
+        }
+
+        return self::$_instance;
+    }
+
+    private function getNotifications()
+    {
+        $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
+        foreach ($this->repository->getNotifications() as $key => $notification) {
+            $options[] = ['label' => rgar($notification, 'name', __('Unknown')), 'value' => $key];
+        }
+
+        return $options;
+    }
+
+    public function remove_temporary_file()
+    {
+        $args = func_get_args();
+        $attachments = $args[5];
+        if (is_array($attachments) && count($attachments) < 1) {
+            return false;
+        }
+        if (in_array($this->_file, $attachments) && file_exists($this->_file)) {
+            unlink($this->_file);
+        }
+        return true;
     }
 
 }
