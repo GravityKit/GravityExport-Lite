@@ -14,6 +14,8 @@ class GFExcelAdmin extends GFAddOn
 {
     const BULK_DOWNLOAD = 'gfexcel_download';
 
+    private static $_instance = null;
+
     protected $_version;
 
     protected $_min_gravityforms_version = "1.9";
@@ -27,6 +29,8 @@ class GFExcelAdmin extends GFAddOn
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
     private $repository;
+
+    private $_file = '';
 
     public function __construct()
     {
@@ -48,8 +52,14 @@ class GFExcelAdmin extends GFAddOn
         add_action("bulk_actions-toplevel_page_gf_edit_forms", [$this, "bulk_actions"], 10, 2);
         add_action("wp_loaded", [$this, 'handle_bulk_actions']);
         add_action("admin_enqueue_scripts", [$this, "register_assets"]);
-        add_action("gform_notification", [$this, 'handle_notification'], 10, 3);
+    }
 
+    public function init()
+    {
+        parent::init();
+
+        add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
+        add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
     }
 
     public function form_settings($form)
@@ -237,7 +247,7 @@ class GFExcelAdmin extends GFAddOn
                 }
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
-                $value = preg_replace('/\.(xlsx?|csv)$/is', '', $value);
+                $value = preg_replace('/\.(xlsx|csv)$/is', '', $value);
                 $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
             }
             $form_meta[$key] = $value;
@@ -306,8 +316,17 @@ class GFExcelAdmin extends GFAddOn
                                 'label' => '.' . $extension,
                                 'value' => $extension,
                             ];
-                    }, ['xlsx', 'xls', 'csv',]),
-                    'description' => __('Please note that .xls does not support unicode 😐, and the output will not be readable.', GFExcel::$slug),]],]);
+                    }, ['xlsx', 'csv',]),
+                ],
+                [
+                    'label' => 'Attach single entry to notification',
+                    'type' => 'select',
+                    'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
+                    'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
+                    'choices' => $this->getNotifications(),
+                ],
+            ],
+        ]);
     }
 
     /**
@@ -472,22 +491,27 @@ class GFExcelAdmin extends GFAddOn
      */
     public function handle_notification($notification, $form, $entry)
     {
-
         // get notification to add to by form setting
+        if ($this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+            //Not the right notification
+            return $notification;
+        }
 
-        // create a file based on the settings in the form, with only 1 entry: $entry
+        // create a file based on the settings in the form, with only this entry.
         $output = new GFExcelOutput($form['id'], new PHPExcelRenderer());
         $output->setEntries([$entry]);
 
-        $file = $output->render($save = true);
-
+        // save the file to a temporary file
+        $this->_file = $output->render($save = true);
+        if (!file_exists($this->_file)) {
+            return $notification;
+        }
         // attach file to $notification['attachments'][]
-        $notification['attachments'][] = $file;
+        $notification['attachments'][] = $this->_file;
 
         return $notification;
     }
 
-    private static $_instance = null;
 
     public static function get_instance()
     {
@@ -496,6 +520,29 @@ class GFExcelAdmin extends GFAddOn
         }
 
         return self::$_instance;
+    }
+
+    private function getNotifications()
+    {
+        $options = [['label' => __('Select a notification'), 'value' => '']];
+        foreach ($this->repository->getNotifications() as $key => $notification) {
+            $options[] = ['label' => rgar($notification, 'name', __('Unknown')), 'value' => $key];
+        }
+
+        return $options;
+    }
+
+    public function remove_temporary_file()
+    {
+        $args = func_get_args();
+        $attachments = $args[5];
+        if (is_array($attachments) && count($attachments) < 1) {
+            return false;
+        }
+        if (in_array($this->_file, $attachments) && file_exists($this->_file)) {
+            unlink($this->_file);
+        }
+        return true;
     }
 
 }

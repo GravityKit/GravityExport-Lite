@@ -20,10 +20,10 @@ use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
 add_action("gform_loaded", function () {
-    if (!class_exists("GFForms")) {
+    if (!class_exists('GFForms')) {
         return '';
     }
-    if (!class_exists("GFExport")) {
+    if (!class_exists('GFExport')) {
         require_once(GFCommon::get_base_path() . '/export.php');
     }
 
@@ -34,17 +34,13 @@ add_action("gform_loaded", function () {
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
 
-    if (is_admin()) {
-        if (!method_exists('GFForms', 'include_addon_framework')) {
-            return false;
-        }
-        GFAddOn::register(GFExcelAdmin::class);
-    } else {
-        return new GFExcel();
+    if (!method_exists('GFForms', 'include_addon_framework')) {
+        return false;
+    }
+
+    GFAddOn::register(GFExcelAdmin::class);
+
+    if (!is_admin()) {
+        new GFExcel();
     }
 });
-
-add_action("init", function () {
-    add_filter("gform_notification", [GFExcelAdmin::get_instance(), 'handle_notification'], 10, 3);
-});
-
