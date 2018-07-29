@@ -471,8 +471,8 @@ class GFExcelAdmin extends GFAddOn
     {
         $entry = plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
         wp_enqueue_script('jquery-ui-sortable');
-        wp_enqueue_script('gfexcel-js', $entry . 'assets/js/gfexcel.js', ['jquery', 'jquery-ui-sortable']);
-        wp_enqueue_style('gfexcel-css', $entry . 'assets/css/gfexcel.css');
+        wp_enqueue_script('gfexcel-js', $entry . 'public/js/gfexcel.js', ['jquery', 'jquery-ui-sortable']);
+        wp_enqueue_style('gfexcel-css', $entry . 'public/css/gfexcel.css');
 
         $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
     }
