@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,7 +184,7 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 
 == Changelog ==
 
-= 1.5.0 =
+= 1.5.1 =
 * (Awesome) Feature: You can now set the order of the fields by sorting them, using drag and drop!
 * Feature: Add colors and font styles to cells by using the `gfexcel_value_object`-hook (See docs).
 * Feature: Attach a single entry file to a notification email. 
@@ -194,6 +194,9 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 * Enhancement: Added support for the Members plugin. You need 'gravityforms_export_entries' role for this plugin.
 * Bugfix: The extension did not match the renderer, which sometimes caused Excel to give a warning.
 * Bugfix: Lists with a single column could not be exported.
+
+= 1.5.0 =
+* Failed upload. I wish Wordpress would drop the ancient SVN approach!
 
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
