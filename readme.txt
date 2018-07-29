@@ -185,14 +185,14 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 == Changelog ==
 
 = 1.5.0 =
-* Awesome stuff: You can now set the order of the fields by sorting them, using drag and drop!
-* Feature: Yes, you've read that correctly. We now support exports of csv. Why? Because we can!
-* Feature: Add colors and font styles to values use the `gfexcel_value_object`-hook.
-* Feature: Append a single entry file to a notification e-mail
+* (Awesome) Feature: You can now set the order of the fields by sorting them, using drag and drop!
+* Feature: Add colors and font styles to cells by using the `gfexcel_value_object`-hook (See docs).
+* Feature: Attach a single entry file to a notification email. 
+* Feature: We now support exports in CSV. Why? Because we can! (and also Harry asked me too).
+* Enhancement: You can now add .xlsx or .csv to the end of the URL, to force that output.
 * Enhancement: Added support for the Woocommerce add-on.
 * Enhancement: Added support for the Members plugin. You need 'gravityforms_export_entries' role for this plugin.
-* Enhancement: You can now add .xlsx or .csv to force that output. Also; some systems need this in order to figure out the file type.
-* Bugfix / feature: Choose an extension. Xlsx by default now. This also fixes a bug where the extension did not match the renderer.
+* Bugfix: The extension did not match the renderer, which sometimes caused Excel to give a warning.
 * Bugfix: Lists with a single column could not be exported.
 
 = 1.4.0 =
