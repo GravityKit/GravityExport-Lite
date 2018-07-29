@@ -16,20 +16,14 @@ class GFExcelAdmin extends GFAddOn
 
     private static $_instance = null;
 
-    protected $_version;
-
     protected $_min_gravityforms_version = "1.9";
-
-    protected $_short_title;
-
-    protected $_title;
-
-    protected $_slug;
 
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
+    /** @var FormsRepository micro cache */
     private $repository;
 
+    /** @var string  micro cache for file name*/
     private $_file = '';
 
     public function __construct()
@@ -319,7 +313,7 @@ class GFExcelAdmin extends GFAddOn
                     }, ['xlsx', 'csv',]),
                 ],
                 [
-                    'label' => 'Attach single entry to notification',
+                    'label' => __('Attach single entry to notification', GFExcel::$slug),
                     'type' => 'select',
                     'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
                     'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
@@ -346,7 +340,7 @@ class GFExcelAdmin extends GFAddOn
         $active_fields = $repository->sortFields($active_fields);
 
         $this->single_section([
-            'title' => __('Disabled fields from export', GFExcel::$slug),
+            'title' => __('Field settings', GFExcel::$slug),
             'class' => 'sortfields',
             'fields' => [
                 [
@@ -364,7 +358,7 @@ class GFExcelAdmin extends GFAddOn
                         ];
                     }, $inactive_fields),
                 ], [
-                    'label' => __('Drop & sort the fields to enable', GFExcel::$slug),
+                    'label' => __('Enable & sort the fields', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
                     'value' => @$form['gfexcel_enabled_fields'] ?: '',
                     'move_to' => 'gfexcel_disabled_fields',
@@ -524,7 +518,7 @@ class GFExcelAdmin extends GFAddOn
 
     private function getNotifications()
     {
-        $options = [['label' => __('Select a notification'), 'value' => '']];
+        $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
         foreach ($this->repository->getNotifications() as $key => $notification) {
             $options[] = ['label' => rgar($notification, 'name', __('Unknown')), 'value' => $key];
         }
