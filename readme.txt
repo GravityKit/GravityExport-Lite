@@ -184,6 +184,9 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 
 == Changelog ==
 
+= 1.5.2 =
+* Bugfix: Posting a form gave a 500 error, because of missing form info in front-end.
+
 = 1.5.1 =
 * (Awesome) Feature: You can now set the order of the fields by sorting them, using drag and drop!
 * Feature: Add colors and font styles to cells by using the `gfexcel_value_object`-hook (See docs).

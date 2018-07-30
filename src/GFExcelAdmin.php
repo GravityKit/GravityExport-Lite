@@ -485,8 +485,12 @@ class GFExcelAdmin extends GFAddOn
      */
     public function handle_notification($notification, $form, $entry)
     {
+        if (!$this->repository) {
+            $this->repository = new FormsRepository($form['id']);
+        }
+
         // get notification to add to by form setting
-        if ($this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+        if (!$this->repository || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
             //Not the right notification
             return $notification;
         }
