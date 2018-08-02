@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.4
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,6 +183,9 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.5.3 [WIP] =
+* Bugfix: Prices were shown in html characters. Not really a bug, but it was bugging someone :)
 
 = 1.5.2 =
 * Bugfix: Posting a form gave a 500 error, because of missing form info in front-end.
