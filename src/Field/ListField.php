@@ -71,9 +71,9 @@ class ListField extends BaseField
 
         // Every value on it's own line for readability.
         // Should this have a filter? Not sure.
-        return array_map(function ($column) {
+        return $this->wrap(array_map(function ($column) {
             return implode("\n", $column);
-        }, $result);
+        }, $result));
     }
 
 }

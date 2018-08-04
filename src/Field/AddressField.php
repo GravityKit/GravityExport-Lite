@@ -36,19 +36,21 @@ class AddressField extends BaseField
             $fields, $entry);
 
         if ($this->useSeperatedFields()) {
-            return $fields;
+            return $this->wrap($fields);
         }
 
-        $value = array(implode("\n", array_filter($fields)));
+        $value = implode("\n", array_filter($fields));
 
-        return gf_apply_filters(
+        $value = gf_apply_filters(
             array(
                 "gfexcel_field_value",
                 $this->field->get_input_type(),
                 $this->field->formId,
                 $this->field->id
             ),
-            $value, $entry);
+            $value, $entry, $this->field);
+
+        return $this->wrap($value);
     }
 
     private function getSeperatedFields($entry)
@@ -80,7 +82,7 @@ class AddressField extends BaseField
         foreach ($fields as $field) {
             $result[$field['id']] = $field['label'];
         }
-        return $result;
+        return $this->wrap($result, true);
     }
 
     private function getVisibleSubfields()
