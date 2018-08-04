@@ -2,14 +2,14 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\GFExcelAdmin;
+
 /**
  * Class FileUploadField
  * @since 1.1.0
  */
 class FileUploadField extends BaseField
 {
-    private $fileuploads_enabled = true;
-
     /**
      * Array of needed cell values for this field
      * @param array $entry
@@ -39,6 +39,6 @@ class FileUploadField extends BaseField
                 "gfexcel_field_fileuploads_enabled",
                 $this->field->formId
             ),
-            $this->fileuploads_enabled);
+            !!GFExcelAdmin::get_instance()->get_plugin_setting('fileuploads_enabled'));
     }
 }

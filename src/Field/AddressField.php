@@ -2,10 +2,10 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\GFExcelAdmin;
+
 class AddressField extends BaseField
 {
-    private $seperated_fields = false;
-
     /**
      * Array of needed column names for this field.
      * @return array
@@ -72,7 +72,7 @@ class AddressField extends BaseField
                 $this->field->formId,
                 $this->field->id
             ),
-            $this->seperated_fields);
+            !!GFExcelAdmin::get_instance()->get_plugin_setting('field_address_split_enabled'));
     }
 
     private function getSeperatedColumns()

@@ -4,15 +4,21 @@ namespace GFExcel\Repository;
 
 use GFAPI;
 use GFExcel\GFExcel;
+use GFExcel\GFExcelAdmin;
 
 class FormsRepository
 {
     /** @var array|false */
     private $form;
+    /**
+     * @var GFExcelAdmin
+     */
+    private $admin;
 
     public function __construct($form_id)
     {
-        $this->form = GFAPI::get_form($form_id);
+        $this->form = $form_id ? GFAPI::get_form($form_id) : [];
+        $this->admin = GFExcelAdmin::get_instance();
     }
 
     /**
@@ -21,7 +27,11 @@ class FormsRepository
      */
     public function showNotes()
     {
-        $value = false;
+        $value = false; //default
+        if ($setting = $this->admin->get_plugin_setting('notes_enabled')) {
+            $value = (bool) $setting;
+        }
+
         $form = $this->getForm();
 
         if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
