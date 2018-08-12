@@ -2,13 +2,15 @@
 
 namespace GFExcel\Values;
 
+use GFExcel\GFExcelAdmin;
+
 class StringValue extends BaseValue
 {
     public function __construct($value)
     {
         parent::__construct($value);
 
-        if ($this->isUrl($value)) {
+        if ($this->isUrl($value) && !!GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled')) {
             $this->setUrl($value);
         }
     }
