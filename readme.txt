@@ -155,7 +155,7 @@ add_filter('gfexcel_field_notes_enabled','__return_true');
 add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
 `
 
-= It's all to blend in Excel. Can I use some colors? =
+= It's all to boring in Excel. Can I use some colors? =
 Definitely! You get to change: text color, background color, bold and italic. If that is not enough, you probably just need to add those Clip Arts yourself!
 
 `
@@ -176,6 +176,14 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 }, 10, 3);
 `
 
+= I don't have enough... eh... Memory! =
+Yes, this can happen. And to be frank (actually, I'm not, I'm Doeke), this isn't something that can be fixed.
+As a default, Wordpress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
+But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
+`40 MB * 1024 KB = 40.960 Cells`. I say roughly, beceause we also use some memory for calculations and retrieving the data.
+If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [Woocommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
+
+
 == Screenshots ==
 
 1. A 'Results in Excel' link is added to the form settings
@@ -184,7 +192,7 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 
 == Changelog ==
 
-= 1.5.3 [WIP] =
+= 1.5.3 =
 * Enhancement: Added plugin settings page with plugin wide default settings
 * Enhancement: Added dependency checks to plugin, so without them, the plugin won't work.
 * Bugfix: Prices were shown in html characters. Not really a bug, but it was bugging someone :)
