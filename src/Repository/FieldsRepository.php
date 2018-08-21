@@ -2,6 +2,7 @@
 
 namespace GFExcel\Repository;
 
+use GFExcel\GFExcelAdmin;
 use GFExport;
 use GF_Field;
 
@@ -13,10 +14,15 @@ class FieldsRepository
 
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
     const KEY_ENABLED_FIELDS = 'gfexcel_enabled_fields';
+    /**
+     * @var GFExcelAdmin
+     */
+    private $admin;
 
     public function __construct(array $form)
     {
         $this->form = $form;
+        $this->admin = GFExcelAdmin::get_instance();
     }
 
     /**
@@ -140,7 +146,15 @@ class FieldsRepository
      */
     public function get_disabled_fields()
     {
-        $result = [];
+        $result = []; //default
+        if ($settings = $this->admin->get_plugin_settings() and is_array($settings)) {
+            foreach ($settings as $key => $value) {
+                if (strpos($key, 'enabled_metafield_') === 0 && $value == 0) {
+                    $result[] = str_replace('enabled_metafield_', '', $key);
+                }
+            }
+        }
+
         if (array_key_exists(static::KEY_DISABLED_FIELDS, $this->form)) {
             $result = explode(',', $this->form[static::KEY_DISABLED_FIELDS]);
         }

@@ -13,7 +13,7 @@ class DateCreated extends BaseField
     public function getColumns()
     {
         if ($this->useSeperatedFields()) {
-            return $this->wrap(array(__('Date', GFExcel::$slug), __('Time', GFExcel::$slug)));
+            return $this->wrap(array(__('Date', GFExcel::$slug), __('Time', GFExcel::$slug)), true);
         }
 
         return parent::getColumns();

@@ -20,7 +20,7 @@ class BaseField extends AbstractField
                 $this->field->formId,
                 $this->field->id
             ),
-            $value, $entry);
+            $value, $entry, $this->field);
 
         return $this->wrap(array($value));
     }
