@@ -80,7 +80,7 @@ class GFExcelAdmin extends GFAddOn
                 ]]
             ], [
                 'name' => 'notes',
-                'label' => esc_html__('Notes', GFExcel::$slug),
+                'label' => esc_html__('Notes', 'gravityforms'),
                 'type' => 'checkbox',
                 'choices' => [[
                     'label' => esc_html__('Enable notes by default', GFExcel::$slug),
@@ -642,7 +642,7 @@ class GFExcelAdmin extends GFAddOn
     private function plugin_settings_description()
     {
         $html = "<p>";
-        $html .= esc_html__('These are settings on a global scale. You can overwrite these values per form using the available hooks.');
+        $html .= esc_html__('These are global settings for new forms. You can overwrite them per form using the available hooks. Once you\'ve saved your form, these settings will not do anything any more.', GFExcel::$slug);
         $html .= "</p>";
 
         return $html;
