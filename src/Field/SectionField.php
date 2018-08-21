@@ -2,14 +2,14 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\GFExcelAdmin;
+
 /**
  * Class SectionField
  * @since 1.1.0
  */
 class SectionField extends BaseField
 {
-    private $section_enabled = false;
-
     /**
      * Array of needed cell values for this field
      * @param array $entry
@@ -40,6 +40,6 @@ class SectionField extends BaseField
                 "gfexcel_field_section_enabled",
                 $this->field->formId
             ),
-            $this->section_enabled);
+            !!GFExcelAdmin::get_instance()->get_plugin_setting('sections_enabled'));
     }
 }

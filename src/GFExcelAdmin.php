@@ -23,8 +23,16 @@ class GFExcelAdmin extends GFAddOn
     /** @var FormsRepository micro cache */
     private $repository;
 
-    /** @var string  micro cache for file name*/
+    /** @var string  micro cache for file name */
     private $_file = '';
+
+    /**
+     * @return string
+     */
+    public function plugin_settings_icon()
+    {
+        return '<i class="fa fa-table"></i>';
+    }
 
     public function __construct()
     {
@@ -32,11 +40,95 @@ class GFExcelAdmin extends GFAddOn
         $this->_title = __(GFExcel::$name, GFExcel::$slug);
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
-        if ($form = $this->get_current_form()) {
-            $this->repository = new FormsRepository($form['id']);
-        }
 
         parent::__construct();
+    }
+
+    /**
+     * Set minimum requirements to prevent bugs when using older versions, or missing dependencies
+     * @return array
+     */
+    public function minimum_requirements()
+    {
+        return [
+            'php' => [
+                'version' => '5.6',
+                'extensions' => [
+                    'zip', 'ctype', 'dom', 'zlib',
+                ],
+            ]
+        ];
+    }
+
+    public function render_uninstall()
+    {
+        return null;
+    }
+
+    public function plugin_settings_fields()
+    {
+        return [[
+            'description' => $this->plugin_settings_description(),
+            'fields' => [[
+                'name' => 'field_address',
+                'label' => esc_html__('Address columns', GFExcel::$slug),
+                'type' => 'checkbox',
+                'choices' => [[
+                    'label' => esc_html__('Split address field into multiple columns', GFExcel::$slug),
+                    'name' => 'field_address_split_enabled',
+                    'default_value' => false,
+                ]]
+            ], [
+                'name' => 'notes',
+                'label' => esc_html__('Notes', 'gravityforms'),
+                'type' => 'checkbox',
+                'choices' => [[
+                    'label' => esc_html__('Enable notes by default', GFExcel::$slug),
+                    'name' => 'notes_enabled',
+                    'default_value' => false,
+                ]]
+            ], [
+                'name' => 'sections',
+                'label' => esc_html__('Sections', GFExcel::$slug),
+                'type' => 'checkbox',
+                'choices' => [[
+                    'label' => esc_html__('Enable (empty) section column', GFExcel::$slug),
+                    'name' => 'sections_enabled',
+                    'default_value' => false,
+                ]]
+            ], [
+                'name' => 'fileuploads',
+                'label' => esc_html__('File uploads', GFExcel::$slug),
+                'type' => 'checkbox',
+
+                'choices' => [[
+                    'label' => esc_html__('Enable file upload columns', GFExcel::$slug),
+                    'name' => 'fileuploads_enabled',
+                    'default_value' => true,
+                ]]
+            ], [
+                'name' => 'hyperlinks',
+                'label' => esc_html__('Hyperlinks', GFExcel::$slug),
+                'type' => 'checkbox',
+
+                'choices' => [[
+                    'label' => esc_html__('Enable hyperlinks on url-only columns', GFExcel::$slug),
+                    'name' => 'hyperlinks_enabled',
+                    'default_value' => true,
+                ]]
+            ]],
+        ], [
+            'fields' => [
+                [
+                    'name' => 'enabled_metafields',
+                    'label' => esc_html__('Enabled meta fields', GFExcel::$slug),
+                    'description' => esc_html__('Select all meta fields that are enabled by default', GFExcel::$slug),
+                    'type' => 'checkbox',
+
+                    'choices' => $this->meta_fields(),
+                ]
+            ]
+        ]];
     }
 
     public function init_admin()
@@ -51,6 +143,10 @@ class GFExcelAdmin extends GFAddOn
     public function init()
     {
         parent::init();
+
+        if ($form = $this->get_current_form()) {
+            $this->repository = new FormsRepository($form['id']);
+        }
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
@@ -278,7 +374,7 @@ class GFExcelAdmin extends GFAddOn
                         'name' => GFExcel::KEY_ENABLED_NOTES,
                         'label' => __('Yes, enable the notes for every entry', GFExcel::$slug),
                         'value' => '1',
-                        'default_value' => (int) @$form[GFExcel::KEY_ENABLED_NOTES],
+                        'default_value' => $this->enabled_notes($form),
                     ]],
                 ],
                 [
@@ -541,6 +637,40 @@ class GFExcelAdmin extends GFAddOn
             unlink($this->_file);
         }
         return true;
+    }
+
+    private function plugin_settings_description()
+    {
+        $html = "<p>";
+        $html .= esc_html__('These are global settings for new forms. You can overwrite them per form using the available hooks. Once you\'ve saved your form, these settings will not do anything any more.', GFExcel::$slug);
+        $html .= "</p>";
+
+        return $html;
+    }
+
+    private function meta_fields()
+    {
+        $repository = new FieldsRepository(['fields' => []]);
+
+        //suppress notices of missing form. There is no form, we just need the meta data
+        $fields = @$repository->getFields(true);
+
+        return array_map(function ($field) {
+            return [
+                'label' => $field->label,
+                'name' => 'enabled_metafield_' . $field->id,
+                'default_value' => true,
+            ];
+        }, $fields);
+    }
+
+    private function enabled_notes($form = [])
+    {
+        if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
+            return (int) $form[GFExcel::KEY_ENABLED_NOTES];
+        };
+
+        return $this->get_plugin_setting('notes_enabled');
     }
 
 }

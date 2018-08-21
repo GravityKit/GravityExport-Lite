@@ -1,17 +1,3 @@
-msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; "
-"charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: nl_NL\n"
-"X-Generator: Poedit 2.0.8\n"
-
 msgid "Download url"
 msgstr "Download pad"
 
@@ -101,3 +87,39 @@ msgstr "Voeg bestand toe als bijlage aan melding"
 
 msgid "Select a notification"
 msgstr "Selecteer een melding"
+
+msgid "These are global settings for new forms. You can overwrite them per form using the available hooks. Once you've saved your form, these settings will not do anything any more."
+msgstr "Dit zijn algemene instellingen voor nieuwe formulieren. Je kunt ze pér formulier overschrijven met de beschikbare filters. Als een formulier is opgeslagen, doen deze instellingen niets meer voor dat formulier."
+
+msgid "Address columns"
+msgstr "Adres-kolommen"
+
+msgid "Split address field into multiple columns"
+msgstr "Splits een adres-veld in meerdere kolommen"
+
+msgid "Enable notes by default"
+msgstr "Acitveer 'Opmerkingen' als standaard"
+
+msgid "Sections"
+msgstr "Secties"
+
+msgid "Enable (empty) section column"
+msgstr "Toon (lege) sectie-kolommen"
+
+msgid "File uploads"
+msgstr "Bestandsuploads"
+
+msgid "Enable file upload columns"
+msgstr "Toon upload kolommen"
+
+msgid "Hyperlinks"
+msgstr "Links"
+
+msgid "Enable hyperlinks on url-only columns"
+msgstr "Maak cellen met een URL klikbaar"
+
+msgid "Enabled meta fields"
+msgstr "Toon deze meta-velden"
+
+msgid "Select all meta fields that are enabled by default"
+msgstr "Selecteer alle meta-velden die standaard getoond moeten worden"

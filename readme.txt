@@ -185,9 +185,12 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 == Changelog ==
 
 = 1.5.3 [WIP] =
+* Enhancement: Added plugin settings page with plugin wide default settings
+* Enhancement: Added dependency checks to plugin, so without them, the plugin won't work.
 * Bugfix: Prices were shown in html characters. Not really a bug, but it was bugging someone :)
 * Bugfix: Address field needed wrapping of value objects on separate fields.
 * Bugfix: Some fields were missing wrapping of value object.
+
 
 = 1.5.2 =
 * Bugfix: Posting a form gave a 500 error, because of missing form info in front-end.
