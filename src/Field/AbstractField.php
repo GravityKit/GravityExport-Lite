@@ -90,9 +90,6 @@ abstract class AbstractField implements FieldInterface
     {
         $value = $this->field->get_value_export($entry);
 
-        /**
-         * @todo, make sure this doesn't break stuff
-         */
         $value = html_entity_decode($value);
 
         // add gform export filters to get the same results as a normal export
