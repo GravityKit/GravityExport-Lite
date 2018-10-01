@@ -1,0 +1,218 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Entries in Excel\n"
+"POT-Creation-Date: 2018-10-01 18:45+0300\n"
+"PO-Revision-Date: 2018-10-01 22:05+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: gfexcel.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+msgid "Gravity Forms Results in Excel"
+msgstr "Gravity Forms Lomakevastaukset Exceliin"
+
+msgid "Results in Excel"
+msgstr "Lomakevastaukset Exceliin"
+
+#: src/Field/Meta/DateCreated.php:16
+msgid "Date"
+msgstr "Päivämäärä"
+
+#: src/Field/Meta/DateCreated.php:16
+msgid "Time"
+msgstr "Aika"
+
+#: src/GFExcelAdmin.php:74
+msgid "Address columns"
+msgstr "Osoitteen sarakkeet"
+
+#: src/GFExcelAdmin.php:77
+msgid "Split address field into multiple columns"
+msgstr "Jaa osoite useisiin sarakkeisiin"
+
+#: src/GFExcelAdmin.php:83 src/Repository/FieldsRepository.php:116
+msgid "Notes"
+msgstr "Muistiinpanot"
+
+#: src/GFExcelAdmin.php:86
+msgid "Enable notes by default"
+msgstr "Käytä muistiinpanoja oletuksena"
+
+#: src/GFExcelAdmin.php:92
+msgid "Sections"
+msgstr "Osiot"
+
+#: src/GFExcelAdmin.php:95
+msgid "Enable (empty) section column"
+msgstr "Käytä (tyhjää) sarakeosiota"
+
+#: src/GFExcelAdmin.php:101
+msgid "File uploads"
+msgstr "Tiedostojen lataus"
+
+#: src/GFExcelAdmin.php:105
+msgid "Enable file upload columns"
+msgstr "Ota käyttöön tiedostojenlataussarakkeet"
+
+#: src/GFExcelAdmin.php:111
+msgid "Hyperlinks"
+msgstr "Linkit"
+
+#: src/GFExcelAdmin.php:115
+msgid "Enable hyperlinks on url-only columns"
+msgstr "Käytä linkkejä vain url-sarakkeissa"
+
+#: src/GFExcelAdmin.php:124
+msgid "Enabled meta fields"
+msgstr "Käytä metakenttiä"
+
+#: src/GFExcelAdmin.php:125
+msgid "Select all meta fields that are enabled by default"
+msgstr "Valitse kaikki metakentät, jotka ovat valittuja oletuksena"
+
+#: src/GFExcelAdmin.php:165
+msgid "The download url has been regenerated."
+msgstr "Latauslinkki on generoitu uudelleen."
+
+#: src/GFExcelAdmin.php:176
+msgid "Download url"
+msgstr "Latauslinkki"
+
+#: src/GFExcelAdmin.php:192
+msgid "This changed the download url permanently!"
+msgstr "Tämä muuttaa latauslinkin pysyvästi!"
+
+#: src/GFExcelAdmin.php:194
+msgid "Regenerate url"
+msgstr "Generoi linkki uudestaan"
+
+#: src/GFExcelAdmin.php:196
+msgid "Download count"
+msgstr "Latausmäärä"
+
+#: src/GFExcelAdmin.php:199
+msgid "Download"
+msgstr "Lataa"
+
+#: src/GFExcelAdmin.php:208
+msgid "Save settings"
+msgstr "Tallenna asetukset"
+
+#: src/GFExcelAdmin.php:249
+msgid "Download as one Excel file"
+msgstr "Lataa Excel-tiedostona"
+
+#: src/GFExcelAdmin.php:289
+msgid "Date of entry"
+msgstr "Merkinnän päivämäärä"
+
+#: src/GFExcelAdmin.php:311
+msgid "Acending"
+msgstr "Nouseva"
+
+#: src/GFExcelAdmin.php:314
+msgid "Descending"
+msgstr "Laskeva"
+
+#: src/GFExcelAdmin.php:347
+msgid "The settings have been saved."
+msgstr "Asetukset on tallennettu."
+
+#: src/GFExcelAdmin.php:367
+msgid "General settings"
+msgstr "Yleiset asetukset"
+
+#: src/GFExcelAdmin.php:371
+msgid "Enable notes"
+msgstr "Käytä muistiinpanoja"
+
+#: src/GFExcelAdmin.php:375
+msgid "Yes, enable the notes for every entry"
+msgstr "Kyllä, käytä muistiinpanoja jokaisessa merkinnässä"
+
+#: src/GFExcelAdmin.php:383
+msgid "Order by"
+msgstr "Järjestä"
+
+#: src/GFExcelAdmin.php:391
+msgid "Custom filename"
+msgstr "Mukautettu tiedostonimi"
+
+#: src/GFExcelAdmin.php:395
+msgid ""
+"Only letters, numbers and dashes are allowed. The rest will be stripped. "
+"Leave empty for default."
+msgstr ""
+"Vain kirjaimet, numerot ja viivat ovat sallittuja. Muut merkit poistetaan. "
+"Jätä tyhjäksi oletusasetusta varten."
+
+#: src/GFExcelAdmin.php:398
+msgid "File extension"
+msgstr "Tiedostopääte"
+
+#: src/GFExcelAdmin.php:412
+msgid "Attach single entry to notification"
+msgstr "Liitä yksittäinen merkintä ilmoitukseen"
+
+#: src/GFExcelAdmin.php:439
+msgid "Field settings"
+msgstr "Kentän asetukset"
+
+#: src/GFExcelAdmin.php:443
+msgid "Disabled fields"
+msgstr "Käytöstä poistetut kentät"
+
+#: src/GFExcelAdmin.php:457
+msgid "Enable & sort the fields"
+msgstr "Ota käyttöön ja lajittele kenttiä"
+
+#: src/GFExcelAdmin.php:621
+msgid "Select a notification"
+msgstr "Valitse ilmoitus"
+
+#: src/GFExcelAdmin.php:623
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: src/GFExcelAdmin.php:645
+msgid ""
+"These are global settings for new forms. You can overwrite them per form "
+"using the available hooks. Once you've saved your form, these settings will "
+"not do anything any more."
+msgstr ""
+"Nämä ovat yleisiä asetuksia uusille lomakkeille. Voit ylikirjoittaa ne "
+"lomakekohtaisesti koodissa. Kun olet tallentanut lomakkeen, nämä asetukset "
+"eivät tee enää mitään."
+
+#. Plugin Name of the plugin/theme
+msgid "Gravity Forms Entries in Excel"
+msgstr "Gravity Forms -merkinnät Exceliin"
+
+#. Description of the plugin/theme
+msgid ""
+"Export all Gravity Forms entries to Excel (.xls) via a download button OR "
+"via a secret (shareable) url."
+msgstr ""
+"Vie Gravity Forms -merkinnät Excel-tiedostoiksi (.xls) tai salaisen, "
+"jaettavan latauslinkin kautta."
+
+#. Author of the plugin/theme
+msgid "Doeke Norg"
+msgstr "Doeke Norg"
+
+#. Author URI of the plugin/theme
+msgid "https://paypal.me/doekenorg"
+msgstr "https://paypal.me/doekenorg"
