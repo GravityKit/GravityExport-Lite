@@ -4,8 +4,8 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
-Tested up to: 4.9.4
-Stable tag: 1.5.3
+Tested up to: 4.9.8
+Stable tag: 1.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -191,6 +191,11 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.5.4 =
+* Language: Finnish language files added thanks to @Nomafin!
+* Enhancement: Better inclusion of script and styles.
+* Bugfix: Wrong minimum version of Gravity Forms set, should be 2.0.
 
 = 1.5.3 =
 * Enhancement: Added plugin settings page with plugin wide default settings
