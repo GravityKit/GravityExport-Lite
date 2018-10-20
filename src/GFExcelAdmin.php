@@ -16,7 +16,7 @@ class GFExcelAdmin extends GFAddOn
 
     private static $_instance = null;
 
-    protected $_min_gravityforms_version = "1.9";
+    protected $_min_gravityforms_version = "2.0";
 
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
@@ -565,12 +565,52 @@ class GFExcelAdmin extends GFAddOn
      */
     public function register_assets()
     {
-        $entry = plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
-        wp_enqueue_script('jquery-ui-sortable');
-        wp_enqueue_script('gfexcel-js', $entry . 'public/js/gfexcel.js', ['jquery', 'jquery-ui-sortable']);
-        wp_enqueue_style('gfexcel-css', $entry . 'public/css/gfexcel.css');
-
         $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+    }
+
+    /**
+     * Get the assets path
+     * @return string
+     */
+    public static function assets()
+    {
+        return plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
+    }
+
+    public function scripts()
+    {
+        return array_merge(parent::scripts(), [
+            [
+                'handle' => 'jquery-ui-sortable',
+                'enqueue' => [[
+                    'admin_page' => 'form_settings',
+                    'tab' => 'gf-entries-in-excel',
+                ]],
+            ],
+            [
+                'handle' => 'gfexcel-js',
+                'src' => self::assets() . 'public/js/gfexcel.js',
+                'enqueue' => [[
+                    'admin_page' => 'form_settings',
+                    'tab' => 'gf-entries-in-excel',
+                ]],
+                'deps' => ['jquery', 'jquery-ui-sortable'],
+            ],
+        ]);
+    }
+
+    public function styles()
+    {
+        return array_merge(parent::styles(), [
+            [
+                'handle' => 'gfexcel-css',
+                'src' => self::assets() . 'public/css/gfexcel.css',
+                'enqueue' => [[
+                    'admin_page' => 'form_settings',
+                    'tab' => 'gf-entries-in-excel',
+                ]],
+            ],
+        ]);
     }
 
     /**
