@@ -21,10 +21,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-msgid "Gravity Forms Results in Excel"
-msgstr "Gravity Forms Lomakevastaukset Exceliin"
-
-msgid "Results in Excel"
+msgid "Entries in Excel"
 msgstr "Lomakevastaukset Exceliin"
 
 #: src/Field/Meta/DateCreated.php:16

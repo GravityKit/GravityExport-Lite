@@ -9,8 +9,8 @@ use GFFormsModel;
 
 class GFExcel
 {
-    public static $name = 'Gravity Forms Results in Excel';
-    public static $shortname = 'Results in Excel';
+    public static $name = 'Gravity Forms Entries in Excel';
+    public static $shortname = 'Entries in Excel';
     public static $version = "1.5.4";
     public static $slug = "gf-entries-in-excel";
 

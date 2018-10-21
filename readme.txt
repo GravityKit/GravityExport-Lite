@@ -195,6 +195,7 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 = 1.5.4 =
 * Language: Finnish language files added thanks to @Nomafin!
 * Enhancement: Better inclusion of script and styles.
+* Enhancement: Renamed `Results in Excel` to `Entries in Excel` to be more consistent.
 * Bugfix: Wrong minimum version of Gravity Forms set, should be 2.0.
 
 = 1.5.3 =

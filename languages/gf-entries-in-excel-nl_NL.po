@@ -1,10 +1,10 @@
 msgid "Download url"
 msgstr "Download pad"
 
-msgid "Gravity Forms Results in Excel"
+msgid "Gravity Forms Entries in Excel"
 msgstr "Gravity Forms Inzendingen in Excel"
 
-msgid "Results in Excel"
+msgid "Entries in Excel"
 msgstr "Inzendingen in Excel"
 
 msgid "Download count"

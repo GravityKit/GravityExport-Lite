@@ -150,6 +150,79 @@ class GFExcelAdmin extends GFAddOn
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
+        add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
+        add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
+    }
+
+    public function render_settings($sections)
+    {
+        parent::render_settings($sections);
+        ?>
+        <div class="hr-divider"></div>
+
+        <a name="help-me-out"></a>
+        <h3><span><i class="fa fa-info-circle"></i> <?php esc_html_e('Help me out!', 'gf-entries-in-excel'); ?></span>
+        </h3>
+
+        <p>
+            <?php
+            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated, an getting better. And I need your help to achieve this.', 'gf-entries-in-excel');
+            ?>
+        </p>
+        <p>
+            <?php
+            printf(' ' . esc_html__('If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">', '</a>');
+            ?>
+        </p>
+        <p>
+            <?php
+            printf(' ' . esc_html__('If you like the plugin, let me know, an maybe more important; 📣 %slet others know%s! We already have more than 2000+ active users. Let\'s get to 3k by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.  ', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', '<a href="https://twitter.com/doekenorg" target="_blank">','</a>');
+            ?>
+        </p>
+        <p>
+            <?php
+            esc_html_e('Last but not least, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', 'gf-entries-in-excel');
+            ?>
+        </p>
+        <p>
+            <a class="button button-cta" href="https://paypal.me/doekenorg"
+               target="_blank"><?php _e('Make a donation', 'gf-entries-in-excel'); ?></a>
+        </p>
+
+        <?php
+    }
+
+    /**
+     * Show row meta on the plugin screen.
+     *
+     * @param   mixed $links Plugin Row Meta.
+     * @param   mixed $file Plugin Base file.
+     * @return  array
+     */
+    public static function plugin_row_meta($links, $file)
+    {
+        if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
+            return $links;
+        }
+        return array_merge([
+            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__('Make a donation', 'gf-entries-in-excel') . '">' . esc_html__('Make a donation', 'gf-entries-in-excel') . '</a>',
+        ], (array) $links);
+    }
+
+    /**
+     * Add settings link to plugin page
+     * @param $links
+     * @param $file
+     * @return array
+     */
+    public static function plugin_action_links($links, $file)
+    {
+        if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
+            return $links;
+        }
+        return array_merge([
+            'settings' => '<a href="' . admin_url('admin.php?page=gf_settings&subview=gf-entries-in-excel') . '" aria-label="' . esc_attr__('View settings', 'gf-entries-in-excel') . '">' . esc_html__('Settings', 'gf-entries-in-excel') . '</a>',
+        ], $links);
     }
 
     public function form_settings($form)
@@ -189,7 +262,7 @@ class GFExcelAdmin extends GFAddOn
         printf(
             "<p>
                 <input 
-                onclick=\"return confirm('" . __('This changed the download url permanently!', GFExcel::$slug) . "');\" 
+                onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
                 <a class='button-primary' href=' % s' target='_blank'>%s</a>
@@ -605,10 +678,16 @@ class GFExcelAdmin extends GFAddOn
             [
                 'handle' => 'gfexcel-css',
                 'src' => self::assets() . 'public/css/gfexcel.css',
-                'enqueue' => [[
-                    'admin_page' => 'form_settings',
-                    'tab' => 'gf-entries-in-excel',
-                ]],
+                'enqueue' => [
+                    [
+                        'admin_page' => 'form_settings',
+                        'tab' => 'gf-entries-in-excel',
+                    ],
+                    [
+                        'admin_page' => 'plugin_settings',
+                        'tab' => 'gf-entries-in-excel',
+                    ],
+                ],
             ],
         ]);
     }
