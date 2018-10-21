@@ -204,9 +204,9 @@ class GFExcelAdmin extends GFAddOn
         if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
             return $links;
         }
-        return array_merge([
+        return array_merge($links, [
             'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__('Make a donation', 'gf-entries-in-excel') . '">' . esc_html__('Make a donation', 'gf-entries-in-excel') . '</a>',
-        ], (array) $links);
+        ]);
     }
 
     /**
