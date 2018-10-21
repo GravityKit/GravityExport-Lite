@@ -161,12 +161,12 @@ class GFExcelAdmin extends GFAddOn
         <div class="hr-divider"></div>
 
         <a name="help-me-out"></a>
-        <h3><span><i class="fa fa-info-circle"></i> <?php esc_html_e('Help me out!', 'gf-entries-in-excel'); ?></span>
+        <h3><span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', 'gf-entries-in-excel'); ?></span>
         </h3>
 
         <p>
             <?php
-            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated, an getting better. And I need your help to achieve this.', 'gf-entries-in-excel');
+            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!', 'gf-entries-in-excel');
             ?>
         </p>
         <p>
@@ -176,12 +176,12 @@ class GFExcelAdmin extends GFAddOn
         </p>
         <p>
             <?php
-            printf(' ' . esc_html__('If you like the plugin, let me know, an maybe more important; 📣 %slet others know%s! We already have more than 2000+ active users. Let\'s get to 3k by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.  ', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', '<a href="https://twitter.com/doekenorg" target="_blank">','</a>');
+            printf(' ' . esc_html__('If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have more than 2000+ active users. Let\'s get to 3k by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.  ', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', '<a href="https://twitter.com/doekenorg" target="_blank">','</a>');
             ?>
         </p>
         <p>
             <?php
-            esc_html_e('Last but not least, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', 'gf-entries-in-excel');
+            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', 'gf-entries-in-excel');
             ?>
         </p>
         <p>
