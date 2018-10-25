@@ -55,7 +55,7 @@ msgstr "Activeer en sorteer de velden"
 msgid "Regenerate url"
 msgstr "Stel url opnieuw in"
 
-msgid "This changed the download url permanently!"
+msgid "This changes the download url permanently!"
 msgstr "Hiermee verandert u de download-link permanent!"
 
 msgid "The download url has been regenerated."

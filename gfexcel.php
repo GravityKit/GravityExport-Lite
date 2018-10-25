@@ -19,7 +19,6 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-// Define WC_PLUGIN_FILE.
 if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
     define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
 }

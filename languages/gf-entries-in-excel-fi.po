@@ -89,7 +89,7 @@ msgid "Download url"
 msgstr "Latauslinkki"
 
 #: src/GFExcelAdmin.php:192
-msgid "This changed the download url permanently!"
+msgid "This changes the download url permanently!"
 msgstr "Tämä muuttaa latauslinkin pysyvästi!"
 
 #: src/GFExcelAdmin.php:194
