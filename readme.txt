@@ -186,7 +186,7 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 
 == Screenshots ==
 
-1. A 'Results in Excel' link is added to the form settings
+1. A 'Entries in Excel' link is added to the form settings
 2. There is your url! Just copy and paste to the browser (or click the download button)
 3. Or download it from the list via the bulk selector
 
@@ -196,7 +196,9 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 * Language: Finnish language files added thanks to @Nomafin!
 * Enhancement: Better inclusion of script and styles.
 * Enhancement: Renamed `Results in Excel` to `Entries in Excel` to be more consistent.
+* Enhancement: Added a quick link to settings from the plugins page.
 * Bugfix: Wrong minimum version of Gravity Forms set, should be 2.0.
+* Help: Added some help text to the global settings page. I need your input!
 
 = 1.5.3 =
 * Enhancement: Added plugin settings page with plugin wide default settings
@@ -204,7 +206,6 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 * Bugfix: Prices were shown in html characters. Not really a bug, but it was bugging someone :)
 * Bugfix: Address field needed wrapping of value objects on separate fields.
 * Bugfix: Some fields were missing wrapping of value object.
-
 
 = 1.5.2 =
 * Bugfix: Posting a form gave a 500 error, because of missing form info in front-end.

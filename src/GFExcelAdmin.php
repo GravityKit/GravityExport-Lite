@@ -161,32 +161,33 @@ class GFExcelAdmin extends GFAddOn
         <div class="hr-divider"></div>
 
         <a name="help-me-out"></a>
-        <h3><span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', 'gf-entries-in-excel'); ?></span>
+        <h3>
+            <span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', GFExcel::$slug); ?></span>
         </h3>
 
         <p>
             <?php
-            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!', 'gf-entries-in-excel');
+            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!', GFExcel::$slug);
             ?>
         </p>
         <p>
             <?php
-            printf(' ' . esc_html__('If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">', '</a>');
+            printf(' ' . esc_html__('If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.', GFExcel::$slug), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">', '</a>');
             ?>
         </p>
         <p>
             <?php
-            printf(' ' . esc_html__('If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have more than 2000+ active users. Let\'s get to 3k by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.  ', 'gf-entries-in-excel'), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', '<a href="https://twitter.com/doekenorg" target="_blank">','</a>');
+            printf(' ' . esc_html__('If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.', GFExcel::$slug), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', $this->getUsageCount(), $this->getUsageTarget(), '<a href="https://twitter.com/doekenorg" target="_blank">', '</a>');
             ?>
         </p>
         <p>
             <?php
-            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', 'gf-entries-in-excel');
+            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', GFExcel::$slug);
             ?>
         </p>
         <p>
             <a class="button button-cta" href="https://paypal.me/doekenorg"
-               target="_blank"><?php _e('Make a donation', 'gf-entries-in-excel'); ?></a>
+               target="_blank"><?php _e('Make a donation', GFExcel::$slug); ?></a>
         </p>
 
         <?php
@@ -205,7 +206,7 @@ class GFExcelAdmin extends GFAddOn
             return $links;
         }
         return array_merge($links, [
-            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__('Make a donation', 'gf-entries-in-excel') . '">' . esc_html__('Make a donation', 'gf-entries-in-excel') . '</a>',
+            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__('Make a donation', GFExcel::$slug) . '">' . esc_html__('Make a donation', GFExcel::$slug) . '</a>',
         ]);
     }
 
@@ -221,7 +222,7 @@ class GFExcelAdmin extends GFAddOn
             return $links;
         }
         return array_merge([
-            'settings' => '<a href="' . admin_url('admin.php?page=gf_settings&subview=gf-entries-in-excel') . '" aria-label="' . esc_attr__('View settings', 'gf-entries-in-excel') . '">' . esc_html__('Settings', 'gf-entries-in-excel') . '</a>',
+            'settings' => '<a href="' . admin_url('admin.php?page=gf_settings&subview=gf-entries-in-excel') . '" aria-label="' . esc_attr__('View settings', GFExcel::$slug) . '">' . esc_html__('Settings', GFExcel::$slug) . '</a>',
         ], $links);
     }
 
@@ -657,7 +658,7 @@ class GFExcelAdmin extends GFAddOn
                 'handle' => 'jquery-ui-sortable',
                 'enqueue' => [[
                     'admin_page' => 'form_settings',
-                    'tab' => 'gf-entries-in-excel',
+                    'tab' => GFExcel::$slug,
                 ]],
             ],
             [
@@ -665,7 +666,7 @@ class GFExcelAdmin extends GFAddOn
                 'src' => self::assets() . 'public/js/gfexcel.js',
                 'enqueue' => [[
                     'admin_page' => 'form_settings',
-                    'tab' => 'gf-entries-in-excel',
+                    'tab' => GFExcel::$slug,
                 ]],
                 'deps' => ['jquery', 'jquery-ui-sortable'],
             ],
@@ -681,11 +682,11 @@ class GFExcelAdmin extends GFAddOn
                 'enqueue' => [
                     [
                         'admin_page' => 'form_settings',
-                        'tab' => 'gf-entries-in-excel',
+                        'tab' => GFExcel::$slug,
                     ],
                     [
                         'admin_page' => 'plugin_settings',
-                        'tab' => 'gf-entries-in-excel',
+                        'tab' => GFExcel::$slug,
                     ],
                 ],
             ],
@@ -790,6 +791,47 @@ class GFExcelAdmin extends GFAddOn
         };
 
         return $this->get_plugin_setting('notes_enabled');
+    }
+
+    /**
+     * Get the current usage count from the plugin repo.
+     * Info is cached for a week.
+     * @return string
+     */
+    private function getUsageCount()
+    {
+        if (!$active_installs = get_transient(GFExcel::$slug . '-active_installs')) {
+            if (!function_exists('plugins_api')) {
+                require_once(ABSPATH . 'wp-admin/includes/plugin-install.php');
+            }
+            $data = plugins_api('plugin_information', [
+                'slug' => GFExcel::$slug,
+                'fields' => ['active_installs' => true],
+            ]);
+
+            if ($data instanceof \WP_Error || !is_object($data) || !isset($data->active_installs)) {
+                return __('countless', GFExcel::$slug);
+            }
+            $active_installs = $data->active_installs;
+            set_transient(GFExcel::$slug . '-active_installs', $active_installs, (60 * 60 * 24 * 7));
+        }
+
+        return $active_installs . '+';
+    }
+
+    /**
+     * Get a target usage count for the plugin repo.
+     * @return string
+     */
+    private function getUsageTarget()
+    {
+        $current_count = $this->getUsageCount();
+        if ($current_count === __('countless', GFExcel::$slug)) {
+            return __('even more', GFExcel::$slug);
+        }
+        $digit = ((int) substr($current_count, 0, 1) + 1);
+
+        return $digit . substr($current_count, 1);
     }
 
 }
