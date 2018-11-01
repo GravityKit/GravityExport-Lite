@@ -8,15 +8,19 @@ use GFExcel\Field\FieldInterface;
 
 class Transformer implements TransformerInterface
 {
-
+    /**
+     * List of specific field classes
+     * @var array
+     */
     protected $fields = array(
         'address' => 'GFExcel\Field\AddressField',
-        'number' => 'GFExcel\Field\NumberField',
-        'meta' => 'GFExcel\Field\MetaField',
-        'list' => 'GFExcel\Field\ListField',
-        'section' => 'GFExcel\Field\SectionField',
+        'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
+        'list' => 'GFExcel\Field\ListField',
+        'meta' => 'GFExcel\Field\MetaField',
         'notes' => 'GFExcel\Field\NotesField',
+        'number' => 'GFExcel\Field\NumberField',
+        'section' => 'GFExcel\Field\SectionField',
     );
 
     /**
@@ -35,6 +39,12 @@ class Transformer implements TransformerInterface
         return new BaseField($field);
     }
 
+    /**
+     * Get Field class if it exists
+     * @param string $type
+     * @param GF_Field $field
+     * @return false|FieldInterface
+     */
     private function getField($type, GF_Field $field)
     {
         $fields = $this->getFields();
@@ -44,13 +54,14 @@ class Transformer implements TransformerInterface
         return false;
     }
 
+    /**
+     * Get the list of fields, but hooked so we can append.
+     * @return array
+     */
     private function getFields()
     {
-        return gf_apply_filters(
-            array(
-                "gfexcel_transformer_fields",
-            ),
-            $this->fields
-        );
+        return (array) gf_apply_filters([
+            "gfexcel_transformer_fields",
+        ], $this->fields);
     }
 }
