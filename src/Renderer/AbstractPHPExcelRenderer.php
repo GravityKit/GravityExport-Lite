@@ -4,6 +4,7 @@ namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
+use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -207,6 +208,7 @@ abstract class AbstractPHPExcelRenderer
         echo "please use the error message (" . $exception->getMessage() . ") as the title,<br/> and include the following details in your message:</p>";
         echo "<ul>";
         echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
+        echo "<li>Gravity Forms Version: " . GFForms::$version. "</li>";
         echo "<li>PHP Version: " . PHP_VERSION;
         if (version_compare(PHP_VERSION, '5.6.1', '<')) {
             echo " (this version is too low, please update to at least PHP 5.6)";
