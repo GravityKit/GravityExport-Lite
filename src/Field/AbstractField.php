@@ -83,7 +83,7 @@ abstract class AbstractField implements FieldInterface
     /**
      * Internal function to get the Field Value for an entry, and maybe override it.
      *
-     * @param $entry
+     * @param array $entry
      * @return array|string
      */
     protected function getFieldValue($entry)
