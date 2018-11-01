@@ -6,7 +6,6 @@ use GF_Field;
 use GFAPI;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
-use GFExport;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
 
@@ -26,6 +25,8 @@ class GFExcelOutput
     private $columns = array();
     private $rows = array();
 
+    private $repository;
+
     public function __construct($form_id, RendererInterface $renderer)
     {
         $this->transformer = new Transformer();
@@ -35,9 +36,11 @@ class GFExcelOutput
 
     public function getFields()
     {
-        $form = $this->getForm();
-        $repository = new FieldsRepository($form);
-        return $repository->getFields();
+        if (!$this->repository) {
+            $this->repository = new FieldsRepository($this->getForm());
+        }
+
+        return $this->repository->getFields();
     }
 
     /**

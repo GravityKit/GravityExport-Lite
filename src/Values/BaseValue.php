@@ -14,18 +14,19 @@ abstract class BaseValue
     const TYPE_BOOL = 'bool';
 
     protected $value = '';
+    protected $gf_field;
     protected $is_numeric = false;
     protected $color = '';
-    protected $is_bold = false;
     protected $background_color = '';
-
+    protected $is_bold = false;
     protected $is_italic = false;
     protected $is_bool = false;
     protected $url;
 
-    public function __construct($value)
+    public function __construct($value, \GF_Field $gf_field)
     {
         $this->value = $value;
+        $this->gf_field = $gf_field;
     }
 
     /**
@@ -50,16 +51,17 @@ abstract class BaseValue
             $gf_field,
             $is_label);
 
-        if($is_label) {
+        if ($is_label) {
             $type = BaseValue::TYPE_STRING;
         }
 
-        $valueObject = new StringValue($value);
-
         $typeClass = 'GFExcel\\Values\\' . ucfirst($type) . "Value";
-        if (class_exists($typeClass)) {
-            $valueObject = new $typeClass($value);
+        if (!class_exists($typeClass)) {
+            //fall back to StringValue
+            $typeClass = StringValue::class;
         }
+
+        $valueObject = new $typeClass($value, $gf_field);
 
         gf_apply_filters(
             array(
@@ -206,5 +208,40 @@ abstract class BaseValue
     public function setItalic($italic = true)
     {
         $this->is_italic = (boolean) $italic;
+    }
+
+    /**
+     * Get the GF_Field object
+     * @return \GF_Field
+     */
+    public function getField()
+    {
+        return $this->gf_field;
+    }
+
+    /**
+     * Get the name of the field type
+     * @return string
+     */
+    public function getFieldType()
+    {
+        if(!$this->getField()) {
+            return 'unknown type';
+        }
+
+        return $this->getField()->get_input_type();
+    }
+
+    /**
+     * Get the ID for this field
+     * @return mixed
+     */
+    public function getFieldId()
+    {
+        if(!$this->getField()) {
+            return null;
+        }
+
+        return $this->getField()->id;
     }
 }
