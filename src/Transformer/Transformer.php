@@ -13,11 +13,12 @@ class Transformer implements TransformerInterface
      * @var array
      */
     protected $fields = array(
-        'address' => 'GFExcel\Field\AddressField',
+        'address' => 'GFExcel\Field\SeparableField',
         'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
         'list' => 'GFExcel\Field\ListField',
         'meta' => 'GFExcel\Field\MetaField',
+        'name' => 'GFExcel\Field\SeparableField',
         'notes' => 'GFExcel\Field\NotesField',
         'number' => 'GFExcel\Field\NumberField',
         'section' => 'GFExcel\Field\SectionField',

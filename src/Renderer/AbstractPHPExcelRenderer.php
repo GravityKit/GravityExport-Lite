@@ -77,9 +77,9 @@ abstract class AbstractPHPExcelRenderer
         }
     }
 
-    protected function autoSizeColumns(Worksheet $worksheet, $columns)
+    protected function autoSizeColumns(Worksheet $worksheet, $columns_count)
     {
-        for ($i = 1; $i <= count($columns); $i++) {
+        for ($i = 1; $i <= $columns_count; $i++) {
             $worksheet->getColumnDimensionByColumn($i)->setAutoSize(true);
         }
         return $this;

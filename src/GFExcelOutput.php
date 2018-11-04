@@ -8,6 +8,7 @@ use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
+use GFExcel\Values\BaseValue;
 
 /**
  * The point where data is transformed, and is send to the renderer.
@@ -22,8 +23,9 @@ class GFExcelOutput
     private $form;
     private $entries;
 
-    private $columns = array();
-    private $rows = array();
+    /** @var BaseValue[] */
+    private $columns = [];
+    private $rows = [];
 
     private $repository;
 
@@ -78,19 +80,21 @@ class GFExcelOutput
     }
 
     /**
-     * Retrieve the set columns, but it can be filtered.
-     * @return array
+     * Retrieve the set columns, but it can be filtered, and only return BaseValue objects
+     * @return BaseValue[]
      */
     public function getColumns()
     {
-        return gf_apply_filters(
+        return array_filter(gf_apply_filters(
             array(
                 "gfexcel_output_columns",
                 $this->form_id
             ),
             $this->columns,
             $this->form_id
-        );
+        ), function ($column) {
+            return $column instanceof BaseValue;
+        });
     }
 
     /**
@@ -134,12 +138,14 @@ class GFExcelOutput
 
     /**
      * @param GF_Field $field
-     * @return array
+     * @return BaseValue[]
      */
     private function getFieldColumns(GF_Field $field)
     {
         $fieldClass = $this->transformer->transform($field);
-        return $fieldClass->getColumns();
+        return array_filter($fieldClass->getColumns(), function ($column) {
+            return $column instanceof BaseValue;
+        });
     }
 
     /**

@@ -4,6 +4,7 @@ namespace GFExcel;
 
 use GFAddOn;
 use GFCommon;
+use GFExcel\Field\SeparableField;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
@@ -70,13 +71,14 @@ class GFExcelAdmin extends GFAddOn
         return [[
             'description' => $this->plugin_settings_description(),
             'fields' => [[
-                'name' => 'field_address',
-                'label' => esc_html__('Address columns', GFExcel::$slug),
+                'name' => 'field_separate',
+                'label' => esc_html__('Multiple columns', GFExcel::$slug),
                 'type' => 'checkbox',
                 'choices' => [[
-                    'label' => esc_html__('Split address field into multiple columns', GFExcel::$slug),
-                    'name' => 'field_address_split_enabled',
-                    'default_value' => false,
+                    'label' => esc_html__('Split multi-fields (name, address, etc) into multiple columns', GFExcel::$slug),
+                    'name' => SeparableField::SETTING_KEY,
+                    // backwards compatible with last known setting
+                    'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
                 ]]
             ], [
                 'name' => 'notes',
@@ -122,7 +124,7 @@ class GFExcelAdmin extends GFAddOn
                 [
                     'name' => 'enabled_metafields',
                     'label' => esc_html__('Enabled meta fields', GFExcel::$slug),
-                    'description' => esc_html__('Select all meta fields that are enabled by default', GFExcel::$slug),
+                    'description' => esc_html__('Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.', GFExcel::$slug),
                     'type' => 'checkbox',
 
                     'choices' => $this->meta_fields(),
@@ -762,7 +764,7 @@ class GFExcelAdmin extends GFAddOn
     private function plugin_settings_description()
     {
         $html = "<p>";
-        $html .= esc_html__('These are global settings for new forms. You can overwrite them per form using the available hooks. Once you\'ve saved your form, these settings will not do anything any more.', GFExcel::$slug);
+        $html .= esc_html__('These are global settings for new forms. You can overwrite them per form using the available hooks.', GFExcel::$slug);
         $html .= "</p>";
 
         return $html;

@@ -67,15 +67,8 @@ The entry array is provided as a parameter, so you can combine fields if you wan
 
 = Can I seperate the fields of an address into multiple columns? =
 
-Great question! Yes you can! You can make use of the following hooks to get that working:
-`gfexcel_field_address_seperated`, `gfexcel_field_address_seperated_{form_id}` or
-`gfexcel_field_address_seperated_{form_id}_{field_id}`
-
-Just add this to your `functions.php`:
-
-`
-add_filter("gfexcel_field_address_seperated","__return_true");
-`
+Great question! Yes you can! You can set it on the setting spage, or make use of the following hooks to get that working:
+`gfexcel_field_separated_{type}_{form_id}_{field_id}` where every variable is optional.
 
 = I have a custom field. Can your plugin handle this? =
 

@@ -7,7 +7,7 @@ use GFExcel\Values\BaseValue;
 
 abstract class AbstractField implements FieldInterface
 {
-
+    /** @var GF_Field */
     protected $field;
 
     /**
@@ -21,48 +21,34 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Array of needed column names for this field.
-     * @return array
+     * @return BaseValue[]
      */
     public function getColumns()
     {
-        $label = $this->field->get_field_label(true, '');
-        $label = gf_apply_filters(
-            array(
-                "gfexcel_field_label",
-                $this->field->get_input_type(),
-                $this->field->formId,
-                $this->field->id
-            ),
-            $label, $this->field);
+        $label = gf_apply_filters([
+            "gfexcel_field_label",
+            $this->field->get_input_type(),
+            $this->field->formId,
+            $this->field->id
+        ], $this->field->get_field_label(true, ''), $this->field);
+
         return $this->wrap(array($label), true);
     }
 
     /**
      * Array of needed cell values for this field
      * @param array $entry
-     * @return array
+     * @return BaseValue[]
      */
     abstract public function getCells($entry);
 
+    /**
+     * Get the type of this value object
+     * @return string
+     */
     public function getValueType()
     {
         return BaseValue::TYPE_STRING;
-    }
-
-    /**
-     * @internal Get values of combined fields like address
-     * @param array $entry
-     * @return array
-     */
-    protected function getSubfields($entry)
-    {
-        $subfields = array();
-        foreach ($entry as $entry_key => $subfield) {
-            if (preg_match("/^" . $this->field->id . "\./is", $entry_key)) {
-                $subfields[] = $subfield;
-            }
-        }
-        return $subfields;
     }
 
     /**
@@ -70,11 +56,11 @@ abstract class AbstractField implements FieldInterface
      *
      * @param array $values
      * @param bool $is_label
-     * @return array
+     * @return BaseValue[]
      */
     protected function wrap($values, $is_label = false)
     {
-        $class = $this;
+        $class = $this; //legacy support
         return array_map(function ($value) use ($class, $is_label) {
             return BaseValue::getValueObject($class, $value, $class->field, $is_label);
         }, (array) $values);
@@ -89,12 +75,9 @@ abstract class AbstractField implements FieldInterface
     protected function getFieldValue($entry)
     {
         $value = $this->field->get_value_export($entry);
-
         $value = html_entity_decode($value);
 
         // add gform export filters to get the same results as a normal export
-        $value = apply_filters('gform_export_field_value', $value, $this->field->formId, $this->field->id, $entry);
-
-        return $value;
+        return apply_filters('gform_export_field_value', $value, $this->field->formId, $this->field->id, $entry);
     }
 }
