@@ -268,7 +268,7 @@ class GFExcelAdmin extends GFAddOn
                 onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
-                <a class='button-primary' href=' % s' target='_blank'>%s</a>
+                <a class='button-primary' href='%s' target='_blank'>%s</a>
                 " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
             $url,
