@@ -88,14 +88,14 @@ msgstr "Voeg bestand toe als bijlage aan melding"
 msgid "Select a notification"
 msgstr "Selecteer een melding"
 
-msgid "These are global settings for new forms. You can overwrite them per form using the available hooks. Once you've saved your form, these settings will not do anything any more."
-msgstr "Dit zijn algemene instellingen voor nieuwe formulieren. Je kunt ze pér formulier overschrijven met de beschikbare filters. Als een formulier is opgeslagen, doen deze instellingen niets meer voor dat formulier."
+msgid "These are global settings for new forms. You can overwrite them per form using the available hooks."
+msgstr "Dit zijn algemene instellingen voor nieuwe formulieren. Je kunt ze per formulier overschrijven met de beschikbare filters."
 
-msgid "Address columns"
-msgstr "Adres-kolommen"
+msgid "Multiple columns"
+msgstr "Meerdere kolommen"
 
-msgid "Split address field into multiple columns"
-msgstr "Splits een adres-veld in meerdere kolommen"
+msgid "Split multi-fields (name, address) into multiple columns"
+msgstr "Deel een complex veld (naam, adres) op in meerdere kolommen"
 
 msgid "Enable notes by default"
 msgstr "Acitveer 'Opmerkingen' als standaard"
@@ -121,8 +121,8 @@ msgstr "Maak cellen met een URL klikbaar"
 msgid "Enabled meta fields"
 msgstr "Toon deze meta-velden"
 
-msgid "Select all meta fields that are enabled by default"
-msgstr "Selecteer alle meta-velden die standaard getoond moeten worden"
+msgid "Select all meta fields that are enabled by default. Once you've saved your form, these settings will not do anything any more."
+msgstr "Selecteer alle meta-velden die standaard getoond moeten worden. Een bestaand formulier doet niets met deze instellingen."
 
 msgid ""
 "Export all Gravity Forms entries to Excel (.xls) via a download button OR "

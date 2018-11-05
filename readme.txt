@@ -186,16 +186,13 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 == Changelog ==
 
 = 1.5.5 =
-* Enhancement: Date fields now export the date according to it's setting.
+* Enhancement: Date fields now export the date according to it's field setting.
 * Enhancement: Value Objects (BaseValue) can reference `getField()`, `getFieldType()` and `getFieldId()` to help with filtering.
 * Enhancement: Name fields can now also be split up in to multiple fields. Made this a generic setting on the settings page. Please re-save your settings!
 * Enhancement: Subfield labels can now also be overwritten with the `gfexcel_field_value`-hook.
-* Enhancement: In preperation of future features I made sure every field returns an array of `BaseValue` objects.
-* Enhancement: Code clean-up, removed unsused code, added more phpdoc.
 * Bugfix: Found a memory leakage in retrieving fields for every row. Will now be retrieved only once per file.
 * Bugfix: Custom Sub field labels were not exported.
 * Bugfix: I spelled 'separate' wrong, and therefor the hooks were also wrong. **Please update your hooks If you use them!**
-
 
 = 1.5.4 =
 * Language: Finnish language files added thanks to @Nomafin!

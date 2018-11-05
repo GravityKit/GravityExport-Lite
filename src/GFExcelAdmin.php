@@ -75,7 +75,7 @@ class GFExcelAdmin extends GFAddOn
                 'label' => esc_html__('Multiple columns', GFExcel::$slug),
                 'type' => 'checkbox',
                 'choices' => [[
-                    'label' => esc_html__('Split multi-fields (name, address, etc) into multiple columns', GFExcel::$slug),
+                    'label' => esc_html__('Split multi-fields (name, address) into multiple columns', GFExcel::$slug),
                     'name' => SeparableField::SETTING_KEY,
                     // backwards compatible with last known setting
                     'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
