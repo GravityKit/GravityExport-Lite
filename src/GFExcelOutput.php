@@ -6,9 +6,9 @@ use GF_Field;
 use GFAPI;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
-use GFExport;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Transformer;
+use GFExcel\Values\BaseValue;
 
 /**
  * The point where data is transformed, and is send to the renderer.
@@ -23,8 +23,11 @@ class GFExcelOutput
     private $form;
     private $entries;
 
-    private $columns = array();
-    private $rows = array();
+    /** @var BaseValue[] */
+    private $columns = [];
+    private $rows = [];
+
+    private $repository;
 
     public function __construct($form_id, RendererInterface $renderer)
     {
@@ -35,9 +38,11 @@ class GFExcelOutput
 
     public function getFields()
     {
-        $form = $this->getForm();
-        $repository = new FieldsRepository($form);
-        return $repository->getFields();
+        if (!$this->repository) {
+            $this->repository = new FieldsRepository($this->getForm());
+        }
+
+        return $this->repository->getFields();
     }
 
     /**
@@ -64,11 +69,10 @@ class GFExcelOutput
      */
     public function getRows()
     {
-        return gf_apply_filters(
-            array(
-                "gfexcel_output_rows",
-                $this->form_id,
-            ),
+        return gf_apply_filters([
+            "gfexcel_output_rows",
+            $this->form_id,
+        ],
             $this->rows,
             $this->form_id
         );
@@ -76,15 +80,14 @@ class GFExcelOutput
 
     /**
      * Retrieve the set columns, but it can be filtered.
-     * @return array
+     * @return BaseValue[]
      */
     public function getColumns()
     {
-        return gf_apply_filters(
-            array(
-                "gfexcel_output_columns",
-                $this->form_id
-            ),
+        return gf_apply_filters([
+            "gfexcel_output_columns",
+            $this->form_id,
+        ],
             $this->columns,
             $this->form_id
         );
@@ -131,12 +134,14 @@ class GFExcelOutput
 
     /**
      * @param GF_Field $field
-     * @return array
+     * @return BaseValue[]
      */
     private function getFieldColumns(GF_Field $field)
     {
         $fieldClass = $this->transformer->transform($field);
-        return $fieldClass->getColumns();
+        return array_filter($fieldClass->getColumns(), function ($column) {
+            return $column instanceof BaseValue;
+        });
     }
 
     /**
@@ -162,7 +167,10 @@ class GFExcelOutput
             $search_criteria['status'] = 'active';
             $sorting = $this->get_sorting($this->form_id);
             $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
-            $paging = array("offset" => 0, "page_size" => $total_entries_count);
+            $paging = [
+                'offset' => 0,
+                'page_size' => $total_entries_count,
+            ];
             $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
         }
         return $this->entries;

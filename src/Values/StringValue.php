@@ -6,12 +6,18 @@ use GFExcel\GFExcelAdmin;
 
 class StringValue extends BaseValue
 {
-    public function __construct($value)
+    public function __construct($value, \GF_Field $gf_field)
     {
-        parent::__construct($value);
+        parent::__construct($value, $gf_field);
+        $this->setUrlAsLink();
+    }
 
-        if ($this->isUrl($value) && !!GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled')) {
-            $this->setUrl($value);
+    /**
+     * Check if the value is a url, and set that url as a link on the cell
+     */
+    protected function setUrlAsLink() {
+        if ($this->isUrl($this->value) && !!GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled')) {
+            $this->setUrl($this->value);
         }
     }
 

@@ -4,6 +4,7 @@ namespace GFExcel\Field;
 
 use GFCommon;
 use GFExcel\Repository\FormsRepository;
+use GFExcel\Values\BaseValue;
 use RGFormsModel;
 use GFExcel\GFExcelOutput;
 
@@ -13,15 +14,18 @@ use GFExcel\GFExcelOutput;
  */
 class NotesField extends BaseField
 {
+    /** @var bool|null */
+    private $show_notes; //microcache
+
     /**
      * Array of needed cell values for this field
      * @param array $entry
-     * @return array
+     * @return BaseValue[]
      */
     public function getCells($entry)
     {
         if (!$this->showNotesAsColumn()) {
-            return array(); // no cells
+            return []; // no cells
         }
         $notes = RGFormsModel::get_lead_notes($entry['id']);
 
@@ -30,7 +34,7 @@ class NotesField extends BaseField
                 $carry .= "\n";
             }
 
-            $carry .= sprintf("%s: %s",
+            $carry .= sprintf('%s: %s',
                 esc_html(GFCommon::format_date($note->date_created, false)),
                 $note->value
             );
@@ -38,28 +42,36 @@ class NotesField extends BaseField
             return $carry;
         }, '');
 
-        $value = gf_apply_filters(
-            array(
-                "gfexcel_notes_value",
-                $this->field->formId,
-            ),
-            $value, $notes);
+        $value = gf_apply_filters([
+            'gfexcel_notes_value',
+            $this->field->formId,
+        ], $value, $notes);
 
         return $this->wrap([$value]);
     }
 
+    /**
+     * {@inheritdoc}
+     * @return BaseValue[]
+     */
     public function getColumns()
     {
         if (!$this->showNotesAsColumn()) {
-            return array(); // no columns
+            return []; // no columns
         }
 
         return parent::getColumns();
     }
 
+    /**
+     * Wether to show notes column
+     * @return bool
+     */
     private function showNotesAsColumn()
     {
-        $repository = new FormsRepository($this->field->formId);
-        return $repository->showNotes();
+        if ($this->show_notes === null) {
+            $this->show_notes = (new FormsRepository($this->field->formId))->showNotes();
+        }
+        return $this->show_notes;
     }
 }

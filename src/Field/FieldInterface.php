@@ -4,6 +4,7 @@ namespace GFExcel\Field;
 
 
 use GF_Field;
+use GFExcel\Values\BaseValue;
 
 Interface FieldInterface
 {
@@ -16,14 +17,14 @@ Interface FieldInterface
 
     /**
      * Array of needed column names for this field.
-     * @return array
+     * @return BaseValue[]
      */
     public function getColumns();
 
     /**
      * Array of needed cell values for this field
      * @param array $entry
-     * @return array
+     * @return BaseValue[]
      */
     public function getCells($entry);
 }

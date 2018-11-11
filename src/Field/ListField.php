@@ -12,7 +12,7 @@ class ListField extends BaseField
 
     /**
      * Array of needed column names for this field.
-     * @return array
+     * @return BaseValue[]
      */
     public function getColumns()
     {
@@ -36,7 +36,7 @@ class ListField extends BaseField
     /**
      * Array of needed cell values for this field
      * @param array $entry
-     * @return array
+     * @return BaseValue[]
      */
     public function getCells($entry)
     {
@@ -49,16 +49,16 @@ class ListField extends BaseField
         $value = $this->getFieldValue($entry);
         if (!$result = json_decode($value)) {
             //the value isn't json, so it's empty, we'll map every column as empty
-            return array_map(function () {
+            return $this->wrap(array_map(function () {
                 return '';
-            }, $this->getColumns());
+            }, $this->getColumns()));
         }
 
         //We have an object with multiple columns. Map the values to their column
         $component = $this; //php 5.3 compatible
         $result = array_values(array_reduce($result, function ($carry, $row) use ($component) {
             foreach ($component->getColumns() as $column) {
-                if($column instanceof BaseValue) {
+                if ($column instanceof BaseValue) {
                     $column = $column->getValue();
                 }
                 if (!array_key_exists($column, $carry)) {
@@ -67,7 +67,7 @@ class ListField extends BaseField
                 $carry[$column][] = $row->$column;
             }
             return $carry;
-        }, array()));
+        }, []));
 
         // Every value on it's own line for readability.
         // Should this have a filter? Not sure.

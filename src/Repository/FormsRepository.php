@@ -38,11 +38,10 @@ class FormsRepository
             $value = $form[GFExcel::KEY_ENABLED_NOTES];
         }
 
-        return (bool) gf_apply_filters(
-            array(
-                "gfexcel_field_notes_enabled",
-                $form['id'],
-            ), $value);
+        return (bool) gf_apply_filters([
+            'gfexcel_field_notes_enabled',
+            $form['id'],
+        ], $value);
     }
 
     /**

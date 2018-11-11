@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.8
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,15 +67,8 @@ The entry array is provided as a parameter, so you can combine fields if you wan
 
 = Can I seperate the fields of an address into multiple columns? =
 
-Great question! Yes you can! You can make use of the following hooks to get that working:
-`gfexcel_field_address_seperated`, `gfexcel_field_address_seperated_{form_id}` or
-`gfexcel_field_address_seperated_{form_id}_{field_id}`
-
-Just add this to your `functions.php`:
-
-`
-add_filter("gfexcel_field_address_seperated","__return_true");
-`
+Great question! Yes you can! You can set it on the setting spage, or make use of the following hooks to get that working:
+`gfexcel_field_separated_{type}_{form_id}_{field_id}` where every variable is optional.
 
 = I have a custom field. Can your plugin handle this? =
 
@@ -191,6 +184,15 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.5.5 =
+* Enhancement: Date fields now export the date according to it's field setting.
+* Enhancement: Value Objects (BaseValue) can reference `getField()`, `getFieldType()` and `getFieldId()` to help with filtering.
+* Enhancement: Name fields can now also be split up in to multiple fields. Made this a generic setting on the settings page. Please re-save your settings!
+* Enhancement: Subfield labels can now also be overwritten with the `gfexcel_field_value`-hook.
+* Bugfix: Found a memory leakage in retrieving fields for every row. Will now be retrieved only once per file.
+* Bugfix: Custom Sub field labels were not exported.
+* Bugfix: I spelled 'separate' wrong, and therefor the hooks were also wrong. **Please update your hooks If you use them!**
 
 = 1.5.4 =
 * Language: Finnish language files added thanks to @Nomafin!
