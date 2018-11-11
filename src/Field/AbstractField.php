@@ -32,7 +32,7 @@ abstract class AbstractField implements FieldInterface
             $this->field->id
         ], $this->field->get_field_label(true, ''), $this->field);
 
-        return $this->wrap(array($label), true);
+        return $this->wrap([$label], true);
     }
 
     /**

@@ -69,32 +69,28 @@ class GFExcelOutput
      */
     public function getRows()
     {
-        return gf_apply_filters(
-            array(
-                "gfexcel_output_rows",
-                $this->form_id,
-            ),
+        return gf_apply_filters([
+            "gfexcel_output_rows",
+            $this->form_id,
+        ],
             $this->rows,
             $this->form_id
         );
     }
 
     /**
-     * Retrieve the set columns, but it can be filtered, and only return BaseValue objects
+     * Retrieve the set columns, but it can be filtered.
      * @return BaseValue[]
      */
     public function getColumns()
     {
-        return array_filter(gf_apply_filters(
-            array(
-                "gfexcel_output_columns",
-                $this->form_id
-            ),
+        return gf_apply_filters([
+            "gfexcel_output_columns",
+            $this->form_id,
+        ],
             $this->columns,
             $this->form_id
-        ), function ($column) {
-            return $column instanceof BaseValue;
-        });
+        );
     }
 
     /**
@@ -171,7 +167,10 @@ class GFExcelOutput
             $search_criteria['status'] = 'active';
             $sorting = $this->get_sorting($this->form_id);
             $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
-            $paging = array("offset" => 0, "page_size" => $total_entries_count);
+            $paging = [
+                'offset' => 0,
+                'page_size' => $total_entries_count,
+            ];
             $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
         }
         return $this->entries;

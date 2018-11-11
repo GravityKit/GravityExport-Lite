@@ -12,7 +12,7 @@ class Transformer implements TransformerInterface
      * List of specific field classes
      * @var array
      */
-    protected $fields = array(
+    protected $fields = [
         'address' => 'GFExcel\Field\SeparableField',
         'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
@@ -22,7 +22,7 @@ class Transformer implements TransformerInterface
         'notes' => 'GFExcel\Field\NotesField',
         'number' => 'GFExcel\Field\NumberField',
         'section' => 'GFExcel\Field\SectionField',
-    );
+    ];
 
     /**
      * Transform GF_Field instance to a GFExcel Field (FieldInterface)
