@@ -1,8 +1,6 @@
 <?php
 
-
 namespace GFExcel\Field\Meta;
-
 
 use GFExcel\Field\BaseField;
 use GFExcel\GFExcel;
@@ -59,5 +57,4 @@ class DateCreated extends BaseField
             $this->field->id
         ], false);
     }
-
 }

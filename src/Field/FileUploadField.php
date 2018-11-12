@@ -26,7 +26,7 @@ class FileUploadField extends BaseField
 
     /**
      * @inheritdoc
-     * @return BaseValue
+     * @return BaseValue[]
      */
     public function getColumns()
     {
@@ -34,7 +34,6 @@ class FileUploadField extends BaseField
             return []; // no columns
         }
         return parent::getColumns();
-
     }
 
     /**

@@ -6,7 +6,6 @@ use GFCommon;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Values\BaseValue;
 use RGFormsModel;
-use GFExcel\GFExcelOutput;
 
 /**
  * Class SectionField
@@ -34,7 +33,8 @@ class NotesField extends BaseField
                 $carry .= "\n";
             }
 
-            $carry .= sprintf('%s: %s',
+            $carry .= sprintf(
+                '%s: %s',
                 esc_html(GFCommon::format_date($note->date_created, false)),
                 $note->value
             );

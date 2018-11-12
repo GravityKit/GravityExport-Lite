@@ -69,10 +69,11 @@ class GFExcelOutput
      */
     public function getRows()
     {
-        return gf_apply_filters([
-            "gfexcel_output_rows",
-            $this->form_id,
-        ],
+        return gf_apply_filters(
+            [
+                'gfexcel_output_rows',
+                $this->form_id,
+            ],
             $this->rows,
             $this->form_id
         );
@@ -84,10 +85,11 @@ class GFExcelOutput
      */
     public function getColumns()
     {
-        return gf_apply_filters([
-            "gfexcel_output_columns",
-            $this->form_id,
-        ],
+        return gf_apply_filters(
+            [
+                'gfexcel_output_columns',
+                $this->form_id,
+            ],
             $this->columns,
             $this->form_id
         );
@@ -165,7 +167,7 @@ class GFExcelOutput
     {
         if (empty($this->entries)) {
             $search_criteria['status'] = 'active';
-            $sorting = $this->get_sorting($this->form_id);
+            $sorting = $this->getSorting($this->form_id);
             $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
             $paging = [
                 'offset' => 0,
@@ -220,8 +222,7 @@ class GFExcelOutput
         return $this;
     }
 
-
-    private function get_sorting($form_id)
+    private function getSorting($form_id)
     {
         $repository = new FormsRepository($form_id);
         return [
@@ -229,5 +230,4 @@ class GFExcelOutput
             "direction" => $repository->getSortOrder()
         ];
     }
-
 }

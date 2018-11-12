@@ -2,11 +2,10 @@
 
 namespace GFExcel\Field;
 
-
 use GF_Field;
 use GFExcel\Values\BaseValue;
 
-Interface FieldInterface
+interface FieldInterface
 {
 
     /**

@@ -501,7 +501,7 @@ class GFExcelAdmin extends GFAddOn
     private function sortableFields($form)
     {
         $repository = new FieldsRepository($form);
-        $disabled_fields = $repository->get_disabled_fields();
+        $disabled_fields = $repository->getDisabledFields();
         $all_fields = $repository->getFields($unfiltered = true);
 
         $active_fields = $inactive_fields = [];

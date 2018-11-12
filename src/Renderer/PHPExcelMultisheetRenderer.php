@@ -79,5 +79,4 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
 
         return $this;
     }
-
 }

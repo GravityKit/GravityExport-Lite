@@ -2,7 +2,6 @@
 
 namespace GFExcel\Field;
 
-use GF_Field;
 use GFExcel\Values\BaseValue;
 
 class MetaField extends BaseField

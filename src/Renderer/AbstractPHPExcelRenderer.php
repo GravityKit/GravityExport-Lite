@@ -18,13 +18,18 @@ abstract class AbstractPHPExcelRenderer
     /** @var Spreadsheet */
     protected $spreadsheet;
 
-
     public function __construct()
     {
         $this->spreadsheet = new Spreadsheet();
-        register_shutdown_function([$this, "fatal_handler"]);
+        register_shutdown_function([$this, 'fatalHandler']);
     }
 
+    /**
+     * This is where the magic happens, and the actual file is being rendered.
+     * @param string $extension
+     * @param bool $save
+     * @return string
+     */
     public function renderOutput($extension = 'xlsx', $save = false)
     {
         $exception = null;
@@ -48,10 +53,10 @@ abstract class AbstractPHPExcelRenderer
             header('Pragma: public'); // HTTP/1.0
 
             $objWriter->save('php://output');
-        } catch (\Throwable $e) {
-            $exception = $e;
         } catch (\Exception $e) {
             //in case of php5.x
+            $exception = $e;
+        } catch (\Throwable $e) {
             $exception = $e;
         }
 
@@ -68,7 +73,7 @@ abstract class AbstractPHPExcelRenderer
      * Handle fatal error during execution
      * @throws \Exception
      */
-    public function fatal_handler()
+    public function fatalHandler()
     {
         $error = error_get_last();
         if ($error['type'] === E_ERROR) {
@@ -97,9 +102,12 @@ abstract class AbstractPHPExcelRenderer
 
         foreach ($rows as $x => $row) {
             foreach ($row as $i => $value) {
-
-                $worksheet->setCellValueExplicitByColumnAndRow($i + 1, $x + 1, $this->getCellValue($value),
-                    $this->getCellType($value));
+                $worksheet->setCellValueExplicitByColumnAndRow(
+                    $i + 1,
+                    $x + 1,
+                    $this->getCellValue($value),
+                    $this->getCellType($value)
+                );
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
 
                 try {
@@ -122,11 +130,12 @@ abstract class AbstractPHPExcelRenderer
         $form_title = str_replace($invalidCharacters, '', $form['title']);
 
         $worksheet_title = substr(gf_apply_filters(
-            array(
-                "gfexcel_renderer_worksheet_title",
+            [
+                'gfexcel_renderer_worksheet_title',
                 $form['id'],
-            ),
-            $form_title, $form
+            ],
+            $form_title,
+            $form
         ), 0, 30);
 
         // Protect users from accidental override with invalid characters.
@@ -177,10 +186,9 @@ abstract class AbstractPHPExcelRenderer
      */
     private function setCellUrl(Cell $cell, $value)
     {
-        if (
-            !$value instanceof BaseValue or
+        if (!$value instanceof BaseValue or
             !$value->getUrl() or
-            gf_apply_filters(array('gfexcel_renderer_disable_hyperlinks'), false)
+            gf_apply_filters(['gfexcel_renderer_disable_hyperlinks'], false)
         ) {
             return false;
         }
@@ -191,7 +199,6 @@ abstract class AbstractPHPExcelRenderer
         } catch (Exception $e) {
             return false;
         }
-
     }
 
     /**
@@ -203,12 +210,15 @@ abstract class AbstractPHPExcelRenderer
 
         echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>";
         echo "<p>Error message: " . $exception->getMessage() . " </p>";
-        echo "<p>If you need support for this, please contact me via the <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> on the wordpress plugin.</p>";
-        echo "<p>Check if someone else had the same error, before posting a new support question.<br/>And when opening a new question, ";
-        echo "please use the error message (" . $exception->getMessage() . ") as the title,<br/> and include the following details in your message:</p>";
+        echo "<p>If you need support for this, please contact me via the";
+        echo " <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> ";
+        echo "on the wordpress plugin.</p>";
+        echo "<p>Check if someone else had the same error, before posting a new support question.<br/>";
+        echo "And when opening a new question, please use the error message (" . $exception->getMessage() . ") ";
+        echo "as the title,<br/> and include the following details in your message:</p>";
         echo "<ul>";
         echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
-        echo "<li>Gravity Forms Version: " . GFForms::$version. "</li>";
+        echo "<li>Gravity Forms Version: " . GFForms::$version . "</li>";
         echo "<li>PHP Version: " . PHP_VERSION;
         if (version_compare(PHP_VERSION, '5.6.1', '<')) {
             echo " (this version is too low, please update to at least PHP 5.6)";
@@ -270,5 +280,4 @@ abstract class AbstractPHPExcelRenderer
             return false;
         }
     }
-
 }
