@@ -7,7 +7,7 @@ use GFExcel\Values\BaseValue;
 
 class SeparableField extends BaseField
 {
-    CONST SETTING_KEY = 'field_separation_enabled';
+    const SETTING_KEY = 'field_separation_enabled';
 
     /**
      * {@inheritdoc}

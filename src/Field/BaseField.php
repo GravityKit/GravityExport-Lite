@@ -24,5 +24,4 @@ class BaseField extends AbstractField
 
         return $this->wrap([$value]);
     }
-
 }
