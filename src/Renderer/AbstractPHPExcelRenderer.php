@@ -209,13 +209,13 @@ abstract class AbstractPHPExcelRenderer
         global $wp_version;
 
         echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>";
-        echo "<p>Error message: " . $exception->getMessage() . " </p>";
+        echo "<p><strong>Error message</strong>: " . nl2br($exception->getMessage()) . " </p>";
         echo "<p>If you need support for this, please contact me via the";
         echo " <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> ";
         echo "on the wordpress plugin.</p>";
         echo "<p>Check if someone else had the same error, before posting a new support question.<br/>";
-        echo "And when opening a new question, please use the error message (" . $exception->getMessage() . ") ";
-        echo "as the title,<br/> and include the following details in your message:</p>";
+        echo "And when opening a new question, <strong>please use the error message ";
+        echo "as the title</strong>, and:</> <p><strong>Include the following details in your message:</strong></p>";
         echo "<ul>";
         echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
         echo "<li>Gravity Forms Version: " . GFForms::$version . "</li>";
@@ -225,7 +225,7 @@ abstract class AbstractPHPExcelRenderer
         }
         echo "</li>";
         echo "<li>Wordpress Version: " . $wp_version . "</li>";
-        echo "<li>Error message: " . $exception->getMessage() . "</li>";
+        echo "<li>Error message: " . nl2br($exception->getMessage()) . "</li>";
         echo "<li>Error stack trace:<br/><br/>" . nl2br($exception->getTraceAsString()) . "</li>";
         echo "</ul>";
         exit;

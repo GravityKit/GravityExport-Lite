@@ -6,7 +6,6 @@ use GFExcel\GFExcel;
 
 class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
-
     private $columns;
     private $rows;
     private $form;
