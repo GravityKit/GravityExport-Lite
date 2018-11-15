@@ -22,6 +22,7 @@ class Transformer implements TransformerInterface
         'notes' => 'GFExcel\Field\NotesField',
         'number' => 'GFExcel\Field\NumberField',
         'singleproduct' => 'GFExcel\Field\ProductField',
+        'calculation' => 'GFExcel\Field\ProductField',
         'section' => 'GFExcel\Field\SectionField',
     ];
 

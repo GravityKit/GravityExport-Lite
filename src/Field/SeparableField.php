@@ -59,10 +59,8 @@ class SeparableField extends BaseField
     {
         $entry_keys = array_keys($this->getSeparatedColumns());
 
-        $field = $this->field;
-
-        return array_map(function ($key) use ($entry, $field) {
-            return $field->get_value_export($entry, $key);
+        return array_map(function ($key) use ($entry) {
+            return $this->getFieldValue($entry, $key);
         }, $entry_keys);
     }
 

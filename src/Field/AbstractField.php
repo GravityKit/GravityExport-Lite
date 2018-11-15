@@ -70,14 +70,16 @@ abstract class AbstractField implements FieldInterface
      * Internal function to get the Field Value for an entry, and maybe override it.
      *
      * @param array $entry
+     * @param string $input_id
      * @return array|string
      */
-    protected function getFieldValue($entry)
+    protected function getFieldValue($entry, $input_id = '')
     {
-        $value = $this->field->get_value_export($entry);
+        $input_id = $input_id ?: $this->field->id;
+        $value = $this->field->get_value_export($entry, $input_id);
         $value = html_entity_decode($value);
 
         // add gform export filters to get the same results as a normal export
-        return apply_filters('gform_export_field_value', $value, $this->field->formId, $this->field->id, $entry);
+        return apply_filters('gform_export_field_value', $value, $this->field->formId, $input_id, $entry);
     }
 }
