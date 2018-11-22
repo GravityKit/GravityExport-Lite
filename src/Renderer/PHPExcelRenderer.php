@@ -38,7 +38,8 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
 
         $this->setProperties();
 
-        $this->addCellsToWorksheet($this->worksheet, $this->rows, $this->columns)
+        $matrix = $this->getMatrix($form, $this->columns, $this->rows);
+        $this->addCellsToWorksheet($this->worksheet, $matrix)
             ->autoSizeColumns($this->worksheet, count($this->columns));
 
         return $this->renderOutput($this->extension, $save);

@@ -3,8 +3,11 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
+use GFExcel\GFExcelAdmin;
+use GFExcel\GFExcelConfigConstants;
 use GFExcel\Values\BaseValue;
 use GFForms;
+use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -92,15 +95,12 @@ abstract class AbstractPHPExcelRenderer
 
     /**
      * @param Worksheet $worksheet
-     * @param $rows
-     * @param $columns
+     * @param array $matrix
      * @return $this
      */
-    protected function addCellsToWorksheet(Worksheet $worksheet, $rows, $columns)
+    protected function addCellsToWorksheet(Worksheet $worksheet, array $matrix)
     {
-        array_unshift($rows, $columns);
-
-        foreach ($rows as $x => $row) {
+        foreach ($matrix as $x => $row) {
             foreach ($row as $i => $value) {
                 $worksheet->setCellValueExplicitByColumnAndRow(
                     $i + 1,
@@ -250,7 +250,6 @@ abstract class AbstractPHPExcelRenderer
      */
     private function setFontStyle(Cell $cell, $value)
     {
-
         if (!$value instanceof BaseValue) {
             return false;
         }
@@ -279,5 +278,41 @@ abstract class AbstractPHPExcelRenderer
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * @param array $form
+     * @param $columns
+     * @param $rows
+     * @return mixed
+     */
+    protected function getMatrix(array $form, $columns, $rows)
+    {
+        array_unshift($rows, $columns);
+
+        return gf_apply_filters([
+            'gfexcel_renderer_matrix',
+            $form['id'],
+        ], $this->transpose($form, $rows));
+    }
+
+    /**
+     * Transpose the matrix to flip rows and columns.
+     * @param array $form
+     * @param $matrix
+     * @return array
+     */
+    protected function transpose(array $form, $matrix)
+    {
+        $transpose = false;
+        if (array_key_exists(GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, $form)) {
+            $transpose = $form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE];
+        }
+
+        if (!gf_apply_filters(['gfexcel_renderer_transpose', $form['id']], $transpose)) {
+            return $matrix;
+        }
+
+        return LookupRef::TRANSPOSE($matrix);
     }
 }
