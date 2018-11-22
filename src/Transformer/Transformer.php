@@ -14,6 +14,7 @@ class Transformer implements TransformerInterface
      */
     protected $fields = [
         'address' => 'GFExcel\Field\SeparableField',
+        'chainedselect' => 'GFExcel\Field\SeparableField',
         'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
         'list' => 'GFExcel\Field\ListField',
