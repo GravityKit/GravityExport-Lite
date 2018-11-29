@@ -76,7 +76,7 @@ abstract class AbstractField implements FieldInterface
     protected function getFieldValue($entry, $input_id = '')
     {
         $input_id = $input_id ?: $this->field->id;
-        $value = $this->field->get_value_export($entry, $input_id);
+        $value = $this->field->get_value_export($entry, $input_id, $use_text = false, $is_csv = false);
         $value = html_entity_decode($value);
 
         // add gform export filters to get the same results as a normal export
