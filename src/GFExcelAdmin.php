@@ -464,6 +464,24 @@ class GFExcelAdmin extends GFAddOn
                     }
                 ],
                 [
+                    'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                    'type' => 'radio',
+                    'label' => __('Columns position', GFExcel::$slug),
+                    'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
+                    'choices' => [
+                        [
+                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                            'label' => 'At the top (normal)',
+                            'value' => 0,
+                        ],
+                        [
+                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                            'label' => 'At the left (transposed)',
+                            'value' => 1,
+                        ]
+                    ]
+                ],
+                [
                     'label' => __('Custom filename', GFExcel::$slug),
                     'type' => 'text',
                     'name' => GFExcel::KEY_CUSTOM_FILENAME,
