@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 5.6
 Tested up to: 4.9.8
-Stable tag: 1.5.5
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,12 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.6.0 =
+* Feature: The renderer now supports transposing. So then every column is a row, and vica versa.
+* Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
+* Enhancement: Product and calculation have some specific rending on single field for clearity.
+* Enhancement: Now supports Gravity Forms Chained Selects.
 
 = 1.5.5 =
 * Enhancement: Date fields now export the date according to it's field setting.

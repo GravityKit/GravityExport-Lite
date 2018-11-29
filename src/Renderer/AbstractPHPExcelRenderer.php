@@ -306,7 +306,7 @@ abstract class AbstractPHPExcelRenderer
     {
         $transpose = false;
         if (array_key_exists(GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, $form)) {
-            $transpose = $form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE];
+            $transpose = (bool) $form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE];
         }
 
         if (!gf_apply_filters(['gfexcel_renderer_transpose', $form['id']], $transpose)) {
