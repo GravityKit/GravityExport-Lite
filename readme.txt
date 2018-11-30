@@ -190,6 +190,7 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
 * Enhancement: Product and calculation have some specific rending on single field for clearity.
 * Enhancement: Now supports Gravity Forms Chained Selects.
+* Enhancement: Added a "download" link per form on the Forms page. Less clicks for that file!
 
 = 1.5.5 =
 * Enhancement: Date fields now export the date according to it's field setting.

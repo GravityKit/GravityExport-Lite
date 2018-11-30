@@ -33,16 +33,16 @@ class GFExcel
     }
 
     /** Return the url for the form
-     * @param $form
+     * @param $form_id
      * @return string
      */
-    public static function url($form)
+    public static function url($form_id)
     {
         $blogurl = get_bloginfo("url");
         $permalink = "/index.php?gfexcel_action=%s&gfexcel_hash=%s";
 
         $action = self::$slug;
-        $hash = self::getHash($form['id']);
+        $hash = self::getHash($form_id);
 
         if (get_option('permalink_structure')) {
             $permalink = "/%s/%s";

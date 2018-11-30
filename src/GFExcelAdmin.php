@@ -154,6 +154,8 @@ class GFExcelAdmin extends GFAddOn
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
+        add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
+
     }
 
     public function render_settings($sections)
@@ -228,6 +230,18 @@ class GFExcelAdmin extends GFAddOn
         ], $links);
     }
 
+    public static function gform_form_actions($form_actions, $form_id)
+    {
+        $form_actions['download'] = array(
+            'label' => __('Download', GFExcel::$slug),
+            'title' => __('Download entries in Excel', GFExcel::$slug),
+            'url' => GFExcel::url($form_id),
+            'menu_class' => 'download',
+        );
+
+        return $form_actions;
+    }
+
     public function form_settings($form)
     {
         if ($this->is_save_postback()) {
@@ -252,7 +266,7 @@ class GFExcelAdmin extends GFAddOn
             esc_html__('Download url', GFExcel::$slug)
         );
 
-        $url = GFExcel::url($form);
+        $url = GFExcel::url($form['id']);
 
         printf(
             "<p>
