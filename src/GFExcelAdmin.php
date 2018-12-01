@@ -268,29 +268,44 @@ class GFExcelAdmin extends GFAddOn
 
         $url = GFExcel::url($form['id']);
 
-        printf(
-            "<p>
-                <input style='width:80%%;' type='text' value='%s' readonly />
-            </p>",
-            $url
-        );
-
         echo "<form method=\"post\">";
         printf(
             "<p>
-                <input 
+                <input style='width:80%%;' type='text' value='%s' readonly />&nbsp;<input 
                 onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
-                <a class='button-primary' href='%s' target='_blank'>%s</a>
-                " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
-            $url,
-            esc_html__('Download', GFExcel::$slug),
-            $this->download_count($form)
+            $url
         );
+        echo "</form>";
+
+        echo "<form method=\"post\" action=\"" . $url . "\" target=\"_blank\">
+        <h4>" . esc_html__('Select (optional) Date Range', 'gravityforms') . " " .
+            gform_tooltip('export_date_range', '', true) . "</h4>" .
+            "<div class='download-block'>
+            <div class=\"date-field\">
+                <input type=\"text\" id=\"start_date\" name=\"start_date\" style=\"width:90%\" />
+                <label for=\"start_date\">" . esc_html__('Start', 'gravityforms') . "</label>
+            </div>
+
+            <div class=\"date-field\">
+                <input type=\"text\" id=\"end_date\" name=\"end_date\" style=\"width:90%\" />
+                <label for=\"end_date\">" . esc_html__('End', 'gravityforms') . "</label>
+            </div>
+            
+            <div class=\"download-button\">
+                <button class='button-primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
+            sprintf("%s: <strong>%d</strong>",
+                __('Download count', GFExcel::$slug),
+                $this->download_count($form)
+            ) . "
+            </div></div>
+        </form>";
+
         echo "<br/>";
 
+        echo "<form method=\"post\">";
         $this->generalSettings($form);
 
         $this->sortableFields($form);
@@ -702,7 +717,7 @@ class GFExcelAdmin extends GFAddOn
                     'admin_page' => 'form_settings',
                     'tab' => GFExcel::$slug,
                 ]],
-                'deps' => ['jquery', 'jquery-ui-sortable'],
+                'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
             ],
         ]);
     }

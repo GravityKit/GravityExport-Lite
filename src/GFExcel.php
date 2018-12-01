@@ -167,6 +167,12 @@ class GFExcel
             return $query_vars;
         }
 
+        add_filter('gfexcel_output_search_criteria', function ($search_criteria) {
+            $search_criteria['start_date'] = rgar($_REQUEST, 'start_date', '');
+            $search_criteria['end_date'] = rgar($_REQUEST, 'end_date', '');
+            return $search_criteria;
+        });
+
         $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
         $this->updateCounter($form_id);
 

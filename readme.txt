@@ -173,9 +173,21 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 Yes, this can happen. And to be frank (actually, I'm not, I'm Doeke), this isn't something that can be fixed.
 As a default, Wordpress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
 But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
-`40 MB * 1024 KB = 40.960 Cells`. I say roughly, beceause we also use some memory for calculations and retrieving the data.
+`40 MB * 1024 KB = 40.960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
 If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [Woocommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
 
+= Can I hide a row, but not remove it? =
+You got something to hide, eh? We got you "covered". You can hide a row by adding a hook. Why a hook and not a nice GUI? Because everyone has different reasons for hiding stuff. So I couldn't come up with a better solution.
+Checkout this example:
+
+`add_filter('gfexcel_renderer_hide_row', function ($hide, $row) {
+     foreach ($row as $column) {
+         if ($column->getFieldId() === 1 && empty($column->getValue())) {
+             return true; // hide rows with an empty field 1
+         }
+     }
+     return $hide; // don't forget me!
+ }, 10, 2);`
 
 == Screenshots ==
 
@@ -187,8 +199,9 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So then every column is a row, and vica versa.
-* Todo: Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
+* Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
 * Feature: Added a "download" link per form on the Forms page. Less clicks for that file! Todo: disable option
+* Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout FAQ for more info.
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
 * Enhancement: Product and calculation have some specific rending on single field for clearity.
 * Enhancement: Now supports Gravity Forms Chained Selects.

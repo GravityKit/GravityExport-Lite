@@ -96,11 +96,21 @@ abstract class AbstractPHPExcelRenderer
     /**
      * @param Worksheet $worksheet
      * @param array $matrix
+     * @param int $form_id
      * @return $this
      */
-    protected function addCellsToWorksheet(Worksheet $worksheet, array $matrix)
+    protected function addCellsToWorksheet(Worksheet $worksheet, array $matrix, $form_id)
     {
         foreach ($matrix as $x => $row) {
+            $hide_row = (bool) gf_apply_filters([
+                'gfexcel_renderer_hide_row',
+                $form_id,
+            ], false, $row);
+
+            if ($hide_row) {
+                $worksheet->getRowDimension($x + 1)->setVisible(false);
+            }
+
             foreach ($row as $i => $value) {
                 $worksheet->setCellValueExplicitByColumnAndRow(
                     $i + 1,

@@ -34,7 +34,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
 
         $worksheet = $this->spreadsheet->getActiveSheet();
         $matrix = $this->getMatrix($form, $columns, $rows);
-        $this->addCellsToWorksheet($worksheet, $matrix)
+        $this->addCellsToWorksheet($worksheet, $matrix, $form['id'])
             ->autoSizeColumns($worksheet, count($columns))
             ->setWorksheetTitle($worksheet, $form);
     }
