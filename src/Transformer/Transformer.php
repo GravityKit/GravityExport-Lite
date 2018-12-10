@@ -46,7 +46,7 @@ class Transformer implements TransformerInterface
             return new SeparableField($field);
         }
 
-        // Ya baisc!
+        // Ya basic!
         return new BaseField($field);
     }
 

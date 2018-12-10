@@ -34,6 +34,7 @@ class GFExcelOutput
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
+        set_time_limit(0);
     }
 
     public function getFields()
