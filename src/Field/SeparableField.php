@@ -95,13 +95,13 @@ class SeparableField extends BaseField
     protected function getSeparatedColumns()
     {
         return array_reduce($this->getVisibleSubfields(), function ($carry, $field) {
-            $carry[$field['id']] = gf_apply_filters([
+            $field_id = (string) $field['id'];
+            $carry[$field_id] = gf_apply_filters([
                 'gfexcel_field_label',
                 $this->field->get_input_type(),
                 $this->field->formId,
                 $this->field->id
             ], $this->getSubLabel($field), $this->field);
-
             return $carry;
         }, []);
     }
