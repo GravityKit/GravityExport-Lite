@@ -55,7 +55,7 @@ class GFExcelAdmin extends GFAddOn
             'php' => [
                 'version' => '5.6',
                 'extensions' => [
-                    'zip', 'ctype', 'dom', 'zlib',
+                    'zip', 'ctype', 'dom', 'zlib', 'xml',
                 ],
             ]
         ];
@@ -281,7 +281,7 @@ class GFExcelAdmin extends GFAddOn
         echo "</form>";
 
         echo "<form method=\"post\" action=\"" . $url . "\" target=\"_blank\">
-        <h4>" . esc_html__('Select (optional) Date Range', 'gravityforms') . " " .
+        <h4>" . esc_html__('Select (optional) Date Range', GFExcel::$slug) . " " .
             gform_tooltip('export_date_range', '', true) . "</h4>" .
             "<div class='download-block'>
             <div class=\"date-field\">

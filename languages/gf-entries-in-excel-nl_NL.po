@@ -143,6 +143,9 @@ msgstr "ontelbaar veel"
 msgid "even more"
 msgstr "nog meer"
 
+msgid "Select (optional) Date Range"
+msgstr "Selecteer een (optioneel) datumbereik"
+
 msgid "I honestly ❤️ developing this plugin. It's fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!"
 msgstr "Ik vind het heerlijk ❤️ om aan deze plugin te sleutelen. Het is leuk, ik krijg wat oefening en ik wil graag wat teruggeven aan de open-source community. Maar een goede plugin, is er één die constant wordt bijgewerkt en beter wordt. Hier heb ik jullie hulp voor nodig!"
 

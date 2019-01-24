@@ -52,7 +52,7 @@ class DateCreated extends BaseField
     private function useSeparatedFields()
     {
         return gf_apply_filters([
-            'gfexcel_meta_date_created_seperated',
+            'gfexcel_meta_date_created_separated',
             $this->field->formId,
             $this->field->id
         ], false);

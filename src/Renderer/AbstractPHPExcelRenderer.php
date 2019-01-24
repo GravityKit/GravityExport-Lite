@@ -3,7 +3,6 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use GFExcel\GFExcelAdmin;
 use GFExcel\GFExcelConfigConstants;
 use GFExcel\Values\BaseValue;
 use GFForms;
@@ -15,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Exception;
+use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 
 abstract class AbstractPHPExcelRenderer
 {
@@ -38,7 +38,9 @@ abstract class AbstractPHPExcelRenderer
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
+            /** @var BaseWriter$objWriter */
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+            $objWriter->setPreCalculateFormulas(false);
 
             if ($save) {
                 $file = get_temp_dir() . $this->getFileName();
@@ -46,7 +48,14 @@ abstract class AbstractPHPExcelRenderer
                 return $file;
             }
 
-            header('Content-Type: application/vnd.ms-excel');
+            if ($extension === 'xlsx') {
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            }
+
+            if ($extension === 'csv') {
+                header('Content-Type: text/csv');
+            }
+
             header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
             header('Cache-Control: max-age=1');
 

@@ -8,7 +8,6 @@ use GFExcel\Values\BaseValue;
 use RGFormsModel;
 
 /**
- * Class SectionField
  * @since 1.3.1
  */
 class NotesField extends BaseField
@@ -64,7 +63,7 @@ class NotesField extends BaseField
     }
 
     /**
-     * Wether to show notes column
+     * Whether to show notes column
      * @return bool
      */
     private function showNotesAsColumn()
