@@ -33,7 +33,6 @@ class FieldsRepository
     public function getFields($unfiltered = false)
     {
         if (empty($this->fields)) {
-
             $this->fields = $this->form['fields'];
             $this->addNotesField();
 
@@ -127,7 +126,7 @@ class FieldsRepository
      */
     private function filterDisabledFields()
     {
-        $disabled_fields = $this->get_disabled_fields();
+        $disabled_fields = $this->getDisabledFields();
         $this->fields = array_filter($this->fields, function (GF_Field $field) use ($disabled_fields) {
             return !gf_apply_filters([
                 "gfexcel_field_disable",
@@ -144,7 +143,7 @@ class FieldsRepository
      * Retrieve the disabled field id's in array
      * @return array
      */
-    public function get_disabled_fields()
+    public function getDisabledFields()
     {
         $result = []; //default
         if ($settings = $this->admin->get_plugin_settings() and is_array($settings)) {
@@ -169,7 +168,7 @@ class FieldsRepository
      * Return sorted array of the keys of enabled fields
      * @return array
      */
-    public function get_enabled_fields()
+    public function getEnabledFields()
     {
         $result = [];
         if (array_key_exists(static::KEY_ENABLED_FIELDS, $this->form)) {
@@ -190,7 +189,7 @@ class FieldsRepository
             $fields = $this->fields;
         }
 
-        $sorted_keys = $this->get_enabled_fields();
+        $sorted_keys = $this->getEnabledFields();
         $fields = array_reduce($fields, function ($carry, GF_Field $field) {
             $carry[$field->id] = $field;
             return $carry;
@@ -199,5 +198,4 @@ class FieldsRepository
         $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'get_class'));
         return $fields;
     }
-
 }

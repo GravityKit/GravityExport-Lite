@@ -11,7 +11,7 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Entries in Excel';
     public static $shortname = 'Entries in Excel';
-    public static $version = "1.5.5";
+    public static $version = "1.6.0";
     public static $slug = "gf-entries-in-excel";
 
     const KEY_HASH = 'gfexcel_hash';
@@ -27,22 +27,22 @@ class GFExcel
 
     public function __construct()
     {
-        add_action("init", array($this, "add_permalink_rule"));
+        add_action("init", array($this, "addPermalinkRule"));
         add_action("request", array($this, "request"));
-        add_filter("query_vars", array($this, "query_vars"));
+        add_filter("query_vars", array($this, "getQueryVars"));
     }
 
     /** Return the url for the form
-     * @param $form
+     * @param $form_id
      * @return string
      */
-    public static function url($form)
+    public static function url($form_id)
     {
         $blogurl = get_bloginfo("url");
         $permalink = "/index.php?gfexcel_action=%s&gfexcel_hash=%s";
 
         $action = self::$slug;
-        $hash = self::getHash($form['id']);
+        $hash = self::getHash($form_id);
 
         if (get_option('permalink_structure')) {
             $permalink = "/%s/%s";
@@ -71,6 +71,7 @@ class GFExcel
 
     /**
      * Save new hash to the form
+     * @param $form_id
      * @return array metadata form
      */
     public static function setHash($form_id)
@@ -106,7 +107,8 @@ class GFExcel
     {
         $form = GFFormsModel::get_form_meta($form_id);
         if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
-            return sprintf("gfexcel-%d-%s-%s",
+            return sprintf(
+                'gfexcel-%d-%s-%s',
                 $form['id'],
                 sanitize_title($form['title']),
                 date("Ymd")
@@ -138,10 +140,13 @@ class GFExcel
         return static::$file_extension;
     }
 
-    public function add_permalink_rule()
+    public function addPermalinkRule()
     {
-        add_rewrite_rule("^" . static::$slug . "/(.+)/?$",
-            'index.php?gfexcel_action=' . static::$slug . '&gfexcel_hash=$matches[1]', 'top');
+        add_rewrite_rule(
+            '^' . static::$slug . '/(.+)/?$',
+            'index.php?gfexcel_action=' . static::$slug . '&gfexcel_hash=$matches[1]',
+            'top'
+        );
 
         $rules = get_option('rewrite_rules');
         if (!isset($rules["^" . static::$slug . "/(.+)/?$"])) {
@@ -154,7 +159,6 @@ class GFExcel
         if (!array_key_exists("gfexcel_action", $query_vars) ||
             !array_key_exists("gfexcel_hash", $query_vars) ||
             $query_vars['gfexcel_action'] !== self::$slug) {
-
             return $query_vars;
         }
 
@@ -163,13 +167,23 @@ class GFExcel
             return $query_vars;
         }
 
+        add_filter('gfexcel_output_search_criteria', function ($search_criteria) {
+            $search_criteria['start_date'] = rgar($_REQUEST, 'start_date', '');
+            $search_criteria['end_date'] = rgar($_REQUEST, 'end_date', '');
+            return $search_criteria;
+        });
+
         $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
         $this->updateCounter($form_id);
 
         return $output->render();
     }
 
-    public function query_vars($vars)
+    /**
+     * @param $vars
+     * @return array
+     */
+    public function getQueryVars($vars)
     {
         $vars[] = "gfexcel_action";
         $vars[] = "gfexcel_hash";
@@ -194,7 +208,10 @@ class GFExcel
         $wildcard = '%';
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
-        if (!$form_row = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like), ARRAY_A)) {
+        if (!$form_row = $wpdb->get_row(
+            $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
+            ARRAY_A
+        )) {
             $result = @GFCommon::decrypt($hash);
             if (!is_numeric($result)) {
                 return false;
@@ -236,7 +253,4 @@ class GFExcel
 
         GFFormsModel::update_form_meta($form_id, $form_meta);
     }
-
-
-
 }

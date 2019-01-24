@@ -5,6 +5,7 @@ namespace GFExcel\Transformer;
 use GF_Field;
 use GFExcel\Field\BaseField;
 use GFExcel\Field\FieldInterface;
+use GFExcel\Field\SeparableField;
 
 class Transformer implements TransformerInterface
 {
@@ -13,7 +14,8 @@ class Transformer implements TransformerInterface
      * @var array
      */
     protected $fields = [
-        'address' => 'GFExcel\Field\SeparableField',
+        'calculation' => 'GFExcel\Field\ProductField',
+        'checkbox' => 'GFExcel\Field\BaseField', //hard reset, this format makes more sense.
         'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
         'list' => 'GFExcel\Field\ListField',
@@ -21,6 +23,7 @@ class Transformer implements TransformerInterface
         'name' => 'GFExcel\Field\SeparableField',
         'notes' => 'GFExcel\Field\NotesField',
         'number' => 'GFExcel\Field\NumberField',
+        'singleproduct' => 'GFExcel\Field\ProductField',
         'section' => 'GFExcel\Field\SectionField',
     ];
 
@@ -33,10 +36,17 @@ class Transformer implements TransformerInterface
     {
         $type = $field->get_input_type();
 
+        // do we have a predfined type?
         if ($fieldClass = $this->getField($type, $field)) {
             return $fieldClass;
         }
 
+        // maybe is separable, maybe it's maybaline!
+        if (is_array($field->get_entry_inputs())) {
+            return new SeparableField($field);
+        }
+
+        // Ya basic!
         return new BaseField($field);
     }
 

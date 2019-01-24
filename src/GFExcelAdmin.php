@@ -55,7 +55,7 @@ class GFExcelAdmin extends GFAddOn
             'php' => [
                 'version' => '5.6',
                 'extensions' => [
-                    'zip', 'ctype', 'dom', 'zlib',
+                    'zip', 'ctype', 'dom', 'zlib', 'xml',
                 ],
             ]
         ];
@@ -154,6 +154,8 @@ class GFExcelAdmin extends GFAddOn
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
+        add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
+
     }
 
     public function render_settings($sections)
@@ -228,6 +230,18 @@ class GFExcelAdmin extends GFAddOn
         ], $links);
     }
 
+    public static function gform_form_actions($form_actions, $form_id)
+    {
+        $form_actions['download'] = array(
+            'label' => __('Download', GFExcel::$slug),
+            'title' => __('Download entries in Excel', GFExcel::$slug),
+            'url' => GFExcel::url($form_id),
+            'menu_class' => 'download',
+        );
+
+        return $form_actions;
+    }
+
     public function form_settings($form)
     {
         if ($this->is_save_postback()) {
@@ -252,31 +266,46 @@ class GFExcelAdmin extends GFAddOn
             esc_html__('Download url', GFExcel::$slug)
         );
 
-        $url = GFExcel::url($form);
-
-        printf(
-            "<p>
-                <input style='width:80%%;' type='text' value='%s' readonly />
-            </p>",
-            $url
-        );
+        $url = GFExcel::url($form['id']);
 
         echo "<form method=\"post\">";
         printf(
             "<p>
-                <input 
+                <input style='width:80%%;' type='text' value='%s' readonly />&nbsp;<input 
                 onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
-                <a class='button-primary' href='%s' target='_blank'>%s</a>
-                " . __("Download count", GFExcel::$slug) . ": %d
             </p>",
-            $url,
-            esc_html__('Download', GFExcel::$slug),
-            $this->download_count($form)
+            $url
         );
+        echo "</form>";
+
+        echo "<form method=\"post\" action=\"" . $url . "\" target=\"_blank\">
+        <h4>" . esc_html__('Select (optional) Date Range', GFExcel::$slug) . " " .
+            gform_tooltip('export_date_range', '', true) . "</h4>" .
+            "<div class='download-block'>
+            <div class=\"date-field\">
+                <input type=\"text\" id=\"start_date\" name=\"start_date\" style=\"width:90%\" />
+                <label for=\"start_date\">" . esc_html__('Start', 'gravityforms') . "</label>
+            </div>
+
+            <div class=\"date-field\">
+                <input type=\"text\" id=\"end_date\" name=\"end_date\" style=\"width:90%\" />
+                <label for=\"end_date\">" . esc_html__('End', 'gravityforms') . "</label>
+            </div>
+            
+            <div class=\"download-button\">
+                <button class='button-primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
+            sprintf("%s: <strong>%d</strong>",
+                __('Download count', GFExcel::$slug),
+                $this->download_count($form)
+            ) . "
+            </div></div>
+        </form>";
+
         echo "<br/>";
 
+        echo "<form method=\"post\">";
         $this->generalSettings($form);
 
         $this->sortableFields($form);
@@ -464,6 +493,24 @@ class GFExcelAdmin extends GFAddOn
                     }
                 ],
                 [
+                    'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                    'type' => 'radio',
+                    'label' => __('Columns position', GFExcel::$slug),
+                    'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
+                    'choices' => [
+                        [
+                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                            'label' => __('At the top (normal)', GFExcel::$slug),
+                            'value' => 0,
+                        ],
+                        [
+                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                            'label' => __('At the left (transposed)', GFExcel::$slug),
+                            'value' => 1,
+                        ]
+                    ]
+                ],
+                [
                     'label' => __('Custom filename', GFExcel::$slug),
                     'type' => 'text',
                     'name' => GFExcel::KEY_CUSTOM_FILENAME,
@@ -501,7 +548,7 @@ class GFExcelAdmin extends GFAddOn
     private function sortableFields($form)
     {
         $repository = new FieldsRepository($form);
-        $disabled_fields = $repository->get_disabled_fields();
+        $disabled_fields = $repository->getDisabledFields();
         $all_fields = $repository->getFields($unfiltered = true);
 
         $active_fields = $inactive_fields = [];
@@ -670,7 +717,7 @@ class GFExcelAdmin extends GFAddOn
                     'admin_page' => 'form_settings',
                     'tab' => GFExcel::$slug,
                 ]],
-                'deps' => ['jquery', 'jquery-ui-sortable'],
+                'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
             ],
         ]);
     }

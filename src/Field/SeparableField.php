@@ -7,7 +7,7 @@ use GFExcel\Values\BaseValue;
 
 class SeparableField extends BaseField
 {
-    CONST SETTING_KEY = 'field_separation_enabled';
+    const SETTING_KEY = 'field_separation_enabled';
 
     /**
      * {@inheritdoc}
@@ -59,10 +59,8 @@ class SeparableField extends BaseField
     {
         $entry_keys = array_keys($this->getSeparatedColumns());
 
-        $field = $this->field;
-
-        return array_map(function ($key) use ($entry, $field) {
-            return $field->get_value_export($entry, $key);
+        return array_map(function ($key) use ($entry) {
+            return $this->getFieldValue($entry, $key);
         }, $entry_keys);
     }
 
@@ -95,13 +93,13 @@ class SeparableField extends BaseField
     protected function getSeparatedColumns()
     {
         return array_reduce($this->getVisibleSubfields(), function ($carry, $field) {
-            $carry[$field['id']] = gf_apply_filters([
+            $field_id = (string) $field['id'];
+            $carry[$field_id] = gf_apply_filters([
                 'gfexcel_field_label',
                 $this->field->get_input_type(),
                 $this->field->formId,
                 $this->field->id
             ], $this->getSubLabel($field), $this->field);
-
             return $carry;
         }, []);
     }

@@ -31,5 +31,9 @@ var gfexcel_sortable;
             $elements.sortable('refresh');
             updateLists($elements);
         });
-    }
+    };
+
+    $(document).ready(function () {
+        $("#start_date, #end_date").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
+    });
 })(jQuery);

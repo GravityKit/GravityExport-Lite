@@ -39,7 +39,7 @@ class SectionField extends BaseField
     }
 
     /**
-     * Wether to show sections as an (empty) column
+     * Whether to show sections as an (empty) column
      * @return bool
      */
     private function showSectionAsColumn()

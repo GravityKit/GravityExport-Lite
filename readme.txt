@@ -3,9 +3,9 @@ Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
-Requires PHP: 5.6
-Tested up to: 4.9.8
-Stable tag: 1.5.5
+Requires PHP: 7.1
+Tested up to: 5.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,9 +23,14 @@ and using Excel to import a CSV is a pain in the butt.
 The plugin has a lot of event-hooks to make your Excel output exactly how you want it.
 Check out the FAQ to find out more.
 
+== Docs ==
+I've added a documentation website.  This site will be updated from time to time with new feature, fields, filters.
+If you are a developer; this site is probably for you. Please visit: http://gfexcel.doeken.org
+
 = Requirements =
 
-* PHP 5.6 or higher (PHP 7 Recommended)
+* PHP 7.1. (No longer active support for 5.6)
+* php-xml and php-zip libraries. The plugin will check for those.
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
@@ -173,9 +178,21 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 Yes, this can happen. And to be frank (actually, I'm not, I'm Doeke), this isn't something that can be fixed.
 As a default, Wordpress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
 But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
-`40 MB * 1024 KB = 40.960 Cells`. I say roughly, beceause we also use some memory for calculations and retrieving the data.
+`40 MB * 1024 KB = 40.960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
 If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [Woocommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
 
+= Can I hide a row, but not remove it? =
+You got something to hide, eh? We got you "covered". You can hide a row by adding a hook. Why a hook and not a nice GUI? Because everyone has different reasons for hiding stuff. So I couldn't come up with a better solution for now.
+Checkout this example:
+
+`add_filter('gfexcel_renderer_hide_row', function ($hide, $row) {
+     foreach ($row as $column) {
+         if ($column->getFieldId() === 1 && empty($column->getValue())) {
+             return true; // hide rows with an empty field 1
+         }
+     }
+     return $hide; // don't forget me!
+ }, 10, 2);`
 
 == Screenshots ==
 
@@ -184,6 +201,19 @@ If you're around this cell-count, and the renderer fails; try to upgrade the `WP
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.6.0 =
+* Feature: The renderer now supports transposing. So then every column is a row, and vica versa.
+* Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
+* Feature: Added a "download" link per form on the Forms page. Less clicks for that file!
+* Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout FAQ for more info.
+* Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
+* Enhancement: Product and calculation have some specific rending on single field for clearity.
+* Enhancement: Now supports Gravity Forms Chained Selects.
+* Enhancement: Quering entries in smaller sets to avoid massive database queries that can choke a database server.
+* Enhancement: Added a `gfexcel_output_search_criteria` to customize the search_criteria for requests.
+* Bugfix: Downloading files didn't work on iOS.
+* Info: PHP 5.6 is no longer actively supported. Will probably still work; but 7.1 is the new minimum.
 
 = 1.5.5 =
 * Enhancement: Date fields now export the date according to it's field setting.

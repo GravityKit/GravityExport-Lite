@@ -15,8 +15,9 @@ class StringValue extends BaseValue
     /**
      * Check if the value is a url, and set that url as a link on the cell
      */
-    protected function setUrlAsLink() {
-        if ($this->isUrl($this->value) && !!GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled')) {
+    protected function setUrlAsLink()
+    {
+        if ($this->isUrl($this->value) && $this->hasHyperlinksEnabled()) {
             $this->setUrl($this->value);
         }
     }
@@ -31,4 +32,11 @@ class StringValue extends BaseValue
         return !!preg_match('%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i', $value);
     }
 
+    /**
+     * @return bool
+     */
+    private function hasHyperlinksEnabled()
+    {
+        return (bool) GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled');
+    }
 }

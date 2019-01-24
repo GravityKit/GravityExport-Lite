@@ -3,11 +3,9 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInterface
 {
-
     private $columns;
     private $rows;
     private $form;
@@ -16,6 +14,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
 
     /**
      * Renderer constructor.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function __construct()
     {
@@ -39,7 +38,8 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
 
         $this->setProperties();
 
-        $this->addCellsToWorksheet($this->worksheet, $this->rows, $this->columns)
+        $matrix = $this->getMatrix($form, $this->columns, $this->rows);
+        $this->addCellsToWorksheet($this->worksheet, $matrix, (int) $form['id'])
             ->autoSizeColumns($this->worksheet, count($this->columns));
 
         return $this->renderOutput($this->extension, $save);
@@ -58,11 +58,12 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
     private function setTitle($title)
     {
         $title = gf_apply_filters(
-            array(
-                "gfexcel_renderer_title",
+            [
+                'gfexcel_renderer_title',
                 $this->form['id'],
-            ),
-            $title, $this->form
+            ],
+            $title,
+            $this->form
         );
 
         $this->setWorksheetTitle($this->worksheet, $this->form);
@@ -74,12 +75,14 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
     private function setSubject($title)
     {
         $title = gf_apply_filters(
-            array(
-                "gfexcel_renderer_subject",
+            [
+                'gfexcel_renderer_subject',
                 $this->form['id'],
-            ),
-            $title, $this->form
+            ],
+            $title,
+            $this->form
         );
+
         $this->spreadsheet->getProperties()->setSubject($title);
         return $this;
     }
@@ -103,16 +106,16 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
     private function setDescription($description)
     {
         $description = gf_apply_filters(
-            array(
-                "gfexcel_renderer_description",
+            [
+                'gfexcel_renderer_description',
                 $this->form['id'],
-            ),
-            $description, $this->form
+            ],
+            $description,
+            $this->form
         );
 
         $this->spreadsheet->getProperties()
             ->setDescription($description);
         return $this;
     }
-
 }

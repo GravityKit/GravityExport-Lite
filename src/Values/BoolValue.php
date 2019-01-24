@@ -1,8 +1,6 @@
 <?php
 
-
 namespace GFExcel\Values;
-
 
 class BoolValue extends BaseValue
 {

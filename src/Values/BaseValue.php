@@ -1,8 +1,6 @@
 <?php
 
-
 namespace GFExcel\Values;
-
 
 use GFExcel\Exception\WrongValueException;
 use GFExcel\Field\AbstractField;
@@ -41,15 +39,16 @@ abstract class BaseValue
     public static function getValueObject(AbstractField $field, $value, \GF_Field $gf_field, $is_label = false)
     {
         $type = gf_apply_filters(
-            array(
-                "gfexcel_value_type",
+            [
+                'gfexcel_value_type',
                 $gf_field->get_input_type(),
                 $gf_field->formId,
                 $gf_field->id
-            ),
+            ],
             $field->getValueType(),
             $gf_field,
-            $is_label);
+            $is_label
+        );
 
         if ($is_label) {
             $type = BaseValue::TYPE_STRING;
@@ -64,15 +63,16 @@ abstract class BaseValue
         $valueObject = new $typeClass($value, $gf_field);
 
         gf_apply_filters(
-            array(
+            [
                 "gfexcel_value_object",
                 $gf_field->get_input_type(),
                 $gf_field->formId,
                 $gf_field->id
-            ),
+            ],
             $valueObject,
             $gf_field,
-            $is_label);
+            $is_label
+        );
 
         return $valueObject;
     }
@@ -135,7 +135,9 @@ abstract class BaseValue
             return false;
         }
         if (substr($this->color, 0, 1) !== "#" || strlen($this->color) != 7) {
-            throw new WrongValueException('The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.');
+            throw new WrongValueException(
+                'The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+            );
         }
 
         return substr($this->color, 1);
@@ -151,7 +153,9 @@ abstract class BaseValue
             return false;
         }
         if (substr($this->background_color, 0, 1) !== "#" || strlen($this->background_color) != 7) {
-            throw new WrongValueException('The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.');
+            throw new WrongValueException(
+                'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+            );
         }
 
         return substr($this->background_color, 1);
@@ -225,7 +229,7 @@ abstract class BaseValue
      */
     public function getFieldType()
     {
-        if(!$this->getField()) {
+        if (!$this->getField()) {
             return 'unknown type';
         }
 
@@ -238,7 +242,7 @@ abstract class BaseValue
      */
     public function getFieldId()
     {
-        if(!$this->getField()) {
+        if (!$this->getField()) {
             return null;
         }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace GFExcel\Field;
-
 
 use GFExcel\Values\BaseValue;
 
@@ -17,7 +15,6 @@ class ListField extends BaseField
     public function getColumns()
     {
         if (!$this->columns) {
-
             if (!$this->field['enableColumns']) {
                 //no columns, so we can just use the field name, and a single column
                 $this->columns = parent::getColumns(); //micro caching
@@ -75,5 +72,4 @@ class ListField extends BaseField
             return implode("\n", $column);
         }, $result));
     }
-
 }

@@ -21,7 +21,7 @@ class GFExcelOutput
     private $form_id;
 
     private $form;
-    private $entries;
+    private $entries = [];
 
     /** @var BaseValue[] */
     private $columns = [];
@@ -34,6 +34,7 @@ class GFExcelOutput
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
+        set_time_limit(0);
     }
 
     public function getFields()
@@ -69,10 +70,11 @@ class GFExcelOutput
      */
     public function getRows()
     {
-        return gf_apply_filters([
-            "gfexcel_output_rows",
-            $this->form_id,
-        ],
+        return gf_apply_filters(
+            [
+                'gfexcel_output_rows',
+                $this->form_id,
+            ],
             $this->rows,
             $this->form_id
         );
@@ -84,10 +86,11 @@ class GFExcelOutput
      */
     public function getColumns()
     {
-        return gf_apply_filters([
-            "gfexcel_output_columns",
-            $this->form_id,
-        ],
+        return gf_apply_filters(
+            [
+                'gfexcel_output_columns',
+                $this->form_id,
+            ],
             $this->columns,
             $this->form_id
         );
@@ -163,16 +166,40 @@ class GFExcelOutput
      */
     private function getEntries()
     {
+        $search_criteria = gf_apply_filters([
+            'gfexcel_output_search_criteria',
+            $this->form_id,
+        ], [
+            'status' => 'active',
+        ]);
+
         if (empty($this->entries)) {
-            $search_criteria['status'] = 'active';
-            $sorting = $this->get_sorting($this->form_id);
-            $total_entries_count = GFAPI::count_entries($this->form_id, $search_criteria);
-            $paging = [
-                'offset' => 0,
-                'page_size' => $total_entries_count,
-            ];
-            $this->entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
+            $sorting = $this->getSorting($this->form_id);
+            $page_size = 100;
+            $i = 0;
+
+            // prevent a multi-k database query to build up the array.
+            $loop = true;
+            while ($loop) {
+                $paging = [
+                    'offset' => ($i * $page_size),
+                    'page_size' => $page_size,
+                ];
+
+                $new_entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
+                $count = count($new_entries);
+                if ($count > 0) {
+                    $this->entries = array_merge($this->entries, $new_entries);
+                }
+
+                $i += 1; // increase for the loop
+
+                if ($count < $page_size) {
+                    $loop = false; // stop looping
+                }
+            }
         }
+
         return $this->entries;
     }
 
@@ -220,8 +247,7 @@ class GFExcelOutput
         return $this;
     }
 
-
-    private function get_sorting($form_id)
+    private function getSorting($form_id)
     {
         $repository = new FormsRepository($form_id);
         return [
@@ -229,5 +255,4 @@ class GFExcelOutput
             "direction" => $repository->getSortOrder()
         ];
     }
-
 }

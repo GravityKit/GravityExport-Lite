@@ -13,11 +13,16 @@ out more.
 
 ### Requirements
 
-* PHP 5.6 or higher
+* PHP 7.1 or higher
+* `php-xml` and `php-zip` libraries.
 * Gravity Forms 2.0 or higher
 
+### Docs
+I made a [Full documentation](http://gfexcel.doeken.org) site for you developers out there!  
+
 ### Like the plugin? Buy me a drink ☕!
-Do you find the plugin helpful? Cool, glad to hear! If you'd like, you can [buy me a drink](https://www.paypal.me/doekenorg). 
+Do you find the plugin helpful? Cool, glad to hear! It's taken me a 'few hours' to create this plugin. 
+It's free for all, but if you'd like, you can [buy me a drink](https://www.paypal.me/doekenorg). 
 Being hydrated makes it easier to update the plugin. But no pressure!
 
 ### Credits

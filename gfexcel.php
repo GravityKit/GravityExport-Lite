@@ -8,7 +8,7 @@
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gf-entries-in-excel
  * Domain Path:     /languages
- * Version:         1.5.5
+ * Version:         1.6.0
  *
  * @package         GFExcel
  */
@@ -19,8 +19,8 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 
-if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
-    define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
+if (!defined('GFEXCEL_PLUGIN_FILE')) {
+    define('GFEXCEL_PLUGIN_FILE', __FILE__);
 }
 
 add_action("gform_loaded", function () {
