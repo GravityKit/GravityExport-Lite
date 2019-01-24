@@ -500,12 +500,12 @@ class GFExcelAdmin extends GFAddOn
                     'choices' => [
                         [
                             'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
-                            'label' => 'At the top (normal)',
+                            'label' => __('At the top (normal)', GFExcel::$slug),
                             'value' => 0,
                         ],
                         [
                             'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
-                            'label' => 'At the left (transposed)',
+                            'label' => __('At the left (transposed)', GFExcel::$slug),
                             'value' => 1,
                         ]
                     ]
