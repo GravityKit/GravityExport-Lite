@@ -23,9 +23,16 @@ and using Excel to import a CSV is a pain in the butt.
 The plugin has a lot of event-hooks to make your Excel output exactly how you want it.
 Check out the FAQ to find out more.
 
-== Docs ==
-I've added a documentation website.  This site will be updated from time to time with new feature, fields, filters.
-If you are a developer; this site is probably for you. Please visit: http://gfexcel.doeken.org
+== Documentation ==
+I've added a documentation website. This docs will be updated from time to time with new features, fields and filters.
+I'm planning to add `recipes` for quick updates, based on your questions. So if you have a specific need; Ask away!
+If you are a developer; this site is probably for you.
+
+Please visit: http://gfexcel.doeken.org
+
+== Donate ==
+Want to help out the development of the plugin, or just buy me a drink 🍺? You can make a donation via my paypal page:
+https://www.paypal.me/doekenorg. But as always; no pressure.
 
 = Requirements =
 
@@ -203,17 +210,18 @@ Checkout this example:
 == Changelog ==
 
 = 1.6.0 =
-* Feature: The renderer now supports transposing. So then every column is a row, and vica versa.
+* Feature: The renderer now supports transposing. So every column is a row, and vica versa.
 * Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
 * Feature: Added a "download" link per form on the Forms page. Less clicks for that file!
-* Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout FAQ for more info.
+* Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout the FAQ for more info.
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
-* Enhancement: Product and calculation have some specific rending on single field for clearity.
-* Enhancement: Now supports Gravity Forms Chained Selects.
+* Enhancement: Product and calculation have some specific rendering on single field for clearity.
+* Enhancement: Now supports *Gravity Forms Chained Selects*.
 * Enhancement: Quering entries in smaller sets to avoid massive database queries that can choke a database server.
-* Enhancement: Added a `gfexcel_output_search_criteria` to customize the search_criteria for requests.
+* Enhancement: Added a `gfexcel_output_search_criteria` filter to customize the `search_criteria` for requests.
 * Bugfix: Downloading files didn't work on iOS.
 * Info: PHP 5.6 is no longer actively supported. Will probably still work; but 7.1 is the new minimum.
+* Info: Launched a (first version) documentation site! Checkout http://gfexcel.doeken.org
 
 = 1.5.5 =
 * Enhancement: Date fields now export the date according to it's field setting.
