@@ -35,6 +35,18 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         $this->form = $form;
         $this->columns = $columns;
         $this->rows = $rows;
+        
+        if ( $form[GFExcel::KEY_REQUIRE_LOGGED] ) {
+
+                if ( !is_user_logged_in() ) { 
+
+                        echo "Forbidden, please login";
+
+                        die;
+
+                }
+
+        }
 
         $this->setProperties();
 
