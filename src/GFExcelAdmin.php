@@ -483,6 +483,17 @@ class GFExcelAdmin extends GFAddOn
                     ]],
                 ],
                 [
+                    'name' => 'require_logged',
+                    'label' => __('Require logged', GFExcel::$slug),
+                    'type' => 'checkbox',
+                    'choices' => [[
+                        'name' => GFExcel::KEY_REQUIRE_LOGGED,
+                        'label' => __('Yes, enable the download only for logged users', GFExcel::$slug),
+                        'value' => '1',
+                        'default_value' => $this->require_logged($form),
+                    ]],
+                ],
+                [
                     'name' => 'order_by',
                     'type' => 'callback',
                     'label' => __("Order by", GFExcel::$slug),
@@ -831,6 +842,15 @@ class GFExcelAdmin extends GFAddOn
                 'default_value' => true,
             ];
         }, $fields);
+    }
+    
+    private function require_logged($form = [])
+    {
+        if (array_key_exists(GFExcel::KEY_REQUIRE_LOGGED, $form)) {
+            return (int) $form[GFExcel::KEY_REQUIRE_LOGGED];
+        };
+
+        return $this->get_plugin_setting('require_logged');
     }
 
     private function enabled_notes($form = [])
