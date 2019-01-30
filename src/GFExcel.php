@@ -16,7 +16,7 @@ class GFExcel
 
     const KEY_HASH = 'gfexcel_hash';
     const KEY_COUNT = 'gfexcel_download_count';
-
+    const KEY_REQUIRE_LOGGED = 'gfexcel_require_logged';
     const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
     const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
     const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
