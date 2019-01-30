@@ -63,7 +63,7 @@ abstract class AbstractPHPExcelRenderer
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
             header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
             header('Pragma: public'); // HTTP/1.0
-
+            ob_end_clean(); // Cleaning buffer for preventing file corruption
             $objWriter->save('php://output');
         } catch (\Exception $e) {
             //in case of php5.x
