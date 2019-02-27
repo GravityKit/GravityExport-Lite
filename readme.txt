@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.0
+Tested up to: 5.1
 Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,11 +28,11 @@ I've added a documentation website. This docs will be updated from time to time 
 I'm planning to add `recipes` for quick updates, based on your questions. So if you have a specific need; Ask away!
 If you are a developer; this site is probably for you.
 
-Please visit: http://gfexcel.doeken.org
+Please visit: [gfexcel.doeken.org](http://gfexcel.doeken.org)
 
 == Donate ==
 Want to help out the development of the plugin, or just buy me a drink 🍺? You can make a donation via my paypal page:
-https://www.paypal.me/doekenorg. But as always; no pressure.
+[paypal.me/doekenorg](https://www.paypal.me/doekenorg). But as always; no pressure.
 
 = Requirements =
 
