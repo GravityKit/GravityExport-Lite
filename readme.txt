@@ -9,7 +9,7 @@ Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Export all Gravity Forms entries to Excel (.xls) via a download button OR via a secret (shareable) url.
+Export all Gravity Forms entries to Excel (.xlsx) via a download button OR via a secret (shareable) url.
 
 == Description ==
 
