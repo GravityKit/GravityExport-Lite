@@ -38,7 +38,7 @@ abstract class AbstractPHPExcelRenderer
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
-            /** @var BaseWriter$objWriter */
+            /** @var BaseWriter $objWriter */
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
             $objWriter->setPreCalculateFormulas(false);
 
@@ -142,12 +142,16 @@ abstract class AbstractPHPExcelRenderer
 
     abstract protected function getFileName();
 
+    /**
+     * @param Worksheet $worksheet
+     * @param array $form
+     * @return $this
+     */
     protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
-        $invalidCharacters = $worksheet::getInvalidCharacters();
+        $invalidCharacters = Worksheet::getInvalidCharacters();
         //First strip form title, so we still have 30 charachters.
         $form_title = str_replace($invalidCharacters, '', $form['title']);
-
         $worksheet_title = substr(gf_apply_filters(
             [
                 'gfexcel_renderer_worksheet_title',
@@ -155,7 +159,7 @@ abstract class AbstractPHPExcelRenderer
             ],
             $form_title,
             $form
-        ), 0, 30);
+        ), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH);
 
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);

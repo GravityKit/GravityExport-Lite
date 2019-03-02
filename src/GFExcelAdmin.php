@@ -4,6 +4,7 @@ namespace GFExcel;
 
 use GFAddOn;
 use GFCommon;
+use GFExcel\Action\CountDownloads;
 use GFExcel\Field\SeparableField;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
@@ -42,6 +43,7 @@ class GFExcelAdmin extends GFAddOn
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
+        $this->registerActions();
         parent::__construct();
     }
 
@@ -244,6 +246,12 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
+        if (isset($_GET['reset_count'])) {
+            $url = str_replace('&reset_count', '', $_SERVER['REQUEST_URI']);
+            do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD_RESET, $form['id']);
+            header('Location: ' . $url);
+        }
+
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -272,11 +280,12 @@ class GFExcelAdmin extends GFAddOn
         printf(
             "<p>
                 <input style='width:80%%;' type='text' value='%s' readonly />&nbsp;<input 
-                onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
+                onclick=\"%s\"
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
             </p>",
-            $url
+            $url,
+            "return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');"
         );
         echo "</form>";
 
@@ -300,6 +309,9 @@ class GFExcelAdmin extends GFAddOn
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
             ) . "
+            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&reset_count'>" .
+            esc_html__('Reset count', GFExcel::$slug) .
+            "</a>
             </div></div>
         </form>";
 
@@ -314,7 +326,11 @@ class GFExcelAdmin extends GFAddOn
         echo "</form>";
     }
 
-
+    /**
+     * Handles the download of multiple forms as a bulk action.
+     * @return bool
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     public function handle_bulk_actions()
     {
         if (!current_user_can('editor') &&
@@ -407,7 +423,7 @@ class GFExcelAdmin extends GFAddOn
         ]);
     }
 
-    private function select_order_options($form)
+    private function select_order_options()
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
@@ -489,7 +505,7 @@ class GFExcelAdmin extends GFAddOn
                     'callback' => function () use ($form) {
                         $this->select_sort_field_options($form);
                         echo ' ';
-                        $this->select_order_options($form);
+                        $this->select_order_options();
                     }
                 ],
                 [
@@ -544,6 +560,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the sortable fields section to the settings page
+     * @param $form
      */
     private function sortableFields($form)
     {
@@ -672,7 +689,6 @@ class GFExcelAdmin extends GFAddOn
      * Adds javascript for the sortable to the page
      * @param array $ids
      * @param string $connector_class
-     * @return string
      */
     private function sortable_script(array $ids, $connector_class = 'connected-sortable')
     {
@@ -747,6 +763,7 @@ class GFExcelAdmin extends GFAddOn
      * @param $form
      * @param $entry
      * @return mixed
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle_notification($notification, $form, $entry)
     {
@@ -883,4 +900,16 @@ class GFExcelAdmin extends GFAddOn
         return $digit . substr($current_count, 1);
     }
 
+    private function registerActions()
+    {
+        $actions = [
+            CountDownloads::class,
+        ];
+
+        foreach ($actions as $action) {
+            if (class_exists($action)) {
+                new $action;
+            }
+        }
+    }
 }
