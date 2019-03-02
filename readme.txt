@@ -209,6 +209,10 @@ Checkout this example:
 
 == Changelog ==
 
+= 1.6.1 =
+* Security: Removed old style URL. If you were using it, please regenate the URL.
+* Enhancement: Added reset of download counter.
+
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So every column is a row, and vica versa.
 * Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
