@@ -151,7 +151,7 @@ class GFExcelAdmin extends GFAddOn
         if ($form = $this->get_current_form()) {
             if (isset($_GET['gf_action'])) {
                 // trigger action
-                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id']);
+                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
                 // redirect back to same page without the action
                 $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET, ['gf_action' => null])));
                 wp_redirect($url);
@@ -254,6 +254,10 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
+        //reads current form settings
+        $settings = $this->get_form_settings($form);
+        $this->set_settings($settings);
+
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -484,9 +488,23 @@ class GFExcelAdmin extends GFAddOn
         return $settings;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function get_form_settings($form)
+    {
+        $settings = array_filter((array) parent::get_form_settings($form));
+        return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form) {
+            if (strpos($key, 'gfexcel_') === 0) {
+                $settings[$key] = $form[$key];
+            }
+            return $settings;
+        }, []));
+    }
+
     private function generalSettings($form)
     {
-        $this->single_section([
+        $this->settings(apply_filters('gfexcel_general_settings', [[
             'title' => __('General settings', GFExcel::$slug),
             'fields' => [
                 [
@@ -532,7 +550,6 @@ class GFExcelAdmin extends GFAddOn
                     'label' => __('Custom filename', GFExcel::$slug),
                     'type' => 'text',
                     'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                    'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                     'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
                 ],
                 [
@@ -557,7 +574,7 @@ class GFExcelAdmin extends GFAddOn
                     'choices' => $this->getNotifications(),
                 ],
             ],
-        ]);
+        ]]));
     }
 
     /**
