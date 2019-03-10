@@ -149,6 +149,14 @@ class GFExcelAdmin extends GFAddOn
         parent::init();
 
         if ($form = $this->get_current_form()) {
+            if (isset($_GET['gf_action'])) {
+                // trigger action
+                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id']);
+                // redirect back to same page without the action
+                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET, ['gf_action' => null])));
+                wp_redirect($url);
+            }
+
             $this->repository = new FormsRepository($form['id']);
         }
 
@@ -246,12 +254,6 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
-        if (isset($_GET['reset_count'])) {
-            $url = str_replace('&reset_count', '', $_SERVER['REQUEST_URI']);
-            do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD_RESET, $form['id']);
-            header('Location: ' . $url);
-        }
-
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -309,7 +311,7 @@ class GFExcelAdmin extends GFAddOn
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
             ) . "
-            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&reset_count'>" .
+            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&gf_action=" . CountDownloads::ACTION_RESET . "'>" .
             esc_html__('Reset count', GFExcel::$slug) .
             "</a>
             </div></div>
@@ -900,6 +902,10 @@ class GFExcelAdmin extends GFAddOn
         return $digit . substr($current_count, 1);
     }
 
+    /**
+     * Register native plugin actions
+     * @return void
+     */
     private function registerActions()
     {
         $actions = [

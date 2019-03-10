@@ -44,6 +44,8 @@ add_action("gform_loaded", function () {
 
     GFAddOn::register(GFExcelAdmin::class);
 
+    do_action('gfexcel_loaded');
+
     if (!is_admin()) {
         new GFExcel();
     }

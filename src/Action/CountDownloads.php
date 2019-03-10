@@ -16,6 +16,9 @@ class CountDownloads
      */
     const KEY_COUNT = 'gfexcel_download_count';
 
+    /** @var string */
+    const ACTION_RESET = 'reset_count';
+
     /**
      * Microcache variable.
      * @var array|null
@@ -28,7 +31,7 @@ class CountDownloads
     public function __construct()
     {
         add_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, [$this, 'updateCounter']);
-        add_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD_RESET, [$this, 'resetCounter']);
+        add_action('gfexcel_action_' . self::ACTION_RESET, [$this, 'resetCounter']);
     }
 
     /**
@@ -48,7 +51,7 @@ class CountDownloads
 
     /**
      * Resets the download counter for a form.
-     * @param $form_id
+     * @param string $form_id
      */
     public function resetCounter($form_id)
     {
