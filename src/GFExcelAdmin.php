@@ -5,6 +5,7 @@ namespace GFExcel;
 use GFAddOn;
 use GFCommon;
 use GFExcel\Action\CountDownloads;
+use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
@@ -119,6 +120,16 @@ class GFExcelAdmin extends GFAddOn
                     'label' => esc_html__('Enable hyperlinks on url-only columns', GFExcel::$slug),
                     'name' => 'hyperlinks_enabled',
                     'default_value' => true,
+                ]]
+            ], [
+                'name' => 'products_price',
+                'label' => esc_html__('Product fields', GFExcel::$slug),
+                'type' => 'checkbox',
+
+                'choices' => [[
+                    'label' => esc_html__('Export prices as numeric fields, without currency symbol ($)', GFExcel::$slug),
+                    'name' => ProductField::SETTING_KEY,
+                    'default_value' => false,
                 ]]
             ]],
         ], [

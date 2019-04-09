@@ -170,7 +170,7 @@ class GFExcel
         $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
 
         // trigger download event.
-        do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id);
+        do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
 
         return $output->render();
     }

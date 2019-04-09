@@ -166,3 +166,9 @@ msgstr "Als je de plugin leuk vindt, laat het me weten! En misschien nog wel bel
 
 msgid "Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺."
 msgstr "En; als je verliefd ❤️ bent op de plugin, en je kunt niet meer zonder; overweeg dan om een kleine donatie 💰 te doen en koop een drankje voor me 🍺."
+
+msgid "Product fields"
+msgstr "Product-velden"
+
+msgid "Export prices as numeric fields, without currency symbol ($)"
+msgstr "Exporteer prijzen als numerieke waarden zonder valuta-symbool (€)"

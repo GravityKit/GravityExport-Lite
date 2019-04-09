@@ -211,7 +211,10 @@ Checkout this example:
 
 = 1.6.1 =
 * Security: Removed old style URL. If you were using it, please regenate the URL.
-* Enhancement: Added reset of download counter.
+* Enhancement: Added reset of download counter (also refactored all couter code to SRP class).
+* Enhancement: Added setting to format prices as numeric values.
+* Enhancement: Added a download event so you can append logic to the download moment.
+* Bugfix: Stripping title could cut multibyte character in half, making the xlsx useless.
 
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So every column is a row, and vica versa.
