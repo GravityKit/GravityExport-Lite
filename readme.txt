@@ -211,6 +211,7 @@ Checkout this example:
 
 = 1.6.1 =
 * Security: Removed old style URL. If you were using it, please regenate the URL.
+* Enhancement: Added `[gfexcel_download_link id=2]` shorttag for Wordpress and `{gfexcel_download_link}` for GF notification.
 * Enhancement: Added reset of download counter (also refactored all couter code to SRP class).
 * Enhancement: Added setting to format prices as numeric values.
 * Enhancement: Added a download event so you can append logic to the download moment.
