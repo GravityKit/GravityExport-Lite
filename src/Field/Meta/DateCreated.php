@@ -2,13 +2,12 @@
 
 namespace GFExcel\Field\Meta;
 
-use GFExcel\Field\BaseField;
+use GFExcel\Field\MetaField;
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 
-class DateCreated extends BaseField
+class DateCreated extends MetaField
 {
-
     /**
      * {@inheritdoc}
      * @return BaseValue[]

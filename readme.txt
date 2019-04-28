@@ -214,6 +214,7 @@ Checkout this example:
 * Enhancement: Added reset of download counter (also refactored all couter code to SRP class).
 * Enhancement: Added setting to format prices as numeric values.
 * Enhancement: Added a download event so you can append logic to the download moment.
+* Enhancement: Added `CreatedBy` field to easily change `user_id` to `nickname` or `display_name`. Use filter `gfexcel_meta_created_by_property`.
 * Bugfix: Stripping title could cut multibyte character in half, making the xlsx useless.
 
 = 1.6.0 =
