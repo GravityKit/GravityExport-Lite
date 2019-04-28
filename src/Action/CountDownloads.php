@@ -30,15 +30,16 @@ class CountDownloads
      */
     public function __construct()
     {
-        add_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, [$this, 'updateCounter']);
+        add_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, [$this, 'incrementCounter']);
         add_action('gfexcel_action_' . self::ACTION_RESET, [$this, 'resetCounter']);
     }
 
     /**
      * Updates the download counter for a form.
+     * @since 1.6.1
      * @param $form_id
      */
-    public function updateCounter($form_id)
+    public function incrementCounter($form_id)
     {
         // Get the form data.
         $form_meta = $this->getForm($form_id);
@@ -51,6 +52,7 @@ class CountDownloads
 
     /**
      * Resets the download counter for a form.
+     * @since 1.6.1
      * @param string $form_id
      */
     public function resetCounter($form_id)
@@ -60,6 +62,7 @@ class CountDownloads
 
     /**
      * Prevent multiple calls to get the same data.
+     * @since 1.6.1
      * @param $form_id
      * @return array|null
      */
@@ -74,6 +77,7 @@ class CountDownloads
 
     /**
      * Helper function to actually set the value.
+     * @since 1.6.1
      * @param $form_id
      * @param int $count
      */

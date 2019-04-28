@@ -216,6 +216,8 @@ Checkout this example:
 * Enhancement: Added a download event so you can append logic to the download moment.
 * Enhancement: Added `CreatedBy` field to easily change `user_id` to `nickname` or `display_name`. Use filter `gfexcel_meta_created_by_property`.
 * Bugfix: Stripping title could cut multibyte character in half, making the xlsx useless.
+* Bugfix: Removed `start_date` or `end_date` from date range filter when empty. Caused errors for some.
+* Bugfix: `created_by` and `payment_date` were not converted to the wordpress timezone.
 
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So every column is a row, and vica versa.

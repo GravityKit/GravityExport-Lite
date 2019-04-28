@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 
 /**
  * Helper to have handy reusable functions.
- * @since $ver$
+ * @since 1.6.0
  */
 abstract class AbstractRenderer
 {

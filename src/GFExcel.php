@@ -4,6 +4,7 @@ namespace GFExcel;
 
 use GFAPI;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
 
 class GFExcel
@@ -27,6 +28,8 @@ class GFExcel
         add_action("init", array($this, "addPermalinkRule"));
         add_action("request", array($this, "request"));
         add_filter("query_vars", array($this, "getQueryVars"));
+
+        $this->registerActions();
     }
 
     /** Return the url for the form
@@ -221,5 +224,23 @@ class GFExcel
 
         //only now are we home save.
         return (int) $form_row['form_id'];
+    }
+
+    /**
+     * Register native plugin actions
+     * @since 1.6.1
+     * @return void
+     */
+    private function registerActions()
+    {
+        $actions = [
+            DownloadUrl::class,
+        ];
+
+        foreach ($actions as $action) {
+            if (class_exists($action)) {
+                new $action;
+            }
+        }
     }
 }

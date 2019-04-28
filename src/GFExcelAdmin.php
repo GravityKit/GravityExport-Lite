@@ -11,6 +11,7 @@ use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
+use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -166,6 +167,7 @@ class GFExcelAdmin extends GFAddOn
                 // redirect back to same page without the action
                 $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET, ['gf_action' => null])));
                 wp_redirect($url);
+                return;
             }
 
             $this->repository = new FormsRepository($form['id']);
@@ -176,7 +178,6 @@ class GFExcelAdmin extends GFAddOn
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
-
     }
 
     public function render_settings($sections)
@@ -932,12 +933,14 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Register native plugin actions
+     * @since 1.6.1
      * @return void
      */
     private function registerActions()
     {
         $actions = [
             CountDownloads::class,
+            DownloadUrl::class,
         ];
 
         foreach ($actions as $action) {
