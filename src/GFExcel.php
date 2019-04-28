@@ -3,25 +3,23 @@
 namespace GFExcel;
 
 use GFAPI;
-use GFCommon;
 use GFExcel\Renderer\PHPExcelRenderer;
+use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
 
 class GFExcel
 {
     public static $name = 'Gravity Forms Entries in Excel';
     public static $shortname = 'Entries in Excel';
-    public static $version = "1.6.0";
+    public static $version = "1.6.1";
     public static $slug = "gf-entries-in-excel";
 
     const KEY_HASH = 'gfexcel_hash';
-    const KEY_COUNT = 'gfexcel_download_count';
-
+    const KEY_ACTION = 'gfexcel_action';
     const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
     const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
     const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
     const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
-
 
     private static $file_extension;
 
@@ -30,6 +28,8 @@ class GFExcel
         add_action("init", array($this, "addPermalinkRule"));
         add_action("request", array($this, "request"));
         add_filter("query_vars", array($this, "getQueryVars"));
+
+        $this->registerActions();
     }
 
     /** Return the url for the form
@@ -38,14 +38,14 @@ class GFExcel
      */
     public static function url($form_id)
     {
-        $blogurl = get_bloginfo("url");
-        $permalink = "/index.php?gfexcel_action=%s&gfexcel_hash=%s";
+        $blogurl = get_bloginfo('url');
+        $permalink = '/index.php?' . self::KEY_ACTION . '=%s&' . self::KEY_HASH . '=%s';
 
         $action = self::$slug;
         $hash = self::getHash($form_id);
 
         if (get_option('permalink_structure')) {
-            $permalink = "/%s/%s";
+            $permalink = '/%s/%s';
         } else {
             $hash = urlencode($hash);
         }
@@ -78,40 +78,34 @@ class GFExcel
     {
         $meta = GFFormsModel::get_form_meta($form_id);
 
-        $meta[static::KEY_HASH] = static::generateHash($form_id);
+        $meta[self::KEY_HASH] = self::generateHash();
         GFFormsModel::update_form_meta($form_id, $meta);
 
         return $meta;
     }
 
-    private static function generateHash($form_id)
+    /**
+     * Generates a secure random string.
+     * @return string
+     */
+    private static function generateHash()
     {
-        $meta = GFFormsModel::get_form_meta($form_id);
-        if (!array_key_exists(static::KEY_COUNT, $meta) ||
-            array_key_exists(static::KEY_HASH, $meta)
-        ) {
-            //never downloaded before, or recreating hash
-            // so make a pretty new one
-            return bin2hex(openssl_random_pseudo_bytes(32));
-        }
-        // Yay, we are someone from the first hour.. WHOOP, so we get to keep our old, maybe insecure string
-        return @GFCommon::encrypt($form_id);
+        return bin2hex(openssl_random_pseudo_bytes(32));
     }
 
     /**
      * Return the custom filename if it has one
-     * @param $form_id
+     * @param array $form
      * @return bool|string
      */
-    public static function getFilename($form_id)
+    public static function getFilename($form)
     {
-        $form = GFFormsModel::get_form_meta($form_id);
         if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
             return sprintf(
                 'gfexcel-%d-%s-%s',
                 $form['id'],
                 sanitize_title($form['title']),
-                date("Ymd")
+                date('Ymd')
             );
         }
 
@@ -121,14 +115,12 @@ class GFExcel
     /**
      * Return the file extension to use for renderer and output
      *
-     * @param $form_id
+     * @param array $form
      * @return string
      */
-    public static function getFileExtension($form_id)
+    public static function getFileExtension($form)
     {
         if (!static::$file_extension) {
-            $form = GFFormsModel::get_form_meta($form_id);
-
             if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
                 static::$file_extension = 'xlsx'; //default
                 return static::$file_extension;
@@ -144,25 +136,30 @@ class GFExcel
     {
         add_rewrite_rule(
             '^' . static::$slug . '/(.+)/?$',
-            'index.php?gfexcel_action=' . static::$slug . '&gfexcel_hash=$matches[1]',
+            'index.php?' . self::KEY_ACTION . '=' . static::$slug . '&' . self::KEY_HASH . '=$matches[1]',
             'top'
         );
 
         $rules = get_option('rewrite_rules');
-        if (!isset($rules["^" . static::$slug . "/(.+)/?$"])) {
+        if (!isset($rules['^' . static::$slug . '/(.+)/?$'])) {
             flush_rewrite_rules();
         }
     }
 
+    /**
+     * @param $query_vars
+     * @return mixed
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     public function request($query_vars)
     {
-        if (!array_key_exists("gfexcel_action", $query_vars) ||
-            !array_key_exists("gfexcel_hash", $query_vars) ||
-            $query_vars['gfexcel_action'] !== self::$slug) {
+        if (!array_key_exists(self::KEY_ACTION, $query_vars) ||
+            !array_key_exists(self::KEY_HASH, $query_vars) ||
+            $query_vars[self::KEY_ACTION] !== self::$slug) {
             return $query_vars;
         }
 
-        $form_id = $this->getFormIdByHash($query_vars['gfexcel_hash']);
+        $form_id = $this->getFormIdByHash($query_vars[self::KEY_HASH]);
         if (!$form_id) {
             return $query_vars;
         }
@@ -170,25 +167,27 @@ class GFExcel
         add_filter('gfexcel_output_search_criteria', function ($search_criteria) {
             $search_criteria['start_date'] = rgar($_REQUEST, 'start_date', '');
             $search_criteria['end_date'] = rgar($_REQUEST, 'end_date', '');
-            return $search_criteria;
+            return array_filter($search_criteria);
         });
 
         $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
-        $this->updateCounter($form_id);
+
+        // trigger download event.
+        do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
 
         return $output->render();
     }
 
     /**
      * @param $vars
-     * @return array
+     * @return string[]
      */
     public function getQueryVars($vars)
     {
-        $vars[] = "gfexcel_action";
-        $vars[] = "gfexcel_hash";
-
-        return $vars;
+        return array_merge($vars, [
+            self::KEY_ACTION,
+            self::KEY_HASH,
+        ]);
     }
 
     /**
@@ -208,26 +207,14 @@ class GFExcel
         $wildcard = '%';
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
+        // Data is stored in a json_encoded string, so we can't match perfectly.
         if (!$form_row = $wpdb->get_row(
             $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
             ARRAY_A
         )) {
-            $result = @GFCommon::decrypt($hash);
-            if (!is_numeric($result)) {
-                return false;
-            }
-            if (!$form = GFFormsModel::get_form_meta($result)) {
-                //this form does not exist, so nope
-                return false;
-            }
-            if (array_key_exists(GFExcel::KEY_HASH, $form)) {
-                //this form already has a hash. So if you knew the hash, you wouldn't be here. Shame!
-                return false;
-            }
-            // Fallback to get the form id old fashion way. This should stop working asap.
-            return (int) $result;
+            // not even a partial match.
+            return false;
         }
-
 
         // possible match on hash, so check against found form.
         if (GFExcel::getHash($form_row['form_id']) !== $hash) {
@@ -240,17 +227,20 @@ class GFExcel
     }
 
     /**
-     * @param $form_id
-     * @void
+     * Register native plugin actions
+     * @since 1.6.1
+     * @return void
      */
-    private function updateCounter($form_id)
+    private function registerActions()
     {
-        $form_meta = GFFormsModel::get_form_meta($form_id);
-        if (!array_key_exists(static::KEY_COUNT, $form_meta)) {
-            $form_meta[static::KEY_COUNT] = 0;
-        }
-        $form_meta[static::KEY_COUNT] += 1;
+        $actions = [
+            DownloadUrl::class,
+        ];
 
-        GFFormsModel::update_form_meta($form_id, $form_meta);
+        foreach ($actions as $action) {
+            if (class_exists($action)) {
+                new $action;
+            }
+        }
     }
 }

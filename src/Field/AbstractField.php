@@ -3,6 +3,7 @@
 namespace GFExcel\Field;
 
 use GF_Field;
+use GFCommon;
 use GFExcel\Values\BaseValue;
 
 abstract class AbstractField implements FieldInterface
@@ -76,17 +77,32 @@ abstract class AbstractField implements FieldInterface
     protected function getFieldValue($entry, $input_id = '')
     {
         $input_id = $input_id ?: $this->field->id;
-        $value = $this->field->get_value_export($entry, $input_id, $use_text = false, $is_csv = false);
-        $value = html_entity_decode($value);
-
-        // add gform export filters to get the same results as a normal export
-        $gform_value = apply_filters('gform_export_field_value', $value, $this->field->formId, $input_id, $entry);
-
+        $gform_value = $this->getGFieldValue($entry, $input_id);
         // and our own filters!
         return gf_apply_filters([
             'gfexcel_export_field_value',
             $this->field->get_input_type(),
             $input_id,
         ], $gform_value, $this->field->formId, $input_id, $entry);
+    }
+
+    /**
+     * Get the original Gravity Field value.
+     * @param array $entry
+     * @param string $input_id
+     * @return mixed
+     */
+    protected function getGFieldValue($entry, $input_id)
+    {
+        if (in_array($input_id, ['date_created', 'payment_date'])) {
+            $lead_gmt_time = mysql2date('G', $entry[$input_id]);
+            $lead_local_time = GFCommon::get_local_timestamp($lead_gmt_time);
+            return date_i18n('Y-m-d H:i:s', $lead_local_time, true);
+        }
+
+        $value = $this->field->get_value_export($entry, $input_id, $use_text = false, $is_csv = false);
+        $value = html_entity_decode($value);
+        // add gform export filters to get the same results as a normal export
+        return apply_filters('gform_export_field_value', $value, $this->field->formId, $input_id, $entry);
     }
 }

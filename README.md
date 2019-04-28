@@ -4,6 +4,8 @@
 Get realtime entries from your forms using a unique and secure url. No need to login, or create a user account for
 that one person who needs te results. Just copy the url, and give it to the guy who needs it. It's that simple.
 
+You can export to `.xlsx` or `.csv`.
+
 ## Export Gravity Forms entries to Excel
 Using Gravity Forms you can always export a CSV file, and import it to Excel. But an admin always needs to be involved
 and using Excel to import a CSV is a pain in the butt.

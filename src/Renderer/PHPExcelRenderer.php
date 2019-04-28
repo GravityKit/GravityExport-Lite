@@ -45,16 +45,24 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         return $this->renderOutput($this->extension, $save);
     }
 
+    /**
+     * @return string
+     */
     protected function getFileName()
     {
-        $filename = GFExcel::getFilename($this->form['id']);
+        $filename = GFExcel::getFilename($this->form);
 
-        return gf_apply_filters(array(
-                "gfexcel_renderer_filename",
+        return gf_apply_filters([
+                'gfexcel_renderer_filename',
                 $this->form['id'],
-            ), $filename, $this->form) . "." . $this->extension;
+            ], $filename, $this->form) . '.' . $this->extension;
     }
 
+    /**
+     * Fluent setter for worksheet title.
+     * @param string $title
+     * @return PHPExcelRenderer
+     */
     private function setTitle($title)
     {
         $title = gf_apply_filters(
@@ -72,6 +80,11 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         return $this;
     }
 
+    /**
+     * Fluent setter for file subject.
+     * @param string $title
+     * @return PHPExcelRenderer
+     */
     private function setSubject($title)
     {
         $title = gf_apply_filters(
@@ -87,6 +100,10 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
         return $this;
     }
 
+    /**
+     * Fluent setter for properties
+     * @return PHPExcelRenderer
+     */
     private function setProperties()
     {
         $this->spreadsheet->getProperties()
@@ -97,12 +114,16 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
             ->setSubject($this->form['title'])
             ->setDescription($this->form['description']);
 
-
-        $this->extension = GFExcel::getFileExtension($this->form['id']);
+        $this->extension = GFExcel::getFileExtension($this->form);
 
         return $this;
     }
 
+    /**
+     * Fluent setter for file description.
+     * @param string $description
+     * @return PHPExcelRenderer
+     */
     private function setDescription($description)
     {
         $description = gf_apply_filters(

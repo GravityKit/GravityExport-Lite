@@ -2,8 +2,14 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\GFExcelAdmin;
+use GFExcel\Values\BaseValue;
+
 class ProductField extends SeparableField
 {
+    /** @var string */
+    const SETTING_KEY = 'numeric_price_enabled';
+
     /**
      * {@inheritdoc}
      * Usual code, but with a prepend for quantity and price for single field rendering.
@@ -58,5 +64,48 @@ class ProductField extends SeparableField
     {
         $key_parts = explode('.', $key);
         return (int) end($key_parts);
+    }
+
+    /**
+     * {@inheritdoc}
+     * Format as numeric when neccesary.
+     */
+    public function getValueType()
+    {
+        if (!$this->hasNumericPrice()) {
+            return parent::getValueType();
+        }
+
+        return BaseValue::TYPE_NUMERIC;
+    }
+
+    /**
+     * {@inheritdoc}
+     * Reformat to a number value when neccesary.
+     */
+    protected function getGFieldValue($entry, $input_id)
+    {
+        $value = parent::getGFieldValue($entry, $input_id);
+        if (!$this->hasNumericPrice() || !strpos($input_id, '.2')) {
+            return $value;
+        }
+
+        return \GFCommon::to_number($value, rgar($entry, 'currency'));
+    }
+
+    /**
+     * @return bool
+     */
+    protected function hasNumericPrice()
+    {
+        $plugin = GFExcelAdmin::get_instance();
+        $bool = $plugin->get_plugin_setting(self::SETTING_KEY);
+
+        return gf_apply_filters([
+            'gfexcel_numeric_price',
+            $this->field->get_input_type(),
+            $this->field->formId,
+            $this->field->id
+        ], !!$bool, $this->field);
     }
 }

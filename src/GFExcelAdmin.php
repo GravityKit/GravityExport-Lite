@@ -4,11 +4,14 @@ namespace GFExcel;
 
 use GFAddOn;
 use GFCommon;
+use GFExcel\Action\CountDownloads;
+use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
+use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
@@ -42,6 +45,7 @@ class GFExcelAdmin extends GFAddOn
         $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
+        $this->registerActions();
         parent::__construct();
     }
 
@@ -118,6 +122,16 @@ class GFExcelAdmin extends GFAddOn
                     'name' => 'hyperlinks_enabled',
                     'default_value' => true,
                 ]]
+            ], [
+                'name' => 'products_price',
+                'label' => esc_html__('Product fields', GFExcel::$slug),
+                'type' => 'checkbox',
+
+                'choices' => [[
+                    'label' => esc_html__('Export prices as numeric fields, without currency symbol ($)', GFExcel::$slug),
+                    'name' => ProductField::SETTING_KEY,
+                    'default_value' => false,
+                ]]
             ]],
         ], [
             'fields' => [
@@ -147,6 +161,15 @@ class GFExcelAdmin extends GFAddOn
         parent::init();
 
         if ($form = $this->get_current_form()) {
+            if (isset($_GET['gf_action'])) {
+                // trigger action
+                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
+                // redirect back to same page without the action
+                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET, ['gf_action' => null])));
+                wp_redirect($url);
+                return;
+            }
+
             $this->repository = new FormsRepository($form['id']);
         }
 
@@ -155,7 +178,6 @@ class GFExcelAdmin extends GFAddOn
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
-
     }
 
     public function render_settings($sections)
@@ -244,6 +266,10 @@ class GFExcelAdmin extends GFAddOn
 
     public function form_settings($form)
     {
+        //reads current form settings
+        $settings = $this->get_form_settings($form);
+        $this->set_settings($settings);
+
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
             $form = GFFormsModel::get_form_meta($form['id']);
@@ -272,11 +298,12 @@ class GFExcelAdmin extends GFAddOn
         printf(
             "<p>
                 <input style='width:80%%;' type='text' value='%s' readonly />&nbsp;<input 
-                onclick=\"return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');\" 
+                onclick=\"%s\"
                 class='button' type='submit' name='regenerate_hash' 
                 value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
             </p>",
-            $url
+            $url,
+            "return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');"
         );
         echo "</form>";
 
@@ -300,6 +327,9 @@ class GFExcelAdmin extends GFAddOn
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
             ) . "
+            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&gf_action=" . CountDownloads::ACTION_RESET . "'>" .
+            esc_html__('Reset count', GFExcel::$slug) .
+            "</a>
             </div></div>
         </form>";
 
@@ -314,7 +344,11 @@ class GFExcelAdmin extends GFAddOn
         echo "</form>";
     }
 
-
+    /**
+     * Handles the download of multiple forms as a bulk action.
+     * @return bool
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     public function handle_bulk_actions()
     {
         if (!current_user_can('editor') &&
@@ -407,7 +441,7 @@ class GFExcelAdmin extends GFAddOn
         ]);
     }
 
-    private function select_order_options($form)
+    private function select_order_options()
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
@@ -466,9 +500,23 @@ class GFExcelAdmin extends GFAddOn
         return $settings;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function get_form_settings($form)
+    {
+        $settings = array_filter((array) parent::get_form_settings($form));
+        return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form) {
+            if (strpos($key, 'gfexcel_') === 0) {
+                $settings[$key] = $form[$key];
+            }
+            return $settings;
+        }, []));
+    }
+
     private function generalSettings($form)
     {
-        $this->single_section([
+        $this->settings(apply_filters('gfexcel_general_settings', [[
             'title' => __('General settings', GFExcel::$slug),
             'fields' => [
                 [
@@ -489,7 +537,7 @@ class GFExcelAdmin extends GFAddOn
                     'callback' => function () use ($form) {
                         $this->select_sort_field_options($form);
                         echo ' ';
-                        $this->select_order_options($form);
+                        $this->select_order_options();
                     }
                 ],
                 [
@@ -514,7 +562,6 @@ class GFExcelAdmin extends GFAddOn
                     'label' => __('Custom filename', GFExcel::$slug),
                     'type' => 'text',
                     'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                    'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                     'description' => __('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', GFExcel::$slug)
                 ],
                 [
@@ -539,11 +586,12 @@ class GFExcelAdmin extends GFAddOn
                     'choices' => $this->getNotifications(),
                 ],
             ],
-        ]);
+        ]]));
     }
 
     /**
      * Adds the sortable fields section to the settings page
+     * @param $form
      */
     private function sortableFields($form)
     {
@@ -672,7 +720,6 @@ class GFExcelAdmin extends GFAddOn
      * Adds javascript for the sortable to the page
      * @param array $ids
      * @param string $connector_class
-     * @return string
      */
     private function sortable_script(array $ids, $connector_class = 'connected-sortable')
     {
@@ -747,6 +794,7 @@ class GFExcelAdmin extends GFAddOn
      * @param $form
      * @param $entry
      * @return mixed
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle_notification($notification, $form, $entry)
     {
@@ -883,4 +931,22 @@ class GFExcelAdmin extends GFAddOn
         return $digit . substr($current_count, 1);
     }
 
+    /**
+     * Register native plugin actions
+     * @since 1.6.1
+     * @return void
+     */
+    private function registerActions()
+    {
+        $actions = [
+            CountDownloads::class,
+            DownloadUrl::class,
+        ];
+
+        foreach ($actions as $action) {
+            if (class_exists($action)) {
+                new $action;
+            }
+        }
+    }
 }

@@ -4,12 +4,12 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.0
-Stable tag: 1.6.0
+Tested up to: 5.1
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Export all Gravity Forms entries to Excel (.xls) via a download button OR via a secret (shareable) url.
+Export all Gravity Forms entries to Excel (.xlsx) via a download button OR via a secret (shareable) url.
 
 == Description ==
 
@@ -28,11 +28,11 @@ I've added a documentation website. This docs will be updated from time to time 
 I'm planning to add `recipes` for quick updates, based on your questions. So if you have a specific need; Ask away!
 If you are a developer; this site is probably for you.
 
-Please visit: http://gfexcel.doeken.org
+Please visit: [gfexcel.doeken.org](http://gfexcel.doeken.org)
 
 == Donate ==
 Want to help out the development of the plugin, or just buy me a drink 🍺? You can make a donation via my paypal page:
-https://www.paypal.me/doekenorg. But as always; no pressure.
+[paypal.me/doekenorg](https://www.paypal.me/doekenorg). But as always; no pressure.
 
 = Requirements =
 
@@ -208,6 +208,17 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.6.1 =
+* Security: Removed old style URL. If you were using it, please regenate the URL.
+* Enhancement: Added `[gfexcel_download_link id=2]` shorttag for Wordpress and `{gfexcel_download_link}` for GF notification.
+* Enhancement: Added reset of download counter (also refactored all couter code to SRP class).
+* Enhancement: Added setting to format prices as numeric values.
+* Enhancement: Added a download event so you can append logic to the download moment.
+* Enhancement: Added `CreatedBy` field to easily change `user_id` to `nickname` or `display_name`. Use filter `gfexcel_meta_created_by_property`.
+* Bugfix: Stripping title could cut multibyte character in half, making the xlsx useless.
+* Bugfix: Removed `start_date` or `end_date` from date range filter when empty. Caused errors for some.
+* Bugfix: `created_by` and `payment_date` were not converted to the wordpress timezone.
 
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So every column is a row, and vica versa.

@@ -6,7 +6,12 @@ use GFExcel\Values\BaseValue;
 
 class MetaField extends BaseField
 {
+    /**
+     * List of internal subfields.
+     * @var string[]
+     */
     protected $subfields = array(
+        'created_by' => 'GFExcel\Field\Meta\CreatedBy',
         'date_created' => 'GFExcel\Field\Meta\DateCreated',
     );
 
@@ -61,6 +66,10 @@ class MetaField extends BaseField
         return BaseValue::TYPE_STRING;
     }
 
+    /**
+     * Returns a list of classnames map for meta fields. 'field' => 'FQN'
+     * @return string[]
+     */
     private function getSubFieldsClasses()
     {
         return gf_apply_filters([
@@ -69,15 +78,21 @@ class MetaField extends BaseField
     }
 
     /**
+     * Get a subfield instance if available.
      * @return FieldInterface|false
      */
     private function getSubField()
     {
-        $fields = $this->getSubFieldsClasses();
-        if (array_key_exists($this->field->id, $fields)) {
-            return new $fields[$this->field->id]($this->field);
+        // prevent endless loop, and be able to extend MetaField.
+        if (get_class($this) !== self::class) {
+            return false;
         }
 
-        return false;
+        $fields = $this->getSubFieldsClasses();
+        if (!array_key_exists($this->field->id, $fields)) {
+            return false;
+        }
+
+        return new $fields[$this->field->id]($this->field);
     }
 }

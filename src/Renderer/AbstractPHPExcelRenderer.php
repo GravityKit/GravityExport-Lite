@@ -3,10 +3,8 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
-use GFExcel\GFExcelConfigConstants;
 use GFExcel\Values\BaseValue;
 use GFForms;
-use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -16,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Exception;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 
-abstract class AbstractPHPExcelRenderer
+abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 {
     /** @var Spreadsheet */
     protected $spreadsheet;
@@ -38,7 +36,7 @@ abstract class AbstractPHPExcelRenderer
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
-            /** @var BaseWriter$objWriter */
+            /** @var BaseWriter $objWriter */
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
             $objWriter->setPreCalculateFormulas(false);
 
@@ -63,7 +61,7 @@ abstract class AbstractPHPExcelRenderer
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
             header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
             header('Pragma: public'); // HTTP/1.0
-
+            ob_end_clean(); // Cleaning buffer for preventing file corruption
             $objWriter->save('php://output');
         } catch (\Exception $e) {
             //in case of php5.x
@@ -142,20 +140,24 @@ abstract class AbstractPHPExcelRenderer
 
     abstract protected function getFileName();
 
+    /**
+     * @param Worksheet $worksheet
+     * @param array $form
+     * @return $this
+     */
     protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
-        $invalidCharacters = $worksheet::getInvalidCharacters();
+        $invalidCharacters = Worksheet::getInvalidCharacters();
         //First strip form title, so we still have 30 charachters.
         $form_title = str_replace($invalidCharacters, '', $form['title']);
-
-        $worksheet_title = substr(gf_apply_filters(
+        $worksheet_title = mb_substr(gf_apply_filters(
             [
                 'gfexcel_renderer_worksheet_title',
                 $form['id'],
             ],
             $form_title,
             $form
-        ), 0, 30);
+        ), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
 
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
@@ -297,41 +299,5 @@ abstract class AbstractPHPExcelRenderer
         } catch (Exception $e) {
             return false;
         }
-    }
-
-    /**
-     * @param array $form
-     * @param $columns
-     * @param $rows
-     * @return mixed
-     */
-    protected function getMatrix(array $form, $columns, $rows)
-    {
-        array_unshift($rows, $columns);
-
-        return gf_apply_filters([
-            'gfexcel_renderer_matrix',
-            $form['id'],
-        ], $this->transpose($form, $rows));
-    }
-
-    /**
-     * Transpose the matrix to flip rows and columns.
-     * @param array $form
-     * @param $matrix
-     * @return array
-     */
-    protected function transpose(array $form, $matrix)
-    {
-        $transpose = false;
-        if (array_key_exists(GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, $form)) {
-            $transpose = (bool) $form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE];
-        }
-
-        if (!gf_apply_filters(['gfexcel_renderer_transpose', $form['id']], $transpose)) {
-            return $matrix;
-        }
-
-        return LookupRef::TRANSPOSE($matrix);
     }
 }
