@@ -17,24 +17,28 @@ class DownloadUrl
 
     public function __construct()
     {
-        add_shortcode('gfexcel_download_url', [$this, 'handle']);
+        add_shortcode(self::SHORTTAG, [$this, 'handle']);
         add_filter('gform_replace_merge_tags', [$this, 'handleNotification'], 10, 2);
     }
 
     /**
      * Handles the [gfexcel_download_url] shorttag.
      * @since 1.6.1
-     * @param array $arguments
+     * @param array|string $arguments
      * @return string returns the replacing content, either a url or a message.
      */
-    public function handle(array $arguments)
+    public function handle($arguments)
     {
+        if (!is_array($arguments)) {
+            $arguments = [];
+        }
+
         if (!array_key_exists('id', $arguments)) {
-            return $this->error(sprintf('Please add an `%s` argument to [%s] shorttag.', 'id', self::SHORTTAG));
+            return $this->error(sprintf('Please add an `%s` argument to \'%s\' shorttag.', 'id', self::SHORTTAG));
         }
 
         if (!\GFAPI::form_id_exists($arguments['id'])) {
-            return $this->error(sprintf('Form id not found for [%s] shorttag.', self::SHORTTAG));
+            return $this->error(sprintf('Form id not found for \'%s\' shorttag.', self::SHORTTAG));
         }
 
         return $this->getUrl($arguments['id'], isset($arguments['type']) ? $arguments['type'] : null);
