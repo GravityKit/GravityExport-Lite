@@ -48,11 +48,15 @@ class DownloadUrl
      * Handles the short-tag for gravity forms.
      * @since 1.6.1
      * @param string $text the text of the notification
-     * @param array $form
+     * @param array|false $form
      * @return string The url or an error message
      */
-    public function handleNotification($text, array $form)
+    public function handleNotification($text, $form)
     {
+        if (!is_array($form)) {
+            return $text;
+        }
+
         $custom_merge_tag = '{' . self::SHORTTAG . '}';
 
         if (strpos($text, $custom_merge_tag) === false || !isset($form['id'])) {
