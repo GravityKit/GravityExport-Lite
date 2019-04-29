@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.1
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,10 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.6.2 =
+* Bugfix: Referenced unavailble contstant.
+* Bugfix: short code had an breaking edge case.
 
 = 1.6.1 =
 * Security: Removed old style URL. If you were using it, please regenate the URL.
