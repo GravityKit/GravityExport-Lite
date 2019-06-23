@@ -23,6 +23,7 @@ class Transformer implements TransformerInterface
         'name' => 'GFExcel\Field\SeparableField',
         'notes' => 'GFExcel\Field\NotesField',
         'number' => 'GFExcel\Field\NumberField',
+        'repeater' => 'GFExcel\Field\RepeaterField',
         'singleproduct' => 'GFExcel\Field\ProductField',
         'section' => 'GFExcel\Field\SectionField',
     ];
@@ -41,7 +42,7 @@ class Transformer implements TransformerInterface
             return $fieldClass;
         }
 
-        // maybe is separable, maybe it's maybaline!
+        // maybe is separable, maybe it's maybelline!
         if (is_array($field->get_entry_inputs())) {
             return new SeparableField($field);
         }
