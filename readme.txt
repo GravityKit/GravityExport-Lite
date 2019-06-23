@@ -210,7 +210,8 @@ Checkout this example:
 == Changelog ==
 
 = Unreleased =
-* Bugfix: Prevent notice at render-time ob `ob_en_clean`.
+* Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
+* Bugfix: Prevent notice at render-time for `ob_end_clean`.
 
 = 1.6.3 =
 * Bugfix: Radio and checkboxes caused unforseen error on shorttag for GF.
