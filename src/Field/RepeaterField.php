@@ -10,7 +10,7 @@ use GFExcel\Values\BaseValue;
  * A Field for the Transformer for `repeater` fields.
  * @since $ver$
  */
-class RepeatableField extends SeparableField
+class RepeaterField extends SeparableField
 {
     /**
      * A Transformer instance.
