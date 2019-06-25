@@ -94,11 +94,34 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         }
     }
 
+    /**
+     * Streches all columns to the maximum needed, or a set maximum.
+     * @since 1.0.0
+     * @param Worksheet $worksheet
+     * @param $columns_count
+     * @return $this
+     */
     protected function autoSizeColumns(Worksheet $worksheet, $columns_count)
     {
         for ($i = 1; $i <= $columns_count; $i++) {
             $worksheet->getColumnDimensionByColumn($i)->setAutoSize(true);
         }
+
+        $max_width = gf_apply_filters([
+            'gfexcel_renderer_columns_max_width',
+        ], null);
+
+        if (is_int($max_width)) {
+            $worksheet->calculateColumnWidths();
+
+            foreach ($worksheet->getColumnDimensions() as $dimension) {
+                if ($dimension->getWidth() > $max_width) {
+                    $dimension->setAutoSize(false);
+                    $dimension->setWidth($max_width);
+                }
+            }
+        }
+
         return $this;
     }
 
