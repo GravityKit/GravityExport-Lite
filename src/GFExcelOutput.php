@@ -171,7 +171,7 @@ class GFExcelOutput
             $this->form_id,
         ], [
             'status' => 'active',
-        ]);
+        ], $this->form_id);
 
         if (empty($this->entries)) {
             $sorting = $this->getSorting($this->form_id);
