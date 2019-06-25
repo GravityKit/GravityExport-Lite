@@ -211,6 +211,7 @@ Checkout this example:
 
 = Unreleased =
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
+* Feature: Added download links for a single entry on the entry detail page.
 * Enhancement: Added `$form_id` as an argument to `gfexcel_output_search_criteria` for convenience.
 * Bugfix: Prevent notice at render-time for `ob_end_clean`.
 * Bugfix: Reset download hash and counter on duplicated form.

@@ -172,3 +172,6 @@ msgstr "Product-velden"
 
 msgid "Export prices as numeric fields, without currency symbol ($)"
 msgstr "Exporteer prijzen als numerieke waarden zonder valuta-symbool (€)"
+
+msgid "Download this single entry as a file."
+msgstr "Download alleen deze inzending als een bestand."

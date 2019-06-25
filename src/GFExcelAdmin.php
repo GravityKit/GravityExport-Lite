@@ -179,6 +179,7 @@ class GFExcelAdmin extends GFAddOn
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
+        add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
     }
 
     public function render_settings($sections)
@@ -748,6 +749,25 @@ class GFExcelAdmin extends GFAddOn
         return plugin_dir_url(dirname(__DIR__) . '/gfexcel.php');
     }
 
+    /**
+     * Registers the meta boxes for the entry detail page.
+     * @since $ver$
+     * @param array $meta_boxes The metaboxes
+     * @param array $lead the lead data
+     * @param array $form the form data
+     * @return array All the meta boxes
+     */
+    public static function gform_entry_detail_meta_boxes($meta_boxes, $lead, $form)
+    {
+        $meta_boxes[] = [
+            'title' => __(GFExcel::$shortname, GFExcel::$slug),
+            'callback' => [__CLASS__, 'single_entry_download'],
+            'context' => 'side',
+            'priority' => 'high',
+        ];
+        return $meta_boxes;
+    }
+
     public function scripts()
     {
         return array_merge(parent::scripts(), [
@@ -869,6 +889,35 @@ class GFExcelAdmin extends GFAddOn
         GFExcel::setHash($new_id);
         // reset the download counter
         do_action('gfexcel_action_' . CountDownloads::ACTION_RESET, $new_id);
+    }
+
+    /**
+     * Add's a download button for a single entry on the entry detail page.
+     * @since $ver$
+     * @param array $args arguments from metabox.
+     * @param array $metabox the metabox information.
+     */
+    public static function single_entry_download($args, $metabox)
+    {
+        $form = rgar($args, 'form', []);
+        $entry = rgar($args, 'entry', []);
+
+        $html = '<div class=\"gfexcel_entry_download\">
+            <p>%s</p>
+            <a href="%s" class="button-primary">%s</a>
+            <a href="%s" class="button">%s</a>
+        </div>';
+
+        $url = GFExcel::url($form['id']);
+
+        printf(
+            $html,
+            __('Download this single entry as a file.', GFExcel::$slug),
+            $url . '?entry=' . $entry['id'],
+            __('Download Excel', GFExcel::$slug),
+            $url . '.csv?entry=' . $entry['id'],
+            __('Download CSV', GFExcel::$slug)
+        );
     }
 
     private function plugin_settings_description()
