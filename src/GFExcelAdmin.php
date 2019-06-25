@@ -178,6 +178,7 @@ class GFExcelAdmin extends GFAddOn
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
+        add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
     }
 
     public function render_settings($sections)
@@ -854,6 +855,20 @@ class GFExcelAdmin extends GFAddOn
             unlink($this->_file);
         }
         return true;
+    }
+
+    /**
+     * Updates download data for a duplicated form.
+     * @since $ver$
+     * @param int $form_id the ID of the duplicated form
+     * @param int $new_id the ID of the new form.
+     */
+    public function refresh_download_data($form_id, $new_id)
+    {
+        // new hash to prevent doubles.
+        GFExcel::setHash($new_id);
+        // reset the download counter
+        do_action('gfexcel_action_' . CountDownloads::ACTION_RESET, $new_id);
     }
 
     private function plugin_settings_description()
