@@ -5,23 +5,50 @@ namespace GFExcel\Action;
 /**
  * Class that filters the entries based on a filterset.
  * @since $ver$
- * @todo maybe move the date hooks here too.
  */
 class FilterRequest
 {
     /**
-     * The querystring part for filtering.
+     * The query string part for filtering.
      * @since $ver$
      * @var string
      */
     const FILTER = 'filter';
 
     /**
-     * The provided and parsed filters.
+     * The query string part for the start date.
+     * @since $ver$
+     * @var string
+     */
+    const START_DATE = 'start_date';
+
+    /**
+     * The query string part for the start date.
+     * @since $ver$
+     * @var string
+     */
+    const END_DATE = 'end_date';
+
+    /**
+     * The query string part to retrieve one entry.
+     * @since $ver$
+     * @var string
+     */
+    const ENTRY = 'entry';
+
+    /**
+     * The provided and parsed field filters.
      * @since $ver$
      * @var string[]
      */
-    private $filters = [];
+    private $field_filters = [];
+
+    /**
+     * Filters used for the entry, not the fields.
+     * @since $ver$
+     * @var string[]
+     */
+    private $general_filters = [];
 
     /**
      * Connect various endpoints for this filter.
@@ -43,7 +70,10 @@ class FilterRequest
     public function getQueryVars($vars)
     {
         return array_merge($vars, [
+            self::ENTRY,
             self::FILTER,
+            self::START_DATE,
+            self::END_DATE,
         ]);
     }
 
@@ -55,7 +85,10 @@ class FilterRequest
      */
     public function request($query_vars)
     {
+        $this->parseDates($query_vars);
         $this->parseFilters(rgar($query_vars, self::FILTER, ''));
+        $this->parseEntry(rgar($query_vars, self::ENTRY));
+
         return $query_vars;
     }
 
@@ -70,7 +103,8 @@ class FilterRequest
         // remap the filters so it's following the rules.
         $field_filters = rgar($criteria, 'field_filters', []);
 
-        $criteria['field_filters'] = array_merge($field_filters, $this->filters);
+        $criteria['field_filters'] = array_merge($field_filters, $this->field_filters);
+        $criteria = array_merge($criteria, $this->general_filters);
 
         return $criteria;
     }
@@ -103,10 +137,14 @@ class FilterRequest
         $parts = count($filter);
         $key = $filter[0];
 
+        if (!$key) {
+            return;
+        }
+
         $value = $operator = '';
 
         if (in_array($key, ['any', 'all'])) {
-            $this->filters['mode'] = $key;
+            $this->field_filters['mode'] = $key;
             return;
         }
 
@@ -119,10 +157,37 @@ class FilterRequest
         } elseif ($parts === 2) {
             $value = (string) $filter[1];
         } elseif ($parts === 3) {
-            $operator = $filter[1]; //todo normalize this.
+            $operator = (string) $filter[1];
             $value = (string) $filter[2];
         }
 
-        $this->filters[] = $operator ? compact('key', 'operator', 'value') : compact('key', 'value');
+        $this->field_filters[] = $operator ? compact('key', 'operator', 'value') : compact('key', 'value');
+    }
+
+    /**
+     * Store the start and end date when provided.
+     * @since $ver$
+     * @param array $query_vars
+     */
+    private function parseDates(array $query_vars)
+    {
+        $dates = [
+            self::START_DATE => rgar($query_vars, self::START_DATE, null),
+            self::END_DATE => rgar($query_vars, self::END_DATE, null),
+        ];
+
+        $this->general_filters = array_merge($this->general_filters, array_filter($dates));
+    }
+
+    /**
+     * Add the filter part for a specific entry.
+     * @since $ver$
+     * @param string|null $entry
+     */
+    private function parseEntry($entry)
+    {
+        if ($entry) {
+            $this->parseFilters(sprintf('id:%d', $entry));
+        }
     }
 }
