@@ -3,6 +3,7 @@
 namespace GFExcel;
 
 use GFAPI;
+use GFExcel\Action\FilterRequest;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
@@ -239,6 +240,7 @@ class GFExcel
     {
         $actions = [
             DownloadUrl::class,
+            FilterRequest::class,
         ];
 
         foreach ($actions as $action) {
