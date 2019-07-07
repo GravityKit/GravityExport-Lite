@@ -167,7 +167,7 @@ class FilterRequest
     /**
      * Store the start and end date when provided.
      * @since $ver$
-     * @param array $query_vars
+     * @param array $query_vars the query vars provided by the url.
      */
     private function parseDates(array $query_vars)
     {
@@ -182,7 +182,7 @@ class FilterRequest
     /**
      * Add the filter part for a specific entry.
      * @since $ver$
-     * @param string|null $entry
+     * @param int|null $entry the entry id to retrieve.
      */
     private function parseEntry($entry)
     {
