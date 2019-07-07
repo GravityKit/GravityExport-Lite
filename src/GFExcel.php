@@ -26,9 +26,10 @@ class GFExcel
 
     public function __construct()
     {
-        add_action("init", array($this, "addPermalinkRule"));
-        add_action("request", array($this, "request"));
-        add_filter("query_vars", array($this, "getQueryVars"));
+        add_action('init', [$this, 'addPermalinkRule']);
+        add_action('request', [$this, 'request']);
+        add_filter('query_vars', [$this, 'getQueryVars']);
+        add_filter('robots_txt', [$this, 'robotsTxt']);
 
         $this->registerActions();
     }
@@ -238,5 +239,25 @@ class GFExcel
                 new $action;
             }
         }
+    }
+
+    /**
+     * Add's a Disallow for the download URL's.
+     * @since $ver$
+     * @param string $output The robots.txt output
+     * @return string the new output.
+     */
+    public function robotsTxt($output)
+    {
+        $site_url = parse_url(site_url());
+        $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
+        $line = sprintf("Disallow: %s/%s/", $path, GFExcel::$slug);
+
+        // there can be only one `user-agent: *` line, so we make sure it's just below.
+        if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
+            return str_replace($matches[0], $matches[0] . "\n" . $line, $output);
+        }
+
+        return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $line));
     }
 }
