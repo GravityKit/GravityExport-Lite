@@ -82,7 +82,7 @@ class RepeaterField extends SeparableField
         $cells = array_map(function (array $values) {
             return implode(
                 gf_apply_filters([
-                    'gfexcel_field_repeater',
+                    'gfexcel_field_repeater_implode',
                     $this->field->formId,
                     $this->field->id,
                 ], "\n---\n"),
