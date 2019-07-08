@@ -189,7 +189,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             ],
             $form_title,
             $form
-        ), 0, 31, 'utf-8');
+        ), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
 
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
