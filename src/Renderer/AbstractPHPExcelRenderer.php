@@ -155,7 +155,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
                 try {
                     $this->setProperties($cell, $value);
-                    $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText(true);
+
+                    $wrap_text = (bool) gf_apply_filters([
+                        'gfexcel_renderer_wrap_text',
+                        $form_id,
+                    ], true, $cell, $value);
+
+                    $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText($wrap_text);
                 } catch (Exception $e) {
                     $this->handleException($e);
                 }
