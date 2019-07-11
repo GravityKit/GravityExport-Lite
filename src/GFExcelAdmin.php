@@ -281,6 +281,12 @@ class GFExcelAdmin extends GFAddOn
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
                 GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+            } elseif (!rgempty('enable_download_url')) {
+                $form = GFExcel::setHash($form['id']);
+                GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
+            } elseif (!rgempty('disable_download_url')) {
+                $form = GFExcel::setHash($form['id'], '');
+                GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
             }
         }
 
@@ -290,25 +296,52 @@ class GFExcelAdmin extends GFAddOn
             esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
-        printf('<h4 class="gaddon-section-title gf_settings_subgroup_title">%s:</h4>',
+        printf(
+            '<h4 class="gaddon-section-title gf_settings_subgroup_title">%s</h4>',
             esc_html__('Download url', GFExcel::$slug)
         );
 
         $url = GFExcel::url($form['id']);
 
+        if (!$url) {
+            echo "<form method=\"post\">";
+            echo "<p>" .
+                __('The download url is not (yet) enabled. Click the button to enable this feature.', GFExcel::$slug) .
+                "</p>";
+
+            echo "<input
+                    type='submit'
+                    name='enable_download_url'
+                    class='button-primary'
+                    value='" . esc_html__('Enable download', GFExcel::$slug) . "'>";
+            echo "</form>";
+
+            // Downlad is disabled, so other settings are hidden.
+            return;
+        }
+
         echo "<form method=\"post\">";
         printf(
             "<p>
-                <input style='width:80%%;' type='text' value='%s' readonly />&nbsp;<input 
-                onclick=\"%s\"
-                class='button' type='submit' name='regenerate_hash' 
-                value='" . __('Regenerate url', GFExcel::$slug) . "'/> 
-            </p>",
+            <input style='width:90%%; margin-bottom: 5px;' type='text' value='%s' readonly />&nbsp<br/><input
+            onclick=\"%s\"
+            class='button' type='submit' name='regenerate_hash'
+            value='" . __('Regenerate url', GFExcel::$slug) . "'/>
+            <input
+            onclick=\"%s\"
+            class='button button-danger' type='submit' name='disable_download_url'
+            value='" . __('Disable download', GFExcel::$slug) . "'/>
+        </p>",
             $url,
-            "return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');"
+            "return confirm('" . __('This changes the download url permanently!', GFExcel::$slug) . "');",
+            "return confirm('" . __('This disables and removes the download url!', GFExcel::$slug) . "');"
         );
         echo "</form>";
 
+        printf(
+            '<h4 class="gaddon-section-title gf_settings_subgroup_title">%s</h4>',
+            esc_html__('Download file', GFExcel::$slug)
+        );
         echo "<form method=\"post\" action=\"" . $url . "\" target=\"_blank\">
         <h4>" . esc_html__('Select (optional) Date Range', GFExcel::$slug) . " " .
             gform_tooltip('export_date_range', '', true) . "</h4>" .

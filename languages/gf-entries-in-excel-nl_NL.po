@@ -165,7 +165,7 @@ msgid "If you like the plugin, let me know, and maybe more important; 📣 %slet
 msgstr "Als je de plugin leuk vindt, laat het me weten! En misschien nog wel belangrijker; 📣 %slaat anderen het weten%s! We hebben op dit moment al %s actieve gebruikers. Laten we daar %s van maken! %sVolg me op twitter%s om direct op de hoogte te zijn van de laatste updates."
 
 msgid "Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺."
-msgstr "En; als je verliefd ❤️ bent op de plugin, en je kunt niet meer zonder; overweeg dan om een kleine donatie 💰 te doen en koop een drankje voor me 🍺."
+msgstr "En; als je ❤️ hebt voor de plugin, en je kunt niet meer zonder; overweeg dan om een kleine donatie 💰 te doen en koop een drankje voor me 🍺."
 
 msgid "Product fields"
 msgstr "Product-velden"
@@ -175,3 +175,27 @@ msgstr "Exporteer prijzen als numerieke waarden zonder valuta-symbool (€)"
 
 msgid "Download this single entry as a file."
 msgstr "Download alleen deze inzending als een bestand."
+
+msgid "Download file"
+msgstr "Download bestand"
+
+msgid "Reset count"
+msgstr "Reset teller"
+
+msgid "The download url is not (yet) enabled. Click the button to enable this feature."
+msgstr "De download url is nog niet ingeschakeld. Klik op de knop om deze functionaliteit te activeren."
+
+msgid "This disables and removes the download url!"
+msgstr "Hiermee wordt de url verwijderd en gedeactiveerd."
+
+msgid "Enable download"
+msgstr "Download inschakelen"
+
+msgid "Disable download"
+msgstr "Download uitschakelen"
+
+msgid "The download url has been enabled."
+msgstr "De download url is ingeschakeld."
+
+msgid "The download url has been disabled."
+msgstr "De download url is uitgeschakeld."
