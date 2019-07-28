@@ -28,6 +28,7 @@ class GFExcel
     {
         add_action('init', [$this, 'addPermalinkRule']);
         add_action('request', [$this, 'request']);
+        add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('robots_txt', [$this, 'robotsTxt']);
 
@@ -146,6 +147,27 @@ class GFExcel
         return static::$file_extension;
     }
 
+    /**
+     * Whether the current user can download the form.
+     * @since $ver$
+     * @param int $form_id The form id of the form to download.
+     * @return bool Whehther the current user can download the file.
+     */
+    private static function canDownloadForm(int $form_id)
+    {
+        // public urls can always be downloaded.
+        if (!self::isFormSecured($form_id)) {
+            return true;
+        }
+
+        // does the user have rights?
+        return current_user_can('administrator', 'gravityforms_export_entries');
+    }
+
+    /**
+     * Registers the permalink structure for the download
+     * @since 1.0.0
+     */
     public function addPermalinkRule()
     {
         add_rewrite_rule(
@@ -162,9 +184,9 @@ class GFExcel
 
     /**
      * Hooks into the request and outputs the file as the HHTP response.
-     * @param $query_vars
-     * @return mixed
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @since 1.0.0
+     * @param string[] $query_vars The original query vars.
+     * @return string[] The new query vars.
      */
     public function request($query_vars)
     {
@@ -177,21 +199,50 @@ class GFExcel
         }
 
         $form_id = $this->getFormIdByHash($query_vars[self::KEY_HASH]);
-        if (!$form_id) {
-            return $query_vars;
+        if ($form_id) {
+            if (self::canDownloadForm($form_id)) {
+                $query_vars['gfexcel_download_form'] = $form_id;
+            } else {
+                $query_vars['error'] = \WP_Http::FORBIDDEN;
+            }
+        } else {
+            // Not found
+            $query_vars['error'] = \WP_Http::NOT_FOUND;
         }
 
-        $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
-
-        // trigger download event.
-        do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
-
-        return $output->render();
+        return $query_vars;
     }
 
     /**
-     * @param $vars
-     * @return string[]
+     * Acutally triggers the download response.
+     * @since $ver$
+     * @param \WP $wp Wordpress request instance.
+     * @return mixed The output will be the file.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function downloadFile(\WP $wp)
+    {
+        if (array_key_exists('gfexcel_download_form', $wp->query_vars)) {
+            $form_id = isset($wp->query_vars['gfexcel_download_form'])
+                ? $wp->query_vars['gfexcel_download_form']
+                : null;
+
+            if ($form_id) {
+                $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
+
+                // trigger download event.
+                do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
+
+                return $output->render();
+            }
+        }
+    }
+
+    /**
+     * Adds the query vars for the permalink.
+     * @since 1.0.0
+     * @param string[] $vars The original query vars.
+     * @return string[] The new query vars.
      */
     public function getQueryVars($vars)
     {
@@ -274,5 +325,31 @@ class GFExcel
         }
 
         return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $line));
+    }
+
+    /**
+     * Whether all forms should be secured.
+     * @since $ver$
+     * @return bool Whether the constant is set.
+     */
+    public static function isAllSecured()
+    {
+        return defined('GFEXCEL_SECURED_DOWNLOADS') && GFEXCEL_SECURED_DOWNLOADS;
+    }
+
+    /**
+     * Whether the form is secured.
+     * @since $ver$
+     * @param int $form_id
+     * @return bool Whether this form is secured.
+     */
+    public static function isFormSecured(int $form_id)
+    {
+        if (self::isAllSecured()) {
+            return true;
+        }
+
+        $meta = GFFormsModel::get_form_meta($form_id);
+        return !!rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 }
