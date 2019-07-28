@@ -36,7 +36,7 @@ class GFExcel
 
     /** Return the url for the form
      * @param $form_id
-     * @return string
+     * @return string|null
      */
     public static function url($form_id)
     {
@@ -45,6 +45,9 @@ class GFExcel
 
         $action = self::$slug;
         $hash = self::getHash($form_id);
+        if (!$hash) {
+            return null;
+        }
 
         if (get_option('permalink_structure')) {
             $permalink = '/%s/%s';
@@ -55,17 +58,22 @@ class GFExcel
         return $blogurl . sprintf($permalink, $action, $hash);
     }
 
-
+    /**
+     * Returns the download hash for a form.
+     *
+     * @since 1.0.0
+     * @param int $form_id the form id to get the hash for.
+     * @return string|null the hash
+     */
     private static function getHash($form_id)
     {
         if (!GFAPI::form_id_exists($form_id)) {
-            return false;
+            return null;
         }
 
         $meta = GFFormsModel::get_form_meta($form_id);
-
-        if (!array_key_exists(static::KEY_HASH, $meta)) {
-            $meta = static::setHash($form_id);
+        if (!isset($meta[static::KEY_HASH]) || empty($meta[static::KEY_HASH])) {
+            return null;
         }
 
         return $meta[static::KEY_HASH];
@@ -74,13 +82,17 @@ class GFExcel
     /**
      * Save new hash to the form
      * @param $form_id
+     * @param null|string $hash predifined hash {@since $ver$}
      * @return array metadata form
      */
-    public static function setHash($form_id)
+    public static function setHash($form_id, $hash = null)
     {
-        $meta = GFFormsModel::get_form_meta($form_id);
+        if ($hash === null) {
+            $hash = self::generateHash();
+        }
 
-        $meta[self::KEY_HASH] = self::generateHash();
+        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta[self::KEY_HASH] = (string) $hash;
         GFFormsModel::update_form_meta($form_id, $meta);
 
         return $meta;
@@ -149,15 +161,18 @@ class GFExcel
     }
 
     /**
+     * Hooks into the request and outputs the file as the HHTP response.
      * @param $query_vars
      * @return mixed
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function request($query_vars)
     {
-        if (!array_key_exists(self::KEY_ACTION, $query_vars) ||
-            !array_key_exists(self::KEY_HASH, $query_vars) ||
-            $query_vars[self::KEY_ACTION] !== self::$slug) {
+        if (!isset($query_vars[self::KEY_ACTION]) ||
+            !isset($query_vars[self::KEY_HASH]) ||
+            $query_vars[self::KEY_ACTION] !== self::$slug ||
+            empty($query_vars[self::KEY_HASH])
+        ) {
             return $query_vars;
         }
 
