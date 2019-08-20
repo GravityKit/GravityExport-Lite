@@ -31,6 +31,11 @@ class GFExcelAdmin extends GFAddOn
     private $_file = '';
 
     /**
+     * {@inheritdoc}
+     */
+    protected $_path = 'gf-entries-in-excel/gfexcel.php';
+
+    /**
      * @return string
      */
     public function plugin_settings_icon()
