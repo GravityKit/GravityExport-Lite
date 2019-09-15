@@ -357,6 +357,7 @@ class GFExcel
     /**
      * Adds the export links to the admin bar.
      * @since $ver$
+     * @todo: make this work in admin too.
      */
     public static function admin_bar()
     {
