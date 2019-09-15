@@ -214,9 +214,9 @@ Checkout this example:
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
 * Feature: Added download links for a single entry on the entry detail page.
 * Enhancement: Added a maxiumun column width via `gfexcel_renderer_columns_max_width`.
-* Enhancement: Added a `gfexcel_renderer_wrap_text` hook to disable wrappig text.
+* Enhancement: Added a `gfexcel_renderer_wrap_text` hook to disable wrapping text.
 * Enhancement: Added `$form_id` as an argument to `gfexcel_output_search_criteria` for convenience.
-* Enhancement: Added `noindex, nofollow` to the headers of the export, and added a Dissalow to the `robots.txt`.
+* Enhancement: Added `noindex, nofollow` to the headers of the export, and added a `Disallow` to the `robots.txt`.
 * Bugfix: Prevent notice at render-time for `ob_end_clean`.
 * Bugfix: Reset download hash and counter on duplicated form.
 * Updated: PHPSpreadsheet updated to 1.8.1. Package to `^1.3`.
