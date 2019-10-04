@@ -185,6 +185,7 @@ class GFExcelAdmin extends GFAddOn
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
         add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
+        add_filter('wp_before_admin_bar_render', [__CLASS__, 'admin_bar'], 20);
     }
 
     public function render_settings($sections)
@@ -1102,6 +1103,46 @@ class GFExcelAdmin extends GFAddOn
         foreach ($actions as $action) {
             if (class_exists($action)) {
                 new $action;
+            }
+        }
+    }
+
+    /**
+     * Adds the export links to the admin bar.
+     * @since $ver$
+     */
+    public static function admin_bar()
+    {
+        // only show links if the user has the rights for exporting.
+        if (!current_user_can('administrator', 'gravityforms_export_entries')) {
+            return;
+        }
+
+        /**
+         * @var  \WP_Admin_Bar $wp_admin_bar
+         */
+        global $wp_admin_bar;
+
+        // get all recent form id's.
+        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), function (array $output, $key) {
+            if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
+                $output[] = (int) $matches[1];
+            }
+            return $output;
+        }, []);
+
+        // add download url to every form that has a hash.
+        foreach ($form_ids as $id) {
+            $url = GFExcel::url($id);
+            if ($url) {
+                $wp_admin_bar->add_node(
+                    array(
+                        'id' => 'gfexcel-form-' . $id . '-download',
+                        'parent' => 'gform-form-' . $id,
+                        'title' => esc_html__('Download', GFExcel::$slug),
+                        'href' => trailingslashit($url),
+                    )
+                );
             }
         }
     }

@@ -31,7 +31,6 @@ class GFExcel
         add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('robots_txt', [$this, 'robotsTxt']);
-        add_filter('wp_before_admin_bar_render', [$this, 'admin_bar'], 20);
 
         $this->registerActions();
     }
@@ -352,46 +351,5 @@ class GFExcel
 
         $meta = GFFormsModel::get_form_meta($form_id);
         return !!rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
-    }
-
-    /**
-     * Adds the export links to the admin bar.
-     * @since $ver$
-     * @todo: make this work in admin too.
-     */
-    public static function admin_bar()
-    {
-        // only show links if the user has the rights for exporting.
-        if (!current_user_can('administrator', 'gravityforms_export_entries')) {
-            return;
-        }
-
-        /**
-         * @var  \WP_Admin_Bar $wp_admin_bar
-         */
-        global $wp_admin_bar;
-
-        // get all recent form id's.
-        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), function (array $output, $key) {
-            if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
-                $output[] = (int) $matches[1];
-            }
-            return $output;
-        }, []);
-
-        // add download url to every form that has a hash.
-        foreach ($form_ids as $id) {
-            $url = GFExcel::url($id);
-            if ($url) {
-                $wp_admin_bar->add_node(
-                    array(
-                        'id' => 'gfexcel-form-' . $id . '-download',
-                        'parent' => 'gform-form-' . $id,
-                        'title' => esc_html__('Download', self::$slug),
-                        'href' => trailingslashit($url),
-                    )
-                );
-            }
-        }
     }
 }
