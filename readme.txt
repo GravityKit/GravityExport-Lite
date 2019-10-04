@@ -213,6 +213,7 @@ Checkout this example:
 * Feature: Added field filtering to the url. Checkout [the documentation](http://gfexcel.doeken.org) for more info.
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
 * Feature: Added download links for a single entry on the entry detail page.
+* Feature: Added download link to admin bar for recent forms.
 * Enhancement: Added a maxiumun column width via `gfexcel_renderer_columns_max_width`.
 * Enhancement: Added a `gfexcel_renderer_wrap_text` hook to disable wrapping text.
 * Enhancement: Added `$form_id` as an argument to `gfexcel_output_search_criteria` for convenience.
