@@ -12,7 +12,7 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Entries in Excel';
     public static $shortname = 'Entries in Excel';
-    public static $version = "1.6.3";
+    public static $version = "1.7.0";
     public static $slug = "gf-entries-in-excel";
 
     const KEY_HASH = 'gfexcel_hash';
@@ -83,7 +83,7 @@ class GFExcel
     /**
      * Save new hash to the form
      * @param $form_id
-     * @param null|string $hash predifined hash {@since $ver$}
+     * @param null|string $hash predifined hash {@since 1.7.0}
      * @return array metadata form
      */
     public static function setHash($form_id, $hash = null)
@@ -149,7 +149,7 @@ class GFExcel
 
     /**
      * Whether the current user can download the form.
-     * @since $ver$
+     * @since 1.7.0
      * @param int $form_id The form id of the form to download.
      * @return bool Whehther the current user can download the file.
      */
@@ -215,7 +215,7 @@ class GFExcel
 
     /**
      * Acutally triggers the download response.
-     * @since $ver$
+     * @since 1.7.0
      * @param \WP $wp Wordpress request instance.
      * @return mixed The output will be the file.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -314,7 +314,7 @@ class GFExcel
 
     /**
      * Add's a Disallow for the download URL's.
-     * @since $ver$
+     * @since 1.7.0
      * @param string $output The robots.txt output
      * @return string the new output.
      */
@@ -334,7 +334,7 @@ class GFExcel
 
     /**
      * Whether all forms should be secured.
-     * @since $ver$
+     * @since 1.7.0
      * @return bool Whether the constant is set.
      */
     public static function isAllSecured()
@@ -344,7 +344,7 @@ class GFExcel
 
     /**
      * Whether the form is secured.
-     * @since $ver$
+     * @since 1.7.0
      * @param int $form_id
      * @return bool Whether this form is secured.
      */

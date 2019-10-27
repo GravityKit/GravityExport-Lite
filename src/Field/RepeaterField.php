@@ -8,27 +8,27 @@ use GFExcel\Values\BaseValue;
 
 /**
  * A Field for the Transformer for `repeater` fields.
- * @since $ver$
+ * @since 1.7.0
  */
 class RepeaterField extends SeparableField
 {
     /**
      * A Transformer instance.
-     * @since $ver$
+     * @since 1.7.0
      * @var Transformer
      */
     private $transformer;
 
     /**
      * The GF_Field instance for the Repeater
-     * @since $ver$
+     * @since 1.7.0
      * @var \GF_Field_Repeater
      */
     protected $field;
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 1.7.0
      */
     public function __construct(GF_Field $field)
     {
@@ -39,7 +39,7 @@ class RepeaterField extends SeparableField
     /**
      * {@inheritdoc}
      * Maps all subfields `getColumns` calls to the repeater subfields.
-     * @since $ver$
+     * @since 1.7.0
      */
     public function getColumns()
     {
@@ -51,7 +51,7 @@ class RepeaterField extends SeparableField
     /**
      * {@inheritdoc}
      * Maps all subfields `getCells` calls to the repeater subfields with an ammended $entry.
-     * @since $ver$
+     * @since 1.7.0
      */
     public function getCells($entry)
     {

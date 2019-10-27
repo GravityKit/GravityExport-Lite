@@ -4,55 +4,55 @@ namespace GFExcel\Action;
 
 /**
  * Class that filters the entries based on a filterset.
- * @since $ver$
+ * @since 1.7.0
  */
 class FilterRequest
 {
     /**
      * The query string part for filtering.
-     * @since $ver$
+     * @since 1.7.0
      * @var string
      */
     const FILTER = 'filter';
 
     /**
      * The query string part for the start date.
-     * @since $ver$
+     * @since 1.7.0
      * @var string
      */
     const START_DATE = 'start_date';
 
     /**
      * The query string part for the start date.
-     * @since $ver$
+     * @since 1.7.0
      * @var string
      */
     const END_DATE = 'end_date';
 
     /**
      * The query string part to retrieve one entry.
-     * @since $ver$
+     * @since 1.7.0
      * @var string
      */
     const ENTRY = 'entry';
 
     /**
      * The provided and parsed field filters.
-     * @since $ver$
+     * @since 1.7.0
      * @var string[]
      */
     private $field_filters = [];
 
     /**
      * Filters used for the entry, not the fields.
-     * @since $ver$
+     * @since 1.7.0
      * @var string[]
      */
     private $general_filters = [];
 
     /**
      * Connect various endpoints for this filter.
-     * @since $ver$
+     * @since 1.7.0
      */
     public function __construct()
     {
@@ -63,7 +63,7 @@ class FilterRequest
 
     /**
      * Adds needed parameters to the query vars for the request.
-     * @since $ver$
+     * @since 1.7.0
      * @param $vars
      * @return array the query variables.
      */
@@ -79,7 +79,7 @@ class FilterRequest
 
     /**
      * Intercepts the request and triggers the filter stages.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $query_vars the query vars.
      * @return array the query vars.
      */
@@ -94,7 +94,7 @@ class FilterRequest
 
     /**
      * Sets the search criteria on the hook for filtering.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $criteria The provided criteria to change.
      * @return mixed[] The updated criteria.
      */
@@ -111,7 +111,7 @@ class FilterRequest
 
     /**
      * Parses a filter-string and adds the filters to the internal array.
-     * @since $ver$
+     * @since 1.7.0
      * @param string $filter_string the string that contains the filters.
      *
      */
@@ -128,7 +128,7 @@ class FilterRequest
 
     /**
      * Adds the filter to the internal array.
-     * @since $ver$
+     * @since 1.7.0
      * @param string[] $filter
      * @throws \InvalidArgumentException
      */
@@ -166,7 +166,7 @@ class FilterRequest
 
     /**
      * Store the start and end date when provided.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $query_vars the query vars provided by the url.
      */
     private function parseDates(array $query_vars)
@@ -181,7 +181,7 @@ class FilterRequest
 
     /**
      * Add the filter part for a specific entry.
-     * @since $ver$
+     * @since 1.7.0
      * @param int|null $entry the entry id to retrieve.
      */
     private function parseEntry($entry)

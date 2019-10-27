@@ -584,7 +584,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the security settings for the plugin.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $form The form information.
      */
     private function securitySettings($form)
@@ -865,7 +865,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Registers the meta boxes for the entry detail page.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $meta_boxes The metaboxes
      * @param array $lead the lead data
      * @param array $form the form data
@@ -1001,7 +1001,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Updates download data for a duplicated form.
-     * @since $ver$
+     * @since 1.7.0
      * @param int $form_id the ID of the duplicated form
      * @param int $new_id the ID of the new form.
      */
@@ -1015,7 +1015,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Add's a download button for a single entry on the entry detail page.
-     * @since $ver$
+     * @since 1.7.0
      * @param array $args arguments from metabox.
      * @param array $metabox the metabox information.
      */
@@ -1120,7 +1120,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Helper method to translate text.
-     * @since $ver$
+     * @since 1.7.0
      * @param string $text The text to translate.
      * @param bool $is_html_save Whether the translation should be html safe.
      * @return string The translated text.
@@ -1153,7 +1153,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the export links to the admin bar.
-     * @since $ver$
+     * @since 1.7.0
      */
     public static function admin_bar()
     {
