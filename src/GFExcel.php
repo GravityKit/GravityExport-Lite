@@ -228,7 +228,12 @@ class GFExcel
                 : null;
 
             if ($form_id) {
-                $output = new GFExcelOutput($form_id, new PHPExcelRenderer());
+                $renderer = gf_apply_filters([
+                    GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
+                    $form_id
+                ], new PHPExcelRenderer());
+
+                $output = new GFExcelOutput($form_id, $renderer);
 
                 // trigger download event.
                 do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
