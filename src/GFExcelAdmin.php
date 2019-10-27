@@ -64,7 +64,11 @@ class GFExcelAdmin extends GFAddOn
             'php' => [
                 'version' => '5.6',
                 'extensions' => [
-                    'zip', 'ctype', 'dom', 'zlib', 'xml',
+                    'zip',
+                    'ctype',
+                    'dom',
+                    'zlib',
+                    'xml',
                 ],
             ]
         ];
@@ -77,79 +81,104 @@ class GFExcelAdmin extends GFAddOn
 
     public function plugin_settings_fields()
     {
-        return [[
-            'description' => $this->plugin_settings_description(),
-            'fields' => [[
-                'name' => 'field_separate',
-                'label' => $this->translate('Multiple columns', true),
-                'type' => 'checkbox',
-                'choices' => [[
-                    'label' => $this->translate('Split multi-fields (name, address) into multiple columns', true),
-                    'name' => SeparableField::SETTING_KEY,
-                    // backwards compatible with last known setting
-                    'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
-                ]]
-            ], [
-                'name' => 'notes',
-                'label' => esc_html__('Notes', 'gravityforms'),
-                'type' => 'checkbox',
-                'choices' => [[
-                    'label' => $this->translate('Enable notes by default', true),
-                    'name' => 'notes_enabled',
-                    'default_value' => false,
-                ]]
-            ], [
-                'name' => 'sections',
-                'label' => $this->translate('Sections', true),
-                'type' => 'checkbox',
-                'choices' => [[
-                    'label' => $this->translate('Enable (empty) section column', true),
-                    'name' => 'sections_enabled',
-                    'default_value' => false,
-                ]]
-            ], [
-                'name' => 'fileuploads',
-                'label' => $this->translate('File uploads', true),
-                'type' => 'checkbox',
+        return [
+            [
+                'description' => $this->plugin_settings_description(),
+                'fields' => [
+                    [
+                        'name' => 'field_separate',
+                        'label' => $this->translate('Multiple columns', true),
+                        'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Split multi-fields (name, address) into multiple columns',
+                                    true),
+                                'name' => SeparableField::SETTING_KEY,
+                                // backwards compatible with last known setting
+                                'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'notes',
+                        'label' => esc_html__('Notes', 'gravityforms'),
+                        'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Enable notes by default', true),
+                                'name' => 'notes_enabled',
+                                'default_value' => false,
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'sections',
+                        'label' => $this->translate('Sections', true),
+                        'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Enable (empty) section column', true),
+                                'name' => 'sections_enabled',
+                                'default_value' => false,
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'fileuploads',
+                        'label' => $this->translate('File uploads', true),
+                        'type' => 'checkbox',
 
-                'choices' => [[
-                    'label' => $this->translate('Enable file upload columns', true),
-                    'name' => 'fileuploads_enabled',
-                    'default_value' => true,
-                ]]
-            ], [
-                'name' => 'hyperlinks',
-                'label' => $this->translate('Hyperlinks', true),
-                'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Enable file upload columns', true),
+                                'name' => 'fileuploads_enabled',
+                                'default_value' => true,
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'hyperlinks',
+                        'label' => $this->translate('Hyperlinks', true),
+                        'type' => 'checkbox',
 
-                'choices' => [[
-                    'label' => $this->translate('Enable hyperlinks on url-only columns', true),
-                    'name' => 'hyperlinks_enabled',
-                    'default_value' => true,
-                ]]
-            ], [
-                'name' => 'products_price',
-                'label' => $this->translate('Product fields', true),
-                'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Enable hyperlinks on url-only columns', true),
+                                'name' => 'hyperlinks_enabled',
+                                'default_value' => true,
+                            ]
+                        ]
+                    ],
+                    [
+                        'name' => 'products_price',
+                        'label' => $this->translate('Product fields', true),
+                        'type' => 'checkbox',
 
-                'choices' => [[
-                    'label' => $this->translate('Export prices as numeric fields, without currency symbol ($)', true),
-                    'name' => ProductField::SETTING_KEY,
-                    'default_value' => false,
-                ]]
-            ]],
-        ], [
-            'fields' => [
-                [
-                    'name' => 'enabled_metafields',
-                    'label' => $this->translate('Enabled meta fields', true),
-                    'description' => $this->translate('Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.', true),
-                    'type' => 'checkbox',
+                        'choices' => [
+                            [
+                                'label' => $this->translate('Export prices as numeric fields, without currency symbol ($)',
+                                    true),
+                                'name' => ProductField::SETTING_KEY,
+                                'default_value' => false,
+                            ]
+                        ]
+                    ]
+                ],
+            ],
+            [
+                'fields' => [
+                    [
+                        'name' => 'enabled_metafields',
+                        'label' => $this->translate('Enabled meta fields', true),
+                        'description' => $this->translate('Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
+                            true),
+                        'type' => 'checkbox',
 
-                    'choices' => $this->meta_fields(),
+                        'choices' => $this->meta_fields(),
+                    ]
                 ]
             ]
-        ]];
+        ];
     }
 
     public function init_admin()
@@ -170,7 +199,8 @@ class GFExcelAdmin extends GFAddOn
                 // trigger action
                 do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
                 // redirect back to same page without the action
-                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET, ['gf_action' => null])));
+                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
+                        ['gf_action' => null])));
                 wp_redirect($url);
                 return;
             }
@@ -180,8 +210,7 @@ class GFExcelAdmin extends GFAddOn
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
-        add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
-        add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
+        add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);;
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
         add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
@@ -201,22 +230,30 @@ class GFExcelAdmin extends GFAddOn
 
         <p>
             <?php
-            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!', GFExcel::$slug);
+            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!',
+                GFExcel::$slug);
             ?>
         </p>
         <p>
             <?php
-            printf(' ' . $this->translate('If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.', true), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">', '</a>');
+            printf(' ' . $this->translate('If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.',
+                    true), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">',
+                '</a>');
             ?>
         </p>
         <p>
             <?php
-            printf(' ' . $this->translate('If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.', true), '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">', '</a>', $this->getUsageCount(), $this->getUsageTarget(), '<a href="https://twitter.com/doekenorg" target="_blank">', '</a>');
+            printf(' ' . $this->translate('If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.',
+                    true),
+                '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">',
+                '</a>', $this->getUsageCount(), $this->getUsageTarget(),
+                '<a href="https://twitter.com/doekenorg" target="_blank">', '</a>');
             ?>
         </p>
         <p>
             <?php
-            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.', GFExcel::$slug);
+            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.',
+                GFExcel::$slug);
             ?>
         </p>
         <p>
@@ -240,24 +277,9 @@ class GFExcelAdmin extends GFAddOn
             return $links;
         }
         return array_merge($links, [
-            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr(static::translate('Make a donation', GFExcel::$slug)) . '">' . static::translate('Make a donation', true) . '</a>',
+            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr(static::translate('Make a donation',
+                    GFExcel::$slug)) . '">' . static::translate('Make a donation', true) . '</a>',
         ]);
-    }
-
-    /**
-     * Add settings link to plugin page
-     * @param $links
-     * @param $file
-     * @return array
-     */
-    public static function plugin_action_links($links, $file)
-    {
-        if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
-            return $links;
-        }
-        return array_merge([
-            'settings' => '<a href="' . admin_url('admin.php?page=gf_settings&subview=gf-entries-in-excel') . '" aria-label="' . esc_attr__('View settings', GFExcel::$slug) . '">' . static::translate('Settings', true) . '</a>',
-        ], $links);
     }
 
     public static function gform_form_actions($form_actions, $form_id)
@@ -488,13 +510,16 @@ class GFExcelAdmin extends GFAddOn
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
-            'choices' => [[
-                'value' => 'ASC',
-                'label' => $this->translate('Acending')
-            ], [
-                'value' => 'DESC',
-                'label' => $this->translate('Descending')
-            ]],
+            'choices' => [
+                [
+                    'value' => 'ASC',
+                    'label' => $this->translate('Acending')
+                ],
+                [
+                    'value' => 'DESC',
+                    'label' => $this->translate('Descending')
+                ]
+            ],
             'default_value' => $this->repository->getSortOrder(),
         ]);
     }
@@ -562,32 +587,36 @@ class GFExcelAdmin extends GFAddOn
      * @since $ver$
      * @param array $form The form information.
      */
-    private function securitySettings($form) {
-        $this->settings([[
-            'title' => $this->translate('Security settings'),
-            'fields' => [
-                [
-                    'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
-                    'label' => $this->translate('Download permissions'),
-                    'type' => 'select',
-                    'default_value' => GFExcel::isAllSecured(),
-                    'choices' => array_filter([
-                        GFExcel::isAllSecured() ? null :
+    private function securitySettings($form)
+    {
+        $this->settings([
+            [
+                'title' => $this->translate('Security settings'),
+                'fields' => [
+                    [
+                        'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
+                        'label' => $this->translate('Download permissions'),
+                        'type' => 'select',
+                        'default_value' => GFExcel::isAllSecured(),
+                        'choices' => array_filter([
+                            GFExcel::isAllSecured() ? null :
+                                [
+                                    'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
+                                    'label' => $this->translate('Everyone can download'),
+                                    'value' => false,
+                                ],
                             [
                                 'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
-                                'label' => $this->translate('Everyone can download'),
-                                'value' => false,
+                                'label' => $this->translate('Only verified users can download'),
+                                'value' => true,
                             ],
-                        [
-                            'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
-                            'label' => $this->translate('Only verified users can download'),
-                            'value' => true,
-                        ],
-                    ]),
+                        ]),
+                    ]
                 ]
             ]
-        ]]);
+        ]);
     }
+
     /**
      * Adds the general settings for the plugin.
      * @since 1.0
@@ -595,77 +624,82 @@ class GFExcelAdmin extends GFAddOn
      */
     private function generalSettings($form)
     {
-        $this->settings(apply_filters('gfexcel_general_settings', [[
-            'title' => $this->translate('General settings'),
-            'fields' => [
-                [
-                    'name' => 'enable_notes',
-                    'label' => $this->translate('Enable notes', true),
-                    'type' => 'checkbox',
-                    'choices' => [[
-                        'name' => GFExcel::KEY_ENABLED_NOTES,
-                        'label' => $this->translate('Yes, enable the notes for every entry', true),
-                        'value' => '1',
-                        'default_value' => $this->enabled_notes($form),
-                    ]],
-                ],
-                [
-                    'name' => 'order_by',
-                    'type' => 'callback',
-                    'label' => $this->translate('Order by', true),
-                    'callback' => function () use ($form) {
-                        $this->select_sort_field_options($form);
-                        echo ' ';
-                        $this->select_order_options();
-                    }
-                ],
-                [
-                    'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
-                    'type' => 'radio',
-                    'label' => $this->translate('Columns position', true),
-                    'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
-                    'choices' => [
-                        [
-                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
-                            'label' => $this->translate('At the top (normal)', true),
-                            'value' => 0,
-                        ],
-                        [
-                            'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
-                            'label' => $this->translate('At the left (transposed)', true),
-                            'value' => 1,
-                        ]
-                    ]
-                ],
-                [
-                    'label' => $this->translate('Custom filename', true),
-                    'type' => 'text',
-                    'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                    'description' => $this->translate('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.', true)
-                ],
-                [
-                    'label' => $this->translate('File extension', true),
-                    'type' => 'select',
-                    'name' => GFExcel::KEY_FILE_EXTENSION,
-                    'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
-                    'choices' => array_map(function ($extension) {
-                        return
+        $this->settings(apply_filters('gfexcel_general_settings', [
+            [
+                'title' => $this->translate('General settings'),
+                'fields' => [
+                    [
+                        'name' => 'enable_notes',
+                        'label' => $this->translate('Enable notes', true),
+                        'type' => 'checkbox',
+                        'choices' => [
                             [
-                                'name' => GFExcel::KEY_FILE_EXTENSION,
-                                'label' => '.' . $extension,
-                                'value' => $extension,
-                            ];
-                    }, ['xlsx', 'csv',]),
+                                'name' => GFExcel::KEY_ENABLED_NOTES,
+                                'label' => $this->translate('Yes, enable the notes for every entry', true),
+                                'value' => '1',
+                                'default_value' => $this->enabled_notes($form),
+                            ]
+                        ],
+                    ],
+                    [
+                        'name' => 'order_by',
+                        'type' => 'callback',
+                        'label' => $this->translate('Order by', true),
+                        'callback' => function () use ($form) {
+                            $this->select_sort_field_options($form);
+                            echo ' ';
+                            $this->select_order_options();
+                        }
+                    ],
+                    [
+                        'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                        'type' => 'radio',
+                        'label' => $this->translate('Columns position', true),
+                        'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
+                        'choices' => [
+                            [
+                                'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                                'label' => $this->translate('At the top (normal)', true),
+                                'value' => 0,
+                            ],
+                            [
+                                'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
+                                'label' => $this->translate('At the left (transposed)', true),
+                                'value' => 1,
+                            ]
+                        ]
+                    ],
+                    [
+                        'label' => $this->translate('Custom filename', true),
+                        'type' => 'text',
+                        'name' => GFExcel::KEY_CUSTOM_FILENAME,
+                        'description' => $this->translate('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.',
+                            true)
+                    ],
+                    [
+                        'label' => $this->translate('File extension', true),
+                        'type' => 'select',
+                        'name' => GFExcel::KEY_FILE_EXTENSION,
+                        'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
+                        'choices' => array_map(function ($extension) {
+                            return
+                                [
+                                    'name' => GFExcel::KEY_FILE_EXTENSION,
+                                    'label' => '.' . $extension,
+                                    'value' => $extension,
+                                ];
+                        }, ['xlsx', 'csv',]),
+                    ],
+                    [
+                        'label' => $this->translate('Attach single entry to notification', true),
+                        'type' => 'select',
+                        'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
+                        'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
+                        'choices' => $this->getNotifications(),
+                    ],
                 ],
-                [
-                    'label' => $this->translate('Attach single entry to notification', true),
-                    'type' => 'select',
-                    'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
-                    'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
-                    'choices' => $this->getNotifications(),
-                ],
-            ],
-        ]]));
+            ]
+        ]));
     }
 
     /**
@@ -703,7 +737,8 @@ class GFExcelAdmin extends GFAddOn
                             'label' => $field->label,
                         ];
                     }, $inactive_fields),
-                ], [
+                ],
+                [
                     'label' => $this->translate('Enable & sort the fields', true),
                     'name' => 'gfexcel_enabled_fields',
                     'value' => @$form['gfexcel_enabled_fields'] ?: '',
@@ -779,7 +814,8 @@ class GFExcelAdmin extends GFAddOn
         $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
 
         // Prepare setting description.
-        $description = rgar($field, 'description') ? '<span class="gf_settings_description">' . $field['description'] . '</span>' : null;
+        $description = rgar($field,
+            'description') ? '<span class="gf_settings_description">' . $field['description'] . '</span>' : null;
 
         if (array_key_exists('side', $field) && $field['side'] === "left") {
             ?>
@@ -806,7 +842,8 @@ class GFExcelAdmin extends GFAddOn
             return '#' . $id;
         }, $ids));
 
-        wp_add_inline_script('gfexcel-js', '(function($) { $(document).ready(function() { gfexcel_sortable(\'' . $ids . '\',\'' . $connector_class . '\'); }); })(jQuery);');
+        wp_add_inline_script('gfexcel-js',
+            '(function($) { $(document).ready(function() { gfexcel_sortable(\'' . $ids . '\',\'' . $connector_class . '\'); }); })(jQuery);');
     }
 
     /**
@@ -853,18 +890,22 @@ class GFExcelAdmin extends GFAddOn
         return array_merge(parent::scripts(), [
             [
                 'handle' => 'jquery-ui-sortable',
-                'enqueue' => [[
-                    'admin_page' => 'form_settings',
-                    'tab' => GFExcel::$slug,
-                ]],
+                'enqueue' => [
+                    [
+                        'admin_page' => 'form_settings',
+                        'tab' => GFExcel::$slug,
+                    ]
+                ],
             ],
             [
                 'handle' => 'gfexcel-js',
                 'src' => self::assets() . 'public/js/gfexcel.js',
-                'enqueue' => [[
-                    'admin_page' => 'form_settings',
-                    'tab' => GFExcel::$slug,
-                ]],
+                'enqueue' => [
+                    [
+                        'admin_page' => 'form_settings',
+                        'tab' => GFExcel::$slug,
+                    ]
+                ],
                 'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
             ],
         ]);
@@ -916,6 +957,7 @@ class GFExcelAdmin extends GFAddOn
         // save the file to a temporary file
         $this->_file = $output->render($save = true);
         if (!file_exists($this->_file)) {
+            dd('wrong');
             return $notification;
         }
         // attach file to $notification['attachments'][]
@@ -1003,7 +1045,8 @@ class GFExcelAdmin extends GFAddOn
     private function plugin_settings_description()
     {
         $html = "<p>";
-        $html .= $this->translate('These are global settings for new forms. You can overwrite them per form using the available hooks.', true);
+        $html .= $this->translate('These are global settings for new forms. You can overwrite them per form using the available hooks.',
+            true);
         $html .= "</p>";
 
         return $html;
@@ -1088,6 +1131,7 @@ class GFExcelAdmin extends GFAddOn
 
         return $is_html_save ? esc_html($translation) : $translation;
     }
+
     /**
      * Register native plugin actions
      * @since 1.6.1

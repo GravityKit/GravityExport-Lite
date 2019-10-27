@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.1
+Tested up to: 5.2
 Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -210,7 +210,7 @@ Checkout this example:
 == Changelog ==
 
 = Unreleased =
-* Feature: Added field filtering to the url. Checkout [the documentation](http://gfexcel.doeken.org) for more info.
+* Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
 * Feature: Added download links for a single entry on the entry detail page.
 * Feature: Added download link to admin bar for recent forms.

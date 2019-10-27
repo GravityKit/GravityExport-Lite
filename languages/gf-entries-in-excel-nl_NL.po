@@ -1,3 +1,16 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Doeke Norg <info@gfexcel.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl_NL\n"
+"X-Generator: Poedit 2.2.4\n"
+
 msgid "Download url"
 msgstr "Download pad"
 
@@ -124,12 +137,8 @@ msgstr "Toon deze meta-velden"
 msgid "Select all meta fields that are enabled by default. Once you've saved your form, these settings will not do anything any more."
 msgstr "Selecteer alle meta-velden die standaard getoond moeten worden. Een bestaand formulier doet niets met deze instellingen."
 
-msgid ""
-"Export all Gravity Forms entries to Excel (.xls) via a download button OR "
-"via a secret (shareable) url."
-msgstr ""
-"Download alle inzendingen in Gravity Forms als een excel-bestand (.xls) via een knop, "
-"of via een geheime (deelbare) link."
+msgid "Export all Gravity Forms entries to Excel (.xlsx) via a download button OR via a secret (shareable) url."
+msgstr "Download alle inzendingen in Gravity Forms als een excel-bestand (.xlsx) via een knop, of via een geheime (deelbare) link."
 
 msgid "Make a donation"
 msgstr "Doneer"
@@ -186,7 +195,7 @@ msgid "The download url is not (yet) enabled. Click the button to enable this fe
 msgstr "De download url is nog niet ingeschakeld. Klik op de knop om deze functionaliteit te activeren."
 
 msgid "This disables and removes the download url!"
-msgstr "Hiermee wordt de url verwijderd en gedeactiveerd."
+msgstr "Hiermee wordt de url verwijderd en gedeactiveerd!"
 
 msgid "Enable download"
 msgstr "Download inschakelen"
@@ -199,3 +208,15 @@ msgstr "De download url is ingeschakeld."
 
 msgid "The download url has been disabled."
 msgstr "De download url is uitgeschakeld."
+
+msgid "Security settings"
+msgstr "Beveiligingsinstellingen"
+
+msgid "Download permissions"
+msgstr "Downloadrechten"
+
+msgid "Everyone can download"
+msgstr "Iedereen mag downloaden (Openbaar)"
+
+msgid "Only verified users can download"
+msgstr "Alleen ingelogde gebruikers kunnen downloaden"
