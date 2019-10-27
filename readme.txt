@@ -220,7 +220,7 @@ Checkout this example:
 * Enhancement: Added `noindex, nofollow` to the headers of the export, and added a `Disallow` to the `robots.txt`.
 * Bugfix: Prevent notice at render-time for `ob_end_clean`.
 * Bugfix: Reset download hash and counter on duplicated form.
-* Updated: PHPSpreadsheet updated to 1.8.1. Package to `^1.3`.
+* Updated: PHPSpreadsheet updated to 1.9.0. Package to `^1.3`.
 
 = 1.6.3 =
 * Bugfix: Radio and checkboxes caused unforseen error on shorttag for GF.
