@@ -12,8 +12,8 @@ class GFExcel
 {
     public static $name = 'Gravity Forms Entries in Excel';
     public static $shortname = 'Entries in Excel';
-    public static $version = "1.7.0";
-    public static $slug = "gf-entries-in-excel";
+    public static $version = '1.7.1';
+    public static $slug = 'gf-entries-in-excel';
 
     const KEY_HASH = 'gfexcel_hash';
     const KEY_ACTION = 'gfexcel_action';
