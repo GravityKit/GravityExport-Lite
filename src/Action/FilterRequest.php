@@ -2,6 +2,8 @@
 
 namespace GFExcel\Action;
 
+use GFExcel\GFExcel;
+
 /**
  * Class that filters the entries based on a filterset.
  * @since 1.7.0
@@ -85,6 +87,11 @@ class FilterRequest
      */
     public function request($query_vars)
     {
+        // only respond to a GFexcel URL.
+        if (!isset($query_vars[GFExcel::KEY_ACTION]) || $query_vars[GFExcel::KEY_ACTION] !== GFExcel::$slug) {
+            return $query_vars;
+        }
+
         $this->parseDates($query_vars);
         $this->parseFilters(rgar($query_vars, self::FILTER, ''));
         $this->parseEntry(rgar($query_vars, self::ENTRY));

@@ -211,7 +211,7 @@ Checkout this example:
 
 = Unreleased =
 * Bugfix: Column-names now match the filters in the sortable lists.
-
+* Bugfix: Filters now only respond to the correct url.
 
 = 1.7.0 =
 * Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
