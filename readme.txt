@@ -212,6 +212,8 @@ Checkout this example:
 = Unreleased =
 * Bugfix: Column-names now match the filters in the sortable lists.
 * Bugfix: Filters now only respond to the correct url.
+* Bugfix: Forgot to update composer.json to reflect minumum PHP version of 7.1. (for Bedrock users).
+* Changed: Updated composer.json to use phpspreadsheet ~1.9.0 to be consistent with the normal plugin version.
 
 = 1.7.0 =
 * Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
