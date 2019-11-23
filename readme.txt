@@ -209,6 +209,10 @@ Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+* Bugfix: Column-names now match the filters in the sortable lists.
+
+
 = 1.7.0 =
 * Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).

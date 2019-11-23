@@ -732,9 +732,15 @@ class GFExcelAdmin extends GFAddOn
                     'side' => 'left',
                     'value' => @$form['gfexcel_disabled_fields'] ?: '',
                     'choices' => array_map(function (\GF_Field $field) {
+                        $label = gf_apply_filters([
+                            'gfexcel_field_label',
+                            $field->get_input_type(),
+                            $field->formId,
+                            $field->id
+                        ], $field->get_field_label(true, ''), $field);
                         return [
                             'value' => $field->id,
-                            'label' => $field->label,
+                            'label' => $label,
                         ];
                     }, $inactive_fields),
                 ],
@@ -747,9 +753,15 @@ class GFExcelAdmin extends GFAddOn
                     'class' => 'fields-select',
                     'side' => 'right',
                     'choices' => array_map(function (\GF_Field $field) {
+                        $label = gf_apply_filters([
+                            'gfexcel_field_label',
+                            $field->get_input_type(),
+                            $field->formId,
+                            $field->id
+                        ], $field->get_field_label(true, ''), $field);
                         return [
                             'value' => $field->id,
-                            'label' => $field->label,
+                            'label' => $label,
                         ];
                     }, $active_fields),
                 ],
