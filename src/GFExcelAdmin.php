@@ -673,6 +673,7 @@ class GFExcelAdmin extends GFAddOn
                         'label' => $this->translate('Custom filename', true),
                         'type' => 'text',
                         'name' => GFExcel::KEY_CUSTOM_FILENAME,
+                        'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                         'description' => $this->translate('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.',
                             true)
                     ],
@@ -732,9 +733,15 @@ class GFExcelAdmin extends GFAddOn
                     'side' => 'left',
                     'value' => @$form['gfexcel_disabled_fields'] ?: '',
                     'choices' => array_map(function (\GF_Field $field) {
+                        $label = gf_apply_filters([
+                            'gfexcel_field_label',
+                            $field->get_input_type(),
+                            $field->formId,
+                            $field->id
+                        ], $field->get_field_label(true, ''), $field);
                         return [
                             'value' => $field->id,
-                            'label' => $field->label,
+                            'label' => $label,
                         ];
                     }, $inactive_fields),
                 ],
@@ -747,9 +754,15 @@ class GFExcelAdmin extends GFAddOn
                     'class' => 'fields-select',
                     'side' => 'right',
                     'choices' => array_map(function (\GF_Field $field) {
+                        $label = gf_apply_filters([
+                            'gfexcel_field_label',
+                            $field->get_input_type(),
+                            $field->formId,
+                            $field->id
+                        ], $field->get_field_label(true, ''), $field);
                         return [
                             'value' => $field->id,
-                            'label' => $field->label,
+                            'label' => $label,
                         ];
                     }, $active_fields),
                 ],

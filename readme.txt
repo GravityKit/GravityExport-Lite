@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.2
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,14 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= 1.7.2 =
+* Bugfix: Custom filenames were not being showed by the field anymore.
+
+= 1.7.1 =
+* Bugfix: Column-names now match the filters in the sortable lists.
+* Bugfix: Filters now only respond to the correct url.
+* Bugfix: Forgot to update composer.json to reflect minumum PHP version of 7.1. (for Bedrock users).
+* Changed: Updated composer.json to use phpspreadsheet ~1.9.0 to be consistent with the normal plugin version.
 
 = 1.7.0 =
 * Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
