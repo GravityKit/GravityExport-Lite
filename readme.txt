@@ -208,6 +208,8 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= 1.7.2 =
+* Bugfix: Custom filenames were not being showed by the field anymore.
 
 = 1.7.1 =
 * Bugfix: Column-names now match the filters in the sortable lists.
