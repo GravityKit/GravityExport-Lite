@@ -673,6 +673,7 @@ class GFExcelAdmin extends GFAddOn
                         'label' => $this->translate('Custom filename', true),
                         'type' => 'text',
                         'name' => GFExcel::KEY_CUSTOM_FILENAME,
+                        'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
                         'description' => $this->translate('Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.',
                             true)
                     ],
