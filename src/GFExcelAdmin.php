@@ -210,7 +210,7 @@ class GFExcelAdmin extends GFAddOn
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
-        add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);;
+        add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
         add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
@@ -1171,7 +1171,7 @@ class GFExcelAdmin extends GFAddOn
     public static function admin_bar()
     {
         // only show links if the user has the rights for exporting.
-        if (!current_user_can('administrator', 'gravityforms_export_entries')) {
+        if (!\GFCommon::current_user_can_any('gravityforms_export_entries')) {
             return;
         }
 
