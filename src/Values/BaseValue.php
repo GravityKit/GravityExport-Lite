@@ -122,7 +122,7 @@ abstract class BaseValue
      */
     public function isItalic()
     {
-        return (bool) $this->is_bold;
+        return (bool) $this->is_italic;
     }
 
     /**
