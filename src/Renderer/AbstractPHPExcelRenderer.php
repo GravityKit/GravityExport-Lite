@@ -2,6 +2,7 @@
 
 namespace GFExcel\Renderer;
 
+use GFExcel\Exception\Exception as GFExcelException;
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 use GFForms;
@@ -11,14 +12,20 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use Exception;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
+/**
+ * The base for a {@see PhpSpreadsheet} renderer.
+ */
 abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 {
     /** @var Spreadsheet */
     protected $spreadsheet;
 
+    /**
+     * Creates an AbstractPHPExcelRenderer instance.
+     */
     public function __construct()
     {
         $this->spreadsheet = new Spreadsheet();
@@ -40,6 +47,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
             $objWriter->setPreCalculateFormulas(false);
 
+            if ($objWriter instanceof Csv) {
+                $this->setCsvProperties($objWriter);
+            }
+
             if ($save) {
                 $file = get_temp_dir() . $this->getFileName();
                 $objWriter->save($file);
@@ -48,9 +59,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
             if ($extension === 'xlsx') {
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            }
-
-            if ($extension === 'csv') {
+            } elseif ($extension === 'csv') {
                 header('Content-Type: text/csv');
             }
 
@@ -62,9 +71,11 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
             header('Pragma: public'); // HTTP/1.0
             header('X-Robots-Tag: noindex, nofollow'); // HTTP/1.0
+
             if (ob_get_length()) {
                 ob_end_clean(); // Cleaning buffer for preventing file corruption
             }
+
             $objWriter->save('php://output');
         } catch (\Exception $e) {
             //in case of php5.x
@@ -90,7 +101,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     {
         $error = error_get_last();
         if ($error['type'] === E_ERROR) {
-            $exception = new Exception($error['message']);
+            $exception = new \Exception($error['message']);
             $this->handleException($exception);
         }
     }
@@ -151,7 +162,12 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                     $this->getCellValue($value),
                     $this->getCellType($value)
                 );
+
                 $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
+                if (!$cell) {
+                    // This isn't going to happen, but it makes the IDE happy.
+                    continue;
+                }
 
                 try {
                     $this->setProperties($cell, $value);
@@ -162,7 +178,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                     ], true, $cell, $value);
 
                     $worksheet->getStyle($cell->getCoordinate())->getAlignment()->setWrapText($wrap_text);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->handleException($e);
                 }
             }
@@ -239,8 +255,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      */
     private function setCellUrl(Cell $cell, $value)
     {
-        if (!$value instanceof BaseValue or
-            !$value->getUrl() or
+        if (!$value instanceof BaseValue ||
+            !$value->getUrl() ||
             gf_apply_filters(['gfexcel_renderer_disable_hyperlinks'], false)
         ) {
             return false;
@@ -249,45 +265,45 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         try {
             $cell->getHyperlink()->setUrl($value->getUrl());
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * @param \Throwable|Exception $exception
+     * @param \Throwable|\Exception $exception
      */
     private function handleException($exception)
     {
         global $wp_version;
 
-        echo "<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>";
-        echo "<p><strong>Error message</strong>: " . nl2br($exception->getMessage()) . " </p>";
-        echo "<p>If you need support for this, please contact me via the";
+        echo '<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>';
+        echo '<p><strong>Error message</strong>: ' . nl2br($exception->getMessage()) . ' </p>';
+        echo '<p>If you need support for this, please contact me via the';
         echo " <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> ";
-        echo "on the wordpress plugin.</p>";
-        echo "<p>Check if someone else had the same error, before posting a new support question.<br/>";
-        echo "And when opening a new question, <strong>please use the error message ";
-        echo "as the title</strong>, and:</> <p><strong>Include the following details in your message:</strong></p>";
-        echo "<ul>";
-        echo "<li>Plugin Version: " . GFExcel::$version . "</li>";
-        echo "<li>Gravity Forms Version: " . GFForms::$version . "</li>";
-        echo "<li>PHP Version: " . PHP_VERSION;
-        if (version_compare(PHP_VERSION, '5.6.1', '<')) {
-            echo " (this version is too low, please update to at least PHP 5.6)";
+        echo 'on the wordpress plugin.</p>';
+        echo '<p>Check if someone else had the same error, before posting a new support question.<br/>';
+        echo 'And when opening a new question, <strong>please use the error message ';
+        echo 'as the title</strong>, and:</> <p><strong>Include the following details in your message:</strong></p>';
+        echo '<ul>';
+        echo '<li>Plugin Version: ' . GFExcel::$version . '</li>';
+        echo '<li>Gravity Forms Version: ' . GFForms::$version . '</li>';
+        echo '<li>PHP Version: ' . PHP_VERSION;
+        if (PHP_VERSION_ID < 50601) {
+            echo ' (this version is too low, please update to at least PHP 5.6)';
         }
-        echo "</li>";
-        echo "<li>Wordpress Version: " . $wp_version . "</li>";
-        echo "<li>Error message: " . nl2br($exception->getMessage()) . "</li>";
-        echo "<li>Error stack trace:<br/><br/>" . nl2br($exception->getTraceAsString()) . "</li>";
-        echo "</ul>";
+        echo '</li>';
+        echo '<li>Wordpress Version: ' . $wp_version . '</li>';
+        echo '<li>Error message: ' . nl2br($exception->getMessage()) . '</li>';
+        echo '<li>Error stack trace:<br/><br/>' . nl2br($exception->getTraceAsString()) . '</li>';
+        echo '</ul>';
         exit;
     }
 
     /**
      * @param Cell $cell
      * @param $value
-     * @throws \GFExcel\Exception\Exception
+     * @throws GFExcelException
      */
     private function setProperties(Cell $cell, $value)
     {
@@ -299,7 +315,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @param Cell $cell
      * @param $value
      * @return bool
-     * @throws \GFExcel\Exception\Exception
+     * @throws GFExcelException
      */
     private function setFontStyle(Cell $cell, $value)
     {
@@ -311,14 +327,17 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             if ($value->isBold()) {
                 $cell->getStyle()->getFont()->setBold(true);
             }
+
             if ($value->isItalic()) {
                 $cell->getStyle()->getFont()->setItalic(true);
             }
+
             if ($color = $value->getColor()) {
                 $color_field = $cell->getStyle()->getFont()->getColor();
                 $color_field->setRGB($color);
                 $cell->getStyle()->getFont()->setColor($color_field);
             }
+
             if ($color = $value->getBackgroundColor()) {
                 $fill = $cell->getStyle()->getFill()->setFillType(Fill::FILL_SOLID);
                 $color_field = $fill->getStartColor()->setRGB($color);
@@ -326,10 +345,39 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             }
 
             return true;
-        } catch (\GFExcel\Exception\Exception $e) {
+        } catch (GFExcelException $e) {
             throw $e;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Sets some properties for the CSV Writer.
+     * @since $ver$
+     * @param Csv $objWriter The object writer.
+     */
+    private function setCsvProperties(Csv $objWriter)
+    {
+        // updates the delimiter
+        $objWriter->setDelimiter((string) apply_filters('gfexcel_renderer_csv_delimiter', $objWriter->getDelimiter()));
+
+        // updates the enclosure
+        $objWriter->setEnclosure((string) apply_filters('gfexcel_renderer_csv_enclosure', $objWriter->getEnclosure()));
+
+        // updates the line ending
+        $objWriter->setLineEnding((string) apply_filters(
+            'gfexcel_renderer_csv_line_ending',
+            $objWriter->getLineEnding()
+        ));
+
+        // whether to use a BOM
+        $objWriter->setUseBOM((bool) apply_filters('gfexcel_renderer_csv_use_bom', $objWriter->getUseBOM()));
+
+        // whether to inlclude a seperator line
+        $objWriter->setIncludeSeparatorLine((bool) apply_filters(
+            'gfexcel_renderer_csv_include_seperator_line',
+            $objWriter->getIncludeSeparatorLine()
+        ));
     }
 }
