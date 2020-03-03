@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.2
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,7 +28,7 @@ I've added a documentation website. This docs will be updated from time to time 
 I'm planning to add `recipes` for quick updates, based on your questions. So if you have a specific need; Ask away!
 If you are a developer; this site is probably for you.
 
-Please visit: [gfexcel.doeken.org](http://gfexcel.doeken.org)
+Please visit: [gfexcel.com](https://gfexcel.com)
 
 == Donate ==
 Want to help out the development of the plugin, or just buy me a drink 🍺? You can make a donation via my paypal page:
@@ -208,6 +208,14 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= 1.7.5 =
+* Enhancement: Added some renderer hooks for CSV manipulation.
+	* `gfexcel_renderer_csv_delimiter` -> default: `,`
+	* `gfexcel_renderer_csv_enclosure` -> default: `"`
+	* `gfexcel_renderer_csv_line_ending` -> default: `PHP_EOL`
+	* `gfexcel_renderer_csv_use_bom` -> default: `false`
+	* `gfexcel_renderer_csv_include_seperator_line` -> default: `false`
+
 = 1.7.4 =
 * Bugfix: Setting a cell to bold no longer makes it italic too.
 
