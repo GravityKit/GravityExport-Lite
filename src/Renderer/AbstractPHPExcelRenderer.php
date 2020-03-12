@@ -354,7 +354,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
     /**
      * Sets some properties for the CSV Writer.
-     * @since $ver$
+     * @since 1.7.5
      * @param Csv $objWriter The object writer.
      */
     private function setCsvProperties(Csv $objWriter)
