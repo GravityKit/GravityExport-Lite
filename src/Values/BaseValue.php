@@ -12,14 +12,29 @@ abstract class BaseValue
     const TYPE_BOOL = 'bool';
 
     protected $value = '';
+
     protected $gf_field;
+
     protected $is_numeric = false;
+
     protected $color = '';
+
     protected $background_color = '';
+
     protected $is_bold = false;
+
     protected $is_italic = false;
+
     protected $is_bool = false;
+
     protected $url;
+
+    /**
+     * The specific font size for this value.
+     * @since $ver$
+     * @var null|float
+     */
+    protected $font_size;
 
     public function __construct($value, \GF_Field $gf_field)
     {
@@ -212,6 +227,26 @@ abstract class BaseValue
     public function setItalic($italic = true)
     {
         $this->is_italic = (boolean) $italic;
+    }
+
+    /**
+     * Sets the font size of this value.
+     * @since $ver$
+     * @param null|float $font_size The font size in pt.
+     */
+    public function setFontSize(?float $font_size): void
+    {
+        $this->font_size = $font_size;
+    }
+
+    /**
+     * Returns the font size in pt.
+     * @since $ver$
+     * @return float|null The font size in pt.
+     */
+    public function getFontSize(): ?float
+    {
+        return $this->font_size;
     }
 
     /**

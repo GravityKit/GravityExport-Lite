@@ -344,6 +344,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 $fill->setStartColor($color_field);
             }
 
+            if (($font_size = $value->getFontSize()) && ($font = $cell->getStyle()->getFont())) {
+                $font->setSize($font_size);
+            }
+
             return true;
         } catch (GFExcelException $e) {
             throw $e;
