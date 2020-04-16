@@ -8,11 +8,38 @@ use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
 use GFFormsModel;
 
+/**
+ * The core of the plugin.
+ * @since $ver$
+ */
 class GFExcel
 {
+    /**
+     * Full name of the plugin
+     * @since 1.0.0
+     * @var string
+     */
     public static $name = 'Gravity Forms Entries in Excel';
+
+    /**
+     * Short name of the plugin
+     * @since 1.0.0
+     * @var string
+     */
     public static $shortname = 'Entries in Excel';
+
+    /**
+     * Current version of the plugin
+     * @since 1.0.0
+     * @var string
+     */
     public static $version = '1.7.5';
+
+    /**
+     * The endpoint slug of the plugin.
+     * @since 1.0.0
+     * @var string
+     */
     public static $slug = 'gf-entries-in-excel';
 
     const KEY_HASH = 'gfexcel_hash';
@@ -264,11 +291,14 @@ class GFExcel
     private function getFormIdByHash($hash)
     {
         global $wpdb;
+        $extensions = implode('|', array_map(static function (string $extension) {
+            return preg_quote($extension, '/');
+        }, (array) apply_filters('gfexcel_file_extensions', ['xlsx', 'csv'])));
 
-        if (preg_match("/\.(xlsx|csv)$/is", $hash, $match)) {
+        if (preg_match("/\.(" . $extensions . ")$/is", $hash, $match)) {
             $hash = str_replace($match[0], '', $hash);
             static::$file_extension = $match[1];
-        };
+        }
 
         $table_name = GFFormsModel::get_meta_table_name();
         $wildcard = '%';
