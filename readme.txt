@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Feature: added `setFontSize` on value objects, so every cell can have a different font size.
+
 = 1.7.5 =
 * Enhancement: Added some renderer hooks for CSV manipulation.
 	* `gfexcel_renderer_csv_delimiter` -> default: `,`
