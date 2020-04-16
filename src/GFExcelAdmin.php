@@ -689,7 +689,7 @@ class GFExcelAdmin extends GFAddOn
                                     'label' => '.' . $extension,
                                     'value' => $extension,
                                 ];
-                        }, ['xlsx', 'csv',]),
+                        }, (array) apply_filters('gfexcel_file_extensions', ['xlsx', 'csv'])),
                     ],
                     [
                         'label' => $this->translate('Attach single entry to notification', true),
