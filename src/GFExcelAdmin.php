@@ -277,6 +277,8 @@ class GFExcelAdmin extends GFAddOn
             return $links;
         }
         return array_merge($links, [
+            'docs' => '<a href="' . esc_url('https://gfexcel.com/docs/getting-started/') . '" aria-label="' . esc_attr(static::translate('Documentation',
+                    GFExcel::$slug)) . '" target="_blank">' . static::translate('Documentation', true) . '</a>',
             'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr(static::translate('Make a donation',
                     GFExcel::$slug)) . '">' . static::translate('Make a donation', true) . '</a>',
         ]);

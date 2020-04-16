@@ -140,6 +140,9 @@ msgstr "Selecteer alle meta-velden die standaard getoond moeten worden. Een best
 msgid "Export all Gravity Forms entries to Excel (.xlsx) via a download button OR via a secret (shareable) url."
 msgstr "Download alle inzendingen in Gravity Forms als een excel-bestand (.xlsx) via een knop, of via een geheime (deelbare) link."
 
+msgid "Documentation"
+msgstr "Documentatie"
+
 msgid "Make a donation"
 msgstr "Doneer"
 

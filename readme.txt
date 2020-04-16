@@ -209,7 +209,8 @@ Checkout this example:
 
 == Changelog ==
 = Unreleased =
-* Feature: added `setFontSize` on value objects, so every cell can have a different font size.
+* Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
+* Enhancement: Added quicklink to documentation on the plugins page.
 
 = 1.7.5 =
 * Enhancement: Added some renderer hooks for CSV manipulation.
