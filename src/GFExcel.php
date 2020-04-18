@@ -175,10 +175,28 @@ class GFExcel
     }
 
     /**
+     * Helper method to retrieve the available file extensions for the plugin.
+     * @since $ver$
+     * @param bool $imploded Whether to return an imploded array for a regex pattern instead of an array.
+     * @return string[]|string The extensions.
+     */
+    public static function getPluginFileExtensions(bool $imploded = false)
+    {
+        $extensions = (array) apply_filters('gfexcel_file_extensions', ['xlsx', 'csv']);
+        if ($imploded) {
+            $extensions = implode('|', array_map(static function (string $extension) {
+                return preg_quote($extension, '/');
+            }, $extensions));
+        }
+
+        return $extensions;
+    }
+
+    /**
      * Whether the current user can download the form.
      * @since 1.7.0
      * @param int $form_id The form id of the form to download.
-     * @return bool Whehther the current user can download the file.
+     * @return bool Whether the current user can download the file.
      */
     private static function canDownloadForm(int $form_id)
     {
@@ -291,11 +309,8 @@ class GFExcel
     private function getFormIdByHash($hash)
     {
         global $wpdb;
-        $extensions = implode('|', array_map(static function (string $extension) {
-            return preg_quote($extension, '/');
-        }, (array) apply_filters('gfexcel_file_extensions', ['xlsx', 'csv'])));
 
-        if (preg_match("/\.(" . $extensions . ")$/is", $hash, $match)) {
+        if (preg_match("/\.(" . GFExcel::getPluginFileExtensions(true) . ")$/is", $hash, $match)) {
             $hash = str_replace($match[0], '', $hash);
             static::$file_extension = $match[1];
         }
@@ -385,6 +400,6 @@ class GFExcel
         }
 
         $meta = GFFormsModel::get_form_meta($form_id);
-        return !!rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
+        return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 }

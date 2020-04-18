@@ -267,9 +267,9 @@ class GFExcelAdmin extends GFAddOn
     /**
      * Show row meta on the plugin screen.
      *
-     * @param   mixed $links Plugin Row Meta.
-     * @param   mixed $file Plugin Base file.
-     * @return  array
+     * @param mixed $links Plugin Row Meta.
+     * @param mixed $file Plugin Base file.
+     * @return array
      */
     public static function plugin_row_meta($links, $file)
     {
@@ -546,7 +546,7 @@ class GFExcelAdmin extends GFAddOn
                 }
             }
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
-                $value = preg_replace('/\.(xlsx|csv)$/is', '', $value);
+                $value = preg_replace('/\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', '', $value);
                 $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
             }
             $form_meta[$key] = $value;
@@ -555,7 +555,6 @@ class GFExcelAdmin extends GFAddOn
         GFFormsModel::update_form_meta($form['id'], $form_meta);
         GFCommon::add_message($this->translate('The settings have been saved.'), false);
     }
-
 
     /**
      * Remove filename so it returns the newly formatted filename
@@ -691,7 +690,7 @@ class GFExcelAdmin extends GFAddOn
                                     'label' => '.' . $extension,
                                     'value' => $extension,
                                 ];
-                        }, (array) apply_filters('gfexcel_file_extensions', ['xlsx', 'csv'])),
+                        }, GFExcel::getPluginFileExtensions()),
                     ],
                     [
                         'label' => $this->translate('Attach single entry to notification', true),
@@ -789,7 +788,6 @@ class GFExcelAdmin extends GFAddOn
         if ((empty($field['choices']) || !rgar($field, 'choices')) && rgar($field, 'no_choices')) {
             $html = $field['no_choices'];
         } else {
-
             $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
             $html .= sprintf(
                 '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
@@ -980,7 +978,6 @@ class GFExcelAdmin extends GFAddOn
 
         return $notification;
     }
-
 
     public static function get_instance()
     {

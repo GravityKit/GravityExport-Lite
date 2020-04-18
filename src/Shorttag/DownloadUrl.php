@@ -41,7 +41,7 @@ class DownloadUrl
             return $this->error(sprintf('Form id not found for \'%s\' shorttag.', self::SHORTTAG));
         }
 
-        return $this->getUrl($arguments['id'], isset($arguments['type']) ? $arguments['type'] : null);
+        return $this->getUrl($arguments['id'], $arguments['type'] ?? null);
     }
 
     /**
@@ -59,7 +59,7 @@ class DownloadUrl
 
         $custom_merge_tag = '{' . self::SHORTTAG . '}';
 
-        if (strpos($text, $custom_merge_tag) === false || !isset($form['id'])) {
+        if (!isset($form['id']) || strpos($text, $custom_merge_tag) === false) {
             return $text;
         }
 
@@ -73,11 +73,11 @@ class DownloadUrl
      * @param string|null $type either 'csv' or 'xlsx'.
      * @return string
      */
-    private function getUrl($id, $type = null)
+    private function getUrl($id, $type = null): string
     {
         $url = GFExcel::url($id);
 
-        if ($type && in_array(strtolower($type), ['xlsx', 'csv'])) {
+        if ($type && in_array(strtolower($type), GFExcel::getPluginFileExtensions(), true)) {
             $url .= '.' . strtolower($type);
         }
 
@@ -90,7 +90,7 @@ class DownloadUrl
      * @param $message
      * @return string
      */
-    private function error($message)
+    private function error($message): string
     {
         return gf_apply_filters([
             'gfexcel_shorttag_error',
