@@ -107,7 +107,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * Streches all columns to the maximum needed, or a set maximum.
+     * Stretches all columns to the maximum needed, or a set maximum.
      * @since 1.0.0
      * @param Worksheet $worksheet
      * @param $columns_count

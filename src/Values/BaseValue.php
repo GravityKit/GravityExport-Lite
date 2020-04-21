@@ -15,6 +15,11 @@ abstract class BaseValue
 
     protected $gf_field;
 
+    /**
+     * Whether this is a numeric value.
+     * @since 1.3.0
+     * @var bool
+     */
     protected $is_numeric = false;
 
     protected $color = '';
