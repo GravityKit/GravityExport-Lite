@@ -210,7 +210,10 @@ Checkout this example:
 == Changelog ==
 = Unreleased =
 * Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
-* Enhancement: Added quicklink to documentation on the plugins page.
+* Enhancement: Added quick-link to documentation on the plugins page.
+* Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
+* Bugfix: List field threw notice when you've later changed the column names.
+* Enhancement: Removed some legacy code for unsupported php 5.3.
 
 = 1.7.5 =
 * Enhancement: Added some renderer hooks for CSV manipulation.

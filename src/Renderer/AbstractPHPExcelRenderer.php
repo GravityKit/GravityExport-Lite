@@ -378,9 +378,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         // whether to use a BOM
         $objWriter->setUseBOM((bool) apply_filters('gfexcel_renderer_csv_use_bom', $objWriter->getUseBOM()));
 
-        // whether to inlclude a seperator line
+        // whether to include a separator line
         $objWriter->setIncludeSeparatorLine((bool) apply_filters(
-            'gfexcel_renderer_csv_include_seperator_line',
+            'gfexcel_renderer_csv_include_separator_line',
             $objWriter->getIncludeSeparatorLine()
         ));
     }
