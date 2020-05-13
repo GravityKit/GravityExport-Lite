@@ -74,7 +74,7 @@ abstract class BaseValue
             $type = BaseValue::TYPE_STRING;
         }
 
-        $typeClass = 'GFExcel\\Values\\' . ucfirst($type) . "Value";
+        $typeClass = 'GFExcel\\Values\\' . ucfirst($type) . 'Value';
         if (!class_exists($typeClass)) {
             //fall back to StringValue
             $typeClass = StringValue::class;
@@ -84,7 +84,7 @@ abstract class BaseValue
 
         gf_apply_filters(
             [
-                "gfexcel_value_object",
+                'gfexcel_value_object',
                 $gf_field->get_input_type(),
                 $gf_field->formId,
                 $gf_field->id

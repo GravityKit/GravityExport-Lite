@@ -9,22 +9,6 @@ namespace GFExcel\Values;
 class NumericValue extends BaseValue
 {
     /**
-     * Currency formatting with symbol first.
-     * @since $ver$
-     */
-    public const FORMAT_CURRENCY_FIRST = '"%s"#,##0.00_-';
-    /**
-     * Currency formatting with symbol last.
-     * @since $ver$
-     */
-    public const FORMAT_CURRENCY_LAST = '#,##0.00_-"%s"';
-    /**
-     * Currency formatting without symbol.
-     * @since $ver$
-     */
-    public const FORMAT_CURRENCY_NONE = '#,##0.00_-';
-
-    /**
      * @inheritdoc
      * @since 1.3.0
      */

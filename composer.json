@@ -18,5 +18,13 @@
         "psr-4": {
             "GFExcel\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GFExcel\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
     }
 }
