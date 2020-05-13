@@ -6,8 +6,7 @@
 >
     <testsuites>
         <testsuite name="Entries in Excel Test Suite">
-            <directory>/tests/*Test.php files</directory>
-            <directory>/tests/*/*Test.php files</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>
