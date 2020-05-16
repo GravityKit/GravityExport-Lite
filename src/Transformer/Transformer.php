@@ -37,7 +37,7 @@ class Transformer implements TransformerInterface
     {
         $type = $field->get_input_type();
 
-        // do we have a predfined type?
+        // do we have a predefined type?
         if ($fieldClass = $this->getField($type, $field)) {
             return $fieldClass;
         }
@@ -57,23 +57,24 @@ class Transformer implements TransformerInterface
      * @param GF_Field $field
      * @return false|FieldInterface
      */
-    private function getField($type, GF_Field $field)
+    private function getField($type, GF_Field $field): ?FieldInterface
     {
         $fields = $this->getFields();
         if (array_key_exists($type, $fields)) {
             return new $fields[$type]($field);
         }
-        return false;
+
+        return null;
     }
 
     /**
      * Get the list of fields, but hooked so we can append.
      * @return array
      */
-    private function getFields()
+    private function getFields(): array
     {
         return (array) gf_apply_filters([
-            "gfexcel_transformer_fields",
+            'gfexcel_transformer_fields',
         ], $this->fields);
     }
 }

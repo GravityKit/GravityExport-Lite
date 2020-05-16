@@ -7,11 +7,13 @@ use GFExcel\Field\AbstractField;
 
 abstract class BaseValue
 {
-    const TYPE_STRING = 'string';
+    public const TYPE_BOOL = 'bool';
 
-    const TYPE_NUMERIC = 'numeric';
+    public const TYPE_NUMERIC = 'numeric';
 
-    const TYPE_BOOL = 'bool';
+    public const TYPE_STRING = 'string';
+
+    public const TYPE_CURRENCY = 'currency';
 
     protected $value = '';
 
@@ -43,6 +45,11 @@ abstract class BaseValue
      */
     protected $font_size;
 
+    /**
+     * Creates a BaseValue instance.
+     * @param $value
+     * @param \GF_Field $gf_field
+     */
     public function __construct($value, \GF_Field $gf_field)
     {
         $this->value = $value;
@@ -78,7 +85,7 @@ abstract class BaseValue
 
         $typeClass = 'GFExcel\\Values\\' . ucfirst($type) . 'Value';
         if (!class_exists($typeClass)) {
-            //fall back to StringValue
+            // fall back to StringValue
             $typeClass = StringValue::class;
         }
 

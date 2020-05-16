@@ -5,6 +5,8 @@ namespace GFExcel\Renderer;
 use GFExcel\Exception\Exception as GFExcelException;
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
+use GFExcel\Values\CurrencyValue;
+use GFExcel\Values\NumericValue;
 use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -54,6 +56,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             if ($save) {
                 $file = get_temp_dir() . $this->getFileName();
                 $objWriter->save($file);
+
                 return $file;
             }
 
@@ -183,6 +186,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 }
             }
         }
+
         return $this;
     }
 
@@ -210,6 +214,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
         $worksheet->setTitle($worksheet_title);
+
         return $this;
     }
 
@@ -264,6 +269,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
         try {
             $cell->getHyperlink()->setUrl($value->getUrl());
+
             return true;
         } catch (\Exception $e) {
             return false;
@@ -346,6 +352,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
             if (($font_size = $value->getFontSize()) && ($font = $cell->getStyle()->getFont())) {
                 $font->setSize($font_size);
+            }
+
+            if ($value instanceof NumericValue) {
+                $cell->getStyle()->getNumberFormat()->setFormatCode($value->getFormat());
             }
 
             return true;

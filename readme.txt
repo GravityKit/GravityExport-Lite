@@ -210,10 +210,12 @@ Checkout this example:
 == Changelog ==
 = Unreleased =
 * Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
+* Feature: Added CurrencyValue type and formatting on numeric cells. So you can have a currency symbol and a numeric value.
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you've later changed the column names.
 * Enhancement: Removed some legacy code for unsupported php 5.3.
+* Enhancement: Added some unit tests.
 
 = 1.7.5 =
 * Enhancement: Added some renderer hooks for CSV manipulation.

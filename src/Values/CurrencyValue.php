@@ -12,26 +12,13 @@ class CurrencyValue extends NumericValue
      * Currency formatting with symbol first.
      * @since $ver$
      */
-    public const FORMAT_CURRENCY_FIRST = '"%s"#,##0.00_-';
+    public const FORMAT_CURRENCY_FIRST = '"%s" #,##0.00_-';
 
     /**
      * Currency formatting with symbol last.
      * @since $ver$
      */
-    public const FORMAT_CURRENCY_LAST = '#,##0.00_-"%s"';
-
-    /**
-     * Currency formatting without symbol.
-     * @since $ver$
-     */
-    public const FORMAT_CURRENCY_NONE = '#,##0.00_-';
-
-    /**
-     * The currency format of the cell.
-     * @since $ver$
-     * @var string
-     */
-    protected $format = self::FORMAT_CURRENCY_NONE;
+    public const FORMAT_CURRENCY_LAST = '#,##0.00_- "%s"';
 
     /**
      * The currency symbol.
@@ -39,16 +26,6 @@ class CurrencyValue extends NumericValue
      * @var string
      */
     protected $symbol = '$';
-
-    /**
-     * Returns the currency format.
-     * @since $ver$
-     * @return string The format.
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
 
     /**
      * Returns the currency symbol.
@@ -61,16 +38,6 @@ class CurrencyValue extends NumericValue
     }
 
     /**
-     * Sets the format.
-     * @since $ver$
-     * @param string $format The format.
-     */
-    public function setFormat(string $format): void
-    {
-        $this->format = $format;
-    }
-
-    /**
      * Sets the symbol.
      * @since $ver$
      * @param string $symbol The symbol.
@@ -78,5 +45,14 @@ class CurrencyValue extends NumericValue
     public function setSymbol(string $symbol): void
     {
         $this->symbol = $symbol;
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function getFormat(): string
+    {
+        return sprintf(parent::getFormat(), $this->getSymbol());
     }
 }

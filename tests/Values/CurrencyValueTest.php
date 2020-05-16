@@ -28,14 +28,15 @@ class CurrencyValueTest extends AbstractValueTestCase
     }
 
     /**
-     * Test case for {@see CurrencyValue::getFormat()} and {@see CurrencyValue::setFormat()}
+     * Test case for {@see CurrencyValue::getFormat()}.
      * @since $ver$
      */
     public function testFormat(): void
     {
         $this->assertSame(CurrencyValue::FORMAT_CURRENCY_NONE, $this->value_object->getFormat());
-        $this->value_object->setFormat('test');
-        $this->assertSame('test', $this->value_object->getFormat());
+        $this->value_object->setSymbol('test');
+        $this->value_object->setFormat('%s format');
+        $this->assertSame('test format', $this->value_object->getFormat());
     }
 
     /**
