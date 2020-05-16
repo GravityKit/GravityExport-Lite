@@ -27,7 +27,7 @@ class AbstractValueTestCase extends TestCase
         $this->gf_field =
             $this->getMockBuilder(\stdClass::class)
                 ->setMockClassName('GF_Field')
-                ->addMethods(['get_input_type'])
+                ->setMethods(['get_input_type'])
                 ->getMock();
     }
 }
