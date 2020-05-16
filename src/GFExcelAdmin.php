@@ -217,6 +217,7 @@ class GFExcelAdmin extends GFAddOn
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
         add_filter('plugin_row_meta', [__CLASS__, 'plugin_row_meta'], 10, 2);
+        add_filter('plugin_action_links', [__CLASS__, 'plugin_action_links'], 10, 2);
         add_filter('gform_form_actions', [__CLASS__, 'gform_form_actions'], 10, 2);
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
         add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
@@ -298,6 +299,35 @@ class GFExcelAdmin extends GFAddOn
                     GFExcel::$slug
                 ) . '">' . esc_html__('Make a donation', GFExcel::$slug) . '</a>',
         ]);
+    }
+
+    /**
+     * Adds the settings link to the plugin row.
+     * @since $ver$
+     * @param string[] $actions The action links.
+     * @param string $plugin_file The name of the plugin file.
+     * @return string[] The new action links.
+     */
+    public static function plugin_action_links(
+        array $actions,
+        string $plugin_file
+    ): array {
+        if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $plugin_file) {
+            return $actions;
+        }
+
+        // plugin is active
+        if (array_key_exists('deactivate', $actions)) {
+            array_unshift(
+                $actions,
+                implode('', [
+                    '<a href="' . esc_url(admin_url('admin.php')) . '?page=gf_settings&subview=gf-entries-in-excel">',
+                    esc_html__('Settings', 'gravityforms'),
+                    '</a>',
+                ]));
+        }
+
+        return $actions;
     }
 
     public static function gform_form_actions($form_actions, $form_id)
