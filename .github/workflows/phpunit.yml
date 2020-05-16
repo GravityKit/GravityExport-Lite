@@ -12,23 +12,23 @@ jobs:
     strategy:
       matrix:
         php-versions: ['7.1', '7.2', '7.3', '7.4']
-      steps:
-        - uses: actions/checkout@v2
-        - name: Install PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: ${{ matrix.php-versions }}
-        - name: Check PHP Version
-          run: php -v
-        - name: Validate composer.json and composer.lock
-          run: composer validate
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      - name: Check PHP Version
+        run: php -v
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-        - name: Install dependencies
-          run: composer install --prefer-dist --no-progress
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
 
-        # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-        # Docs: https://getcomposer.org/doc/articles/scripts.md
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-        - name: Run test suite
-          run: composer run-script test
+      - name: Run test suite
+        run: composer run-script test
 
