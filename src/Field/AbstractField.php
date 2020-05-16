@@ -55,15 +55,14 @@ abstract class AbstractField implements FieldInterface
     /**
      * Wrap a value within a value Object to get more info when rendering it.
      *
-     * @param array $values
-     * @param bool $is_label
-     * @return BaseValue[]
+     * @param mixed[] $values The values.
+     * @param bool $is_label Whether this is a label cell.
+     * @return BaseValue[] The value Object.
      */
     protected function wrap($values, $is_label = false)
     {
-        $class = $this; //legacy support
-        return array_map(function ($value) use ($class, $is_label) {
-            return BaseValue::getValueObject($class, $value, $class->field, $is_label);
+        return array_map(function ($value) use ($is_label) {
+            return BaseValue::getValueObject($this, $value, $this->field, $is_label);
         }, (array) $values);
     }
 

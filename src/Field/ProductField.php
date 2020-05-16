@@ -22,11 +22,11 @@ class ProductField extends SeparableField
             $prepend = '';
             if (!$this->isSeparationEnabled()) {
                 if ($this->getSubFieldId($key) === 3) {
-                    // add QTY to the field for clearity.
+                    // add QTY to the field for clarity.
                     $prepend = esc_html__('Qty: ', 'gravityforms');
                 }
                 if ($this->getSubFieldId($key) === 2) {
-                    // add QTY to the field for clearity.
+                    // add QTY to the field for clarity.
                     $prepend = esc_html__('Price: ', 'gravityforms');
                 }
             }
@@ -68,7 +68,7 @@ class ProductField extends SeparableField
 
     /**
      * {@inheritdoc}
-     * Format as numeric when neccesary.
+     * Format as numeric when necessary.
      */
     public function getValueType()
     {
@@ -76,12 +76,12 @@ class ProductField extends SeparableField
             return parent::getValueType();
         }
 
-        return BaseValue::TYPE_NUMERIC;
+        return BaseValue::TYPE_CURRENCY;
     }
 
     /**
      * {@inheritdoc}
-     * Reformat to a number value when neccesary.
+     * Reformat to a number value when necessary.
      */
     protected function getGFieldValue($entry, $input_id)
     {
@@ -106,6 +106,6 @@ class ProductField extends SeparableField
             $this->field->get_input_type(),
             $this->field->formId,
             $this->field->id
-        ], !!$bool, $this->field);
+        ], (bool) $bool, $this->field);
     }
 }

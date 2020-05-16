@@ -16,7 +16,7 @@ class BaseField extends AbstractField
         $value = $this->getFieldValue($entry);
 
         $value = gf_apply_filters([
-            "gfexcel_field_value",
+            'gfexcel_field_value',
             $this->field->get_input_type(),
             $this->field->formId,
             $this->field->id

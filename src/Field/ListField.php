@@ -46,29 +46,28 @@ class ListField extends BaseField
         $value = $this->getFieldValue($entry);
         if (!$result = json_decode($value)) {
             //the value isn't json, so it's empty, we'll map every column as empty
-            return $this->wrap(array_map(function () {
+            return $this->wrap(array_map(static function () {
                 return '';
             }, $this->getColumns()));
         }
 
         //We have an object with multiple columns. Map the values to their column
-        $component = $this; //php 5.3 compatible
-        $result = array_values(array_reduce($result, function ($carry, $row) use ($component) {
-            foreach ($component->getColumns() as $column) {
+        $result = array_values(array_reduce($result, function (array $carry, $row) {
+            foreach ($this->getColumns() as $column) {
                 if ($column instanceof BaseValue) {
                     $column = $column->getValue();
                 }
                 if (!array_key_exists($column, $carry)) {
                     $carry[$column] = array();
                 }
-                $carry[$column][] = $row->$column;
+                $carry[$column][] = $row->$column ?? '';
             }
             return $carry;
         }, []));
 
         // Every value on it's own line for readability.
         // Should this have a filter? Not sure.
-        return $this->wrap(array_map(function ($column) {
+        return $this->wrap(array_map(static function (array $column) {
             return implode("\n", $column);
         }, $result));
     }
