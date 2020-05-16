@@ -8,7 +8,9 @@ use GFExcel\Field\AbstractField;
 abstract class BaseValue
 {
     const TYPE_STRING = 'string';
+
     const TYPE_NUMERIC = 'numeric';
+
     const TYPE_BOOL = 'bool';
 
     protected $value = '';
@@ -146,14 +148,16 @@ abstract class BaseValue
     }
 
     /**
-     * @return string
-     * @throws WrongValueException
+     * Returns the text color.
+     * @return string|false The color.
+     * @throws WrongValueException when a wrong value was given.
      */
     public function getColor()
     {
         if (!$this->color) {
             return false;
         }
+
         if (substr($this->color, 0, 1) !== "#" || strlen($this->color) != 7) {
             throw new WrongValueException(
                 'The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
@@ -172,7 +176,8 @@ abstract class BaseValue
         if (!$this->background_color) {
             return false;
         }
-        if (substr($this->background_color, 0, 1) !== "#" || strlen($this->background_color) != 7) {
+
+        if (strpos($this->background_color, '#') !== 0 || strlen($this->background_color) !== 7) {
             throw new WrongValueException(
                 'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
             );
@@ -182,7 +187,7 @@ abstract class BaseValue
     }
 
     /**
-     * @return string
+     * @return string|false
      */
     public function getUrl()
     {
@@ -269,10 +274,6 @@ abstract class BaseValue
      */
     public function getFieldType()
     {
-        if (!$this->getField()) {
-            return 'unknown type';
-        }
-
         return $this->getField()->get_input_type();
     }
 
@@ -282,10 +283,6 @@ abstract class BaseValue
      */
     public function getFieldId()
     {
-        if (!$this->getField()) {
-            return null;
-        }
-
         return $this->getField()->id;
     }
 }

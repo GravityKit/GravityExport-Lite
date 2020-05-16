@@ -2,15 +2,13 @@
 
 namespace GFExcel\Tests\Values;
 
-use GFExcel\Tests\TestCase;
 use GFExcel\Values\CurrencyValue;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for {@see CurrencyValue}.
  * @since $ver$
  */
-class CurrencyValueTest extends TestCase
+class CurrencyValueTest extends AbstractValueTestCase
 {
     /**
      * The class under test.
@@ -20,20 +18,13 @@ class CurrencyValueTest extends TestCase
     private $value_object;
 
     /**
-     * A mocked field instance.
-     * @since $ver$
-     * @var \GF_Field|MockObject
-     */
-    private $gf_field;
-
-    /**
      * @inheritdoc
      * @since $ver$
      */
     public function setup(): void
     {
-        $this->gf_field = $this->getMockBuilder('GF_Field')->getMock();
-        $this->value_object = new CurrencyValue(1000, $this->gf_field);
+        parent::setup();
+        $this->value_object = new CurrencyValue(1000.40, $this->gf_field);
     }
 
     /**
