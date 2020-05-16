@@ -91,7 +91,7 @@ class GFExcelAdmin extends GFAddOn
                         'type' => 'checkbox',
                         'choices' => [
                             [
-                                'label' => __(
+                                'label' => esc_html__(
                                         'Split multi-fields (name, address) into multiple columns',
                                         GFExcel::$slug
                                 ),
