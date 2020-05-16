@@ -223,7 +223,7 @@ Checkout this example:
 	* `gfexcel_renderer_csv_enclosure` -> default: `"`
 	* `gfexcel_renderer_csv_line_ending` -> default: `PHP_EOL`
 	* `gfexcel_renderer_csv_use_bom` -> default: `false`
-	* `gfexcel_renderer_csv_include_seperator_line` -> default: `false`
+	* `gfexcel_renderer_csv_include_separator_line` -> default: `false`
 
 = 1.7.4 =
 * Bugfix: Setting a cell to bold no longer makes it italic too.
@@ -237,7 +237,7 @@ Checkout this example:
 = 1.7.1 =
 * Bugfix: Column-names now match the filters in the sortable lists.
 * Bugfix: Filters now only respond to the correct url.
-* Bugfix: Forgot to update composer.json to reflect minumum PHP version of 7.1. (for Bedrock users).
+* Bugfix: Forgot to update composer.json to reflect minimum PHP version of 7.1. (for Bedrock users).
 * Changed: Updated composer.json to use phpspreadsheet ~1.9.0 to be consistent with the normal plugin version.
 
 = 1.7.0 =
@@ -245,7 +245,7 @@ Checkout this example:
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
 * Feature: Added download links for a single entry on the entry detail page.
 * Feature: Added download link to admin bar for recent forms.
-* Enhancement: Added a maxiumun column width via `gfexcel_renderer_columns_max_width`.
+* Enhancement: Added a maximum column width via `gfexcel_renderer_columns_max_width`.
 * Enhancement: Added a `gfexcel_renderer_wrap_text` hook to disable wrapping text.
 * Enhancement: Added `$form_id` as an argument to `gfexcel_output_search_criteria` for convenience.
 * Enhancement: Added `noindex, nofollow` to the headers of the export, and added a `Disallow` to the `robots.txt`.
@@ -255,16 +255,16 @@ Checkout this example:
 * Updated: PHPSpreadsheet updated to 1.9.0. Package to `^1.3`.
 
 = 1.6.3 =
-* Bugfix: Radio and checkboxes caused unforseen error on shorttag for GF.
+* Bugfix: Radio and checkboxes caused unforeseen error on short tag for GF.
 
 = 1.6.2 =
-* Bugfix: Referenced unavailble contstant.
+* Bugfix: Referenced unavailable constant.
 * Bugfix: short code had an breaking edge case.
 
 = 1.6.1 =
-* Security: Removed old style URL. If you were using it, please regenate the URL.
-* Enhancement: Added `[gfexcel_download_link id=2]` shorttag for Wordpress and `{gfexcel_download_link}` for GF notification.
-* Enhancement: Added reset of download counter (also refactored all couter code to SRP class).
+* Security: Removed old style URL. If you were using it, please regenerate the URL.
+* Enhancement: Added `[gfexcel_download_link id=2]` short tag for Wordpress and `{gfexcel_download_link}` for GF notification.
+* Enhancement: Added reset of download counter (also refactored all counter code to SRP class).
 * Enhancement: Added setting to format prices as numeric values.
 * Enhancement: Added a download event so you can append logic to the download moment.
 * Enhancement: Added `CreatedBy` field to easily change `user_id` to `nickname` or `display_name`. Use filter `gfexcel_meta_created_by_property`.
@@ -280,7 +280,7 @@ Checkout this example:
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
 * Enhancement: Product and calculation have some specific rendering on single field for clearity.
 * Enhancement: Now supports *Gravity Forms Chained Selects*.
-* Enhancement: Quering entries in smaller sets to avoid massive database queries that can choke a database server.
+* Enhancement: Querying entries in smaller sets to avoid massive database queries that can choke a database server.
 * Enhancement: Added a `gfexcel_output_search_criteria` filter to customize the `search_criteria` for requests.
 * Bugfix: Downloading files didn't work on iOS.
 * Info: PHP 5.6 is no longer actively supported. Will probably still work; but 7.1 is the new minimum.
@@ -339,15 +339,15 @@ This update also makes the slug more secure and unique by not using the (possibl
 
 = 1.3.1 =
 * Enhancement: Added notes per entry. Activate with `gfexcel_field_notes_enabled`.
-* Enhancement: Removed unneccecary files from the plugin to make it smaller.
+* Enhancement: Removed unnecessary files from the plugin to make it smaller.
 
 = 1.3.0 =
 * Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
 * Feature: NumberField added that uses the NumberValue type for Excel
 * Feature: Added filters to typehint cell values. See FAQ for more info.
-* Enhancement: updated cell > url implemntation. Each cell can be set individually now. See FAQ for more info.
-* Upgraded to PHP 5.6 for minimal dependancy. Last version with PHP 5.3 was 1.2.3
-(sorry for the mixup, the new renderer forced my hand, and I forgot about this, otherwise the verisoning had gone up sooner.)
+* Enhancement: updated cell > url implementation. Each cell can be set individually now. See FAQ for more info.
+* Upgraded to PHP 5.6 for minimal dependency. Last version with PHP 5.3 was 1.2.3
+(sorry for the mix up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
 
 = 1.2.4 =
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
@@ -366,7 +366,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Enhancement: If a cell only contains a URL, that URL is set as a link on that cell, for easy access.
 
 = 1.2.1 =
-* Translation: Added `Dutch` translation + enabled posibility to translate via Wordpress.org. You can help me out!
+* Translation: Added `Dutch` translation + enabled possibility to translate via Wordpress.org. You can help me out!
 * Enhancement: Worksheets now have a title, and of course a `gfexcel_renderer_worksheet_title` hook.
 
 = 1.2.0 =
@@ -378,13 +378,13 @@ This update also makes the slug more secure and unique by not using the (possibl
 = 1.1.0 =
 * Feature: Download counter (starts counting as of this version)
 * Feature: SectionField added to disable empty section columns. Disabled by default. Enable with `gfexcel_field_section_enabled` hook (return true).
-* Feature: FileUploadField added to disable file upload columns. Enabled by default. Dnable with `gfexcel_field_fileuploads_enabled` hook (return false).
+* Feature: FileUploadField added to disable file upload columns. Enabled by default. Disable with `gfexcel_field_fileuploads_enabled` hook (return false).
 * Update: Wait until plugins are loaded. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
-* Bugfix: Changed the permalink registration so it works with multisite combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
+* Bugfix: Changed the permalink registration so it works with multi site combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
 * Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
 
 = 1.0.2 =
-* Bugfix: Only 20 results were beging returned by the GFAPI
+* Bugfix: Only 20 results were being returned by the GFAPI
 * The title of a form could not be longer than 31 characters
 
 = 1.0.1 =
