@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Unit tests
 
 on:
   push:
@@ -22,7 +22,14 @@ jobs:
         run: php -v
       - name: Validate composer.json and composer.lock
         run: composer validate
-
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: vendor
+          key: ${{ runner.os }}-build-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
