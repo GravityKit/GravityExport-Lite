@@ -1,6 +1,6 @@
 {
     "name": "doekenorg/gf-entries-in-excel",
-    "description": "Gravity Forms Entries in Excel plugin",
+    "description": "Never waste time importing CSV's again.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",
     "authors": [
