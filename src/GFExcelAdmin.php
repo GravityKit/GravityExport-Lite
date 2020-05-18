@@ -486,7 +486,7 @@ class GFExcelAdmin extends GFAddOn
         $fields = array_merge([
             [
                 'value' => 'date_created',
-                'label' => __( 'Date of entry'), 'gf-entries-in-excel' ,
+                'label' => __( 'Date of entry', 'gf-entries-in-excel'),
             ]
         ], array_map(function ($field) {
             return [
