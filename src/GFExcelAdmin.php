@@ -1111,21 +1111,6 @@ class GFExcelAdmin extends GFAddOn
     }
 
     /**
-     * Get a target usage count for the plugin repo.
-     * @return string
-     */
-    private function getUsageTarget()
-    {
-        $current_count = $this->getUsageCount();
-        if ( $current_count === __( 'countless', 'gf-entries-in-excel' ) ) {
-            return __( 'even more', 'gf-entries-in-excel' );
-        }
-        $digit = ((int) substr($current_count, 0, 1) + 1);
-
-        return $digit . substr($current_count, 1);
-    }
-
-    /**
      * Helper method to translate text.
      * @since 1.7.0
      * @param string $text The text to translate.
