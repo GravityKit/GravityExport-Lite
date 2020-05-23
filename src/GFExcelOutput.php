@@ -4,9 +4,11 @@ namespace GFExcel;
 
 use GF_Field;
 use GFAPI;
+use GFExcel\Field\FieldInterface;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Renderer\RendererInterface;
+use GFExcel\Transformer\CombinerInterface;
 use GFExcel\Transformer\Transformer;
 use GFExcel\Values\BaseValue;
 
@@ -25,19 +27,32 @@ class GFExcelOutput
 
     /** @var BaseValue[] */
     private $columns = [];
-    private $rows = [];
 
     private $repository;
 
-    public function __construct($form_id, RendererInterface $renderer)
+    /**
+     * The combiner for the rows.
+     * @since $ver$
+     * @var CombinerInterface
+     */
+    private $combiner;
+
+    public function __construct($form_id, RendererInterface $renderer, CombinerInterface $combiner)
     {
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
+        $this->combiner = $combiner;
+
         set_time_limit(0);
     }
 
-    public function getFields()
+    /**
+     * Get the Gravity Forms fields for the form.
+     * @since 1.0.0
+     * @return GF_Field[] The fields
+     */
+    public function getFields(): array
     {
         if (!$this->repository) {
             $this->repository = new FieldsRepository($this->getForm());
@@ -68,14 +83,14 @@ class GFExcelOutput
      * Retrieve the set rows, but it can be filtered.
      * @return array
      */
-    public function getRows()
+    public function getRows(): array
     {
         return gf_apply_filters(
             [
                 'gfexcel_output_rows',
                 $this->form_id,
             ],
-            $this->rows,
+            iterator_to_array($this->combiner->getRows()),
             $this->form_id
         );
     }
@@ -153,10 +168,12 @@ class GFExcelOutput
      */
     private function setRows()
     {
-        $entries = $this->getEntries();
-        foreach ($entries as $entry) {
-            $this->addRow($entry);
+        foreach ($this->getEntries() as $entry) {
+            $this->combiner->parseEntry(array_map(function (\GF_Field $field): FieldInterface {
+                return $this->transformer->transform($field);
+            }, $this->getFields()), $entry);
         }
+
         return $this;
     }
 
@@ -177,6 +194,7 @@ class GFExcelOutput
             $sorting = $this->getSorting($this->form_id);
             $page_size = 100;
             $i = 0;
+            $entries = [];
 
             // prevent a multi-k database query to build up the array.
             $loop = true;
@@ -189,15 +207,16 @@ class GFExcelOutput
                 $new_entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
                 $count = count($new_entries);
                 if ($count > 0) {
-                    $this->entries = array_merge($this->entries, $new_entries);
+                    $entries[] = $new_entries;
                 }
 
-                $i += 1; // increase for the loop
+                ++$i; // increase for the loop
 
                 if ($count < $page_size) {
                     $loop = false; // stop looping
                 }
             }
+            $this->entries = array_merge($this->entries, ...$entries);
         }
 
         return $this->entries;
@@ -214,45 +233,12 @@ class GFExcelOutput
         return $this;
     }
 
-    /**
-     * Foreach field a transformer is found, and it returns the needed columns(s).
-     * @param $field
-     * @param $entry
-     * @return array
-     */
-    private function getFieldCells($field, $entry)
-    {
-        $fieldClass = $this->transformer->transform($field);
-        return $fieldClass->getCells($entry);
-    }
-
-    /**
-     * Just a helper to add a row to the array.
-     * @internal
-     * @param $entry
-     * @return $this
-     */
-    private function addRow($entry)
-    {
-        $row = array();
-
-        foreach ($this->getFields() as $field) {
-            foreach ($this->getFieldCells($field, $entry) as $cell) {
-                $row[] = $cell;
-            }
-        }
-
-        $this->rows[] = $row;
-
-        return $this;
-    }
-
     private function getSorting($form_id)
     {
         $repository = new FormsRepository($form_id);
         return [
-            "key" => $repository->getSortField(),
-            "direction" => $repository->getSortOrder()
+            'key' => $repository->getSortField(),
+            'direction' => $repository->getSortOrder(),
         ];
     }
 }

@@ -2,32 +2,38 @@
 
 namespace GFExcel\Field;
 
-use GF_Field;
-use GFCommon;
 use GFExcel\Values\BaseValue;
 
+/**
+ * @since 1.0.0
+ */
 abstract class AbstractField implements FieldInterface
 {
-    /** @var GF_Field */
+    /**
+     * Holds the current GF_Field instance.
+     * @var \GF_Field
+     */
     protected $field;
 
     /**
      * AbstractField constructor.
-     * @param GF_Field $field
+     * @since 1.0.0
+     * @param \GF_Field $field
      */
-    public function __construct(GF_Field $field)
+    public function __construct(\GF_Field $field)
     {
         $this->field = $field;
     }
 
     /**
      * Array of needed column names for this field.
+     * @since 1.0.0
      * @return BaseValue[]
      */
     public function getColumns()
     {
         $label = gf_apply_filters([
-            "gfexcel_field_label",
+            'gfexcel_field_label',
             $this->field->get_input_type(),
             $this->field->formId,
             $this->field->id
@@ -37,14 +43,16 @@ abstract class AbstractField implements FieldInterface
     }
 
     /**
-     * Array of needed cell values for this field
-     * @param array $entry
-     * @return BaseValue[]
+     * Array of needed cell values for this field (a row).
+     * @since 1.0.0
+     * @param array $entry The entry object.
+     * @return BaseValue[] A single row.
      */
     abstract public function getCells($entry);
 
     /**
      * Get the type of this value object
+     * @since 1.3.0
      * @return string
      */
     public function getValueType()
@@ -54,7 +62,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Wrap a value within a value Object to get more info when rendering it.
-     *
+     * @since 1.3.0
      * @param mixed[] $values The values.
      * @param bool $is_label Whether this is a label cell.
      * @return BaseValue[] The value Object.
@@ -75,8 +83,9 @@ abstract class AbstractField implements FieldInterface
      */
     protected function getFieldValue($entry, $input_id = '')
     {
-        $input_id = $input_id ?: $this->field->id;
+        $input_id = $input_id ?: (string) $this->field->id;
         $gform_value = $this->getGFieldValue($entry, $input_id);
+
         // and our own filters!
         return gf_apply_filters([
             'gfexcel_export_field_value',
@@ -89,18 +98,20 @@ abstract class AbstractField implements FieldInterface
      * Get the original Gravity Field value.
      * @param array $entry
      * @param string $input_id
-     * @return mixed
+     * @return mixed The value of the field.
      */
     protected function getGFieldValue($entry, $input_id)
     {
         if (in_array($input_id, ['date_created', 'payment_date'])) {
             $lead_gmt_time = mysql2date('G', $entry[$input_id]);
-            $lead_local_time = GFCommon::get_local_timestamp($lead_gmt_time);
+            $lead_local_time = \GFCommon::get_local_timestamp($lead_gmt_time);
+
             return date_i18n('Y-m-d H:i:s', $lead_local_time, true);
         }
 
         $value = $this->field->get_value_export($entry, $input_id, $use_text = false, $is_csv = false);
         $value = html_entity_decode($value);
+
         // add gform export filters to get the same results as a normal export
         return apply_filters('gform_export_field_value', $value, $this->field->formId, $input_id, $entry);
     }

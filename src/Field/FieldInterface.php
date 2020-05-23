@@ -2,17 +2,15 @@
 
 namespace GFExcel\Field;
 
-use GF_Field;
 use GFExcel\Values\BaseValue;
 
 interface FieldInterface
 {
-
     /**
      * FieldInterface constructor.
-     * @param GF_Field $field
+     * @param \GF_Field $field
      */
-    public function __construct(GF_Field $field);
+    public function __construct(\GF_Field $field);
 
     /**
      * Array of needed column names for this field.

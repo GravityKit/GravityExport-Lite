@@ -2,11 +2,10 @@
 
 namespace GFExcel;
 
-use GFAPI;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
-use GFFormsModel;
+use GFExcel\Transformer\Combiner;
 
 /**
  * The core of the plugin.
@@ -95,11 +94,11 @@ class GFExcel
      */
     private static function getHash($form_id)
     {
-        if (!GFAPI::form_id_exists($form_id)) {
+        if (!\GFAPI::form_id_exists($form_id)) {
             return null;
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
         if (!isset($meta[static::KEY_HASH]) || empty($meta[static::KEY_HASH])) {
             return null;
         }
@@ -119,9 +118,9 @@ class GFExcel
             $hash = self::generateHash();
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
         $meta[self::KEY_HASH] = (string) $hash;
-        GFFormsModel::update_form_meta($form_id, $meta);
+        \GFFormsModel::update_form_meta($form_id, $meta);
 
         return $meta;
     }
@@ -268,9 +267,7 @@ class GFExcel
     public function downloadFile(\WP $wp)
     {
         if (array_key_exists('gfexcel_download_form', $wp->query_vars)) {
-            $form_id = isset($wp->query_vars['gfexcel_download_form'])
-                ? $wp->query_vars['gfexcel_download_form']
-                : null;
+            $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
 
             if ($form_id) {
                 $renderer = gf_apply_filters([
@@ -278,7 +275,8 @@ class GFExcel
                     $form_id
                 ], new PHPExcelRenderer());
 
-                $output = new GFExcelOutput($form_id, $renderer);
+                // todo: get the combiner from a container that can be replaced!
+                $output = new GFExcelOutput($form_id, $renderer, new Combiner());
 
                 // trigger download event.
                 do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
@@ -304,18 +302,18 @@ class GFExcel
 
     /**
      * @param $hash
-     * @return bool|int
+     * @return int|null
      */
     private function getFormIdByHash($hash)
     {
         global $wpdb;
 
-        if (preg_match("/\.(" . GFExcel::getPluginFileExtensions(true) . ")$/is", $hash, $match)) {
+        if (preg_match('/\\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', $hash, $match)) {
             $hash = str_replace($match[0], '', $hash);
             static::$file_extension = $match[1];
         }
 
-        $table_name = GFFormsModel::get_meta_table_name();
+        $table_name = \GFFormsModel::get_meta_table_name();
         $wildcard = '%';
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
@@ -325,13 +323,13 @@ class GFExcel
             ARRAY_A
         )) {
             // not even a partial match.
-            return false;
+            return null;
         }
 
         // possible match on hash, so check against found form.
         if (GFExcel::getHash($form_row['form_id']) !== $hash) {
             //hash doesn't match, so it's probably a partial match
-            return false;
+            return null;
         }
 
         //only now are we home save.
@@ -367,7 +365,7 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf("Disallow: %s/%s/", $path, GFExcel::$slug);
+        $line = sprintf('Disallow: %s/%s/', $path, GFExcel::$slug);
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
@@ -399,7 +397,7 @@ class GFExcel
             return true;
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
         return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 }

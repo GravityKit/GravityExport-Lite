@@ -4,6 +4,10 @@ namespace GFExcel\Field;
 
 use GFExcel\Values\BaseValue;
 
+/**
+ * A Field that serves as the base Field for retrieving columns rows.
+ * @since 1.0.0
+ */
 class BaseField extends AbstractField
 {
     /**

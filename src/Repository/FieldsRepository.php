@@ -28,7 +28,7 @@ class FieldsRepository
     /**
      * Get the fields to show in the excel. Fields can be disabled using the hook.
      * @param bool $unfiltered
-     * @return GF_Field[]
+     * @return GF_Field[] The fields
      */
     public function getFields($unfiltered = false)
     {
