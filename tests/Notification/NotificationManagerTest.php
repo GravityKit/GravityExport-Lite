@@ -69,6 +69,35 @@ class NotificationManagerTest extends TestCase
     }
 
     /**
+     * Test case for {@see NotificationManager::getNotification()}.
+     * @since $ver$
+     * @throws NotificationManagerException
+     */
+    public function testGetNotification(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->manager->add($notification);
+
+        $this->assertSame($notification, $this->manager->getNotification('1'));
+        $this->expectExceptionObject(
+            new NotificationManagerException('Notification id does not exist.')
+        );
+        $this->assertSame($notification, $this->manager->getNotification('invalid'));
+    }
+
+    /**
+     * Test case for {@see NotificationManager::hasNotification()}.
+     * @since $ver$
+     */
+    public function testHasNotification(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->manager->add($notification);
+        $this->assertTrue($this->manager->hasNotification('1'));
+        $this->assertFalse($this->manager->hasNotification('invalid'));
+    }
+
+    /**
      * Test case for {@see NotificationManager::getNotifications()}.
      * @since $ver$
      * @throws NotificationManagerException
@@ -106,9 +135,10 @@ class NotificationManagerTest extends TestCase
      */
     public function testDismiss(): void
     {
+        $notification = new Notification('1', 'Test message');
+        $this->manager->add($notification);
         $this->repository->expects($this->once())->method('markAsDismissed')->with('1');
-        $notification = new Notification('1', 'The message');
-        $this->manager->dismiss($notification);
+        $this->manager->dismiss('1');
     }
 
     /**
@@ -119,9 +149,10 @@ class NotificationManagerTest extends TestCase
     public function testDismissWithException(): void
     {
         $not_dismissible = new Notification('1', ' Can\'t dismiss me.', Notification::TYPE_ERROR, false);
+        $this->manager->add($not_dismissible);
         $this->expectExceptionObject(
             new NotificationManagerException('Notification is not dismissible.')
         );
-        $this->manager->dismiss($not_dismissible);
+        $this->manager->dismiss('1');
     }
 }

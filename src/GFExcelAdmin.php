@@ -5,8 +5,11 @@ namespace GFExcel;
 use GFAddOn;
 use GFCommon;
 use GFExcel\Action\CountDownloads;
+use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
+use GFExcel\Notification\NotificationManager;
+use GFExcel\Notification\TestNotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
@@ -16,11 +19,11 @@ use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
 {
-    const BULK_DOWNLOAD = 'gfexcel_download';
+    public const BULK_DOWNLOAD = 'gfexcel_download';
 
-    private static $_instance = null;
+    private static $_instance;
 
-    protected $_min_gravityforms_version = "2.0";
+    protected $_min_gravityforms_version = '2.0';
 
     protected $_capabilities_form_settings = ['gravityforms_export_entries'];
 
@@ -1182,19 +1185,13 @@ class GFExcelAdmin extends GFAddOn
      * Register native plugin actions
      * @since 1.6.1
      * @return void
+     * @todo Register everything via a service container.
      */
     private function registerActions()
     {
-        $actions = [
-            CountDownloads::class,
-            DownloadUrl::class,
-        ];
-
-        foreach ($actions as $action) {
-            if (class_exists($action)) {
-                new $action;
-            }
-        }
+        new CountDownloads();
+        new DownloadUrl();
+        new NotificationsAction(new NotificationManager(new TestNotificationRepository()));
     }
 
     /**
@@ -1214,7 +1211,7 @@ class GFExcelAdmin extends GFAddOn
         global $wp_admin_bar;
 
         // get all recent form id's.
-        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), function (array $output, $key) {
+        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), static function (array $output, $key) {
             if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
                 $output[] = (int) $matches[1];
             }

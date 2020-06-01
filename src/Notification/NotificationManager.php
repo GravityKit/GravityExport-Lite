@@ -41,30 +41,50 @@ class NotificationManager
      */
     public function add(Notification ...$notifications): void
     {
-        $mapped = [];
         foreach ($notifications as $notification) {
-            $mapped[$notification->getId()] = $notification;
-        }
+            if ($this->hasNotification($notification->getId())) {
+                continue;
+            }
 
-        $this->notifications = array_merge($this->notifications, $mapped);
+            $this->notifications[$notification->getId()] = $notification;
+        }
     }
 
     /**
      * Dismisses the notification.
      * @since $ver$
-     * @param Notification $notification
+     * @param string $id The notification id.
      * @throws NotificationManagerException When something went wrong during the dismissal.
      */
-    public function dismiss(Notification $notification): void
+    public function dismiss(string $id): void
     {
+        $notification = $this->getNotification($id);
+
         if (!$notification->isDismissible()) {
             throw new NotificationManagerException('Notification is not dismissible.');
         }
 
-        $this->repository->markAsDismissed($notification->getId());
+        $this->repository->markAsDismissed($id);
     }
 
     /**
+     * Returns the notification by id.
+     * @since $ver$
+     * @param string $id The id of the notification.
+     * @return Notification The notification.
+     * @throws NotificationManagerException when the notification does not exist.
+     */
+    public function getNotification(string $id): Notification
+    {
+        if (!$this->hasNotification($id)) {
+            throw new NotificationManagerException('Notification id does not exist.');
+        }
+
+        return $this->notifications[$id];
+    }
+
+    /**
+     * Get all notifications (filtered on type).
      * @since $ver$
      * @param string|null $notification_type The type to filter the notifications on.
      * @return Notification[] The notifications.
@@ -73,7 +93,7 @@ class NotificationManager
     public function getNotifications(?string $notification_type = null): array
     {
         if (!$notification_type) {
-            return $this->notifications;
+            return array_values($this->notifications);
         }
 
         if (!in_array($notification_type, [
@@ -93,5 +113,16 @@ class NotificationManager
                 return $notification->getType() === $notification_type;
             }
         ));
+    }
+
+    /**
+     * Returns whether the notification exists.
+     * @since $ver$
+     * @param string $id The id of the notification.
+     * @return bool Whether the notification exists.
+     */
+    public function hasNotification(string $id): bool
+    {
+        return array_key_exists($id, $this->notifications);
     }
 }
