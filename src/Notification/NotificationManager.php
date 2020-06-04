@@ -64,7 +64,11 @@ class NotificationManager
             throw new NotificationManagerException('Notification is not dismissible.');
         }
 
-        $this->repository->markAsDismissed($id);
+        try {
+            $this->repository->markAsDismissed($id);
+        } catch (NotificationRepositoryException $e) {
+            throw new NotificationManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**

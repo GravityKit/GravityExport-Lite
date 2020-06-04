@@ -9,16 +9,25 @@ namespace GFExcel\Notification;
 interface NotificationRepositoryInterface
 {
     /**
-     * Should mark the notification as dismissed.
-     * @since $ver$
-     * @param string $id The unique identifier of the notification.
-     */
-    public function markAsDismissed(string $id): void;
-
-    /**
      * Should return the undismissed notifications.
      * @since $ver$
      * @return Notification[] The notifications.
      */
     public function getNotifications(): array;
+
+    /**
+     * Should mark the notification as dismissed.
+     * @since $ver$
+     * @param string $id The unique identifier of the notification.
+     * @throws NotificationRepositoryException When something went wrong during dismissing.
+     */
+    public function markAsDismissed(string $id): void;
+
+    /**
+     * Should store the notification.
+     * @since $ver$
+     * @param Notification ...$notification The notification(s) to store.
+     * @throws NotificationRepositoryException When something went wrong during storing.
+     */
+    public function storeNotification(Notification ...$notification): void;
 }

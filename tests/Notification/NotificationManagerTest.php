@@ -5,6 +5,7 @@ namespace GFExcel\Tests\Notification;
 use GFExcel\Notification\Notification;
 use GFExcel\Notification\NotificationManager;
 use GFExcel\Notification\NotificationManagerException;
+use GFExcel\Notification\NotificationRepositoryException;
 use GFExcel\Notification\NotificationRepositoryInterface;
 use GFExcel\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -153,6 +154,23 @@ class NotificationManagerTest extends TestCase
         $this->expectExceptionObject(
             new NotificationManagerException('Notification is not dismissible.')
         );
+        $this->manager->dismiss('1');
+    }
+
+    /**
+     * Test case for {@see NotificationManager::dismiss()} with a {@see NotificationRepositoryException}
+     * @since $ver$
+     * @throws NotificationManagerException
+     */
+    public function testDismissWithRepositoryException(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->manager->add($notification);
+        $this->repository->expects($this->once())->method('markAsDismissed')->with('1')->willThrowException(
+            $e = new NotificationRepositoryException('Something went wrong')
+        );
+
+        $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
         $this->manager->dismiss('1');
     }
 }

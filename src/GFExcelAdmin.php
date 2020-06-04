@@ -9,7 +9,7 @@ use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\Notification\NotificationManager;
-use GFExcel\Notification\TestNotificationRepository;
+use GFExcel\Notification\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
@@ -805,7 +805,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'right',
-                    'choices' => array_map(function (\GF_Field $field) {
+                    'choices' => array_map(static function (\GF_Field $field) {
                         $label = gf_apply_filters([
                             'gfexcel_field_label',
                             $field->get_input_type(),
@@ -1021,7 +1021,6 @@ class GFExcelAdmin extends GFAddOn
         // save the file to a temporary file
         $this->_file = $output->render($save = true);
         if (!file_exists($this->_file)) {
-            dd('wrong');
             return $notification;
         }
         // attach file to $notification['attachments'][]
@@ -1184,14 +1183,13 @@ class GFExcelAdmin extends GFAddOn
     /**
      * Register native plugin actions
      * @since 1.6.1
-     * @return void
      * @todo Register everything via a service container.
      */
-    private function registerActions()
+    private function registerActions(): void
     {
         new CountDownloads();
         new DownloadUrl();
-        new NotificationsAction(new NotificationManager(new TestNotificationRepository()));
+        new NotificationsAction(new NotificationManager(new NotificationRepository()));
     }
 
     /**
@@ -1222,14 +1220,12 @@ class GFExcelAdmin extends GFAddOn
         foreach ($form_ids as $id) {
             $url = GFExcel::url($id);
             if ($url) {
-                $wp_admin_bar->add_node(
-                    array(
-                        'id' => 'gfexcel-form-' . $id . '-download',
-                        'parent' => 'gform-form-' . $id,
-                        'title' => esc_html__('Download', GFExcel::$slug),
-                        'href' => trailingslashit($url),
-                    )
-                );
+                $wp_admin_bar->add_node([
+                    'id' => 'gfexcel-form-' . $id . '-download',
+                    'parent' => 'gform-form-' . $id,
+                    'title' => esc_html__('Download', GFExcel::$slug),
+                    'href' => trailingslashit($url),
+                ]);
             }
         }
     }
