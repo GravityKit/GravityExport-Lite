@@ -42,12 +42,12 @@ class GFExcel
      */
     public static $slug = 'gf-entries-in-excel';
 
-    const KEY_HASH = 'gfexcel_hash';
-    const KEY_ACTION = 'gfexcel_action';
-    const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
-    const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
-    const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
-    const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
+    public const KEY_HASH = 'gfexcel_hash';
+    public const KEY_ACTION = 'gfexcel_action';
+    public const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+    public const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
+    public const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
+    public const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
 
     private static $file_extension;
 
@@ -109,8 +109,8 @@ class GFExcel
 
     /**
      * Save new hash to the form
-     * @param $form_id
-     * @param null|string $hash predifined hash {@since 1.7.0}
+     * @param $form_id The form id.
+     * @param null|string $hash predefined hash {@since 1.7.0}
      * @return array metadata form
      */
     public static function setHash($form_id, $hash = null)

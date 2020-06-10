@@ -65,7 +65,7 @@ class GFExcelAdmin extends GFAddOn
     {
         return [
             'php' => [
-                'version' => '5.6',
+                'version' => '7.1',
                 'extensions' => [
                     'zip',
                     'ctype',
