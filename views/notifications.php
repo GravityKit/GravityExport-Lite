@@ -2,7 +2,7 @@
 
 use GFExcel\Action\NotificationsAction;
 use GFExcel\GFExcel;
-use GFExcel\Notification\NotificationManagerException;
+use GFExcel\Notification\Exception\NotificationException;
 
 /**
  * Template that renders the notifications.
@@ -14,7 +14,7 @@ if (!$this instanceof NotificationsAction) {
 
 try {
     $notifications = $this->getNotifications();
-} catch (NotificationManagerException $e) {
+} catch (NotificationException $e) {
     $notifications = [];
 }
 

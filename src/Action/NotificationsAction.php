@@ -3,6 +3,7 @@
 namespace GFExcel\Action;
 
 use GFExcel\GFExcel;
+use GFExcel\Notification\Exception\NotificationException;
 use GFExcel\Notification\Exception\NotificationManagerException;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Notification;
@@ -49,10 +50,10 @@ class NotificationsAction
     }
 
     /**
-     * Returns the available notifications.
+     * Returns the available notifications to the template.
      * @since $ver$
      * @return Notification[] The notifications.
-     * @throws NotificationManagerException When the notification is of a wrong type.
+     * @throws NotificationException When the notification is of a wrong type.
      */
     public function getNotifications(): array
     {
