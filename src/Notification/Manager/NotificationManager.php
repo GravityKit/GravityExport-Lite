@@ -1,6 +1,11 @@
 <?php
 
-namespace GFExcel\Notification;
+namespace GFExcel\Notification\Manager;
+
+use GFExcel\Notification\Exception\NotificationManagerException;
+use GFExcel\Notification\Exception\NotificationRepositoryException;
+use GFExcel\Notification\Notification;
+use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 
 /**
  * Service to manage the notifications for the plugin.

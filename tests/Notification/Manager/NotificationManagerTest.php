@@ -1,12 +1,12 @@
 <?php
 
-namespace GFExcel\Tests\Notification;
+namespace GFExcel\Tests\Notification\Manager;
 
+use GFExcel\Notification\Exception\NotificationManagerException;
+use GFExcel\Notification\Exception\NotificationRepositoryException;
+use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Notification;
-use GFExcel\Notification\NotificationManager;
-use GFExcel\Notification\NotificationManagerException;
-use GFExcel\Notification\NotificationRepositoryException;
-use GFExcel\Notification\NotificationRepositoryInterface;
+use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

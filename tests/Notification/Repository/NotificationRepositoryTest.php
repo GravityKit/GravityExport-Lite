@@ -1,10 +1,10 @@
 <?php
 
-namespace GFExcel\Tests\Notification;
+namespace GFExcel\Tests\Notification\Repository;
 
+use GFExcel\Notification\Exception\NotificationRepositoryException;
 use GFExcel\Notification\Notification;
-use GFExcel\Notification\NotificationRepository;
-use GFExcel\Notification\NotificationRepositoryException;
+use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Tests\TestCase;
 
 /**
@@ -20,6 +20,10 @@ class NotificationRepositoryTest extends TestCase
      */
     private $repository;
 
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
     public function setUp(): void
     {
         parent::setUp();

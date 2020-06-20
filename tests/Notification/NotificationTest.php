@@ -2,8 +2,8 @@
 
 namespace GFExcel\Tests\Notification;
 
+use GFExcel\Notification\Exception\NotificationException;
 use GFExcel\Notification\Notification;
-use GFExcel\Notification\NotificationManagerException;
 use GFExcel\Tests\TestCase;
 
 /**
@@ -38,7 +38,7 @@ class NotificationTest extends TestCase
     public function testGetTypeWithInvalidType(): void
     {
         $this->expectExceptionObject(
-            new NotificationManagerException('Notification type "invalid" does not exist.')
+            new NotificationException('Notification type "invalid" does not exist.')
         );
         new Notification('1', 'Message', 'invalid');
     }

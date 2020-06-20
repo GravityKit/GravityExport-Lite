@@ -3,9 +3,9 @@
 namespace GFExcel\Action;
 
 use GFExcel\GFExcel;
+use GFExcel\Notification\Exception\NotificationManagerException;
+use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Notification;
-use GFExcel\Notification\NotificationManager;
-use GFExcel\Notification\NotificationManagerException;
 
 /**
  * Action that handles the notifications.

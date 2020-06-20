@@ -2,6 +2,8 @@
 
 namespace GFExcel\Notification;
 
+use GFExcel\Notification\Exception\NotificationException;
+
 /**
  * Entity that represents a notification.
  * @since $ver$
@@ -70,7 +72,7 @@ class Notification
      * @param string $message The notification message.
      * @param string $type The notification type.
      * @param bool $dismissible Whether this is a dismissible notification.
-     * @throws NotificationManagerException When the type is invalid.
+     * @throws NotificationException When the type is invalid.
      */
     public function __construct(string $id, string $message, string $type = self::TYPE_INFO, bool $dismissible = true)
     {
@@ -80,7 +82,7 @@ class Notification
             self::TYPE_SUCCESS,
             self::TYPE_WARNING,
         ], true)) {
-            throw new NotificationManagerException(
+            throw new NotificationException(
                 sprintf('Notification type "%s" does not exist.', $type)
             );
         }

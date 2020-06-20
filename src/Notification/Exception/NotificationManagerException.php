@@ -1,6 +1,6 @@
 <?php
 
-namespace GFExcel\Notification;
+namespace GFExcel\Notification\Exception;
 
 use GFExcel\Exception\Exception;
 

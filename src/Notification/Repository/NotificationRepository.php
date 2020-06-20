@@ -1,6 +1,9 @@
 <?php
 
-namespace GFExcel\Notification;
+namespace GFExcel\Notification\Repository;
+
+use GFExcel\Notification\Exception\NotificationRepositoryException;
+use GFExcel\Notification\Notification;
 
 /**
  * Notification repository that retrieves the notifications from a transient value.
