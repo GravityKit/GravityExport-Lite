@@ -211,6 +211,7 @@ Checkout this example:
 = Unreleased =
 * Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
 * Feature: Added CurrencyValue type and formatting on numeric cells. So you can have a currency symbol and a numeric value.
+* Feature: Added new CombinerInterface to streamline the process of combining values into columns.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you've later changed the column names.
 * Enhancement: Added quick-link to documentation on the plugins page.
