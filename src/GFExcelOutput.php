@@ -70,9 +70,10 @@ class GFExcelOutput
 
     /**
      * GFExcelOutput constructor.
+     * @since 1.0.0
      * @param int $form_id The form id.
      * @param RendererInterface $renderer The renderer.
-     * @param CombinerInterface $combiner The combiner.
+     * @param CombinerInterface $combiner The combiner. {@since $ver$}
      */
     public function __construct($form_id, RendererInterface $renderer, CombinerInterface $combiner)
     {
