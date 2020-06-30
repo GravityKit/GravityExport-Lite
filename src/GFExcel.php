@@ -3,6 +3,8 @@
 namespace GFExcel;
 
 use GFExcel\Action\FilterRequest;
+use GFExcel\Notification\Manager\NotificationManager;
+use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
 use GFExcel\Transformer\Combiner;
@@ -43,13 +45,25 @@ class GFExcel
     public static $slug = 'gf-entries-in-excel';
 
     public const KEY_HASH = 'gfexcel_hash';
+
     public const KEY_ACTION = 'gfexcel_action';
+
     public const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+
     public const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
+
     public const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
+
     public const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
 
     private static $file_extension;
+
+    /**
+     * The notification manager singleton.
+     * @since $ver$
+     * @var NotificationManager
+     */
+    private static $notification_manager;
 
     /**
      * Instantiates the plugin.
@@ -169,6 +183,7 @@ class GFExcel
         if (!static::$file_extension) {
             if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
                 static::$file_extension = 'xlsx'; //default
+
                 return static::$file_extension;
             }
 
@@ -402,6 +417,7 @@ class GFExcel
         }
 
         $meta = \GFFormsModel::get_form_meta($form_id);
+
         return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 
@@ -413,5 +429,27 @@ class GFExcel
     public static function getCombiner(): CombinerInterface
     {
         return apply_filters(GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER, new Combiner());
+    }
+
+    /**
+     * Returns the notification singleton.
+     * @since $ver$
+     * @return NotificationManager The notification manager.
+     */
+    public static function getNotificationManager(): NotificationManager
+    {
+        if (!self::$notification_manager) {
+            $repository = apply_filters(
+                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_MANAGER,
+                new NotificationRepository()
+            );
+
+            self::$notification_manager = apply_filters(
+                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
+                new NotificationManager($repository)
+            );
+        }
+
+        return self::$notification_manager;
     }
 }
