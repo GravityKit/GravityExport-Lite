@@ -26,13 +26,6 @@ class MigrationManager
     public const TRANSIENT_MIGRATION_RUNNING = 'gfexcel_migration_running';
 
     /**
-     * The current version of the plugin.
-     * @since $ver$
-     * @var string The current version.
-     */
-    private $current_version;
-
-    /**
      * The migrations to run.
      * @since $ver$
      * @var Migration[]|null
@@ -42,12 +35,9 @@ class MigrationManager
     /**
      * Creates the manager.
      * @since $ver$
-     * @param string $current_version The current version of the plugin.
      */
-    public function __construct(string $current_version)
+    public function __construct()
     {
-        $this->current_version = $current_version;
-
         add_action('upgrader_process_complete', [$this, 'migrate']);
     }
 
@@ -60,14 +50,17 @@ class MigrationManager
     {
         // Prevent concurrent running of migrations.
         if (!get_transient(self::TRANSIENT_MIGRATION_RUNNING)) {
-            set_transient(self::TRANSIENT_MIGRATION_RUNNING, true, 5 * MINUTE_IN_SECONDS);
+            set_transient(self::TRANSIENT_MIGRATION_RUNNING, true, 300);
+
+            // Change directory for glob. We do this here so we can better test `getMigrations`.
+            chdir(dirname(GFEXCEL_PLUGIN_FILE) . '/src/Migration/');
 
             // Run migrations.
             foreach ($this->getMigrations() as $migration) {
                 $migration->run();
 
                 // Update version.
-                set_option(self::OPTION_MIGRATION_VERSION, $migration::getVersion());
+                update_option(self::OPTION_MIGRATION_VERSION, $migration::getVersion());
             }
 
             // Clear running status.
@@ -105,13 +98,13 @@ class MigrationManager
     public function getMigrations(): array
     {
         if ($this->migrations === null) {
-            // retrieve migrations from folder.
+            // Retrieve migrations from folder.
             $migrations = array_reduce(
-                glob('../*.php') ?? [],
+                glob('*.php') ?? [],
                 static function (array $migrations, string $filename): array {
                     $filename = str_replace(['../', '.php'], '', $filename);
                     $classname = sprintf('GFExcel\\Migration\\%s', $filename);
-                    if (!class_exists($classname)) {
+                    if ($classname === Migration::class || !class_exists($classname)) {
                         return $migrations;
                     }
 

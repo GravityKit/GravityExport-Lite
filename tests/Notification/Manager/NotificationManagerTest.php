@@ -173,4 +173,31 @@ class NotificationManagerTest extends TestCase
         $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
         $this->manager->dismiss('1');
     }
+
+    /**
+     * Test case for {@see NotificationManager::storeNotification()}.
+     * @since $ver$
+     * @throws NotificationManagerException
+     */
+    public function testStoreNotification(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->repository->expects($this->once())->method('storeNotification')->with($notification);
+        $this->manager->storeNotification($notification);
+    }
+
+    /**
+     * Test case for {@see NotificationManager::storeNotification()}.
+     * @since $ver$
+     * @throws NotificationManagerException
+     */
+    public function testStoreNotificationWithException(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->repository->expects($this->once())->method('storeNotification')->with($notification)->willThrowException(
+            $e = new NotificationRepositoryException('Some error')
+        );
+        $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
+        $this->manager->storeNotification($notification);
+    }
 }

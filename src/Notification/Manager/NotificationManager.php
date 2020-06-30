@@ -134,4 +134,19 @@ class NotificationManager
     {
         return array_key_exists($id, $this->notifications);
     }
+
+    /**
+     * Stores the notification on the repository.
+     * @since $ver$
+     * @param Notification $notification The notification to store.
+     * @throws NotificationManagerException When the repository could not store the notification.
+     */
+    public function storeNotification(Notification $notification): void
+    {
+        try {
+            $this->repository->storeNotification($notification);
+        } catch (NotificationRepositoryException $e) {
+            throw new NotificationManagerException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
 }

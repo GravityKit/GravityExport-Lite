@@ -24,7 +24,7 @@ abstract class Migration
      */
     public static function getVersion(): string
     {
-        return self::$version;
+        return static::$version;
     }
 
     /**

@@ -6,6 +6,7 @@ use GFExcel\Action\CountDownloads;
 use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
+use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
@@ -1198,6 +1199,7 @@ class GFExcelAdmin extends \GFAddOn
         new CountDownloads();
         new DownloadUrl();
         new NotificationsAction(new NotificationManager(new NotificationRepository()));
+        new MigrationManager();
     }
 
     /**
