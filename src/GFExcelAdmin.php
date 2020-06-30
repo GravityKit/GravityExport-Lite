@@ -2,8 +2,6 @@
 
 namespace GFExcel;
 
-use GFAddOn;
-use GFCommon;
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
@@ -15,18 +13,27 @@ use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
-use GFExcel\Transformer\Combiner;
-use GFFormsModel;
 
-class GFExcelAdmin extends GFAddOn
+class GFExcelAdmin extends \GFAddOn
 {
     public const BULK_DOWNLOAD = 'gfexcel_download';
 
+    /**
+     * The addon instance.
+     * @since 1.0.0
+     * @var GFExcelAdmin
+     */
     private static $_instance;
 
+    /**
+     * @inheritdoc
+     */
     protected $_min_gravityforms_version = '2.0';
 
-    protected $_capabilities_form_settings = ['gravityforms_export_entries'];
+    /**
+     * @inheritdoc
+     */
+    protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
     /** @var FormsRepository micro cache */
     private $repository;
@@ -354,23 +361,23 @@ class GFExcelAdmin extends GFAddOn
 
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
-            $form = GFFormsModel::get_form_meta($form['id']);
+            $form = \GFFormsModel::get_form_meta($form['id']);
         }
 
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
             } elseif (!rgempty('enable_download_url')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
             } elseif (!rgempty('disable_download_url')) {
                 $form = GFExcel::setHash($form['id'], '');
-                GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
             }
         }
 
-        GFCommon::display_admin_message();
+        \GFCommon::display_admin_message();
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, GFExcel::$slug)
@@ -470,7 +477,7 @@ class GFExcelAdmin extends GFAddOn
     {
         if (!current_user_can('editor') &&
             !current_user_can('administrator') &&
-            !GFCommon::current_user_can_any('gravityforms_export_entries')) {
+            !\GFCommon::current_user_can_any('gravityforms_export_entries')) {
             return false; // How you doin?
         }
 
@@ -583,7 +590,7 @@ class GFExcelAdmin extends GFAddOn
             return stripos($key, 'gfexcel_') === 0;
         });
 
-        $form_meta = GFFormsModel::get_form_meta($form['id']);
+        $form_meta = \GFFormsModel::get_form_meta($form['id']);
 
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
@@ -602,8 +609,8 @@ class GFExcelAdmin extends GFAddOn
             $form_meta[$key] = $value;
         }
 
-        GFFormsModel::update_form_meta($form['id'], $form_meta);
-        GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
+        \GFFormsModel::update_form_meta($form['id'], $form_meta);
+        \GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
     }
 
     /**

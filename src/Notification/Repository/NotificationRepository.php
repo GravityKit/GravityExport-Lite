@@ -29,7 +29,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         }
 
         // Only return instances of {@see Notification}.
-        return array_filter($notifications, static function ($notification) {
+        return array_filter($notifications, static function ($notification): bool {
             return $notification instanceof Notification;
         });
     }
