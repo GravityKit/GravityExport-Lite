@@ -24,13 +24,15 @@ jobs:
         run: composer validate
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor
           key: ${{ runner.os }}-build-${{ hashFiles('composer.json') }}
           restore-keys: |
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Result
+        run: echo ${{ steps.cache.outputs.cache-hit }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != true
         run: composer install --prefer-dist --no-progress
