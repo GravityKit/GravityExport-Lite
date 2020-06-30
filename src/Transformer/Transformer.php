@@ -31,7 +31,7 @@ class Transformer implements TransformerInterface
     /**
      * Transform GF_Field instance to a GFExcel Field (FieldInterface)
      * @param GF_Field $field
-     * @return FieldInterface
+     * @return FieldInterface The Field transformer.
      */
     public function transform(GF_Field $field)
     {

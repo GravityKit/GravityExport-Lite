@@ -4,7 +4,11 @@ namespace GFExcel\Field;
 
 use GFExcel\Values\BaseValue;
 
-class ListField extends BaseField
+/**
+ * Field transformer that represents a List field
+ * @since $ver$
+ */
+class ListField extends BaseField implements RowsInterface
 {
     private $columns;
 
@@ -18,11 +22,12 @@ class ListField extends BaseField
             if (!$this->field['enableColumns']) {
                 //no columns, so we can just use the field name, and a single column
                 $this->columns = parent::getColumns(); //micro caching
+
                 return $this->columns;
             }
 
             //Multiple columns, so lets get their names, and return multiple columns.
-            $this->columns = array_map(function ($choice) {
+            $this->columns = array_map(static function ($choice) {
                 return $choice['value'];
             }, (array) $this->field['choices']);
         }
@@ -37,38 +42,46 @@ class ListField extends BaseField
      */
     public function getCells($entry)
     {
-        if (!$this->field['enableColumns']) {
-            // One column, so the input is a single string
-            return parent::getCells($entry);
-        }
-
-        //Multiple columns, let's go
-        $value = $this->getFieldValue($entry);
-        if (!$result = json_decode($value)) {
-            //the value isn't json, so it's empty, we'll map every column as empty
-            return $this->wrap(array_map(static function () {
-                return '';
-            }, $this->getColumns()));
-        }
-
-        //We have an object with multiple columns. Map the values to their column
-        $result = array_values(array_reduce($result, function (array $carry, $row) {
-            foreach ($this->getColumns() as $column) {
-                if ($column instanceof BaseValue) {
-                    $column = $column->getValue();
-                }
-                if (!array_key_exists($column, $carry)) {
-                    $carry[$column] = array();
-                }
-                $carry[$column][] = $row->$column ?? '';
+        $rows = iterator_to_array($this->getRows($entry));
+        $result = array_reduce($rows, static function (array $combined, array $row): array {
+            foreach ($row as $i => $cell) {
+                $combined[$i][] = $cell->getValue();
             }
-            return $carry;
-        }, []));
+
+            return $combined;
+        }, []);
 
         // Every value on it's own line for readability.
-        // Should this have a filter? Not sure.
         return $this->wrap(array_map(static function (array $column) {
             return implode("\n", $column);
         }, $result));
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function getRows(?array $entry = null): iterable
+    {
+        if (!$this->field['enableColumns']) {
+            // One column, so the input is a single string
+            yield parent::getCells($entry);
+        } else {
+            $value = $this->getFieldValue($entry);
+            if (!$result = json_decode($value, true)) {
+                yield $this->wrap(array_map(static function () {
+                    return '';
+                }, $this->getColumns()));
+            } else {
+                foreach ($result as $row) {
+                    $result = [];
+                    foreach ($this->getColumns() as $column) {
+                        $column = $column instanceof BaseValue ? $column->getValue() : $column;
+                        $result[$column] = $row[$column] ?? null;
+                    }
+                    yield $this->wrap(array_values($result));
+                }
+            }
+        }
     }
 }

@@ -97,8 +97,8 @@ class BaseValueTest extends AbstractValueTestCase
      */
     public function testGetColors(): void
     {
-        $this->assertFalse($this->value_object->getColor());
-        $this->assertFalse($this->value_object->getBackgroundColor());
+        $this->assertNull($this->value_object->getColor());
+        $this->assertNull($this->value_object->getBackgroundColor());
         $this->value_object->setColor('#123456');
         $this->value_object->setBackgroundColor('#123456');
         $this->assertSame('123456', $this->value_object->getColor());
@@ -114,7 +114,7 @@ class BaseValueTest extends AbstractValueTestCase
         $this->value_object->setColor('fake');
         $this->expectExceptionObject(
             new WrongValueException(
-                'The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             )
         );
         $this->value_object->getColor();
@@ -129,7 +129,7 @@ class BaseValueTest extends AbstractValueTestCase
         $this->value_object->setBackgroundColor('fake');
         $this->expectExceptionObject(
             new WrongValueException(
-                'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The background color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             )
         );
         $this->value_object->getBackgroundColor();
@@ -141,7 +141,7 @@ class BaseValueTest extends AbstractValueTestCase
      */
     public function testGetUrl(): void
     {
-        $this->assertFalse($this->value_object->getUrl());
+        $this->assertNull($this->value_object->getUrl());
         $this->value_object->setUrl('test.url/stuff');
         $this->assertSame('test.url/stuff', $this->value_object->getUrl());
     }
@@ -172,7 +172,7 @@ class BaseValueTest extends AbstractValueTestCase
      */
     public function testGetFieldId(): void
     {
-        $this->assertSame(112, $this->value_object->getFieldId());
+        $this->assertSame('112', $this->value_object->getFieldId());
     }
 
     /**
