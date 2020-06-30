@@ -1198,7 +1198,7 @@ class GFExcelAdmin extends \GFAddOn
     {
         new CountDownloads();
         new DownloadUrl();
-        new NotificationsAction(new NotificationManager(new NotificationRepository()));
+        new NotificationsAction(GFExcel::getNotificationManager());
         new MigrationManager();
     }
 

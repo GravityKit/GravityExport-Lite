@@ -446,7 +446,8 @@ class GFExcel
 
             self::$notification_manager = apply_filters(
                 GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
-                new NotificationManager($repository)
+                new NotificationManager($repository),
+                $repository
             );
         }
 
