@@ -47,8 +47,9 @@ abstract class BaseValue
 
     /**
      * Creates a BaseValue instance.
-     * @param $value
-     * @param \GF_Field $gf_field
+     * @since 1.3.0
+     * @param string $value The original value.
+     * @param \GF_Field $gf_field The GF_Field instance.
      */
     public function __construct($value, \GF_Field $gf_field)
     {
@@ -58,12 +59,12 @@ abstract class BaseValue
 
     /**
      * Fetch a value object for the field
-     *
-     * @param AbstractField $field
-     * @param string $value
-     * @param \GF_Field $gf_field
-     * @param bool $is_label
-     * @return BaseValue
+     * @since 1.3.0
+     * @param AbstractField $field The field.
+     * @param string $value The value from the entry.
+     * @param \GF_Field $gf_field The original GF Field instance.
+     * @param bool $is_label Whether this value object is a label.
+     * @return BaseValue The value object.
      */
     public static function getValueObject(AbstractField $field, $value, \GF_Field $gf_field, $is_label = false)
     {
@@ -79,6 +80,7 @@ abstract class BaseValue
             $is_label
         );
 
+        // Labels are always parsed as a string.
         if ($is_label) {
             $type = BaseValue::TYPE_STRING;
         }
@@ -91,22 +93,20 @@ abstract class BaseValue
 
         $valueObject = new $typeClass($value, $gf_field);
 
-        gf_apply_filters(
-            [
-                'gfexcel_value_object',
-                $gf_field->get_input_type(),
-                $gf_field->formId,
-                $gf_field->id
-            ],
-            $valueObject,
-            $gf_field,
-            $is_label
-        );
+        // Changes to the value object should be done by reference, so we replace change the object itself.
+        gf_apply_filters([
+            'gfexcel_value_object',
+            $gf_field->get_input_type(),
+            $gf_field->formId,
+            $gf_field->id
+        ], $valueObject, $gf_field, $is_label);
 
         return $valueObject;
     }
 
     /**
+     * A string representation of the value object.
+     * @since 1.3.0
      * @return string
      */
     public function __toString()
@@ -115,6 +115,8 @@ abstract class BaseValue
     }
 
     /**
+     * Returns the (string) value of this instance.
+     * @since 1.3.0
      * @return string
      */
     public function getValue()
@@ -123,7 +125,9 @@ abstract class BaseValue
     }
 
     /**
-     * @return bool
+     * Returns whether this value is numeric.
+     * @since 1.3.0
+     * @return bool Whether this value object is numeric.
      */
     public function isNumeric()
     {
@@ -131,6 +135,8 @@ abstract class BaseValue
     }
 
     /**
+     * Returns whether this value is a boolean.
+     * @since 1.3.0
      * @return bool
      */
     public function isBool()
@@ -139,6 +145,8 @@ abstract class BaseValue
     }
 
     /**
+     * Returns whether this value is bold.
+     * @since 1.4.0
      * @return bool
      */
     public function isBold()
@@ -147,6 +155,8 @@ abstract class BaseValue
     }
 
     /**
+     * Returns whether this value is italic.
+     * @since 1.4.0
      * @return bool
      */
     public function isItalic()
@@ -155,19 +165,20 @@ abstract class BaseValue
     }
 
     /**
-     * Returns the text color.
-     * @return string|false The color.
-     * @throws WrongValueException when a wrong value was given.
+     * Returns the text color (in HEX) of the value.
+     * @since 1.4.0
+     * @return string|null The color.
+     * @throws WrongValueException When the provided color was incorrect.
      */
     public function getColor()
     {
         if (!$this->color) {
-            return false;
+            return null;
         }
 
-        if (substr($this->color, 0, 1) !== "#" || strlen($this->color) != 7) {
+        if ($this->color[0] !== '#' || strlen($this->color) !== 7) {
             throw new WrongValueException(
-                'The color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             );
         }
 
@@ -175,18 +186,20 @@ abstract class BaseValue
     }
 
     /**
-     * @return bool|string
-     * @throws WrongValueException
+     * * Returns the color (in HEX) of the background.
+     * @since 1.4.0
+     * @return string|null The color.
+     * @throws WrongValueException When the provided color was incorrect.
      */
     public function getBackgroundColor()
     {
         if (!$this->background_color) {
-            return false;
+            return null;
         }
 
-        if (strpos($this->background_color, '#') !== 0 || strlen($this->background_color) !== 7) {
+        if ($this->background_color[0] !== '#' || strlen($this->background_color) !== 7) {
             throw new WrongValueException(
-                'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The background color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             );
         }
 
@@ -194,20 +207,23 @@ abstract class BaseValue
     }
 
     /**
-     * @return string|false
+     * Returns the url of the cell if provided.
+     * @since 1.3.0
+     * @return string|null The url.
      */
     public function getUrl()
     {
         if (!$this->url) {
-            return false;
+            return null;
         }
 
         return trim(strip_tags($this->url));
     }
 
     /**
-     * Set the url of the value
-     * @param $url
+     * Set the url of the value.
+     * @since 1.3.0
+     * @param string $url The url.
      */
     public function setUrl($url)
     {
@@ -216,21 +232,28 @@ abstract class BaseValue
 
     /**
      * Set the color of the value
-     * @param string $hexcode
+     * @since 1.4.0
+     * @param string $hexcode The color.
      */
-    public function setColor($hexcode = "#000000")
+    public function setColor($hexcode = '#000000')
     {
         $this->color = $hexcode;
     }
 
+    /**
+     * Set the color of the cell background.
+     * @since 1.4.0
+     * @param string $color The hex color.
+     */
     public function setBackgroundColor($color = '')
     {
         $this->background_color = $color;
     }
 
     /**
-     * Set the value to Bold
-     * @param bool $bold
+     * Set the value to bold.
+     * @since 1.4.0
+     * @param bool $bold Whether the text should be bold.
      */
     public function setBold($bold = true)
     {
@@ -238,8 +261,9 @@ abstract class BaseValue
     }
 
     /**
-     * Set the value to Bold
-     * @param bool $italic
+     * Set the value to italic.
+     * @since 1.4.0
+     * @param bool $italic Whether the text should be italic.
      */
     public function setItalic($italic = true)
     {
@@ -268,7 +292,8 @@ abstract class BaseValue
 
     /**
      * Get the GF_Field object
-     * @return \GF_Field
+     * @since 1.5.5
+     * @return \GF_Field The GF_Field object.
      */
     public function getField()
     {
@@ -276,8 +301,9 @@ abstract class BaseValue
     }
 
     /**
-     * Get the name of the field type
-     * @return string
+     * Get the name of the field type.
+     * @since 1.5.5
+     * @return string The field type.
      */
     public function getFieldType()
     {
@@ -286,10 +312,15 @@ abstract class BaseValue
 
     /**
      * Get the ID for this field
-     * @return mixed
+     * @since 1.5.5
+     * @return string|null The id.
      */
     public function getFieldId()
     {
-        return $this->getField()->id;
+        if (!$this->getField()) {
+            return null;
+        }
+
+        return (string) $this->getField()->id;
     }
 }
