@@ -31,11 +31,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Result
-        run: |
-          echo "${{ steps.cache.outputs.cache-hit }}"
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != true
+        if: steps.cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
