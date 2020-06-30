@@ -26,7 +26,7 @@ class RepeaterField extends SeparableField implements RowsInterface
     protected $field;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @since 1.7.0
      */
     public function __construct(\GF_Field $field)
@@ -36,7 +36,7 @@ class RepeaterField extends SeparableField implements RowsInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * Maps all subfields `getColumns` calls to the repeater subfields.
      * @since 1.7.0
      */
@@ -50,12 +50,15 @@ class RepeaterField extends SeparableField implements RowsInterface
     /**
      * @inheritDoc
      * @since $ver$
-     * @return BaseValue[][] The rows.
      */
     public function getRows(?array $entry = null): array
     {
         // get repeater entries.
-        $entries = $entry[$this->field->id];
+        if (!$entry) {
+            return [];
+        }
+
+        $entries = $entry[$this->field->id] ?? [];
 
         // Get the correct field values for every row.
         return array_reduce($entries, function (array $rows, array $entry) {
@@ -65,14 +68,14 @@ class RepeaterField extends SeparableField implements RowsInterface
             }, $this->field->fields) as $field) {
                 $row[] = $field->getCells($entry);
             }
-            $rows[] = array_merge(...$row);
+            $rows[] = array_merge([], ...$row);
 
             return $rows;
         }, []);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * Maps all subfields `getCells` calls to the repeater subfields with an amended $entry.
      * @since 1.7.0
      */

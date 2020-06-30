@@ -178,7 +178,7 @@ abstract class BaseValue
 
         if ($this->color[0] !== '#' || strlen($this->color) !== 7) {
             throw new WrongValueException(
-                'The color should receive a full 6-diget hex-color and a pound sign. eg. #000000.'
+                'The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             );
         }
 
@@ -199,7 +199,7 @@ abstract class BaseValue
 
         if ($this->background_color[0] !== '#' || strlen($this->background_color) !== 7) {
             throw new WrongValueException(
-                'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The background color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             );
         }
 
@@ -221,9 +221,9 @@ abstract class BaseValue
     }
 
     /**
-     * Set the url of the value
+     * Set the url of the value.
      * @since 1.3.0
-     * @param string $url The url
+     * @param string $url The url.
      */
     public function setUrl($url)
     {

@@ -2,32 +2,63 @@
 
 namespace GFExcel;
 
-use GF_Field;
-use GFAPI;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\CombinerInterface;
 use GFExcel\Transformer\Transformer;
+use GFExcel\Transformer\TransformerInterface;
 use GFExcel\Values\BaseValue;
 
 /**
  * The point where data is transformed, and is send to the renderer.
+ * @since 1.0.0
  */
 class GFExcelOutput
 {
+    /**
+     * The transformer.
+     * @since 1.0.0
+     * @var TransformerInterface
+     */
     private $transformer;
+
+    /**
+     * The renderer.
+     * @since 1.0.0
+     * @var RendererInterface
+     */
     private $renderer;
 
+    /**
+     * The form id.
+     * @var int
+     */
     private $form_id;
 
+    /**
+     * The form object.
+     * @var mixed[]
+     */
     private $form;
+
+    /**
+     * The form entries.
+     * @var mixed[]
+     */
     private $entries = [];
 
-    /** @var BaseValue[] */
+    /**
+     * The columns.
+     * @var BaseValue[]
+     */
     private $columns = [];
 
+    /**
+     * Micro cache for the field repository.
+     * @var FieldsRepository
+     */
     private $repository;
 
     /**
@@ -37,6 +68,12 @@ class GFExcelOutput
      */
     private $combiner;
 
+    /**
+     * GFExcelOutput constructor.
+     * @param int $form_id The form id.
+     * @param RendererInterface $renderer The renderer.
+     * @param CombinerInterface $combiner The combiner.
+     */
     public function __construct($form_id, RendererInterface $renderer, CombinerInterface $combiner)
     {
         $this->transformer = new Transformer();
@@ -50,7 +87,7 @@ class GFExcelOutput
     /**
      * Get the Gravity Forms fields for the form.
      * @since 1.0.0
-     * @return GF_Field[] The fields
+     * @return \GF_Field[] The fields.
      */
     public function getFields(): array
     {
@@ -132,7 +169,7 @@ class GFExcelOutput
     private function getForm()
     {
         if (!$this->form) {
-            $this->form = GFAPI::get_form($this->form_id);
+            $this->form = \GFAPI::get_form($this->form_id);
         }
 
         return $this->form;
@@ -151,10 +188,10 @@ class GFExcelOutput
     }
 
     /**
-     * @param GF_Field $field
+     * @param \GF_Field $field
      * @return BaseValue[]
      */
-    private function getFieldColumns(GF_Field $field)
+    private function getFieldColumns(\GF_Field $field)
     {
         $fieldClass = $this->transformer->transform($field);
         return array_filter($fieldClass->getColumns(), function ($column) {
@@ -204,7 +241,7 @@ class GFExcelOutput
                     'page_size' => $page_size,
                 ];
 
-                $new_entries = GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
+                $new_entries = \GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
                 $count = count($new_entries);
                 if ($count > 0) {
                     $entries[] = $new_entries;
@@ -216,7 +253,7 @@ class GFExcelOutput
                     $loop = false; // stop looping
                 }
             }
-            $this->entries = array_merge($this->entries, ...$entries);
+            $this->entries = array_merge([], ...$entries);
         }
 
         return $this->entries;

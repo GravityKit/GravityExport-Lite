@@ -481,7 +481,7 @@ class GFExcelAdmin extends GFAddOn
                 : new PHPExcelRenderer();
 
             foreach ($form_ids as $form_id) {
-                $output = new GFExcelOutput((int) $form_id, $renderer, new Combiner());
+                $output = new GFExcelOutput((int) $form_id, $renderer, GFExcel::getCombiner());
                 $output->render();
             }
 
@@ -1013,7 +1013,7 @@ class GFExcelAdmin extends GFAddOn
         }
 
         // create a file based on the settings in the form, with only this entry.
-        $output = new GFExcelOutput($form['id'], new PHPExcelRenderer(), new Combiner());
+        $output = new GFExcelOutput($form['id'], new PHPExcelRenderer(), GFExcel::getCombiner());
         $output->setEntries([$entry]);
 
         // save the file to a temporary file

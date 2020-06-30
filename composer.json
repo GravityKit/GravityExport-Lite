@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "ext-json": "*",
         "php": "^7.1",
         "phpoffice/phpspreadsheet": "~1.9.0",
         "composer/installers": "~1.0"

@@ -43,7 +43,7 @@ class ListField extends BaseField implements RowsInterface
     public function getCells($entry)
     {
         $rows = iterator_to_array($this->getRows($entry));
-        $result = array_reduce($rows, static function (array $combined, array $row) {
+        $result = array_reduce($rows, static function (array $combined, array $row): array {
             foreach ($row as $i => $cell) {
                 $combined[$i][] = $cell->getValue();
             }
@@ -69,18 +69,18 @@ class ListField extends BaseField implements RowsInterface
         } else {
             $value = $this->getFieldValue($entry);
             if (!$result = json_decode($value, true)) {
-                return $this->wrap(array_map(static function () {
+                yield $this->wrap(array_map(static function () {
                     return '';
                 }, $this->getColumns()));
-            }
-
-            foreach ($result as $row) {
-                $result = [];
-                foreach ($this->getColumns() as $column) {
-                    $column = $column instanceof BaseValue ? $column->getValue() : $column;
-                    $result[$column] = $row[$column] ?? null;
+            } else {
+                foreach ($result as $row) {
+                    $result = [];
+                    foreach ($this->getColumns() as $column) {
+                        $column = $column instanceof BaseValue ? $column->getValue() : $column;
+                        $result[$column] = $row[$column] ?? null;
+                    }
+                    yield $this->wrap(array_values($result));
                 }
-                yield $this->wrap(array_values($result));
             }
         }
     }

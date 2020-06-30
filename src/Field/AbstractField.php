@@ -11,6 +11,7 @@ abstract class AbstractField implements FieldInterface
 {
     /**
      * Holds the current GF_Field instance.
+     * @since 1.0.0
      * @var \GF_Field
      */
     protected $field;
@@ -53,7 +54,7 @@ abstract class AbstractField implements FieldInterface
     /**
      * Get the type of this value object
      * @since 1.3.0
-     * @return string
+     * @return string The type of the value.
      */
     public function getValueType()
     {
@@ -77,9 +78,9 @@ abstract class AbstractField implements FieldInterface
     /**
      * Internal function to get the Field Value for an entry, and maybe override it.
      *
-     * @param array $entry
-     * @param string $input_id
-     * @return array|string
+     * @param array $entry The entry object.
+     * @param string $input_id The id of the input field.
+     * @return array|string The value of the field.
      */
     protected function getFieldValue($entry, $input_id = '')
     {
@@ -96,8 +97,8 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Get the original Gravity Field value.
-     * @param array $entry
-     * @param string $input_id
+     * @param array $entry The entry object.
+     * @param string $input_id The id of the input field.
      * @return mixed The value of the field.
      */
     protected function getGFieldValue($entry, $input_id)

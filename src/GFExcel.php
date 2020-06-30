@@ -6,6 +6,7 @@ use GFExcel\Action\FilterRequest;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
 use GFExcel\Transformer\Combiner;
+use GFExcel\Transformer\CombinerInterface;
 
 /**
  * The core of the plugin.
@@ -50,6 +51,10 @@ class GFExcel
 
     private static $file_extension;
 
+    /**
+     * Instantiates the plugin.
+     * @since 1.0.0
+     */
     public function __construct()
     {
         add_action('init', [$this, 'addPermalinkRule']);
@@ -62,6 +67,7 @@ class GFExcel
     }
 
     /** Return the url for the form
+     * @since 1.0.0
      * @param $form_id
      * @return string|null
      */
@@ -87,7 +93,6 @@ class GFExcel
 
     /**
      * Returns the download hash for a form.
-     *
      * @since 1.0.0
      * @param int $form_id the form id to get the hash for.
      * @return string|null the hash
@@ -109,7 +114,7 @@ class GFExcel
     /**
      * Save new hash to the form
      * @param $form_id
-     * @param null|string $hash predifined hash {@since 1.7.0}
+     * @param null|string $hash predefined hash {@since 1.7.0}
      * @return array metadata form
      */
     public static function setHash($form_id, $hash = null)
@@ -127,6 +132,7 @@ class GFExcel
 
     /**
      * Generates a secure random string.
+     * @since 1.0.0
      * @return string
      */
     private static function generateHash()
@@ -135,7 +141,7 @@ class GFExcel
     }
 
     /**
-     * Return the custom filename if it has one
+     * Return the custom filename if it has one.
      * @param array $form
      * @return bool|string
      */
@@ -155,9 +161,8 @@ class GFExcel
 
     /**
      * Return the file extension to use for renderer and output
-     *
-     * @param array $form
-     * @return string
+     * @param array $form The form object.
+     * @return string The file extension.
      */
     public static function getFileExtension($form)
     {
@@ -258,7 +263,7 @@ class GFExcel
     }
 
     /**
-     * Acutally triggers the download response.
+     * Actually triggers the download response.
      * @since 1.7.0
      * @param \WP $wp Wordpress request instance.
      * @return mixed The output will be the file.
@@ -275,8 +280,7 @@ class GFExcel
                     $form_id
                 ], new PHPExcelRenderer());
 
-                // todo: get the combiner from a container that can be replaced!
-                $output = new GFExcelOutput($form_id, $renderer, new Combiner());
+                $output = new GFExcelOutput($form_id, $renderer, self::getCombiner());
 
                 // trigger download event.
                 do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
@@ -399,5 +403,15 @@ class GFExcel
 
         $meta = \GFFormsModel::get_form_meta($form_id);
         return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
+    }
+
+    /**
+     * Returns the combiner instance.
+     * @since $ver$
+     * @return CombinerInterface The combiner.
+     */
+    public static function getCombiner(): CombinerInterface
+    {
+        return apply_filters(GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER, new Combiner());
     }
 }

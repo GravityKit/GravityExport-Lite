@@ -114,7 +114,7 @@ class BaseValueTest extends AbstractValueTestCase
         $this->value_object->setColor('fake');
         $this->expectExceptionObject(
             new WrongValueException(
-                'The color should receive a full 6-diget hex-color and a pound sign. eg. #000000.'
+                'The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             )
         );
         $this->value_object->getColor();
@@ -129,7 +129,7 @@ class BaseValueTest extends AbstractValueTestCase
         $this->value_object->setBackgroundColor('fake');
         $this->expectExceptionObject(
             new WrongValueException(
-                'The background color should receive a full 6 diget hex-color and a pound sign. eg. #000000.'
+                'The background color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
             )
         );
         $this->value_object->getBackgroundColor();
