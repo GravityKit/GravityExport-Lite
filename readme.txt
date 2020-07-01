@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.2
+Tested up to: 5.4
 Stable tag: 1.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -212,6 +212,7 @@ Checkout this example:
 * Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
 * Feature: Added CurrencyValue type and formatting on numeric cells. So you can have a currency symbol and a numeric value.
 * Feature: Added new CombinerInterface to streamline the process of combining values into columns.
+* Feature: Added notifications base to bomb you with info. Kidding, only useful messages of course.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you've later changed the column names.
 * Enhancement: Added quick-link to documentation on the plugins page.

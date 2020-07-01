@@ -37,7 +37,7 @@ add_action('gform_loaded', static function () {
         require_once($autoload);
     }
 
-    load_plugin_textdomain('gf-entries-in-excel', false, basename(dirname(__FILE__)) . '/languages');
+    load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
 
     if (!method_exists('GFForms', 'include_addon_framework')) {
         return false;

@@ -2,28 +2,45 @@
 
 namespace GFExcel;
 
-use GFAddOn;
-use GFCommon;
 use GFExcel\Action\CountDownloads;
+use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
+use GFExcel\Migration\Manager\MigrationManager;
+use GFExcel\Notification\Manager\NotificationManager;
+use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
-use GFExcel\Transformer\Combiner;
-use GFFormsModel;
 
-class GFExcelAdmin extends GFAddOn
+class GFExcelAdmin extends \GFAddOn
 {
-    const BULK_DOWNLOAD = 'gfexcel_download';
+    public const BULK_DOWNLOAD = 'gfexcel_download';
 
-    private static $_instance = null;
+    /**
+     * The addon instance.
+     * @since 1.0.0
+     * @var GFExcelAdmin
+     */
+    private static $_instance;
 
-    protected $_min_gravityforms_version = "2.0";
+    /**
+     * @inheritdoc
+     */
+    protected $_min_gravityforms_version = '2.0';
 
-    protected $_capabilities_form_settings = ['gravityforms_export_entries'];
+    /**
+     * @inheritDoc
+     */
+    protected $_capabilities_form_settings = 'gravityforms_export_entries';
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    protected $_capabilities_settings_page = 'gravityforms_export_entries';
 
     /** @var FormsRepository micro cache */
     private $repository;
@@ -47,8 +64,8 @@ class GFExcelAdmin extends GFAddOn
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = __(GFExcel::$name, GFExcel::$slug);
-        $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
+        $this->_title = __('Gravity Forms Entries in Excel', GFExcel::$slug);
+        $this->_short_title = __('Entries in Excel', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         $this->registerActions();
@@ -63,7 +80,7 @@ class GFExcelAdmin extends GFAddOn
     {
         return [
             'php' => [
-                'version' => '5.6',
+                'version' => '7.1',
                 'extensions' => [
                     'zip',
                     'ctype',
@@ -351,23 +368,23 @@ class GFExcelAdmin extends GFAddOn
 
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
-            $form = GFFormsModel::get_form_meta($form['id']);
+            $form = \GFFormsModel::get_form_meta($form['id']);
         }
 
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
             } elseif (!rgempty('enable_download_url')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
             } elseif (!rgempty('disable_download_url')) {
                 $form = GFExcel::setHash($form['id'], '');
-                GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
             }
         }
 
-        GFCommon::display_admin_message();
+        \GFCommon::display_admin_message();
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, GFExcel::$slug)
@@ -467,7 +484,7 @@ class GFExcelAdmin extends GFAddOn
     {
         if (!current_user_can('editor') &&
             !current_user_can('administrator') &&
-            !GFCommon::current_user_can_any('gravityforms_export_entries')) {
+            !\GFCommon::current_user_can_any('gravityforms_export_entries')) {
             return false; // How you doin?
         }
 
@@ -580,7 +597,7 @@ class GFExcelAdmin extends GFAddOn
             return stripos($key, 'gfexcel_') === 0;
         });
 
-        $form_meta = GFFormsModel::get_form_meta($form['id']);
+        $form_meta = \GFFormsModel::get_form_meta($form['id']);
 
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
@@ -599,8 +616,8 @@ class GFExcelAdmin extends GFAddOn
             $form_meta[$key] = $value;
         }
 
-        GFFormsModel::update_form_meta($form['id'], $form_meta);
-        GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
+        \GFFormsModel::update_form_meta($form['id'], $form_meta);
+        \GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
     }
 
     /**
@@ -803,7 +820,7 @@ class GFExcelAdmin extends GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'right',
-                    'choices' => array_map(function (\GF_Field $field) {
+                    'choices' => array_map(static function (\GF_Field $field) {
                         $label = gf_apply_filters([
                             'gfexcel_field_label',
                             $field->get_input_type(),
@@ -1084,7 +1101,7 @@ class GFExcelAdmin extends GFAddOn
         $form = rgar($args, 'form', []);
         $entry = rgar($args, 'entry', []);
 
-        $html = '<div class=\"gfexcel_entry_download\">
+        $html = '<div class="gfexcel_entry_download">
             <p>%s</p>
             <a href="%s" class="button-primary">%s</a>
             <a href="%s" class="button">%s</a>
@@ -1095,10 +1112,10 @@ class GFExcelAdmin extends GFAddOn
         printf(
             $html,
             __('Download this single entry as a file.', GFExcel::$slug),
-            $url . '?entry=' . $entry['id'],
-            __('Download Excel', GFExcel::$slug),
+            $url . '.xlsx?entry=' . $entry['id'],
+            __('Excel', GFExcel::$slug),
             $url . '.csv?entry=' . $entry['id'],
-            __('Download CSV', GFExcel::$slug)
+            __('CSV', GFExcel::$slug)
         );
     }
 
@@ -1181,20 +1198,14 @@ class GFExcelAdmin extends GFAddOn
     /**
      * Register native plugin actions
      * @since 1.6.1
-     * @return void
+     * @todo Register everything via a service container.
      */
-    private function registerActions()
+    private function registerActions(): void
     {
-        $actions = [
-            CountDownloads::class,
-            DownloadUrl::class,
-        ];
-
-        foreach ($actions as $action) {
-            if (class_exists($action)) {
-                new $action;
-            }
-        }
+        new CountDownloads();
+        new DownloadUrl();
+        new NotificationsAction(GFExcel::getNotificationManager());
+        new MigrationManager();
     }
 
     /**
@@ -1214,7 +1225,7 @@ class GFExcelAdmin extends GFAddOn
         global $wp_admin_bar;
 
         // get all recent form id's.
-        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), function (array $output, $key) {
+        $form_ids = array_reduce(array_keys($wp_admin_bar->get_nodes()), static function (array $output, $key) {
             if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
                 $output[] = (int) $matches[1];
             }
@@ -1225,14 +1236,12 @@ class GFExcelAdmin extends GFAddOn
         foreach ($form_ids as $id) {
             $url = GFExcel::url($id);
             if ($url) {
-                $wp_admin_bar->add_node(
-                    array(
-                        'id' => 'gfexcel-form-' . $id . '-download',
-                        'parent' => 'gform-form-' . $id,
-                        'title' => esc_html__('Download', GFExcel::$slug),
-                        'href' => trailingslashit($url),
-                    )
-                );
+                $wp_admin_bar->add_node([
+                    'id' => 'gfexcel-form-' . $id . '-download',
+                    'parent' => 'gform-form-' . $id,
+                    'title' => esc_html__('Download', GFExcel::$slug),
+                    'href' => trailingslashit($url),
+                ]);
             }
         }
     }
