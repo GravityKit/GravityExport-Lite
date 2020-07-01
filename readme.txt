@@ -215,6 +215,7 @@ Checkout this example:
 * Feature: Added notifications base to bomb you with info. Kidding, only useful messages of course.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you've later changed the column names.
+* Bugfix: Disabled warning when `set_time_limit` is not allowed to prevent failing download.
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Enhancement: Added quick-link to settings on the plugins page.
 * Enhancement: Replaced all translation calls with wordpress native calls to be polite to Poedit.

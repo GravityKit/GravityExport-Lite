@@ -82,7 +82,7 @@ class GFExcelOutput
         $this->form_id = $form_id;
         $this->combiner = $combiner;
 
-        set_time_limit(0);
+        @set_time_limit(0); // suppress warning when disabled
     }
 
     /**
