@@ -58,8 +58,8 @@ class GFExcelAdmin extends \GFAddOn
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = __(GFExcel::$name, GFExcel::$slug);
-        $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
+        $this->_title = __('Gravity Forms Entries in Excel', GFExcel::$slug);
+        $this->_short_title = __('Entries in Excel', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         $this->registerActions();
@@ -1095,7 +1095,7 @@ class GFExcelAdmin extends \GFAddOn
         $form = rgar($args, 'form', []);
         $entry = rgar($args, 'entry', []);
 
-        $html = '<div class=\"gfexcel_entry_download\">
+        $html = '<div class="gfexcel_entry_download">
             <p>%s</p>
             <a href="%s" class="button-primary">%s</a>
             <a href="%s" class="button">%s</a>
@@ -1106,10 +1106,10 @@ class GFExcelAdmin extends \GFAddOn
         printf(
             $html,
             __('Download this single entry as a file.', GFExcel::$slug),
-            $url . '?entry=' . $entry['id'],
-            __('Download Excel', GFExcel::$slug),
+            $url . '.xlsx?entry=' . $entry['id'],
+            __('Excel', GFExcel::$slug),
             $url . '.csv?entry=' . $entry['id'],
-            __('Download CSV', GFExcel::$slug)
+            __('CSV', GFExcel::$slug)
         );
     }
 
