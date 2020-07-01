@@ -32,9 +32,15 @@ class GFExcelAdmin extends \GFAddOn
     protected $_min_gravityforms_version = '2.0';
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected $_capabilities_form_settings = 'gravityforms_export_entries';
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    protected $_capabilities_settings_page = 'gravityforms_export_entries';
 
     /** @var FormsRepository micro cache */
     private $repository;
