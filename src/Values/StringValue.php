@@ -34,8 +34,8 @@ class StringValue extends BaseValue
 
     /**
      * Quick test if value is a url.
-     * @param $value
-     * @return bool
+     * @param string $value The value.
+     * @return bool Whether the value is a url.
      */
     protected function isUrl($value)
     {

@@ -14,7 +14,7 @@ class ListField extends BaseField implements RowsInterface
 
     /**
      * Array of needed column names for this field.
-     * @return BaseValue[]
+     * @return BaseValue[]|string[]
      */
     public function getColumns()
     {

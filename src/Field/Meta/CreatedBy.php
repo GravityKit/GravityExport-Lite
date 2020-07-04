@@ -47,15 +47,15 @@ class CreatedBy extends MetaField
     }
 
     /**
-     * @param $user_id
-     * @param string $property
-     * @return mixed
+     * @param string $user_id The user id.
+     * @param string $property The property to use as a username.
+     * @return string|int The returned value.
      * @throws \InvalidArgumentException
      */
     private function getUserName($user_id, $property = 'nickname')
     {
         if (!is_numeric($user_id) || (!$user = get_userdata($user_id))) {
-            // no userid or no user, return default.
+            // no user id or no user, return default.
             return $user_id;
         }
 

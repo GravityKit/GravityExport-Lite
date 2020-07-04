@@ -11,12 +11,11 @@ use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
  */
 abstract class AbstractRenderer
 {
-
     /**
-     * @param array $form
-     * @param $columns
-     * @param $rows
-     * @return mixed
+     * @param mixed[] $form The form object.
+     * @param mixed[] $columns The columns to export.
+     * @param mixed[] $rows THe rows to export.
+     * @return mixed[] The matrix containing all rows.
      */
     protected function getMatrix(array $form, $columns, $rows)
     {
@@ -30,9 +29,9 @@ abstract class AbstractRenderer
 
     /**
      * Transpose the matrix to flip rows and columns.
-     * @param array $form
-     * @param $matrix
-     * @return array
+     * @param mixed[] $form The form object.
+     * @param mixed[] $matrix The matrix containing all rows and columns.
+     * @return mixed[] The transposed matrix.
      */
     protected function transpose(array $form, $matrix)
     {

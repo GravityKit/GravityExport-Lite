@@ -57,8 +57,8 @@ class ProductField extends SeparableField
 
     /**
      * Return the last part of the input_id
-     * @param $key
-     * @return int
+     * @param string $key The field input key.
+     * @return int The subfield key.
      */
     private function getSubFieldId($key)
     {

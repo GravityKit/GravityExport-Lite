@@ -37,7 +37,7 @@ class CountDownloads
     /**
      * Updates the download counter for a form.
      * @since 1.6.1
-     * @param $form_id
+     * @param string $form_id The form id.
      */
     public function incrementCounter($form_id)
     {
@@ -63,7 +63,7 @@ class CountDownloads
     /**
      * Prevent multiple calls to get the same data.
      * @since 1.6.1
-     * @param $form_id
+     * @param string $form_id The form id.
      * @return array|null
      */
     private function getForm($form_id)
@@ -78,8 +78,8 @@ class CountDownloads
     /**
      * Helper function to actually set the value.
      * @since 1.6.1
-     * @param $form_id
-     * @param int $count
+     * @param string $form_id The form id.
+     * @param int $count The value to set the counter to.
      */
     private function setCounter($form_id, $count = 0)
     {

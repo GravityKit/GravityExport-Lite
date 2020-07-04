@@ -117,7 +117,7 @@ abstract class BaseValue
     /**
      * Returns the (string) value of this instance.
      * @since 1.3.0
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
@@ -293,7 +293,7 @@ abstract class BaseValue
     /**
      * Get the GF_Field object
      * @since 1.5.5
-     * @return \GF_Field The GF_Field object.
+     * @return \GF_Field|null The GF_Field object.
      */
     public function getField()
     {

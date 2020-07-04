@@ -55,7 +55,7 @@ class Transformer implements TransformerInterface
      * Get Field class if it exists
      * @param string $type
      * @param GF_Field $field
-     * @return false|FieldInterface
+     * @return null|FieldInterface
      */
     private function getField($type, GF_Field $field): ?FieldInterface
     {

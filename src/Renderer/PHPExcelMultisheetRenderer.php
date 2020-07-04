@@ -18,10 +18,7 @@ class PHPExcelMultisheetRenderer extends AbstractPHPExcelRenderer implements Ren
     }
 
     /**
-     * @param $form
-     * @param $columns
-     * @param $rows
-     * @param bool $save
+     * @inheritDoc
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle($form, $columns, $rows, $save = false)

@@ -41,7 +41,7 @@ class FilterRequest
     /**
      * The provided and parsed field filters.
      * @since 1.7.0
-     * @var string[]
+     * @var mixed
      */
     private $field_filters = [];
 
@@ -66,8 +66,8 @@ class FilterRequest
     /**
      * Adds needed parameters to the query vars for the request.
      * @since 1.7.0
-     * @param $vars
-     * @return array the query variables.
+     * @param mixed[] $vars The current query variables.
+     * @return mixed[] The new query variables.
      */
     public function getQueryVars($vars)
     {

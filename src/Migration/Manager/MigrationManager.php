@@ -100,7 +100,7 @@ class MigrationManager
         if ($this->migrations === null) {
             // Retrieve migrations from folder.
             $migrations = array_reduce(
-                glob('*.php') ?? [],
+                glob('*.php') ?: [],
                 static function (array $migrations, string $filename): array {
                     $filename = str_replace(['../', '.php'], '', $filename);
                     $classname = sprintf('GFExcel\\Migration\\%s', $filename);

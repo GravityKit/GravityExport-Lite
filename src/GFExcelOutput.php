@@ -57,7 +57,7 @@ class GFExcelOutput
 
     /**
      * Micro cache for the field repository.
-     * @var FieldsRepository
+     * @var FieldsRepository|null
      */
     private $repository;
 
@@ -217,7 +217,7 @@ class GFExcelOutput
 
     /**
      * Returns all entries for a form, based on the sort settings
-     * @return array|\WP_Error
+     * @return mixed[]
      */
     private function getEntries()
     {
