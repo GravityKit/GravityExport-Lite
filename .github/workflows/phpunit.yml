@@ -41,5 +41,5 @@ jobs:
         run: composer run-script test
 
       - name: Run PHPSTan
-          run: composer run-script phpstan
+        run: composer run-script phpstan
 

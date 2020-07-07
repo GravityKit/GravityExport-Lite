@@ -34,6 +34,6 @@
     },
     "scripts": {
         "test" : "vendor/bin/phpunit",
-        "phpstan": "vendor/bin/phpstan"
+        "phpstan": "vendor/bin/phpstan analyse"
     }
 }
