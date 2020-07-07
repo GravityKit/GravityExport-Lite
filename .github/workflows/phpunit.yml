@@ -39,7 +39,3 @@ jobs:
 
       - name: Run test suite
         run: composer run-script test
-
-      - name: Run PHPSTan
-        run: composer run-script phpstan
-
