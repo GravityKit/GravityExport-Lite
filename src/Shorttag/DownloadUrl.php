@@ -5,7 +5,7 @@ namespace GFExcel\Shorttag;
 use GFExcel\GFExcel;
 
 /**
- * A shorttag handler for [gfexcel_download_url].
+ * A short tag handler for [gfexcel_download_url].
  * Example usage: [gfexcel_download_url id=1 type=csv]
  * Id is required, type is optional.
  * @since 1.6.1
@@ -87,8 +87,8 @@ class DownloadUrl
     /**
      * Returns the error message. Can be overwritten by filter hook.
      * @since 1.6.1
-     * @param $message
-     * @return string
+     * @param string $message The error message.
+     * @return string The filtered error message.
      */
     private function error($message): string
     {

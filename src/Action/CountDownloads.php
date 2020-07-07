@@ -20,8 +20,8 @@ class CountDownloads
     const ACTION_RESET = 'reset_count';
 
     /**
-     * Microcache variable.
-     * @var array|null
+     * Micro cache form object.
+     * @var mixed[]|null
      */
     private $form;
 
@@ -37,7 +37,7 @@ class CountDownloads
     /**
      * Updates the download counter for a form.
      * @since 1.6.1
-     * @param $form_id
+     * @param int $form_id The form id.
      */
     public function incrementCounter($form_id)
     {
@@ -53,7 +53,7 @@ class CountDownloads
     /**
      * Resets the download counter for a form.
      * @since 1.6.1
-     * @param string $form_id
+     * @param int $form_id The id of form to reset.
      */
     public function resetCounter($form_id)
     {
@@ -63,8 +63,8 @@ class CountDownloads
     /**
      * Prevent multiple calls to get the same data.
      * @since 1.6.1
-     * @param $form_id
-     * @return array|null
+     * @param int $form_id The form id.
+     * @return mixed[]|null The form object.
      */
     private function getForm($form_id)
     {
@@ -78,8 +78,8 @@ class CountDownloads
     /**
      * Helper function to actually set the value.
      * @since 1.6.1
-     * @param $form_id
-     * @param int $count
+     * @param int $form_id The form id.
+     * @param int $count The value to set the counter to.
      */
     private function setCounter($form_id, $count = 0)
     {

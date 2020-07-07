@@ -42,7 +42,7 @@ class GFExcelAdmin extends \GFAddOn
      */
     protected $_capabilities_settings_page = 'gravityforms_export_entries';
 
-    /** @var FormsRepository micro cache */
+    /** @var FormsRepository|null micro cache */
     private $repository;
 
     /** @var string  micro cache for file name */
@@ -511,8 +511,8 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Add GFExcel download option to bulk actions dropdown
-     * @param $actions
-     * @return array
+     * @param mixed[] $actions The current actions.
+     * @return mixed[] The new actions.
      */
     public function bulk_actions($actions)
     {
@@ -539,8 +539,8 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Returns the number of downloads
-     * @param $form
-     * @return int
+     * @param mixed[] $form The form object.
+     * @return int The number of downloads.
      */
     private function download_count($form)
     {
@@ -772,7 +772,7 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Adds the sortable fields section to the settings page
-     * @param $form
+     * @param mixed[] $form The form object.
      */
     private function sortableFields($form)
     {
@@ -840,9 +840,9 @@ class GFExcelAdmin extends \GFAddOn
     /**
      * Renders the html for a single sortable fields.
      * I don't like this inline html approach Gravity Forms uses.
-     * @param $field
-     * @param bool $echo
-     * @return string
+     * @param mixed[] $field The field object.
+     * @param bool $echo Whether to echo or return.
+     * @return string The HTML.
      */
     public function settings_sortable($field, $echo = true)
     {
@@ -857,7 +857,7 @@ class GFExcelAdmin extends \GFAddOn
             $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
             $html .= sprintf(
                 '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
-                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) use ($field) {
+                $name, implode(' ', $attributes), implode("\n", array_map(static function ($choice): string {
                 return sprintf(
                     '<li data-value="%s">
                         <div class="field"><i class="fa fa-bars"></i> %s</div>
@@ -886,7 +886,7 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Renders the html for the sortable fields
-     * @param $field
+     * @param mixed[] $field The field object.
      */
     public function single_setting_row_sortable($field)
     {
@@ -1011,10 +1011,11 @@ class GFExcelAdmin extends \GFAddOn
     }
 
     /**
-     * @param $notification
-     * @param $form
-     * @param $entry
-     * @return mixed
+     * Adds the attachment to the notification.
+     * @param mixed[] $notification The notification object.
+     * @param mixed[] $form The form object.
+     * @param mixed[] $entry The entry object.
+     * @return mixed[] The notification with attachment.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle_notification($notification, $form, $entry)
@@ -1024,7 +1025,7 @@ class GFExcelAdmin extends \GFAddOn
         }
 
         // get notification to add to by form setting
-        if (!$this->repository || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+        if ($this->repository === null || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
             //Not the right notification
             return $notification;
         }

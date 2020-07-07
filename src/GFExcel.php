@@ -61,7 +61,7 @@ class GFExcel
     /**
      * The notification manager singleton.
      * @since $ver$
-     * @var NotificationManager
+     * @var NotificationManager|null
      */
     private static $notification_manager;
 
@@ -82,7 +82,7 @@ class GFExcel
 
     /** Return the url for the form
      * @since 1.0.0
-     * @param $form_id
+     * @param int $form_id The id of the form.
      * @return string|null
      */
     public static function url($form_id)
@@ -127,9 +127,9 @@ class GFExcel
 
     /**
      * Save new hash to the form
-     * @param $form_id The form id.
+     * @param int $form_id The form id.
      * @param null|string $hash predefined hash {@since 1.7.0}
-     * @return array metadata form
+     * @return mixed[] metadata form.
      */
     public static function setHash($form_id, $hash = null)
     {
@@ -320,8 +320,9 @@ class GFExcel
     }
 
     /**
-     * @param $hash
-     * @return int|null
+     * Helper method to retrieve the form id from the hash.
+     * @param string $hash The hash.
+     * @return int|null The form id.
      */
     private function getFormIdByHash($hash)
     {

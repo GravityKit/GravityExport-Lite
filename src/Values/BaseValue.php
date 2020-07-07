@@ -48,7 +48,7 @@ abstract class BaseValue
     /**
      * Creates a BaseValue instance.
      * @since 1.3.0
-     * @param string $value The original value.
+     * @param mixed $value The original value.
      * @param \GF_Field $gf_field The GF_Field instance.
      */
     public function __construct($value, \GF_Field $gf_field)
@@ -61,7 +61,7 @@ abstract class BaseValue
      * Fetch a value object for the field
      * @since 1.3.0
      * @param AbstractField $field The field.
-     * @param string $value The value from the entry.
+     * @param mixed $value The value from the entry.
      * @param \GF_Field $gf_field The original GF Field instance.
      * @param bool $is_label Whether this value object is a label.
      * @return BaseValue The value object.
@@ -117,7 +117,7 @@ abstract class BaseValue
     /**
      * Returns the (string) value of this instance.
      * @since 1.3.0
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
@@ -293,7 +293,7 @@ abstract class BaseValue
     /**
      * Get the GF_Field object
      * @since 1.5.5
-     * @return \GF_Field The GF_Field object.
+     * @return \GF_Field|null The GF_Field object.
      */
     public function getField()
     {

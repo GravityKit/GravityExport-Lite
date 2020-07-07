@@ -5,7 +5,6 @@ namespace GFExcel\Renderer;
 use GFExcel\Exception\Exception as GFExcelException;
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
-use GFExcel\Values\CurrencyValue;
 use GFExcel\Values\NumericValue;
 use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
@@ -112,8 +111,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     /**
      * Stretches all columns to the maximum needed, or a set maximum.
      * @since 1.0.0
-     * @param Worksheet $worksheet
-     * @param $columns_count
+     * @param Worksheet $worksheet The worksheet object.
+     * @param int $columns_count The number of columns.
      * @return $this
      */
     protected function autoSizeColumns(Worksheet $worksheet, $columns_count)
@@ -219,9 +218,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * Get Cell type based on value booleans
-     * @param $value
-     * @return string
+     * Get Cell type based on value booleans.
+     * @param string|BaseValue $value The value of the cell.
+     * @return string The type of the cell.
      */
     private function getCellType($value)
     {
@@ -239,8 +238,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
     /**
      * Retrieve the correctly formatted value of the cell
-     * @param $value
-     * @return string
+     * @param string|BaseValue $value The value of the cell.
+     * @return string The string-value of the cell.
      */
     private function getCellValue($value)
     {
@@ -253,10 +252,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
     /**
      * Set url on the cell if value has a url.
-     *
-     * @param Cell $cell
-     * @param $value
-     * @return bool
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
+     * @return bool Whether the url was set onto the cell.
      */
     private function setCellUrl(Cell $cell, $value)
     {
@@ -307,8 +305,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Cell $cell
-     * @param $value
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
      * @throws GFExcelException
      */
     private function setProperties(Cell $cell, $value)
@@ -318,9 +316,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Cell $cell
-     * @param $value
-     * @return bool
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
+     * @return bool Whether the font style was applied.
      * @throws GFExcelException
      */
     private function setFontStyle(Cell $cell, $value)
@@ -350,7 +348,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 $fill->setStartColor($color_field);
             }
 
-            if (($font_size = $value->getFontSize()) && ($font = $cell->getStyle()->getFont())) {
+            if (($font_size = $value->getFontSize())) {
+                $font = $cell->getStyle()->getFont();
                 $font->setSize($font_size);
             }
 

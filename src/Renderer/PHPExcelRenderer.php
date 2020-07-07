@@ -24,11 +24,8 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInter
     }
 
     /**
-     * @param $form
-     * @param $columns
-     * @param $rows
-     * @param bool $save
-     * @return string
+     * @inheritdoc
+     * @return string The file path.
      */
     public function handle($form, $columns, $rows, $save = false)
     {

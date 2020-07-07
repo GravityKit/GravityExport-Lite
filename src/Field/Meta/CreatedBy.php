@@ -23,7 +23,7 @@ class CreatedBy extends MetaField
     protected function getFieldValue($entry, $input_id = '')
     {
         $property = $this->getPropertyName();
-        $user_id = parent::getFieldValue($entry, $input_id);
+        $user_id = (int) parent::getFieldValue($entry, $input_id);
 
         if ($property === self::USER_ID) {
             return $user_id;
@@ -47,15 +47,15 @@ class CreatedBy extends MetaField
     }
 
     /**
-     * @param $user_id
-     * @param string $property
-     * @return mixed
+     * @param int $user_id The user id.
+     * @param string $property The property to use as a username.
+     * @return string|int The returned value.
      * @throws \InvalidArgumentException
      */
     private function getUserName($user_id, $property = 'nickname')
     {
         if (!is_numeric($user_id) || (!$user = get_userdata($user_id))) {
-            // no userid or no user, return default.
+            // no user id or no user, return default.
             return $user_id;
         }
 
