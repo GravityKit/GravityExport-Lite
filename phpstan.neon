@@ -29,10 +29,12 @@ parameters:
   #        - %currentWorkingDirectory%/inc/views/
   ignoreErrors:
     - '/Function gform_tooltip not found\./'
-    - '/^Result of method .*?::.*?\(\) \(void\) is used.$/'
     - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
     - '/^Function gf_apply_filters invoked with \d+ parameters, 2 required.$/'
     - '/Parameter #3 \$default of function rgar expects string\|null/'
+    # Unit tests edge cases
+    - '/^Result of method .*?::.*?\(\) \(void\) is used.$/'
+    - '/MockObject|stdClass>? given.$/'
     # Fixed in WordPress 5.3
     #- '#^Function do_action(_ref_array)? invoked with [3456] parameters, 1-2 required\.$#'
     #- '#^Function current_user_can invoked with 2 parameters, 1 required\.$#'

@@ -5,7 +5,6 @@ namespace GFExcel\Repository;
 use GFExcel\GFExcelAdmin;
 use GFExport;
 use GF_Field;
-use function Patchwork\CallRerouting\dispatchDynamic;
 
 class FieldsRepository
 {
