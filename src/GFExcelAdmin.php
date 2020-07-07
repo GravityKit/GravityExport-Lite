@@ -617,7 +617,7 @@ class GFExcelAdmin extends \GFAddOn
         }
 
         \GFFormsModel::update_form_meta($form['id'], $form_meta);
-        \GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
+        \GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug));
     }
 
     /**

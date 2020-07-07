@@ -23,7 +23,7 @@ class CreatedBy extends MetaField
     protected function getFieldValue($entry, $input_id = '')
     {
         $property = $this->getPropertyName();
-        $user_id = parent::getFieldValue($entry, $input_id);
+        $user_id = (int) parent::getFieldValue($entry, $input_id);
 
         if ($property === self::USER_ID) {
             return $user_id;
@@ -47,7 +47,7 @@ class CreatedBy extends MetaField
     }
 
     /**
-     * @param string $user_id The user id.
+     * @param int $user_id The user id.
      * @param string $property The property to use as a username.
      * @return string|int The returned value.
      * @throws \InvalidArgumentException

@@ -5,6 +5,7 @@ namespace GFExcel\Repository;
 use GFExcel\GFExcelAdmin;
 use GFExport;
 use GF_Field;
+use function Patchwork\CallRerouting\dispatchDynamic;
 
 class FieldsRepository
 {
@@ -127,13 +128,13 @@ class FieldsRepository
     private function filterDisabledFields()
     {
         $disabled_fields = $this->getDisabledFields();
-        $this->fields = array_filter($this->fields, function (GF_Field $field) use ($disabled_fields) {
+        $this->fields = array_filter($this->fields, static function (GF_Field $field) use ($disabled_fields) {
             return !gf_apply_filters([
-                "gfexcel_field_disable",
+                'gfexcel_field_disable',
                 $field->get_input_type(),
                 $field->formId,
                 $field->id,
-            ], in_array($field->id, $disabled_fields), $field);
+            ], in_array($field->id, $disabled_fields, true), $field);
         });
 
         return $this->fields;
@@ -146,7 +147,7 @@ class FieldsRepository
     public function getDisabledFields()
     {
         $result = []; //default
-        if ($settings = $this->admin->get_plugin_settings() and is_array($settings)) {
+        if (($settings = $this->admin->get_plugin_settings()) && is_array($settings)) {
             foreach ($settings as $key => $value) {
                 if (strpos($key, 'enabled_metafield_') === 0 && $value == 0) {
                     $result[] = str_replace('enabled_metafield_', '', $key);
@@ -190,12 +191,14 @@ class FieldsRepository
         }
 
         $sorted_keys = $this->getEnabledFields();
-        $fields = array_reduce($fields, function ($carry, GF_Field $field) {
+        $fields = array_reduce($fields, static function (array $carry, GF_Field $field): array {
             $carry[$field->id] = $field;
             return $carry;
         }, []);
 
-        $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'get_class'));
+        // sort fields, and remove any values that aren't field (objects).
+        $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'is_object'));
+
         return $fields;
     }
 }
