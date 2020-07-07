@@ -6,7 +6,6 @@ includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
   # Include this extension
   - vendor/szepeviktor/phpstan-wordpress/extension.neon
-  - vendor/phpstan/phpstan-mockery/extension.neon
 parameters:
   level: 5
   bootstrapFiles:
