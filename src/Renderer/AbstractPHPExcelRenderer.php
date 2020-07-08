@@ -9,6 +9,7 @@ use GFExcel\Values\NumericValue;
 use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -312,7 +313,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     private function setProperties(Cell $cell, $value)
     {
         $this->setCellUrl($cell, $value);
-        $this->setFontStyle($cell, $value);
+        $this->setCellStyle($cell, $value);
+
+        gf_do_action(
+            'gfexcel_renderer_cell_properties',
+            $cell,
+            $value
+        );
     }
 
     /**
@@ -321,7 +328,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @return bool Whether the font style was applied.
      * @throws GFExcelException
      */
-    private function setFontStyle(Cell $cell, $value)
+    private function setCellStyle(Cell $cell, $value)
     {
         if (!$value instanceof BaseValue) {
             return false;
@@ -334,6 +341,17 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
             if ($value->isItalic()) {
                 $cell->getStyle()->getFont()->setItalic(true);
+            }
+
+            if ($value->hasBorder()) {
+                $array = array_filter([
+                    $value->getBorderPosition() => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => $value->getBorderColor() ? ['rgb' => $value->getBorderColor()] : null,
+                    ],
+                ]);
+
+                $cell->getStyle()->getBorders()->applyFromArray($array);
             }
 
             if ($color = $value->getColor()) {

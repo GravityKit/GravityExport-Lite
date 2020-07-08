@@ -76,7 +76,7 @@ class BaseValueTest extends AbstractValueTestCase
     public function testIsBold(): void
     {
         $this->assertFalse($this->value_object->isBold());
-        $this->value_object->setBold(true);
+        $this->assertSame($this->value_object, $this->value_object->setBold(true));
         $this->assertTrue($this->value_object->isBold());
     }
 
@@ -87,7 +87,7 @@ class BaseValueTest extends AbstractValueTestCase
     public function testIsItalic(): void
     {
         $this->assertFalse($this->value_object->isItalic());
-        $this->value_object->setItalic(true);
+        $this->assertSame($this->value_object, $this->value_object->setItalic(true));
         $this->assertTrue($this->value_object->isItalic());
     }
 
@@ -99,8 +99,8 @@ class BaseValueTest extends AbstractValueTestCase
     {
         $this->assertNull($this->value_object->getColor());
         $this->assertNull($this->value_object->getBackgroundColor());
-        $this->value_object->setColor('#123456');
-        $this->value_object->setBackgroundColor('#123456');
+        $this->assertSame($this->value_object, $this->value_object->setColor('#123456'));
+        $this->assertSame($this->value_object, $this->value_object->setBackgroundColor('#123456'));
         $this->assertSame('123456', $this->value_object->getColor());
         $this->assertSame('123456', $this->value_object->getBackgroundColor());
     }
@@ -240,6 +240,42 @@ class BaseValueTest extends AbstractValueTestCase
             new $expected_type_class('value', $this->gf_field),
             BaseValue::getValueObject($field, 'value', $this->gf_field, $is_label)
         );
+    }
+
+    /**
+     * Test case for {@see BaseValue::hasBorder()}.
+     * @since $ver$
+     */
+    public function testHasBorder(): void
+    {
+        $this->assertFalse($this->value_object->hasBorder());
+        $this->assertSame($this->value_object, $this->value_object->setBorder('#CCCCCC'));
+        $this->assertTrue($this->value_object->hasBorder());
+    }
+
+    /**
+     * Test case for {@see BaseValue::setBorder()}.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testSetBorder(): void
+    {
+        $this->assertSame($this->value_object, $this->value_object->setBorder('#CCCCCC', 'left'));
+        $this->assertSame('CCCCCC', $this->value_object->getBorderColor());
+        $this->assertSame('left', $this->value_object->getBorderPosition());
+    }
+
+    /**
+     * Test case for {@see BaseValue::removeBorder()}.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testRemoveBorder(): void
+    {
+        $this->value_object->setBorder('#CCCCCC', 'left');
+        $this->value_object->removeBorder();
+        $this->assertNull($this->value_object->getBorderColor());
+        $this->assertNull($this->value_object->getBorderPosition());
     }
 }
 
