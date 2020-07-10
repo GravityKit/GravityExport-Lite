@@ -209,6 +209,7 @@ Checkout this example:
 
 == Changelog ==
 = Unreleased =
+* Last version to support PHP 7.1. Next minor release will only support 7.2+.
 * Feature: Added `setFontSize(?float $font_size)` on value objects, so every cell can have a different font size.
 * Feature: Added `setBorder($color, $position)` on value objects to set a border on a cell.
 * Feature: Added CurrencyValue type and formatting on numeric cells. So you can have a currency symbol and a numeric value.
@@ -217,6 +218,7 @@ Checkout this example:
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you changed the column names.
 * Bugfix: Disabled warning when `set_time_limit` is not allowed to prevent failing download.
+* Enhancement: Updated PHPSpreadsheet to 1.12 (last to support PHP 7.1).
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Enhancement: Added quick-link to settings on the plugins page.
 * Enhancement: Replaced all translation calls with wordpress native calls to be polite to Poedit.
