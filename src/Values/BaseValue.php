@@ -5,18 +5,51 @@ namespace GFExcel\Values;
 use GFExcel\Exception\WrongValueException;
 use GFExcel\Field\AbstractField;
 
+/**
+ * @since 1.3.0
+ */
 abstract class BaseValue
 {
+    /**
+     * Variable representing a boolean cell.
+     * @since 1.3.0
+     * @var string
+     */
     public const TYPE_BOOL = 'bool';
 
+    /**
+     * Variable representing a numeric cell.
+     * @since 1.3.0
+     * @var string
+     */
     public const TYPE_NUMERIC = 'numeric';
 
+    /**
+     * Variable representing a string cell (default).
+     * @since 1.3.0
+     * @var string
+     */
     public const TYPE_STRING = 'string';
 
+    /**
+     * Variable representing a boolean cell.
+     * @since $ver$
+     * @var string
+     */
     public const TYPE_CURRENCY = 'currency';
 
+    /**
+     * The value of the cell.
+     * @since 1.3.0
+     * @var mixed
+     */
     protected $value = '';
 
+    /**
+     * The gravity forms field for this value.
+     * @since 1.3.0
+     * @var \GF_Field
+     */
     protected $gf_field;
 
     /**
@@ -26,16 +59,46 @@ abstract class BaseValue
      */
     protected $is_numeric = false;
 
+    /**
+     * The text color of the cell.
+     * @since 1.4.1
+     * @var string
+     */
     protected $color = '';
 
+    /**
+     * The background color of the cell.
+     * @since 1.4.1
+     * @var string
+     */
     protected $background_color = '';
 
+    /**
+     * Whether the value is bold.
+     * @since 1.4.0
+     * @var bool
+     */
     protected $is_bold = false;
 
+    /**
+     * Whether the value is italic.
+     * @since 1.4.0
+     * @var bool
+     */
     protected $is_italic = false;
 
+    /**
+     * Whether the value is a boolean value.
+     * @since 1.3.0
+     * @var bool
+     */
     protected $is_bool = false;
 
+    /**
+     * The url of the cell..
+     * @since 1.4.0
+     * @var string
+     */
     protected $url;
 
     /**
@@ -44,6 +107,20 @@ abstract class BaseValue
      * @var null|float
      */
     protected $font_size;
+
+    /**
+     * The color of the border of the cell.
+     * @since $ver$
+     * @var string
+     */
+    protected $border_color = '';
+
+    /**
+     * The position of the border.
+     * @since $ver$
+     * @var string
+     */
+    protected $border_position = '';
 
     /**
      * Creates a BaseValue instance.
@@ -224,60 +301,78 @@ abstract class BaseValue
      * Set the url of the value.
      * @since 1.3.0
      * @param string $url The url.
+     * @return self This instance.
      */
     public function setUrl($url)
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
      * Set the color of the value
      * @since 1.4.0
      * @param string $hexcode The color.
+     * @return self This instance.
      */
     public function setColor($hexcode = '#000000')
     {
         $this->color = $hexcode;
+
+        return $this;
     }
 
     /**
      * Set the color of the cell background.
      * @since 1.4.0
      * @param string $color The hex color.
+     * @return self This instance.
      */
     public function setBackgroundColor($color = '')
     {
         $this->background_color = $color;
+
+        return $this;
     }
 
     /**
      * Set the value to bold.
      * @since 1.4.0
      * @param bool $bold Whether the text should be bold.
+     * @return self This instance.
      */
     public function setBold($bold = true)
     {
         $this->is_bold = (boolean) $bold;
+
+        return $this;
     }
 
     /**
      * Set the value to italic.
      * @since 1.4.0
      * @param bool $italic Whether the text should be italic.
+     * @return self This instance.
      */
     public function setItalic($italic = true)
     {
         $this->is_italic = (boolean) $italic;
+
+        return $this;
     }
 
     /**
      * Sets the font size of this value.
      * @since $ver$
      * @param null|float $font_size The font size in pt.
+     * @return self This instance.
      */
-    public function setFontSize(?float $font_size): void
+    public function setFontSize(?float $font_size): self
     {
         $this->font_size = $font_size;
+
+        return $this;
     }
 
     /**
@@ -293,7 +388,7 @@ abstract class BaseValue
     /**
      * Get the GF_Field object
      * @since 1.5.5
-     * @return \GF_Field|null The GF_Field object.
+     * @return \GF_Field The GF_Field object.
      */
     public function getField()
     {
@@ -317,10 +412,89 @@ abstract class BaseValue
      */
     public function getFieldId()
     {
-        if (!$this->getField()) {
+        return (string) $this->getField()->id;
+    }
+
+    /**
+     * Whether this cell has a border.
+     * @since $ver$
+     * @return bool Whether this cell has a border.
+     */
+    public function hasBorder(): bool
+    {
+        return !empty($this->border_position);
+    }
+
+    /**
+     * Returns the color of the border.
+     * @since $ver$
+     * @return string|null The color of the border.
+     * @throws WrongValueException when the color is nog valid.
+     */
+    public function getBorderColor(): ?string
+    {
+        if (empty($this->border_color) || !$this->hasBorder()) {
             return null;
         }
 
-        return (string) $this->getField()->id;
+        if ($this->border_color[0] !== '#' || strlen($this->border_color) !== 7) {
+            throw new WrongValueException(
+                'The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.'
+            );
+        }
+
+        return substr($this->border_color, 1);
+    }
+
+    /**
+     * The position of the border.
+     * @since $ver$
+     * @return string|null The position of the border. (left, right, top, bottom, allBorders).
+     * @throws WrongValueException When an invalid position was provided.
+     */
+    public function getBorderPosition(): ?string
+    {
+        if (!$this->hasBorder()) {
+            return null;
+        }
+
+        $positions = ['left', 'right', 'top', 'bottom', 'allBorders'];
+        if (!in_array($this->border_position, $positions, true)) {
+            throw new WrongValueException(sprintf(
+                'The border position "%s" is invalid. It should be one of: %s.',
+                $this->border_position,
+                implode(', ', $positions)
+            ));
+        }
+
+        return $this->border_position;
+    }
+
+    /**
+     * Sets the border for a cell.
+     * @since $ver$
+     * @param string $color The color of the border.
+     * @param string $position The position of the border.
+     * @return self This instance.
+     */
+    public function setBorder(string $color = '', string $position = 'allBorders'): self
+    {
+        $this->border_color = $color;
+        $this->border_position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Remove the border from a cell.
+     * @since $ver$
+     * @return self This instance.
+     */
+    public function removeBorder(): self
+    {
+        $this->border_color = '';
+        $this->border_position = '';
+
+        return $this;
     }
 }
