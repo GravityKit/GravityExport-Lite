@@ -153,8 +153,9 @@ class BaseValueTest extends AbstractValueTestCase
     public function testGetFontSize(): void
     {
         $this->assertNull($this->value_object->getFontSize());
-        $this->value_object->setFontSize(11.111);
+        $this->assertSame($this->value_object, $this->value_object->setFontSize(11.111));
         $this->assertSame(11.111, $this->value_object->getFontSize());
+        $this->assertNull($this->value_object->setFontSize(null)->getFontSize());
     }
 
     /**

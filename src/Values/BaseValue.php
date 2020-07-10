@@ -368,7 +368,7 @@ abstract class BaseValue
      * @param null|float $font_size The font size in pt.
      * @return self This instance.
      */
-    public function setFontSize(?float $font_size)
+    public function setFontSize(?float $font_size): self
     {
         $this->font_size = $font_size;
 
@@ -426,7 +426,7 @@ abstract class BaseValue
     }
 
     /**
-     * Returns the
+     * Returns the color of the border.
      * @since $ver$
      * @return string|null The color of the border.
      * @throws WrongValueException when the color is nog valid.
