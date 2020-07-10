@@ -252,6 +252,7 @@ class BaseValueTest extends AbstractValueTestCase
         $this->assertFalse($this->value_object->hasBorder());
         $this->assertSame($this->value_object, $this->value_object->setBorder('#CCCCCC'));
         $this->assertTrue($this->value_object->hasBorder());
+        $this->assertFalse($this->value_object->removeBorder()->hasBorder());
     }
 
     /**
