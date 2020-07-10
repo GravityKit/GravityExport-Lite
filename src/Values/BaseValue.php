@@ -461,7 +461,8 @@ abstract class BaseValue
         $positions = ['left', 'right', 'top', 'bottom', 'allBorders'];
         if (!in_array($this->border_position, $positions, true)) {
             throw new WrongValueException(sprintf(
-                'The border position should be one of: %s.',
+                'The border position "%s" is invalid. It should be one of: %s.',
+                $this->border_position,
                 implode(', ', $positions)
             ));
         }

@@ -200,16 +200,12 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
         $invalidCharacters = Worksheet::getInvalidCharacters();
-        //First strip form title, so we still have 30 charachters.
+        // First strip form title, so we still have 30 characters.
         $form_title = str_replace($invalidCharacters, '', $form['title']);
-        $worksheet_title = mb_substr(gf_apply_filters(
-            [
-                'gfexcel_renderer_worksheet_title',
-                $form['id'],
-            ],
-            $form_title,
-            $form
-        ), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
+        $worksheet_title = mb_substr(gf_apply_filters([
+            'gfexcel_renderer_worksheet_title',
+            $form['id'],
+        ], $form_title, $form), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
 
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);

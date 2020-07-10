@@ -254,7 +254,7 @@ class BaseValueTest extends AbstractValueTestCase
     }
 
     /**
-     * Test case for {@see BaseValue::setBorder()}.
+     * Test case for {@see BaseValue::setBorder()}, {@see BaseValue::getBorderColor()} and {@see BaseValue::getBorderPosition()}.
      * @since $ver$
      * @throws WrongValueException
      */
@@ -276,6 +276,49 @@ class BaseValueTest extends AbstractValueTestCase
         $this->value_object->removeBorder();
         $this->assertNull($this->value_object->getBorderColor());
         $this->assertNull($this->value_object->getBorderPosition());
+    }
+
+    /**
+     * Test case for {@see BaseValue::getBorderPosition()}.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testGetBorderPosition(): void
+    {
+        $this->assertNull($this->value_object->getBorderPosition());
+        $this->assertSame($this->value_object, $this->value_object->setBorder('#CCCCCC'));
+        $this->assertSame('allBorders', $this->value_object->getBorderPosition());
+        $this->assertSame($this->value_object, $this->value_object->setBorder('#CCCCCC', 'left'));
+        $this->assertSame('left', $this->value_object->getBorderPosition());
+    }
+
+    /**
+     * Test case for {@see BaseValue::getBorderPosition()} with an invalid position.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testGetBorderPositionWithException(): void
+    {
+        $this->value_object->setBorder('#CCCCCC', 'invalid');
+        $this->expectExceptionObject(
+            new WrongValueException('The border position "invalid" is invalid. It should be one of: left, right, top, bottom, allBorders.')
+        );
+        $this->value_object->getBorderPosition();
+    }
+    /**
+     * Test case for {@see BaseValue::getBorderColor()} with an invalid color.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testGetBorderColorWithException():void
+    {
+        $this->assertNull($this->value_object->getBorderColor());
+        $this->value_object->setBorder('invalid');
+        $this->expectExceptionObject(
+            new WrongValueException('The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.')
+        );
+        $this->value_object->getBorderColor();
+
     }
 }
 
