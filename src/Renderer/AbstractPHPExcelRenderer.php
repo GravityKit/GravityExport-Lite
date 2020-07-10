@@ -341,10 +341,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
             if ($value->hasBorder()) {
                 $array = array_filter([
-                    $value->getBorderPosition() => [
+                    $value->getBorderPosition() => array_filter([
                         'borderStyle' => Border::BORDER_THIN,
                         'color' => $value->getBorderColor() ? ['rgb' => $value->getBorderColor()] : null,
-                    ],
+                    ]),
                 ]);
 
                 $cell->getStyle()->getBorders()->applyFromArray($array);

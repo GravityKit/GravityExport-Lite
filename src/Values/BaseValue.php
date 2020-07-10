@@ -433,7 +433,7 @@ abstract class BaseValue
      */
     public function getBorderColor(): ?string
     {
-        if (!$this->hasBorder()) {
+        if (empty($this->border_color) || !$this->hasBorder()) {
             return null;
         }
 
@@ -477,7 +477,7 @@ abstract class BaseValue
      * @param string $position The position of the border.
      * @return self This instance.
      */
-    public function setBorder(string $color, string $position = 'allBorders'): self
+    public function setBorder(string $color = '', string $position = 'allBorders'): self
     {
         $this->border_color = $color;
         $this->border_position = $position;

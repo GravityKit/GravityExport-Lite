@@ -306,12 +306,25 @@ class BaseValueTest extends AbstractValueTestCase
         );
         $this->value_object->getBorderPosition();
     }
+
+    /**
+     * Test case for {@see BaseValue::getBorderColor()}.
+     * @since $ver$
+     * @throws WrongValueException
+     */
+    public function testGetBorderColor(): void
+    {
+        $this->assertNull($this->value_object->getBorderColor());
+        $this->assertNull($this->value_object->setBorder()->getBorderColor());
+        $this->assertSame('BADA55', $this->value_object->setBorder('#BADA55')->getBorderColor());
+    }
+
     /**
      * Test case for {@see BaseValue::getBorderColor()} with an invalid color.
      * @since $ver$
      * @throws WrongValueException
      */
-    public function testGetBorderColorWithException():void
+    public function testGetBorderColorWithException(): void
     {
         $this->assertNull($this->value_object->getBorderColor());
         $this->value_object->setBorder('invalid');
@@ -319,7 +332,6 @@ class BaseValueTest extends AbstractValueTestCase
             new WrongValueException('The color should receive a full 6-digit hex-color and a pound sign. eg. #000000.')
         );
         $this->value_object->getBorderColor();
-
     }
 }
 
