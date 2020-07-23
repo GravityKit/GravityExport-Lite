@@ -133,7 +133,7 @@ class FieldsRepository
                 $field->get_input_type(),
                 $field->formId,
                 $field->id,
-            ], in_array($field->id, $disabled_fields, true), $field);
+            ], in_array($field->id, $disabled_fields, false), $field);
         });
 
         return $this->fields;
