@@ -3,7 +3,6 @@
 namespace GFExcel\Field;
 
 use GFExcel\Transformer\Transformer;
-use GFExcel\Values\BaseValue;
 
 /**
  * A Field for the Transformer for `repeater` fields.

@@ -14,7 +14,7 @@ interface RowsInterface
      * Should return the rows this field needs to render all cells.
      * @since $ver$
      * @param array|null $entry Optional entry object.
-     * @return iterable|\Generator|BaseValue[][] Rows containing cells.
+     * @return iterable|\Traversable|BaseValue[][] Rows containing cells.
      */
     public function getRows(?array $entry = null): iterable;
 }

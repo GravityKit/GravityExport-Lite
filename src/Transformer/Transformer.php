@@ -7,7 +7,11 @@ use GFExcel\Field\BaseField;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\SeparableField;
 
-class Transformer implements TransformerInterface
+/**
+ * Handles transforming of GF_Field types into GFExcel fields.
+ * @since 1.0.0
+ */
+class Transformer
 {
     /**
      * List of specific field classes
@@ -37,17 +41,16 @@ class Transformer implements TransformerInterface
     {
         $type = $field->get_input_type();
 
-        // do we have a predefined type?
+        // Do we have a predefined type?
         if ($fieldClass = $this->getField($type, $field)) {
             return $fieldClass;
         }
 
-        // maybe is separable, maybe it's maybelline!
+        // Maybe is separable, maybe it's maybelline!
         if (is_array($field->get_entry_inputs())) {
             return new SeparableField($field);
         }
 
-        // Ya basic!
         return new BaseField($field);
     }
 

@@ -8,7 +8,6 @@ use GFExcel\Repository\FormsRepository;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\CombinerInterface;
 use GFExcel\Transformer\Transformer;
-use GFExcel\Transformer\TransformerInterface;
 use GFExcel\Values\BaseValue;
 
 /**
@@ -20,7 +19,7 @@ class GFExcelOutput
     /**
      * The transformer.
      * @since 1.0.0
-     * @var TransformerInterface
+     * @var Transformer
      */
     private $transformer;
 
@@ -73,14 +72,14 @@ class GFExcelOutput
      * @since 1.0.0
      * @param int $form_id The form id.
      * @param RendererInterface $renderer The renderer.
-     * @param CombinerInterface $combiner The combiner. {@since $ver$}
+     * @param CombinerInterface|null $combiner The combiner. {@since $ver$}
      */
-    public function __construct($form_id, RendererInterface $renderer, CombinerInterface $combiner)
+    public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null)
     {
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
-        $this->combiner = $combiner;
+        $this->combiner = $combiner ?? GFExcel::getCombiner();
 
         @set_time_limit(0); // suppress warning when disabled
     }
