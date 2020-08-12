@@ -5,6 +5,10 @@ namespace GFExcel\Transformer;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\RowsInterface;
 
+/**
+ * Interface that represents a combiner for the rows.
+ * @since $ver$
+ */
 interface CombinerInterface extends RowsInterface
 {
     /**

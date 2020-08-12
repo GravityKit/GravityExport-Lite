@@ -295,7 +295,7 @@ class GFExcel
                     $form_id
                 ], new PHPExcelRenderer());
 
-                $output = new GFExcelOutput($form_id, $renderer, self::getCombiner());
+                $output = new GFExcelOutput($form_id, $renderer);
 
                 // trigger download event.
                 do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);

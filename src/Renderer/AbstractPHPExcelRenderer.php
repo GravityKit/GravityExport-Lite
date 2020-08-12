@@ -159,20 +159,20 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             }
 
             foreach ($row as $i => $value) {
-                $worksheet->setCellValueExplicitByColumnAndRow(
-                    $i + 1,
-                    $x + 1,
-                    $this->getCellValue($value),
-                    $this->getCellType($value)
-                );
-
-                $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
-                if (!$cell) {
-                    // This isn't going to happen, but it makes the IDE happy.
-                    continue;
-                }
-
                 try {
+                    $worksheet->setCellValueExplicitByColumnAndRow(
+                        $i + 1,
+                        $x + 1,
+                        $this->getCellValue($value),
+                        $this->getCellType($value)
+                    );
+
+                    $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
+                    if (!$cell) {
+                        // This isn't going to happen, but it makes the IDE happy.
+                        continue;
+                    }
+
                     $this->setProperties($cell, $value);
 
                     $wrap_text = (bool) gf_apply_filters([

@@ -93,6 +93,10 @@ ul.fields-select li {
     display: none;
 }
 
+#gfexcel_enabled_fields {
+    border: 1px solid #1e8cbe;
+}
+
 .button.button-cta {
     background: #5cb85c;
     border-color: #4cae4c;
