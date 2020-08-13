@@ -346,13 +346,11 @@ class GFExcelAdmin extends \GFAddOn
 
         // plugin is active
         if (array_key_exists('deactivate', $actions)) {
-            array_unshift(
-                $actions,
-                implode('', [
-                    '<a href="' . esc_url(admin_url('admin.php')) . '?page=gf_settings&subview=gf-entries-in-excel">',
-                    esc_html__('Settings', 'gravityforms'),
-                    '</a>',
-                ]));
+            $actions[] = implode('', [
+                '<a target="_blank" rel="nofollow" href="https://subscribe.gfexcel.com/pro-add-on"><b>',
+                esc_html__('Pro version?', 'gravityforms'),
+                '</b></a>',
+            ]);
         }
 
         return $actions;
