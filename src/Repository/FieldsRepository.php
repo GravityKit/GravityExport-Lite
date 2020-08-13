@@ -92,7 +92,7 @@ class FieldsRepository
      * Get the id's of the meta fields we want before the rest of the fields
      * @return array
      */
-    private function getFirstMetaFields()
+    private function getFirstMetaFields(): array
     {
         return ['id', 'date_created', 'ip'];
     }
