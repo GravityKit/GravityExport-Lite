@@ -7,8 +7,6 @@ use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\Migration\Manager\MigrationManager;
-use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
@@ -52,6 +50,18 @@ class GFExcelAdmin extends \GFAddOn
      * {@inheritdoc}
      */
     protected $_path = 'gf-entries-in-excel/gfexcel.php';
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    protected $_full_path = __FILE__;
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    protected $_url = 'https://gfexcel.com';
 
     /**
      * @return string
@@ -1243,6 +1253,24 @@ class GFExcelAdmin extends \GFAddOn
                     'title' => esc_html__('Download', GFExcel::$slug),
                     'href' => trailingslashit($url),
                 ]);
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Full path is a level deeper than other add-ons.
+     *
+     * @since $ver$
+     */
+    public function update_path(): void
+    {
+        $path_dirname = dirname($this->_path);
+        if ($path_dirname !== '.') {
+            $full_path_dirname = basename(dirname($this->_full_path, 2));
+            if ($path_dirname !== $full_path_dirname) {
+                $this->_path = trailingslashit($full_path_dirname) . basename($this->_path);
             }
         }
     }
