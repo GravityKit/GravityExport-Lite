@@ -208,7 +208,7 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= 1.8.1 =
+= Unreleased =
 * Bugfix: Numeric values were presented as currency by default.
 
 = 1.8.0 =
