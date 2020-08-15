@@ -1260,7 +1260,7 @@ class GFExcelAdmin extends \GFAddOn
      *
      * Full path is a level deeper than other add-ons.
      *
-     * @since $ver$
+     * @since 1.8.0
      */
     public function update_path(): void
     {

@@ -137,7 +137,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getUrl()} and {@see BaseValue::setUrl()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetUrl(): void
     {
@@ -148,7 +148,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getFontSize()} and {@see BaseValue::setFontSize()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetFontSize(): void
     {
@@ -160,7 +160,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getField()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetField(): void
     {
@@ -169,7 +169,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getFieldId()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetFieldId(): void
     {
@@ -178,7 +178,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getFieldType()}
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetFieldType(): void
     {
@@ -188,7 +188,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Data provider for {@see BaseValueTest::testGetValueObject()}.
-     * @since $ver$
+     * @since 1.8.0
      * @return mixed[] The provided data.
      */
     public function dataProviderForGetValueObject(): array
@@ -202,7 +202,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getValueObject()}.
-     * @since $ver$
+     * @since 1.8.0
      * @dataProvider dataProviderForGetValueObject The data provider.
      * @param string $type The field type.
      * @param string $expected_type_class The expected type class.
@@ -245,7 +245,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::hasBorder()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testHasBorder(): void
     {
@@ -257,7 +257,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::setBorder()}, {@see BaseValue::getBorderColor()} and {@see BaseValue::getBorderPosition()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testSetBorder(): void
@@ -269,7 +269,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::removeBorder()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testRemoveBorder(): void
@@ -282,7 +282,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getBorderPosition()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testGetBorderPosition(): void
@@ -296,7 +296,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getBorderPosition()} with an invalid position.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testGetBorderPositionWithException(): void
@@ -310,7 +310,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getBorderColor()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testGetBorderColor(): void
@@ -322,7 +322,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getBorderColor()} with an invalid color.
-     * @since $ver$
+     * @since 1.8.0
      * @throws WrongValueException
      */
     public function testGetBorderColorWithException(): void
@@ -337,7 +337,7 @@ class BaseValueTest extends AbstractValueTestCase
 }
 
 /**
- * @since $ver$
+ * @since 1.8.0
  */
 class ConcreteBaseValue extends BaseValue
 {

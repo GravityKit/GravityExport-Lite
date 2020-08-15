@@ -10,7 +10,7 @@ class NumericValue extends BaseValue
 {
     /**
      * Default formatting for numeric value.
-     * @since $ver$
+     * @since 1.8.1
      */
     public const FORMAT_DEFAULT = 'General';
 

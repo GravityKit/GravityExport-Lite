@@ -10,7 +10,7 @@ class CurrencyValue extends NumericValue
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.1
      */
     protected $format = NumericValue::FORMAT_CURRENCY_NONE;
 
