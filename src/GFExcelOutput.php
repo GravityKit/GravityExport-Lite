@@ -62,7 +62,7 @@ class GFExcelOutput
 
     /**
      * The combiner for the rows.
-     * @since $ver$
+     * @since 1.8.0
      * @var CombinerInterface
      */
     private $combiner;
@@ -72,7 +72,7 @@ class GFExcelOutput
      * @since 1.0.0
      * @param int $form_id The form id.
      * @param RendererInterface $renderer The renderer.
-     * @param CombinerInterface|null $combiner The combiner. {@since $ver$}
+     * @param CombinerInterface|null $combiner The combiner. {@since 1.8.0}
      */
     public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null)
     {
