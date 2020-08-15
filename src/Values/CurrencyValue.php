@@ -9,9 +9,8 @@ namespace GFExcel\Values;
 class CurrencyValue extends NumericValue
 {
     /**
-     * The format for currency.
+     * @inheritdoc
      * @since $ver$
-     * @var string
      */
     protected $format = NumericValue::FORMAT_CURRENCY_NONE;
 
