@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Numeric values were presented as currency by default.
+
 = 1.8.0 =
 * Last version to support PHP 7.1. Next minor release will only support 7.2+.
 * Feature: Added `setFontSize(?float $font_size)` on value objects, so every cell can have a different font size.

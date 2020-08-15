@@ -9,6 +9,12 @@ namespace GFExcel\Values;
 class CurrencyValue extends NumericValue
 {
     /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    protected $format = NumericValue::FORMAT_CURRENCY_NONE;
+
+    /**
      * Currency formatting with symbol first.
      * @since 1.8.0
      */
