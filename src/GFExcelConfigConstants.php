@@ -14,19 +14,19 @@ class GFExcelConfigConstants
 
     /**
      * The hook that rewrites the combiner.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const GFEXCEL_DOWNLOAD_COMBINER = 'gfexcel_download_combiner';
 
     /**
      * The hook that rewrites the notification manager.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const GFEXCEL_NOTIFICATION_MANAGER = 'gfexcel_notification_manager';
 
     /**
      * The hook that rewrites the notification repository.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const GFEXCEL_NOTIFICATION_REPOSITORY = 'gfexcel_notification_repository';
 }

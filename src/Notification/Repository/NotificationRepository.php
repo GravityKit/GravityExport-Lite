@@ -7,19 +7,19 @@ use GFExcel\Notification\Notification;
 
 /**
  * Notification repository that retrieves the notifications from a transient value.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationRepository implements NotificationRepositoryInterface
 {
     /**
      * The transient key that holds the notifications.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const NOTIFICATIONS_TRANSIENT = 'gfexcel_notifications';
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getNotifications(): array
     {
@@ -36,7 +36,7 @@ class NotificationRepository implements NotificationRepositoryInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function markAsDismissed(string $id): void
     {
@@ -56,7 +56,7 @@ class NotificationRepository implements NotificationRepositoryInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function storeNotification(Notification ...$notification): void
     {
@@ -68,7 +68,7 @@ class NotificationRepository implements NotificationRepositoryInterface
 
     /**
      * Helper method that creates a new exception instance.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $message The exception message.
      * @return NotificationRepositoryException The exception.
      */

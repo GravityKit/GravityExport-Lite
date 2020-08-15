@@ -6,20 +6,20 @@ use GFExcel\Values\BoolValue;
 
 /**
  * Unit tests for {@see BoolValue}.
- * @since $ver$
+ * @since 1.8.0
  */
 class BoolValueTest extends AbstractValueTestCase
 {
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var BoolValue
      */
     private $value_object;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {
@@ -30,7 +30,7 @@ class BoolValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BoolValue::isBool()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsBool(): void
     {
@@ -39,7 +39,7 @@ class BoolValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BoolValue::getValue()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetValue(): void
     {

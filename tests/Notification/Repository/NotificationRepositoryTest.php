@@ -9,20 +9,20 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see NotificationRepository}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationRepositoryTest extends TestCase
 {
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationRepository
      */
     private $repository;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Data provider for {@see NotificationRepositoryTest::testGetNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @return mixed[] The provided data.
      */
     public function dataProviderForGetNotifications(): array
@@ -55,7 +55,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see NotificationRepository::getNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @param mixed $transient_return The return value from the transient.
      * @param array $expected_result The expected result.
      * @dataProvider dataProviderForGetNotifications
@@ -68,7 +68,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see NotificationRepository::markAsDismissed()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationRepositoryException
      */
     public function testMarkAsDismissed(): void
@@ -89,7 +89,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see NotificationRepository::markAsDismissed()} with an exception.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testMarkAsDismissedWithException(): void
     {
@@ -104,7 +104,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see NotificationRepository::storeNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationRepositoryException
      */
     public function testStoreNotification(): void
@@ -129,7 +129,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see NotificationRepository::storeNotification()} with an exception.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationRepositoryException
      */
     public function testStoreNotificationWithException(): void
@@ -146,7 +146,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Helper method to mock the `get_transient` return value.
-     * @since $ver$
+     * @since 1.8.0
      * @param mixed $transient_return The return value.
      */
     public function setupGetNotifications($transient_return): void
@@ -159,7 +159,7 @@ class NotificationRepositoryTest extends TestCase
 
     /**
      * Helper method that returns 2 notifications.
-     * @since $ver$
+     * @since 1.8.0
      * @return Notification[] The notifications.
      */
     private function getNotifications(): array

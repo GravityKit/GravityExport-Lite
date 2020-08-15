@@ -6,13 +6,13 @@ use GFExcel\Values\NumericValue;
 
 /**
  * Test case for {@see NumericValue}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NumericValueTest extends AbstractValueTestCase
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {
@@ -21,7 +21,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see NumericValue::isNumeric()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsNumeric(): void
     {
@@ -30,7 +30,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Data provider for {@see NumericValueTest::testGetValue()}.
-     * @since $ver$
+     * @since 1.8.0
      * @return mixed[] The data.
      */
     public function dataProviderForGetValue(): array
@@ -45,7 +45,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see NumericValue::getValue()}.
-     * @since $ver$
+     * @since 1.8.0
      * @param mixed $value The provided value.
      * @dataProvider dataProviderForGetValue the data provider.
      */
@@ -56,7 +56,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see NumericValue::getFormat()} and {@see NumericValue::setFormat()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testFormat(): void
     {

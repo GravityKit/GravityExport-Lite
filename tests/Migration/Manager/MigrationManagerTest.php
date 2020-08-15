@@ -8,20 +8,20 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see MigrationManager}.
- * @since $ver$
+ * @since 1.8.0
  */
 class MigrationManagerTest extends TestCase
 {
     /**
      * The manager under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var MigrationManager
      */
     private $manager;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ class MigrationManagerTest extends TestCase
 
     /**
      * Test case for {@see MigrationManager::setMigrations()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testSetMigrations(): void
     {
@@ -61,7 +61,7 @@ class MigrationManagerTest extends TestCase
 
     /**
      * Test case for {@see MigrationManager::getMigrations()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetMigrations(): void
     {

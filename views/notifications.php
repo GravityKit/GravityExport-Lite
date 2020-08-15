@@ -6,7 +6,7 @@ use GFExcel\Notification\Exception\NotificationException;
 
 /**
  * Template that renders the notifications.
- * @since $ver$
+ * @since 1.8.0
  */
 if (!$this instanceof NotificationsAction) {
     return;

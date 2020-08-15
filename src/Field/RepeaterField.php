@@ -48,7 +48,7 @@ class RepeaterField extends SeparableField implements RowsInterface
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getRows(?array $entry = null): array
     {

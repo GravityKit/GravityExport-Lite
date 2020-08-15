@@ -4,32 +4,32 @@ namespace GFExcel\Values;
 
 /**
  * Value object that represents a currency.
- * @since $ver$
+ * @since 1.8.0
  */
 class CurrencyValue extends NumericValue
 {
     /**
      * Currency formatting with symbol first.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const FORMAT_CURRENCY_FIRST = '"%s" #,##0.00_-';
 
     /**
      * Currency formatting with symbol last.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const FORMAT_CURRENCY_LAST = '#,##0.00_- "%s"';
 
     /**
      * The currency symbol.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $symbol = '$';
 
     /**
      * Returns the currency symbol.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The symbol.
      */
     public function getSymbol(): string
@@ -39,7 +39,7 @@ class CurrencyValue extends NumericValue
 
     /**
      * Sets the symbol.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $symbol The symbol.
      */
     public function setSymbol(string $symbol): void
@@ -49,7 +49,7 @@ class CurrencyValue extends NumericValue
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getFormat(): string
     {
@@ -58,7 +58,7 @@ class CurrencyValue extends NumericValue
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getValue()
     {

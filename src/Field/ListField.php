@@ -6,7 +6,7 @@ use GFExcel\Values\BaseValue;
 
 /**
  * Field transformer that represents a List field
- * @since $ver$
+ * @since 1.3.0
  */
 class ListField extends BaseField implements RowsInterface
 {
@@ -59,7 +59,7 @@ class ListField extends BaseField implements RowsInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getRows(?array $entry = null): iterable
     {

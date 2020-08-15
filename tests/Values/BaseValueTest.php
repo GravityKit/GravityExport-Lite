@@ -11,20 +11,20 @@ use WP_Mock\Functions;
 
 /**
  * Unit tests for {@see BaseValue}.
- * @since $ver$
+ * @since 1.8.0
  */
 class BaseValueTest extends AbstractValueTestCase
 {
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var BaseValue
      */
     private $value_object;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {
@@ -35,7 +35,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getValue()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetValue(): void
     {
@@ -44,7 +44,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::__toString()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testToString(): void
     {
@@ -53,7 +53,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::isNumeric()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsNumeric(): void
     {
@@ -62,7 +62,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::isBool()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsBool(): void
     {
@@ -71,7 +71,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::isBold()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsBold(): void
     {
@@ -82,7 +82,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::isItalic()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsItalic(): void
     {
@@ -93,7 +93,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getColor()}, {@see BaseValue::setColor()}, {@see BaseValue::getBackgroundColor()} and {@see BaseValue::setBackgroundColor()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetColors(): void
     {
@@ -107,7 +107,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getColor()} and {@see BaseValue::setColor()} with an invalid color.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetColorException(): void
     {
@@ -122,7 +122,7 @@ class BaseValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see BaseValue::getBackgroundColor()} and {@see BaseValue::setBackgroundColor()} with an invalid color.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetBackgroundColorException(): void
     {

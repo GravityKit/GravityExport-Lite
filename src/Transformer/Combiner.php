@@ -9,20 +9,20 @@ use GFExcel\Values\StringValue;
 
 /**
  * Combines multiple fields into one row for an entry.
- * @since $ver$
+ * @since 1.8.0
  */
 class Combiner implements CombinerInterface
 {
     /**
      * Holds an array of arrays that contains the cells data for every row.
-     * @since $ver$
+     * @since 1.8.0
      * @var mixed[][] The rows with the cell values.
      */
     protected $rows = [];
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function parseEntry(array $fields, array $entry): void
     {
@@ -74,7 +74,7 @@ class Combiner implements CombinerInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getRows(?array $entry = null): iterable
     {
@@ -85,7 +85,7 @@ class Combiner implements CombinerInterface
 
     /**
      * Retrieves the rows for a field.
-     * @since $ver$
+     * @since 1.8.0
      * @param FieldInterface $field The field transformer.
      * @param array $entry The entry object.
      * @return iterable|\Generator|BaseValue[][] Rows containing cells.

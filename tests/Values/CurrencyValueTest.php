@@ -6,20 +6,20 @@ use GFExcel\Values\CurrencyValue;
 
 /**
  * Unit tests for {@see CurrencyValue}.
- * @since $ver$
+ * @since 1.8.0
  */
 class CurrencyValueTest extends AbstractValueTestCase
 {
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var CurrencyValue
      */
     private $value_object;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {
@@ -29,7 +29,7 @@ class CurrencyValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see CurrencyValue::getFormat()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testFormat(): void
     {
@@ -41,7 +41,7 @@ class CurrencyValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see CurrencyValue::getSymbol()} and {@see CurrencyValue::setSymbol()}
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testSymbol(): void
     {
@@ -52,7 +52,7 @@ class CurrencyValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see CurrencyValue::isNumeric()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsNumeric(): void
     {

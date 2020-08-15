@@ -7,20 +7,20 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Abstract test case for all Value types.
- * @since $ver$
+ * @since 1.8.0
  */
 class AbstractValueTestCase extends TestCase
 {
     /**
      * A mocked field instance.
-     * @since $ver$
+     * @since 1.8.0
      * @var \GF_Field|MockObject
      */
     protected $gf_field;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {

@@ -36,7 +36,7 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     protected $_capabilities_settings_page = 'gravityforms_export_entries';
 
@@ -53,13 +53,13 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     protected $_full_path = __FILE__;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     protected $_url = 'https://gfexcel.com';
 
@@ -331,7 +331,7 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Adds the settings link to the plugin row.
-     * @since $ver$
+     * @since 1.8.0
      * @param string[] $actions The action links.
      * @param string $plugin_file The name of the plugin file.
      * @return string[] The new action links.

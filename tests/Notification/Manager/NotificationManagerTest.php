@@ -12,27 +12,27 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for {@see NotificationManager}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationManagerTest extends TestCase
 {
     /*
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager
      */
     private $manager;
 
     /**
      * A mocked instance of a notification repository.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationRepositoryInterface|MockObject
      */
     private $repository;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -44,7 +44,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::__construct()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testConstruct(): void
@@ -58,7 +58,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::add()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testAdd(): void
@@ -71,7 +71,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotification(): void
@@ -88,7 +88,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::hasNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testHasNotification(): void
     {
@@ -100,7 +100,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGeNotifications(): void
@@ -117,7 +117,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotifications()} with invalid notification type.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotificationWithInvalidType(): void
@@ -131,7 +131,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismiss(): void
@@ -144,7 +144,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismissWithException(): void
@@ -159,7 +159,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()} with a {@see NotificationRepositoryException}
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismissWithRepositoryException(): void
@@ -176,7 +176,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::storeNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testStoreNotification(): void
@@ -188,7 +188,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::storeNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testStoreNotificationWithException(): void

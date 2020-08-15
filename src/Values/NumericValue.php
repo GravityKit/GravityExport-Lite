@@ -10,13 +10,13 @@ class NumericValue extends BaseValue
 {
     /**
      * Currency formatting without symbol.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const FORMAT_CURRENCY_NONE = '#,##0.00_-';
 
     /**
      * The currency format of the cell.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $format = self::FORMAT_CURRENCY_NONE;
@@ -41,7 +41,7 @@ class NumericValue extends BaseValue
 
     /**
      * Returns the currency format.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The format.
      */
     public function getFormat(): string
@@ -51,7 +51,7 @@ class NumericValue extends BaseValue
 
     /**
      * Sets the format.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $format The format.
      */
     public function setFormat(string $format): void

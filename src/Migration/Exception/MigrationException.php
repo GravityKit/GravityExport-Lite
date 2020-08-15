@@ -6,7 +6,7 @@ use GFExcel\Exception\Exception;
 
 /**
  * Exception that represents a Migration error.
- * @since $ver$
+ * @since 1.8.0
  */
 class MigrationException extends Exception
 {

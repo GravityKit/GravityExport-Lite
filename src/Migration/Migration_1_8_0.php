@@ -11,27 +11,27 @@ use GFExcel\Notification\Notification;
 
 /**
  * Migration for version 1.8.0
- * @since $ver$
+ * @since 1.8.0
  * @codeCoverageIgnore Don't test every migration.
  */
 class Migration_1_8_0 extends Migration
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     protected static $version = '1.8.0';
 
     /**
      * The notification manager.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager
      */
     private $notification_manager;
 
     /**
      * Creates the migration.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function __construct()
     {
@@ -40,7 +40,7 @@ class Migration_1_8_0 extends Migration
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function run(): void
     {

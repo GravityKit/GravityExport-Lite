@@ -33,7 +33,7 @@ abstract class BaseValue
 
     /**
      * Variable representing a boolean cell.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TYPE_CURRENCY = 'currency';
@@ -103,21 +103,21 @@ abstract class BaseValue
 
     /**
      * The specific font size for this value.
-     * @since $ver$
+     * @since 1.8.0
      * @var null|float
      */
     protected $font_size;
 
     /**
      * The color of the border of the cell.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $border_color = '';
 
     /**
      * The position of the border.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $border_position = '';
@@ -364,7 +364,7 @@ abstract class BaseValue
 
     /**
      * Sets the font size of this value.
-     * @since $ver$
+     * @since 1.8.0
      * @param null|float $font_size The font size in pt.
      * @return self This instance.
      */
@@ -377,7 +377,7 @@ abstract class BaseValue
 
     /**
      * Returns the font size in pt.
-     * @since $ver$
+     * @since 1.8.0
      * @return float|null The font size in pt.
      */
     public function getFontSize(): ?float
@@ -417,7 +417,7 @@ abstract class BaseValue
 
     /**
      * Whether this cell has a border.
-     * @since $ver$
+     * @since 1.8.0
      * @return bool Whether this cell has a border.
      */
     public function hasBorder(): bool
@@ -427,7 +427,7 @@ abstract class BaseValue
 
     /**
      * Returns the color of the border.
-     * @since $ver$
+     * @since 1.8.0
      * @return string|null The color of the border.
      * @throws WrongValueException when the color is nog valid.
      */
@@ -448,7 +448,7 @@ abstract class BaseValue
 
     /**
      * The position of the border.
-     * @since $ver$
+     * @since 1.8.0
      * @return string|null The position of the border. (left, right, top, bottom, allBorders).
      * @throws WrongValueException When an invalid position was provided.
      */
@@ -472,7 +472,7 @@ abstract class BaseValue
 
     /**
      * Sets the border for a cell.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $color The color of the border.
      * @param string $position The position of the border.
      * @return self This instance.
@@ -487,7 +487,7 @@ abstract class BaseValue
 
     /**
      * Remove the border from a cell.
-     * @since $ver$
+     * @since 1.8.0
      * @return self This instance.
      */
     public function removeBorder(): self

@@ -35,7 +35,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.7.5';
+    public static $version = '1.8.0';
 
     /**
      * The endpoint slug of the plugin.
@@ -60,7 +60,7 @@ class GFExcel
 
     /**
      * The notification manager singleton.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager|null
      */
     private static $notification_manager;
@@ -195,7 +195,7 @@ class GFExcel
 
     /**
      * Helper method to retrieve the available file extensions for the plugin.
-     * @since $ver$
+     * @since 1.8.0
      * @param bool $imploded Whether to return an imploded array for a regex pattern instead of an array.
      * @return string[]|string The extensions.
      */
@@ -424,7 +424,7 @@ class GFExcel
 
     /**
      * Returns the combiner instance.
-     * @since $ver$
+     * @since 1.8.0
      * @return CombinerInterface The combiner.
      */
     public static function getCombiner(): CombinerInterface
@@ -434,7 +434,7 @@ class GFExcel
 
     /**
      * Returns the notification singleton.
-     * @since $ver$
+     * @since 1.8.0
      * @return NotificationManager The notification manager.
      */
     public static function getNotificationManager(): NotificationManager

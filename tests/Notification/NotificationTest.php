@@ -8,13 +8,13 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see Notification}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationTest extends TestCase
 {
     /**
      * Test case for {@see Notification::getId()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetId(): void
     {
@@ -23,7 +23,7 @@ class NotificationTest extends TestCase
 
     /**
      * Test case for {@see Notification::getType()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetType(): void
     {
@@ -33,7 +33,7 @@ class NotificationTest extends TestCase
 
     /**
      * Test case for {@see Notification::getType()} with an invalid type.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetTypeWithInvalidType(): void
     {
@@ -45,7 +45,7 @@ class NotificationTest extends TestCase
 
     /**
      * Test case for {@see Notification::isDismissible()}.
-     * @since $ver$
+     * @since 1.8.0
      * @testWith [true]
      *           [false]
      */
@@ -59,7 +59,7 @@ class NotificationTest extends TestCase
 
     /**
      * Test case for {@see Notification::getMessage()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetMessage(): void
     {

@@ -17,27 +17,27 @@ use WP_Mock\Functions;
 
 /**
  * Unit tests for {@see Combiner}.
- * @since $ver$
+ * @since 1.8.0
  */
 class CombinerTest extends TestCase
 {
     /**
      * A mocked field instance.
-     * @since $ver$
+     * @since 1.8.0
      * @var \GF_Field|MockObject
      */
     protected $gf_field;
 
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var Combiner
      */
     private $combiner;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -53,7 +53,7 @@ class CombinerTest extends TestCase
 
     /**
      * Test case for {@see Combiner}'s interface.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testInterface(): void
     {
@@ -62,7 +62,7 @@ class CombinerTest extends TestCase
 
     /**
      * Test case for {@see Combiner::parseEntry()} with a single row and no {@see RowsInterface].
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testParseEntryWithOneValue(): void
     {
@@ -87,7 +87,7 @@ class CombinerTest extends TestCase
 
     /**
      * Test case for {@see Combiner::parseEntry()} with multiple values.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testParseEntryWithMultipleValues(): void
     {

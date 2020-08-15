@@ -7,34 +7,34 @@ use GFExcel\Migration\Migration;
 
 /**
  * The migration manager.
- * @since $ver$
+ * @since 1.8.0
  */
 class MigrationManager
 {
     /**
      * The option key of the migration version.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const OPTION_MIGRATION_VERSION = 'gfexcel_migration_version';
 
     /**
      * The transient key holding the migration running status.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TRANSIENT_MIGRATION_RUNNING = 'gfexcel_migration_running';
 
     /**
      * The migrations to run.
-     * @since $ver$
+     * @since 1.8.0
      * @var Migration[]|null
      */
     private $migrations;
 
     /**
      * Creates the manager.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function __construct()
     {
@@ -43,7 +43,7 @@ class MigrationManager
 
     /**
      *
-     * @since $ver$
+     * @since 1.8.0
      * @throws MigrationException When something went wrong in a migration.
      */
     public function migrate(): void
@@ -70,7 +70,7 @@ class MigrationManager
 
     /**
      * Sets the migrations on the manager.
-     * @since $ver$
+     * @since 1.8.0
      * @param Migration[] $migrations Migrations.
      */
     public function setMigrations(array $migrations): void
@@ -92,7 +92,7 @@ class MigrationManager
 
     /**
      * Returns the migrations to run based on the current version.
-     * @since $ver$
+     * @since 1.8.0
      * @return Migration[] The migrations.
      */
     public function getMigrations(): array
@@ -123,7 +123,7 @@ class MigrationManager
 
     /**
      * Retrieve the latest version.
-     * @since $ver$
+     * @since 1.8.0
      * @return string
      */
     private function get_latest_version(): string

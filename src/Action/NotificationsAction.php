@@ -10,34 +10,34 @@ use GFExcel\Notification\Notification;
 
 /**
  * Action that handles the notifications.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationsAction
 {
     /**
      * The action that triggers a dismissal.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const ACTION_DISMISS = 'gfexcel_dismiss_notification';
 
     /**
      * The name of the nonce action.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const KEY_NONCE = 'gfexcel_notification_nonce';
 
     /**
      * The notification manager.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager
      */
     private $manager;
 
     /**
      * Notifications constructor.
-     * @since $ver$
+     * @since 1.8.0
      * @param NotificationManager $manager The notification manager.
      */
     public function __construct(NotificationManager $manager)
@@ -51,7 +51,7 @@ class NotificationsAction
 
     /**
      * Returns the available notifications to the template.
-     * @since $ver$
+     * @since 1.8.0
      * @return Notification[] The notifications.
      * @throws NotificationException When the notification is of a wrong type.
      */
@@ -73,7 +73,7 @@ class NotificationsAction
 
     /**
      * Dismisses a notification by the id.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function dismissNotification(): void
     {
@@ -98,7 +98,7 @@ class NotificationsAction
 
     /**
      * Shows the available notifications.
-     * @since $ver$
+     * @since 1.8.0
      * @codeCoverageIgnore
      */
     public function showNotices(): void
@@ -111,7 +111,7 @@ class NotificationsAction
 
     /**
      * Registers the notification scripts.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function registerScripts(): void
     {
