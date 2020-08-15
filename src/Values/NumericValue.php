@@ -9,6 +9,12 @@ namespace GFExcel\Values;
 class NumericValue extends BaseValue
 {
     /**
+     * Default formatting for numeric value.
+     * @since 1.8.1
+     */
+    public const FORMAT_DEFAULT = 'General';
+
+    /**
      * Currency formatting without symbol.
      * @since 1.8.0
      */
@@ -19,7 +25,7 @@ class NumericValue extends BaseValue
      * @since 1.8.0
      * @var string
      */
-    protected $format = self::FORMAT_CURRENCY_NONE;
+    protected $format = self::FORMAT_DEFAULT;
 
     /**
      * @inheritdoc

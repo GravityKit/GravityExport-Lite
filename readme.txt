@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.5
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= 1.8.1 =
+* Bugfix: Numeric values were presented as currency by default.
+
 = 1.8.0 =
 * Last version to support PHP 7.1. Next minor release will only support 7.2+.
 * Feature: Added `setFontSize(?float $font_size)` on value objects, so every cell can have a different font size.

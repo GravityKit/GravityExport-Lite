@@ -61,7 +61,7 @@ class NumericValueTest extends AbstractValueTestCase
     public function testFormat(): void
     {
         $value_object = new NumericValue(100.30, $this->gf_field);
-        $this->assertSame(NumericValue::FORMAT_CURRENCY_NONE, $value_object->getFormat());
+        $this->assertSame(NumericValue::FORMAT_DEFAULT, $value_object->getFormat());
         $value_object->setFormat('test');
         $this->assertSame('test', $value_object->getFormat());
     }
