@@ -37,7 +37,6 @@ class NumericValueTest extends AbstractValueTestCase
     {
         return [
             [1],
-            ['one'],
             [1.000],
             [1E3],
         ];
@@ -52,6 +51,15 @@ class NumericValueTest extends AbstractValueTestCase
     public function testGetValue($value): void
     {
         $this->assertSame($value, (new NumericValue($value, $this->gf_field))->getValue());
+    }
+
+    /**
+     * Test case for {@see NumericValue::getValue()} with a non-numeric value.
+     * @since 1.8.2
+     */
+    public function testGetValueWithNonNumericValue(): void
+    {
+        $this->assertNull((new NumericValue('one', $this->gf_field))->getValue());
     }
 
     /**
