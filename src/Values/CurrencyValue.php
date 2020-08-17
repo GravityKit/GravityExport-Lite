@@ -61,18 +61,4 @@ class CurrencyValue extends NumericValue
     {
         return sprintf(parent::getFormat(), $this->getSymbol());
     }
-
-    /**
-     * @inheritdoc
-     * @since 1.8.0
-     */
-    public function getValue()
-    {
-        $value = parent::getValue();
-        if (!is_numeric($value)) {
-            return 0;
-        }
-
-        return (float) $value;
-    }
 }
