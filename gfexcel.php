@@ -9,7 +9,7 @@
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gf-entries-in-excel
  * Domain Path:     /languages
- * Version:         1.8.2
+ * Version:         1.8.3
  *
  * @package         GFExcel
  */
