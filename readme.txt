@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.5
-Stable tag: 1.8.2
+Stable tag: 1.8.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,8 +208,8 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
-* Bugfix: Notification update sometimes produces error. So much for happy emoticons.
+= 1.8.3 =
+* Bugfix: Notification update sometimes produced error. No more happy emoticons.
 
 = 1.8.2 =
 * Bugfix: Empty numeric values are not allowed by PhpSpreadsheet anymore. So much for SemVer :-)
