@@ -128,6 +128,6 @@ class MigrationManager
      */
     private function get_latest_version(): string
     {
-        return get_option(self::OPTION_MIGRATION_VERSION, '0.0.0');
+        return get_option(self::OPTION_MIGRATION_VERSION, '0.0.0') ?: '0.0.0';
     }
 }
