@@ -20,7 +20,7 @@ class Migration_1_8_0 extends Migration
      * @inheritdoc
      * @since 1.8.0
      */
-    protected static $version = '1.8.3';
+    protected static $version = '1.8.0';
 
     /**
      * The notification manager.
