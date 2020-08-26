@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Notification update sometimes produces error. So much for happy emoticons.
+
 = 1.8.2 =
 * Bugfix: Empty numeric values are not allowed by PhpSpreadsheet anymore. So much for SemVer :-)
 * Bugfix: Product subfields we're all parsed as currency. Now its all the correct type.
