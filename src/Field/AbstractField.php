@@ -79,7 +79,7 @@ abstract class AbstractField implements FieldInterface
 
     /**
      * Validates the values provided to the `wrap` method.
-     * @since $ver$
+     * @since 1.8.4
      * @param mixed $values The values to validate.
      * @return mixed[] The values as array.
      */
