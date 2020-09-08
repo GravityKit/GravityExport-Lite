@@ -57,7 +57,6 @@ class ProductField extends SeparableField
         return $value;
     }
 
-
     /**
      * Return the last part of the input_id
      * @param string $key The field input key.
@@ -66,6 +65,7 @@ class ProductField extends SeparableField
     private function getSubFieldId($key)
     {
         $key_parts = explode('.', $key);
+
         return (int) end($key_parts);
     }
 
@@ -121,6 +121,8 @@ class ProductField extends SeparableField
      */
     protected function wrap($values, $is_label = false)
     {
+        $values = $this->validateWrapValues($values);
+
         $wrapping = [
             StringValue::class,
             CurrencyValue::class,
@@ -131,7 +133,7 @@ class ProductField extends SeparableField
             $wrapped = [];
 
             // make sure the type is correct.
-            foreach($values as $key => $value) {
+            foreach ($values as $key => $value) {
                 $wrapped[] = new $wrapping[$key]($value, $this->field);
             }
 

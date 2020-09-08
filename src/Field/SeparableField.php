@@ -48,7 +48,7 @@ class SeparableField extends BaseField
             $this->field->id
         ], $value, $entry, $this->field);
 
-        return $this->wrap($value);
+        return $this->wrap([$value]);
     }
 
     /**

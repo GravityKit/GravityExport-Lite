@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Product field was unhappy without splitting fields.
+
 = 1.8.3 =
 * Bugfix: Notification update sometimes produced error. No more happy emoticons.
 

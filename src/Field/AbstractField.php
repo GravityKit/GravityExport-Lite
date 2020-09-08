@@ -70,9 +70,30 @@ abstract class AbstractField implements FieldInterface
      */
     protected function wrap($values, $is_label = false)
     {
+        $values = $this->validateWrapValues($values);
+
         return array_map(function ($value) use ($is_label) {
             return BaseValue::getValueObject($this, $value, $this->field, $is_label);
-        }, (array) $values);
+        }, $values);
+    }
+
+    /**
+     * Validates the values provided to the `wrap` method.
+     * @since $ver$
+     * @param mixed $values The values to validate.
+     * @return mixed[] The values as array.
+     */
+    protected function validateWrapValues($values): array
+    {
+        if (!is_array($values)) {
+            trigger_error(
+                '`wrap()` should only receive an array. Behavior will change in next major.',
+                E_USER_DEPRECATED
+            );
+            $values = (array) $values;
+        }
+
+        return $values;
     }
 
     /**
