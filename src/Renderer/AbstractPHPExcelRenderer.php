@@ -312,7 +312,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         $this->setCellStyle($cell, $value);
 
         gf_do_action(
-            'gfexcel_renderer_cell_properties',
+            ['gfexcel_renderer_cell_properties'],
             $cell,
             $value
         );
