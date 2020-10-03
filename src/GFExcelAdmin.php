@@ -120,8 +120,8 @@ class GFExcelAdmin extends \GFAddOn
                         'choices' => [
                             [
                                 'label' => esc_html__(
-                                        'Split multi-fields (name, address) into multiple columns',
-                                        GFExcel::$slug
+                                    'Split multi-fields (name, address) into multiple columns',
+                                    GFExcel::$slug
                                 ),
                                 'name' => SeparableField::SETTING_KEY,
                                 // backwards compatible with last known setting
@@ -236,6 +236,7 @@ class GFExcelAdmin extends \GFAddOn
                 $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
                         ['gf_action' => null])));
                 wp_redirect($url);
+
                 return;
             }
 
@@ -317,6 +318,7 @@ class GFExcelAdmin extends \GFAddOn
         if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
             return $links;
         }
+
         return array_merge($links, [
             'docs' => '<a href="' . esc_url('https://gfexcel.com/docs/getting-started/') . '" aria-label="' . esc_attr__(
                     'Documentation',
@@ -511,6 +513,7 @@ class GFExcelAdmin extends \GFAddOn
             }
 
             $renderer->renderOutput();
+
             return true;
         }
 
@@ -525,6 +528,7 @@ class GFExcelAdmin extends \GFAddOn
     public function bulk_actions($actions)
     {
         $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', GFExcel::$slug);
+
         return $actions;
     }
 
@@ -559,19 +563,45 @@ class GFExcelAdmin extends \GFAddOn
         return 0;
     }
 
+    /**
+     * Helper method to make the sort options field.
+     * @since 1.2.0
+     * @param array $form The form object.
+     */
     private function select_sort_field_options($form)
     {
-        $fields = array_merge([
+        $fields = array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
+            // Fields that have no subfields can be added as they are.
+            if (!$field->get_entry_inputs()) {
+                $fields[] = [
+                    'value' => $field->id,
+                    'label' => $field->label,
+                ];
+
+                return $fields;
+            }
+
+            // Field has subfields. Lets try to add those.
+            foreach ($field->get_entry_inputs() as $sub_field) {
+                // Hidden fields are probably not filled out, so don't show them.
+                if ($sub_field['isHidden'] ?? false) {
+                    continue;
+                }
+
+                $fields[] = [
+                    'value' => $sub_field['id'],
+                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
+                ];
+            }
+
+            return $fields;
+        }, [
+            // Add `date of entry` as first item.
             [
                 'value' => 'date_created',
                 'label' => __('Date of entry', GFExcel::$slug),
             ]
-        ], array_map(function ($field) {
-            return [
-                'value' => $field->id,
-                'label' => $field->label,
-            ];
-        }, (array) $form['fields']));
+        ]);
 
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
@@ -580,7 +610,11 @@ class GFExcelAdmin extends \GFAddOn
         ]);
     }
 
-    private function select_order_options()
+    /**
+     * Helper method to add the select order options.
+     * @since 1.2.0
+     */
+    private function select_order_options(): void
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
@@ -598,10 +632,14 @@ class GFExcelAdmin extends \GFAddOn
         ]);
     }
 
-    private function saveSettings($form)
+    /**
+     * Helper method to actually save the settings.
+     * @since 1.2.0
+     * @param mixed[] $form The form object.
+     */
+    private function saveSettings($form): void
     {
-        /** php5.3 proof. */
-        $gfexcel_keys = array_filter(array_keys($_POST), function ($key) {
+        $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
             return stripos($key, 'gfexcel_') === 0;
         });
 
@@ -612,14 +650,13 @@ class GFExcelAdmin extends \GFAddOn
         }
 
         foreach ($this->get_posted_settings() as $key => $value) {
-            if ($key === FieldsRepository::KEY_DISABLED_FIELDS) {
-                if (is_array($value)) {
-                    $value = implode(',', array_keys(array_filter($value)));
-                }
+            if (($key === FieldsRepository::KEY_DISABLED_FIELDS) && is_array($value)) {
+                $value = implode(',', array_keys(array_filter($value)));
             }
+
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
                 $value = preg_replace('/\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', '', $value);
-                $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
+                $value = preg_replace('/[^a-z0-9_-]+/i', '_', $value);
             }
             $form_meta[$key] = $value;
         }
@@ -647,10 +684,12 @@ class GFExcelAdmin extends \GFAddOn
     public function get_form_settings($form)
     {
         $settings = array_filter((array) parent::get_form_settings($form));
+
         return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form) {
             if (strpos($key, 'gfexcel_') === 0) {
                 $settings[$key] = $form[$key];
             }
+
             return $settings;
         }, []));
     }
@@ -814,6 +853,7 @@ class GFExcelAdmin extends \GFAddOn
                             $field->formId,
                             $field->id
                         ], $field->get_field_label(true, ''), $field);
+
                         return [
                             'value' => $field->id,
                             'label' => $label,
@@ -835,6 +875,7 @@ class GFExcelAdmin extends \GFAddOn
                             $field->formId,
                             $field->id
                         ], $field->get_field_label(true, ''), $field);
+
                         return [
                             'value' => $field->id,
                             'label' => $label,
@@ -1082,6 +1123,7 @@ class GFExcelAdmin extends \GFAddOn
         if (in_array($this->_file, $attachments) && file_exists($this->_file)) {
             unlink($this->_file);
         }
+
         return true;
     }
 
@@ -1238,6 +1280,7 @@ class GFExcelAdmin extends \GFAddOn
             if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
                 $output[] = (int) $matches[1];
             }
+
             return $output;
         }, []);
 
