@@ -208,6 +208,10 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Enhancement: You can now sort by subfields like "last name" in a name field.
+* Enhancement: Hover state for sorting items.
+
 = 1.8.4 =
 * Bugfix: Product field was unhappy without splitting fields.
 

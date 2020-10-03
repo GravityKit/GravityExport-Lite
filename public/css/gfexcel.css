@@ -32,9 +32,14 @@ ul.fields-select li div.move:hover {
     cursor: pointer;
     cursor: -webkit-grab;
 }
+.ui-sortable-handle:hover {
+    background-color: #F0F0F0;
+}
 
+.ui-sortable-handle:active,
 .ui-sortable-helper {
     cursor: -webkit-grabbing;
+
 }
 
 ul.fields-select li {
