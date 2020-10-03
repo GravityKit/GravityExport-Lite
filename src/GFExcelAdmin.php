@@ -565,12 +565,13 @@ class GFExcelAdmin extends \GFAddOn
 
     /**
      * Helper method to make the sort options field.
-     * @since $ver$
+     * @since 1.2.0
      * @param array $form The form object.
      */
     private function select_sort_field_options($form)
     {
         $fields = array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
+            // Fields that have no subfields can be added as they are.
             if (!$field->get_entry_inputs()) {
                 $fields[] = [
                     'value' => $field->id,
@@ -579,10 +580,14 @@ class GFExcelAdmin extends \GFAddOn
 
                 return $fields;
             }
+
+            // Field has subfields. Lets try to add those.
             foreach ($field->get_entry_inputs() as $sub_field) {
+                // Hidden fields are probably not filled out, so don't show them.
                 if ($sub_field['isHidden'] ?? false) {
                     continue;
                 }
+
                 $fields[] = [
                     'value' => $sub_field['id'],
                     'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
@@ -591,6 +596,7 @@ class GFExcelAdmin extends \GFAddOn
 
             return $fields;
         }, [
+            // Add `date of entry` as first item.
             [
                 'value' => 'date_created',
                 'label' => __('Date of entry', GFExcel::$slug),
@@ -604,7 +610,11 @@ class GFExcelAdmin extends \GFAddOn
         ]);
     }
 
-    private function select_order_options()
+    /**
+     * Helper method to add the select order options.
+     * @since 1.2.0
+     */
+    private function select_order_options(): void
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
@@ -622,10 +632,14 @@ class GFExcelAdmin extends \GFAddOn
         ]);
     }
 
-    private function saveSettings($form)
+    /**
+     * Helper method to actually save the settings.
+     * @since 1.2.0
+     * @param mixed[] $form The form object.
+     */
+    private function saveSettings($form): void
     {
-        /** php5.3 proof. */
-        $gfexcel_keys = array_filter(array_keys($_POST), function ($key) {
+        $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
             return stripos($key, 'gfexcel_') === 0;
         });
 
@@ -636,14 +650,13 @@ class GFExcelAdmin extends \GFAddOn
         }
 
         foreach ($this->get_posted_settings() as $key => $value) {
-            if ($key === FieldsRepository::KEY_DISABLED_FIELDS) {
-                if (is_array($value)) {
-                    $value = implode(',', array_keys(array_filter($value)));
-                }
+            if (($key === FieldsRepository::KEY_DISABLED_FIELDS) && is_array($value)) {
+                $value = implode(',', array_keys(array_filter($value)));
             }
+
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
                 $value = preg_replace('/\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', '', $value);
-                $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
+                $value = preg_replace('/[^a-z0-9_-]+/i', '_', $value);
             }
             $form_meta[$key] = $value;
         }
