@@ -8,6 +8,7 @@ use GFExcel\Action\CountDownloads;
 use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
+use GFExcel\GravityForms\Field\SortableField;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
@@ -15,7 +16,6 @@ use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
-use GFFormsModel;
 
 class GFExcelAdmin extends GFAddOn
 {
@@ -25,7 +25,7 @@ class GFExcelAdmin extends GFAddOn
 
     protected $_min_gravityforms_version = '2.0';
 
-    protected $_capabilities_form_settings = ['gravityforms_export_entries'];
+    protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
     /** @var FormsRepository micro cache */
     private $repository;
@@ -203,10 +203,14 @@ class GFExcelAdmin extends GFAddOn
     {
         parent::init();
 
+        if ($this->hasSettingsClass()) {
+            \Rocketgenius\Gravity_Forms\Settings\Fields::register('sortable', SortableField::class);
+        }
+
         if ($form = $this->get_current_form()) {
             if (isset($_GET['gf_action'])) {
                 // trigger action
-                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
+                do_action('gfexcel_action_' . strtolower(trim((string) $_GET['gf_action'])), $form['id'], $this);
                 // redirect back to same page without the action
                 $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
                         ['gf_action' => null])));
@@ -353,7 +357,7 @@ class GFExcelAdmin extends GFAddOn
 
         if ($this->is_save_postback()) {
             $this->saveSettings($form);
-            $form = GFFormsModel::get_form_meta($form['id']);
+            $form = \GFFormsModel::get_form_meta($form['id']);
         }
 
         if ($this->is_postback()) {
@@ -582,7 +586,7 @@ class GFExcelAdmin extends GFAddOn
             return stripos($key, 'gfexcel_') === 0;
         });
 
-        $form_meta = GFFormsModel::get_form_meta($form['id']);
+        $form_meta = \GFFormsModel::get_form_meta($form['id']);
 
         foreach ($gfexcel_keys as $key) {
             $form_meta[$key] = $_POST[$key];
@@ -601,8 +605,8 @@ class GFExcelAdmin extends GFAddOn
             $form_meta[$key] = $value;
         }
 
-        GFFormsModel::update_form_meta($form['id'], $form_meta);
-        GFCommon::add_message(__('The settings have been saved.'), GFExcel::$slug);
+        \GFFormsModel::update_form_meta($form['id'], $form_meta);
+        GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug));
     }
 
     /**
@@ -1228,5 +1232,44 @@ class GFExcelAdmin extends GFAddOn
                 ]);
             }
         }
+    }
+
+    public function settings_save( $field, $echo = true ) {
+        if (!$this->hasSettingsClass()) {
+            return parent::settings_save($field, $echo);
+        }
+
+        $field['type']  = 'submit';
+        $field['name']  = 'gform-settings-save';
+        $field['class'] = 'button-primary gfbutton';
+
+        if ( ! rgar( $field, 'value' ) ) {
+            $field['value'] = esc_html__( 'Update Settings', 'gravityforms' );
+        }
+
+        $attributes = $this->get_field_attributes( $field );
+
+        $html = '<input
+					type="' . esc_attr( $field['type'] ) . '"
+					name="' . esc_attr( $field['name'] ) . '"
+					value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $attributes ) . ' />';
+
+        if ( $echo ) {
+            echo $html;
+        }
+
+        return $html;
+    }
+
+    /**
+     * Whether the new Field Settings class exists.
+     * @since $ver$
+     * @return bool Whether the new Field Settings class exists.
+     */
+    private function hasSettingsClass(): bool
+    {
+        return
+            version_compare(\GFForms::$version, '2.5-beta', '>=')
+            && class_exists('\Rocketgenius\Gravity_Forms\Settings\Fields');
     }
 }

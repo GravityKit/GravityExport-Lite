@@ -146,7 +146,7 @@ class FieldsRepository
     public function getDisabledFields()
     {
         $result = []; //default
-        if ($settings = $this->admin->get_plugin_settings() and is_array($settings)) {
+        if (($settings = $this->admin->get_plugin_settings()) && is_array($settings)) {
             foreach ($settings as $key => $value) {
                 if (strpos($key, 'enabled_metafield_') === 0 && $value == 0) {
                     $result[] = str_replace('enabled_metafield_', '', $key);
