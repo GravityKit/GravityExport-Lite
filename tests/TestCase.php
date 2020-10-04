@@ -6,13 +6,13 @@ use WP_Mock\Tools\TestCase as BaseTestCase;
 
 /**
  * Base test case for the plugin.
- * @since $ver$
+ * @since 1.8.0
  */
 class TestCase extends BaseTestCase
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -23,7 +23,7 @@ class TestCase extends BaseTestCase
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function tearDown(): void
     {

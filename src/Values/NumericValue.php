@@ -9,17 +9,23 @@ namespace GFExcel\Values;
 class NumericValue extends BaseValue
 {
     /**
+     * Default formatting for numeric value.
+     * @since 1.8.1
+     */
+    public const FORMAT_DEFAULT = 'General';
+
+    /**
      * Currency formatting without symbol.
-     * @since $ver$
+     * @since 1.8.0
      */
     public const FORMAT_CURRENCY_NONE = '#,##0.00_-';
 
     /**
      * The currency format of the cell.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
-    protected $format = self::FORMAT_CURRENCY_NONE;
+    protected $format = self::FORMAT_DEFAULT;
 
     /**
      * @inheritdoc
@@ -36,12 +42,16 @@ class NumericValue extends BaseValue
      */
     public function getValue()
     {
+        if (!is_numeric($this->value)) {
+            return null;
+        }
+
         return $this->value;
     }
 
     /**
      * Returns the currency format.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The format.
      */
     public function getFormat(): string
@@ -51,7 +61,7 @@ class NumericValue extends BaseValue
 
     /**
      * Sets the format.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $format The format.
      */
     public function setFormat(string $format): void

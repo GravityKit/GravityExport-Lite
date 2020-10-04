@@ -6,7 +6,7 @@ use GFExcel\Exception\Exception;
 
 /**
  * Exception that represents something wrong while managing notifications.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationManagerException extends Exception
 {

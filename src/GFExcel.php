@@ -2,15 +2,17 @@
 
 namespace GFExcel;
 
-use GFAPI;
 use GFExcel\Action\FilterRequest;
+use GFExcel\Notification\Manager\NotificationManager;
+use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Shorttag\DownloadUrl;
-use GFFormsModel;
+use GFExcel\Transformer\Combiner;
+use GFExcel\Transformer\CombinerInterface;
 
 /**
  * The core of the plugin.
- * @since $ver$
+ * @since 1.0.0
  */
 class GFExcel
 {
@@ -33,7 +35,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.7.5';
+    public static $version = '1.8.4';
 
     /**
      * The endpoint slug of the plugin.
@@ -43,14 +45,30 @@ class GFExcel
     public static $slug = 'gf-entries-in-excel';
 
     public const KEY_HASH = 'gfexcel_hash';
+
     public const KEY_ACTION = 'gfexcel_action';
+
     public const KEY_ENABLED_NOTES = 'gfexcel_enabled_notes';
+
     public const KEY_CUSTOM_FILENAME = 'gfexcel_custom_filename';
+
     public const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
+
     public const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
 
     private static $file_extension;
 
+    /**
+     * The notification manager singleton.
+     * @since 1.8.0
+     * @var NotificationManager|null
+     */
+    private static $notification_manager;
+
+    /**
+     * Instantiates the plugin.
+     * @since 1.0.0
+     */
     public function __construct()
     {
         add_action('init', [$this, 'addPermalinkRule']);
@@ -63,7 +81,8 @@ class GFExcel
     }
 
     /** Return the url for the form
-     * @param $form_id
+     * @since 1.0.0
+     * @param int $form_id The id of the form.
      * @return string|null
      */
     public static function url($form_id)
@@ -88,18 +107,17 @@ class GFExcel
 
     /**
      * Returns the download hash for a form.
-     *
      * @since 1.0.0
      * @param int $form_id the form id to get the hash for.
      * @return string|null the hash
      */
     private static function getHash($form_id)
     {
-        if (!GFAPI::form_id_exists($form_id)) {
+        if (!\GFAPI::form_id_exists($form_id)) {
             return null;
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
         if (!isset($meta[static::KEY_HASH]) || empty($meta[static::KEY_HASH])) {
             return null;
         }
@@ -109,9 +127,9 @@ class GFExcel
 
     /**
      * Save new hash to the form
-     * @param $form_id The form id.
+     * @param int $form_id The form id.
      * @param null|string $hash predefined hash {@since 1.7.0}
-     * @return array metadata form
+     * @return mixed[] metadata form.
      */
     public static function setHash($form_id, $hash = null)
     {
@@ -119,15 +137,16 @@ class GFExcel
             $hash = self::generateHash();
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
         $meta[self::KEY_HASH] = (string) $hash;
-        GFFormsModel::update_form_meta($form_id, $meta);
+        \GFFormsModel::update_form_meta($form_id, $meta);
 
         return $meta;
     }
 
     /**
      * Generates a secure random string.
+     * @since 1.0.0
      * @return string
      */
     private static function generateHash()
@@ -136,7 +155,7 @@ class GFExcel
     }
 
     /**
-     * Return the custom filename if it has one
+     * Return the custom filename if it has one.
      * @param array $form
      * @return bool|string
      */
@@ -156,15 +175,15 @@ class GFExcel
 
     /**
      * Return the file extension to use for renderer and output
-     *
-     * @param array $form
-     * @return string
+     * @param array $form The form object.
+     * @return string The file extension.
      */
     public static function getFileExtension($form)
     {
         if (!static::$file_extension) {
             if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
                 static::$file_extension = 'xlsx'; //default
+
                 return static::$file_extension;
             }
 
@@ -176,7 +195,7 @@ class GFExcel
 
     /**
      * Helper method to retrieve the available file extensions for the plugin.
-     * @since $ver$
+     * @since 1.8.0
      * @param bool $imploded Whether to return an imploded array for a regex pattern instead of an array.
      * @return string[]|string The extensions.
      */
@@ -259,7 +278,7 @@ class GFExcel
     }
 
     /**
-     * Acutally triggers the download response.
+     * Actually triggers the download response.
      * @since 1.7.0
      * @param \WP $wp Wordpress request instance.
      * @return mixed The output will be the file.
@@ -268,9 +287,7 @@ class GFExcel
     public function downloadFile(\WP $wp)
     {
         if (array_key_exists('gfexcel_download_form', $wp->query_vars)) {
-            $form_id = isset($wp->query_vars['gfexcel_download_form'])
-                ? $wp->query_vars['gfexcel_download_form']
-                : null;
+            $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
 
             if ($form_id) {
                 $renderer = gf_apply_filters([
@@ -303,19 +320,20 @@ class GFExcel
     }
 
     /**
-     * @param $hash
-     * @return bool|int
+     * Helper method to retrieve the form id from the hash.
+     * @param string $hash The hash.
+     * @return int|null The form id.
      */
     private function getFormIdByHash($hash)
     {
         global $wpdb;
 
-        if (preg_match("/\.(" . GFExcel::getPluginFileExtensions(true) . ")$/is", $hash, $match)) {
+        if (preg_match('/\\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', $hash, $match)) {
             $hash = str_replace($match[0], '', $hash);
             static::$file_extension = $match[1];
         }
 
-        $table_name = GFFormsModel::get_meta_table_name();
+        $table_name = \GFFormsModel::get_meta_table_name();
         $wildcard = '%';
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
@@ -325,13 +343,13 @@ class GFExcel
             ARRAY_A
         )) {
             // not even a partial match.
-            return false;
+            return null;
         }
 
         // possible match on hash, so check against found form.
         if (GFExcel::getHash($form_row['form_id']) !== $hash) {
             //hash doesn't match, so it's probably a partial match
-            return false;
+            return null;
         }
 
         //only now are we home save.
@@ -367,7 +385,7 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf("Disallow: %s/%s/", $path, GFExcel::$slug);
+        $line = sprintf('Disallow: %s/%s/', $path, GFExcel::$slug);
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
@@ -399,7 +417,41 @@ class GFExcel
             return true;
         }
 
-        $meta = GFFormsModel::get_form_meta($form_id);
+        $meta = \GFFormsModel::get_form_meta($form_id);
+
         return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
+    }
+
+    /**
+     * Returns the combiner instance.
+     * @since 1.8.0
+     * @return CombinerInterface The combiner.
+     */
+    public static function getCombiner(): CombinerInterface
+    {
+        return apply_filters(GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER, new Combiner());
+    }
+
+    /**
+     * Returns the notification singleton.
+     * @since 1.8.0
+     * @return NotificationManager The notification manager.
+     */
+    public static function getNotificationManager(): NotificationManager
+    {
+        if (!self::$notification_manager) {
+            $repository = apply_filters(
+                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_MANAGER,
+                new NotificationRepository()
+            );
+
+            self::$notification_manager = apply_filters(
+                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
+                new NotificationManager($repository),
+                $repository
+            );
+        }
+
+        return self::$notification_manager;
     }
 }

@@ -4,8 +4,8 @@ Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.4
-Stable tag: 1.7.5
+Tested up to: 5.5
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,14 +209,36 @@ Checkout this example:
 
 == Changelog ==
 = Unreleased =
-* Feature: Added `setFontSize` on value objects, so every cell can have a different font size.
+* Enhancement: You can now sort by subfields like "last name" in a name field.
+* Enhancement: Hover state for sorting items.
+
+= 1.8.4 =
+* Bugfix: Product field was unhappy without splitting fields.
+
+= 1.8.3 =
+* Bugfix: Notification update sometimes produced error. No more happy emoticons.
+
+= 1.8.2 =
+* Bugfix: Empty numeric values are not allowed by PhpSpreadsheet anymore. So much for SemVer :-)
+* Bugfix: Product subfields we're all parsed as currency. Now its all the correct type.
+
+= 1.8.1 =
+* Bugfix: Numeric values were presented as currency by default.
+
+= 1.8.0 =
+* Last version to support PHP 7.1. Next minor release will only support 7.2+.
+* Feature: Added `setFontSize(?float $font_size)` on value objects, so every cell can have a different font size.
+* Feature: Added `setBorder($color, $position)` on value objects to set a border on a cell.
 * Feature: Added CurrencyValue type and formatting on numeric cells. So you can have a currency symbol and a numeric value.
+* Feature: Added new CombinerInterface to streamline the process of combining values into columns.
+* Feature: Added notifications base to bomb you with info. Kidding, only useful messages of course.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
-* Bugfix: List field threw notice when you've later changed the column names.
+* Bugfix: List field threw notice when you changed the column names.
+* Bugfix: Disabled warning when `set_time_limit` is not allowed to prevent failing download.
+* Enhancement: Updated PHPSpreadsheet to 1.12 (last to support PHP 7.1).
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Enhancement: Added quick-link to settings on the plugins page.
 * Enhancement: Replaced all translation calls with wordpress native calls to be polite to Poedit.
-* Enhancement: Removed some legacy code for unsupported php 5.3.
 * Enhancement: Added some unit tests.
 
 = 1.7.5 =

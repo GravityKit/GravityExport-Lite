@@ -11,27 +11,27 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for {@see NotificationsAction}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationsActionTest extends TestCase
 {
     /**
      * A mocked instance of {@see NotificationManager}.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager|MockObject
      */
     private $manager;
 
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationsAction
      */
     private $action;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -43,7 +43,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::getNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotifications(): void
@@ -54,7 +54,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::getNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotificationsWithException(): void
@@ -72,7 +72,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::dismissNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testDismissNotification(): void
     {
@@ -95,7 +95,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::dismissNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testDismissNotificationWithInvalidValues(): void
     {
@@ -112,7 +112,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::dismissNotification()} with an exception..
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testDismissNotificationWithException(): void
     {
@@ -141,7 +141,7 @@ class NotificationsActionTest extends TestCase
 
     /**
      * Test case for {@see NotificationsAction::registerScripts()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testRegisterScripts(): void
     {

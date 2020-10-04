@@ -5,11 +5,11 @@ namespace GFExcel\Renderer;
 use GFExcel\Exception\Exception as GFExcelException;
 use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
-use GFExcel\Values\CurrencyValue;
 use GFExcel\Values\NumericValue;
 use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -112,8 +112,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     /**
      * Stretches all columns to the maximum needed, or a set maximum.
      * @since 1.0.0
-     * @param Worksheet $worksheet
-     * @param $columns_count
+     * @param Worksheet $worksheet The worksheet object.
+     * @param int $columns_count The number of columns.
      * @return $this
      */
     protected function autoSizeColumns(Worksheet $worksheet, $columns_count)
@@ -159,20 +159,20 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
             }
 
             foreach ($row as $i => $value) {
-                $worksheet->setCellValueExplicitByColumnAndRow(
-                    $i + 1,
-                    $x + 1,
-                    $this->getCellValue($value),
-                    $this->getCellType($value)
-                );
-
-                $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
-                if (!$cell) {
-                    // This isn't going to happen, but it makes the IDE happy.
-                    continue;
-                }
-
                 try {
+                    $worksheet->setCellValueExplicitByColumnAndRow(
+                        $i + 1,
+                        $x + 1,
+                        $this->getCellValue($value),
+                        $this->getCellType($value)
+                    );
+
+                    $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
+                    if (!$cell) {
+                        // This isn't going to happen, but it makes the IDE happy.
+                        continue;
+                    }
+
                     $this->setProperties($cell, $value);
 
                     $wrap_text = (bool) gf_apply_filters([
@@ -200,16 +200,12 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     protected function setWorksheetTitle(Worksheet $worksheet, $form)
     {
         $invalidCharacters = Worksheet::getInvalidCharacters();
-        //First strip form title, so we still have 30 charachters.
+        // First strip form title, so we still have 30 characters.
         $form_title = str_replace($invalidCharacters, '', $form['title']);
-        $worksheet_title = mb_substr(gf_apply_filters(
-            [
-                'gfexcel_renderer_worksheet_title',
-                $form['id'],
-            ],
-            $form_title,
-            $form
-        ), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
+        $worksheet_title = mb_substr(gf_apply_filters([
+            'gfexcel_renderer_worksheet_title',
+            $form['id'],
+        ], $form_title, $form), 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH, 'utf-8');
 
         // Protect users from accidental override with invalid characters.
         $worksheet_title = str_replace($invalidCharacters, '', $worksheet_title);
@@ -219,9 +215,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * Get Cell type based on value booleans
-     * @param $value
-     * @return string
+     * Get Cell type based on value booleans.
+     * @param string|BaseValue $value The value of the cell.
+     * @return string The type of the cell.
      */
     private function getCellType($value)
     {
@@ -239,8 +235,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
     /**
      * Retrieve the correctly formatted value of the cell
-     * @param $value
-     * @return string
+     * @param string|BaseValue $value The value of the cell.
+     * @return string The string-value of the cell.
      */
     private function getCellValue($value)
     {
@@ -253,10 +249,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 
     /**
      * Set url on the cell if value has a url.
-     *
-     * @param Cell $cell
-     * @param $value
-     * @return bool
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
+     * @return bool Whether the url was set onto the cell.
      */
     private function setCellUrl(Cell $cell, $value)
     {
@@ -307,23 +302,29 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Cell $cell
-     * @param $value
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
      * @throws GFExcelException
      */
     private function setProperties(Cell $cell, $value)
     {
         $this->setCellUrl($cell, $value);
-        $this->setFontStyle($cell, $value);
+        $this->setCellStyle($cell, $value);
+
+        gf_do_action(
+            ['gfexcel_renderer_cell_properties'],
+            $cell,
+            $value
+        );
     }
 
     /**
-     * @param Cell $cell
-     * @param $value
-     * @return bool
+     * @param Cell $cell The cell.
+     * @param string|BaseValue $value The value of the cell.
+     * @return bool Whether the font style was applied.
      * @throws GFExcelException
      */
-    private function setFontStyle(Cell $cell, $value)
+    private function setCellStyle(Cell $cell, $value)
     {
         if (!$value instanceof BaseValue) {
             return false;
@@ -338,6 +339,17 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 $cell->getStyle()->getFont()->setItalic(true);
             }
 
+            if ($value->hasBorder()) {
+                $array = array_filter([
+                    $value->getBorderPosition() => array_filter([
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => $value->getBorderColor() ? ['rgb' => $value->getBorderColor()] : null,
+                    ]),
+                ]);
+
+                $cell->getStyle()->getBorders()->applyFromArray($array);
+            }
+
             if ($color = $value->getColor()) {
                 $color_field = $cell->getStyle()->getFont()->getColor();
                 $color_field->setRGB($color);
@@ -350,7 +362,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 $fill->setStartColor($color_field);
             }
 
-            if (($font_size = $value->getFontSize()) && ($font = $cell->getStyle()->getFont())) {
+            if (($font_size = $value->getFontSize())) {
+                $font = $cell->getStyle()->getFont();
                 $font->setSize($font_size);
             }
 

@@ -2,15 +2,13 @@
 
 namespace GFExcel\Field;
 
-use GF_Field;
 use GFExcel\Transformer\Transformer;
-use GFExcel\Values\BaseValue;
 
 /**
  * A Field for the Transformer for `repeater` fields.
  * @since 1.7.0
  */
-class RepeaterField extends SeparableField
+class RepeaterField extends SeparableField implements RowsInterface
 {
     /**
      * A Transformer instance.
@@ -27,17 +25,17 @@ class RepeaterField extends SeparableField
     protected $field;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @since 1.7.0
      */
-    public function __construct(GF_Field $field)
+    public function __construct(\GF_Field $field)
     {
         parent::__construct($field);
         $this->transformer = new Transformer();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * Maps all subfields `getColumns` calls to the repeater subfields.
      * @since 1.7.0
      */
@@ -49,32 +47,44 @@ class RepeaterField extends SeparableField
     }
 
     /**
-     * {@inheritdoc}
-     * Maps all subfields `getCells` calls to the repeater subfields with an ammended $entry.
+     * @inheritDoc
+     * @since 1.8.0
+     */
+    public function getRows(?array $entry = null): array
+    {
+        // get repeater entries.
+        if (!$entry) {
+            return [];
+        }
+
+        $entries = $entry[$this->field->id] ?? [];
+
+        // Get the correct field values for every row.
+        return array_reduce($entries, function (array $rows, array $entry) {
+            $row = [];
+            foreach (array_map(function (\GF_Field $gf_field): FieldInterface {
+                return $this->transformer->transform($gf_field);
+            }, $this->field->fields) as $field) {
+                $row[] = $field->getCells($entry);
+            }
+            $rows[] = array_merge([], ...$row);
+
+            return $rows;
+        }, []);
+    }
+
+    /**
+     * @inheritdoc
+     * Maps all subfields `getCells` calls to the repeater subfields with an amended $entry.
      * @since 1.7.0
      */
     public function getCells($entry)
     {
-        // get repeater entries.
-        $entries = $entry[$this->field->id];
-
-        // Get the correct field values for every row.
-        $rows = array_reduce($entries, function (array $rows, array $entry) {
-            $row = [];
-            foreach ($this->field->fields as $field) {
-                $row[] = array_map(function (BaseValue $cell) {
-                    return $cell->getValue();
-                }, $this->transformer->transform($field)->getCells($entry));
-            }
-            $rows[] = call_user_func_array('array_merge', $row);
-            return $rows;
-        }, []);
-
         //flip the array
         $result = [];
-        foreach ($rows as $row) {
+        foreach ($this->getRows($entry) as $row) {
             foreach ($row as $key => $value) {
-                $result[$key][] = $value;
+                $result[$key][] = $value->getValue();
             }
         }
 

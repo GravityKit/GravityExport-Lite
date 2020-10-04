@@ -6,20 +6,20 @@ use GFExcel\Notification\Notification;
 
 /**
  * A notification repository backed by an array.
- * @since $ver$
+ * @since 1.8.0
  */
 class ArrayNotificationRepository implements NotificationRepositoryInterface
 {
     /**
      * Holds the notifications.
-     * @since $ver$
+     * @since 1.8.0
      * @var Notification[]
      */
     private $notifications = [];
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function getNotifications(): array
     {
@@ -28,7 +28,7 @@ class ArrayNotificationRepository implements NotificationRepositoryInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function markAsDismissed(string $id): void
     {
@@ -39,7 +39,7 @@ class ArrayNotificationRepository implements NotificationRepositoryInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function storeNotification(Notification ...$notification): void
     {

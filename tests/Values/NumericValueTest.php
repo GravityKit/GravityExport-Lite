@@ -6,13 +6,13 @@ use GFExcel\Values\NumericValue;
 
 /**
  * Test case for {@see NumericValue}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NumericValueTest extends AbstractValueTestCase
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setup(): void
     {
@@ -21,7 +21,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see NumericValue::isNumeric()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testIsNumeric(): void
     {
@@ -30,14 +30,13 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Data provider for {@see NumericValueTest::testGetValue()}.
-     * @since $ver$
+     * @since 1.8.0
      * @return mixed[] The data.
      */
     public function dataProviderForGetValue(): array
     {
         return [
             [1],
-            ['one'],
             [1.000],
             [1E3],
         ];
@@ -45,7 +44,7 @@ class NumericValueTest extends AbstractValueTestCase
 
     /**
      * Test case for {@see NumericValue::getValue()}.
-     * @since $ver$
+     * @since 1.8.0
      * @param mixed $value The provided value.
      * @dataProvider dataProviderForGetValue the data provider.
      */
@@ -55,13 +54,22 @@ class NumericValueTest extends AbstractValueTestCase
     }
 
     /**
+     * Test case for {@see NumericValue::getValue()} with a non-numeric value.
+     * @since 1.8.2
+     */
+    public function testGetValueWithNonNumericValue(): void
+    {
+        $this->assertNull((new NumericValue('one', $this->gf_field))->getValue());
+    }
+
+    /**
      * Test case for {@see NumericValue::getFormat()} and {@see NumericValue::setFormat()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testFormat(): void
     {
         $value_object = new NumericValue(100.30, $this->gf_field);
-        $this->assertSame(NumericValue::FORMAT_CURRENCY_NONE, $value_object->getFormat());
+        $this->assertSame(NumericValue::FORMAT_DEFAULT, $value_object->getFormat());
         $value_object->setFormat('test');
         $this->assertSame('test', $value_object->getFormat());
     }

@@ -6,62 +6,62 @@ use GFExcel\Notification\Exception\NotificationException;
 
 /**
  * Entity that represents a notification.
- * @since $ver$
+ * @since 1.8.0
  */
 class Notification
 {
     /**
      * Notification type that represents regular info.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TYPE_INFO = 'info';
 
     /**
      * Notification type that represents an error.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TYPE_ERROR = 'error';
 
     /**
      * Notification type that represents a warning.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TYPE_WARNING = 'warning';
 
     /**
      * Notification type that represents success.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     public const TYPE_SUCCESS = 'success';
 
     /**
      * The unique identifier of the notification.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $id;
 
     /**
      * Whether this is a dismissible notification.
-     * @since $ver$
+     * @since 1.8.0
      * @var bool
      */
     protected $dismissible;
 
     /**
      * The notification type.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $type;
 
     /**
      * The notification message.
-     * @since $ver$
+     * @since 1.8.0
      * @var string
      */
     protected $message;
@@ -95,7 +95,7 @@ class Notification
 
     /**
      * Returns the unique identifier of the notification.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The identifier.
      */
     public function getId(): string
@@ -105,7 +105,7 @@ class Notification
 
     /**
      * Returns whether the notification is dismissible
-     * @since $ver$
+     * @since 1.8.0
      * @return bool Whether the notification is dismissible.
      *
      */
@@ -116,7 +116,7 @@ class Notification
 
     /**
      * Returns the notification type.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The notification type.
      */
     public function getType(): string
@@ -126,7 +126,7 @@ class Notification
 
     /**
      * Returns the message of the notification.
-     * @since $ver$
+     * @since 1.8.0
      * @return string The message.
      */
     public function getMessage(): string

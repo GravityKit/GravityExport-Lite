@@ -2,32 +2,46 @@
 
 namespace GFExcel;
 
-use GFAddOn;
-use GFCommon;
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
+use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\GravityForms\Field\SortableField;
-use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
 
-class GFExcelAdmin extends GFAddOn
+class GFExcelAdmin extends \GFAddOn
 {
     public const BULK_DOWNLOAD = 'gfexcel_download';
 
+    /**
+     * The addon instance.
+     * @since 1.0.0
+     * @var GFExcelAdmin
+     */
     private static $_instance;
 
+    /**
+     * @inheritdoc
+     */
     protected $_min_gravityforms_version = '2.0';
 
+    /**
+     * @inheritDoc
+     */
     protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
-    /** @var FormsRepository micro cache */
+    /**
+     * @inheritdoc
+     * @since 1.8.0
+     */
+    protected $_capabilities_settings_page = 'gravityforms_export_entries';
+
+    /** @var FormsRepository|null micro cache */
     private $repository;
 
     /** @var string  micro cache for file name */
@@ -37,6 +51,18 @@ class GFExcelAdmin extends GFAddOn
      * {@inheritdoc}
      */
     protected $_path = 'gf-entries-in-excel/gfexcel.php';
+
+    /**
+     * @inheritdoc
+     * @since 1.8.0
+     */
+    protected $_full_path = __FILE__;
+
+    /**
+     * @inheritdoc
+     * @since 1.8.0
+     */
+    protected $_url = 'https://gfexcel.com';
 
     /**
      * @return string
@@ -49,8 +75,8 @@ class GFExcelAdmin extends GFAddOn
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = __(GFExcel::$name, GFExcel::$slug);
-        $this->_short_title = __(GFExcel::$shortname, GFExcel::$slug);
+        $this->_title = __('Gravity Forms Entries in Excel', GFExcel::$slug);
+        $this->_short_title = __('Entries in Excel', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         $this->registerActions();
@@ -95,8 +121,8 @@ class GFExcelAdmin extends GFAddOn
                         'choices' => [
                             [
                                 'label' => esc_html__(
-                                        'Split multi-fields (name, address) into multiple columns',
-                                        GFExcel::$slug
+                                    'Split multi-fields (name, address) into multiple columns',
+                                    GFExcel::$slug
                                 ),
                                 'name' => SeparableField::SETTING_KEY,
                                 // backwards compatible with last known setting
@@ -215,6 +241,7 @@ class GFExcelAdmin extends GFAddOn
                 $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
                         ['gf_action' => null])));
                 wp_redirect($url);
+
                 return;
             }
 
@@ -296,6 +323,7 @@ class GFExcelAdmin extends GFAddOn
         if (plugin_basename(GFEXCEL_PLUGIN_FILE) !== $file) {
             return $links;
         }
+
         return array_merge($links, [
             'docs' => '<a href="' . esc_url('https://gfexcel.com/docs/getting-started/') . '" aria-label="' . esc_attr__(
                     'Documentation',
@@ -310,7 +338,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the settings link to the plugin row.
-     * @since $ver$
+     * @since 1.8.0
      * @param string[] $actions The action links.
      * @param string $plugin_file The name of the plugin file.
      * @return string[] The new action links.
@@ -325,13 +353,11 @@ class GFExcelAdmin extends GFAddOn
 
         // plugin is active
         if (array_key_exists('deactivate', $actions)) {
-            array_unshift(
-                $actions,
-                implode('', [
-                    '<a href="' . esc_url(admin_url('admin.php')) . '?page=gf_settings&subview=gf-entries-in-excel">',
-                    esc_html__('Settings', 'gravityforms'),
-                    '</a>',
-                ]));
+            $actions[] = implode('', [
+                '<a target="_blank" rel="nofollow" href="https://subscribe.gfexcel.com/pro-add-on"><b>',
+                esc_html__('Pro version?', 'gravityforms'),
+                '</b></a>',
+            ]);
         }
 
         return $actions;
@@ -363,17 +389,17 @@ class GFExcelAdmin extends GFAddOn
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
             } elseif (!rgempty('enable_download_url')) {
                 $form = GFExcel::setHash($form['id']);
-                GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
             } elseif (!rgempty('disable_download_url')) {
                 $form = GFExcel::setHash($form['id'], '');
-                GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
             }
         }
 
-        GFCommon::display_admin_message();
+        \GFCommon::display_admin_message();
         printf(
             '<h3>%s</h3>',
             esc_html__(GFExcel::$name, GFExcel::$slug)
@@ -473,7 +499,7 @@ class GFExcelAdmin extends GFAddOn
     {
         if (!current_user_can('editor') &&
             !current_user_can('administrator') &&
-            !GFCommon::current_user_can_any('gravityforms_export_entries')) {
+            !\GFCommon::current_user_can_any('gravityforms_export_entries')) {
             return false; // How you doin?
         }
 
@@ -492,6 +518,7 @@ class GFExcelAdmin extends GFAddOn
             }
 
             $renderer->renderOutput();
+
             return true;
         }
 
@@ -500,12 +527,13 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Add GFExcel download option to bulk actions dropdown
-     * @param $actions
-     * @return array
+     * @param mixed[] $actions The current actions.
+     * @return mixed[] The new actions.
      */
     public function bulk_actions($actions)
     {
         $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', GFExcel::$slug);
+
         return $actions;
     }
 
@@ -528,8 +556,8 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Returns the number of downloads
-     * @param $form
-     * @return int
+     * @param mixed[] $form The form object.
+     * @return int The number of downloads.
      */
     private function download_count($form)
     {
@@ -540,19 +568,45 @@ class GFExcelAdmin extends GFAddOn
         return 0;
     }
 
+    /**
+     * Helper method to make the sort options field.
+     * @since 1.2.0
+     * @param array $form The form object.
+     */
     private function select_sort_field_options($form)
     {
-        $fields = array_merge([
+        $fields = array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
+            // Fields that have no subfields can be added as they are.
+            if (!$field->get_entry_inputs()) {
+                $fields[] = [
+                    'value' => $field->id,
+                    'label' => $field->label,
+                ];
+
+                return $fields;
+            }
+
+            // Field has subfields. Lets try to add those.
+            foreach ($field->get_entry_inputs() as $sub_field) {
+                // Hidden fields are probably not filled out, so don't show them.
+                if ($sub_field['isHidden'] ?? false) {
+                    continue;
+                }
+
+                $fields[] = [
+                    'value' => $sub_field['id'],
+                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
+                ];
+            }
+
+            return $fields;
+        }, [
+            // Add `date of entry` as first item.
             [
                 'value' => 'date_created',
                 'label' => __('Date of entry', GFExcel::$slug),
             ]
-        ], array_map(function ($field) {
-            return [
-                'value' => $field->id,
-                'label' => $field->label,
-            ];
-        }, (array) $form['fields']));
+        ]);
 
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
@@ -561,7 +615,11 @@ class GFExcelAdmin extends GFAddOn
         ]);
     }
 
-    private function select_order_options()
+    /**
+     * Helper method to add the select order options.
+     * @since 1.2.0
+     */
+    private function select_order_options(): void
     {
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
@@ -579,10 +637,14 @@ class GFExcelAdmin extends GFAddOn
         ]);
     }
 
-    private function saveSettings($form)
+    /**
+     * Helper method to actually save the settings.
+     * @since 1.2.0
+     * @param mixed[] $form The form object.
+     */
+    private function saveSettings($form): void
     {
-        /** php5.3 proof. */
-        $gfexcel_keys = array_filter(array_keys($_POST), function ($key) {
+        $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
             return stripos($key, 'gfexcel_') === 0;
         });
 
@@ -593,20 +655,19 @@ class GFExcelAdmin extends GFAddOn
         }
 
         foreach ($this->get_posted_settings() as $key => $value) {
-            if ($key === FieldsRepository::KEY_DISABLED_FIELDS) {
-                if (is_array($value)) {
-                    $value = implode(',', array_keys(array_filter($value)));
-                }
+            if (($key === FieldsRepository::KEY_DISABLED_FIELDS) && is_array($value)) {
+                $value = implode(',', array_keys(array_filter($value)));
             }
+
             if ($key === GFExcel::KEY_CUSTOM_FILENAME) {
                 $value = preg_replace('/\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', '', $value);
-                $value = preg_replace('/[^a-z0-9_-]+/is', '_', $value);
+                $value = preg_replace('/[^a-z0-9_-]+/i', '_', $value);
             }
             $form_meta[$key] = $value;
         }
 
         \GFFormsModel::update_form_meta($form['id'], $form_meta);
-        GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug));
+        \GFCommon::add_message(__('The settings have been saved.', GFExcel::$slug));
     }
 
     /**
@@ -628,10 +689,12 @@ class GFExcelAdmin extends GFAddOn
     public function get_form_settings($form)
     {
         $settings = array_filter((array) parent::get_form_settings($form));
+
         return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form) {
             if (strpos($key, 'gfexcel_') === 0) {
                 $settings[$key] = $form[$key];
             }
+
             return $settings;
         }, []));
     }
@@ -761,7 +824,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Adds the sortable fields section to the settings page
-     * @param $form
+     * @param mixed[] $form The form object.
      */
     private function sortableFields($form)
     {
@@ -795,6 +858,7 @@ class GFExcelAdmin extends GFAddOn
                             $field->formId,
                             $field->id
                         ], $field->get_field_label(true, ''), $field);
+
                         return [
                             'value' => $field->id,
                             'label' => $label,
@@ -816,6 +880,7 @@ class GFExcelAdmin extends GFAddOn
                             $field->formId,
                             $field->id
                         ], $field->get_field_label(true, ''), $field);
+
                         return [
                             'value' => $field->id,
                             'label' => $label,
@@ -829,9 +894,9 @@ class GFExcelAdmin extends GFAddOn
     /**
      * Renders the html for a single sortable fields.
      * I don't like this inline html approach Gravity Forms uses.
-     * @param $field
-     * @param bool $echo
-     * @return string
+     * @param mixed[] $field The field object.
+     * @param bool $echo Whether to echo or return.
+     * @return string The HTML.
      */
     public function settings_sortable($field, $echo = true)
     {
@@ -846,7 +911,7 @@ class GFExcelAdmin extends GFAddOn
             $html = sprintf('<input type="hidden" name="%s" value="%s">', '_gaddon_setting_' . $name, $value);
             $html .= sprintf(
                 '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
-                $name, implode(' ', $attributes), implode("\n", array_map(function ($choice) use ($field) {
+                $name, implode(' ', $attributes), implode("\n", array_map(static function ($choice): string {
                 return sprintf(
                     '<li data-value="%s">
                         <div class="field"><i class="fa fa-bars"></i> %s</div>
@@ -875,7 +940,7 @@ class GFExcelAdmin extends GFAddOn
 
     /**
      * Renders the html for the sortable fields
-     * @param $field
+     * @param mixed[] $field The field object.
      */
     public function single_setting_row_sortable($field)
     {
@@ -1000,10 +1065,11 @@ class GFExcelAdmin extends GFAddOn
     }
 
     /**
-     * @param $notification
-     * @param $form
-     * @param $entry
-     * @return mixed
+     * Adds the attachment to the notification.
+     * @param mixed[] $notification The notification object.
+     * @param mixed[] $form The form object.
+     * @param mixed[] $entry The entry object.
+     * @return mixed[] The notification with attachment.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function handle_notification($notification, $form, $entry)
@@ -1013,7 +1079,7 @@ class GFExcelAdmin extends GFAddOn
         }
 
         // get notification to add to by form setting
-        if (!$this->repository || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+        if ($this->repository === null || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
             //Not the right notification
             return $notification;
         }
@@ -1062,6 +1128,7 @@ class GFExcelAdmin extends GFAddOn
         if (in_array($this->_file, $attachments) && file_exists($this->_file)) {
             unlink($this->_file);
         }
+
         return true;
     }
 
@@ -1090,7 +1157,7 @@ class GFExcelAdmin extends GFAddOn
         $form = rgar($args, 'form', []);
         $entry = rgar($args, 'entry', []);
 
-        $html = '<div class=\"gfexcel_entry_download\">
+        $html = '<div class="gfexcel_entry_download">
             <p>%s</p>
             <a href="%s" class="button-primary">%s</a>
             <a href="%s" class="button">%s</a>
@@ -1101,10 +1168,10 @@ class GFExcelAdmin extends GFAddOn
         printf(
             $html,
             __('Download this single entry as a file.', GFExcel::$slug),
-            $url . '?entry=' . $entry['id'],
-            __('Download Excel', GFExcel::$slug),
+            $url . '.xlsx?entry=' . $entry['id'],
+            __('Excel', GFExcel::$slug),
             $url . '.csv?entry=' . $entry['id'],
-            __('Download CSV', GFExcel::$slug)
+            __('CSV', GFExcel::$slug)
         );
     }
 
@@ -1162,6 +1229,7 @@ class GFExcelAdmin extends GFAddOn
             if ($data instanceof \WP_Error || !is_object($data) || !isset($data->active_installs)) {
                 return __('countless', GFExcel::$slug);
             }
+
             $active_installs = $data->active_installs;
             set_transient(GFExcel::$slug . '-active_installs', $active_installs, (60 * 60 * 24 * 7));
         }
@@ -1193,7 +1261,8 @@ class GFExcelAdmin extends GFAddOn
     {
         new CountDownloads();
         new DownloadUrl();
-        new NotificationsAction(new NotificationManager(new NotificationRepository()));
+        new NotificationsAction(GFExcel::getNotificationManager());
+        new MigrationManager();
     }
 
     /**
@@ -1217,6 +1286,7 @@ class GFExcelAdmin extends GFAddOn
             if (preg_match('/gform-form-(\d)$/i', $key, $matches)) {
                 $output[] = (int) $matches[1];
             }
+
             return $output;
         }, []);
 
@@ -1234,27 +1304,55 @@ class GFExcelAdmin extends GFAddOn
         }
     }
 
-    public function settings_save( $field, $echo = true ) {
+    /**
+     * @inheritdoc
+     *
+     * Full path is a level deeper than other add-ons.
+     *
+     * @since 1.8.0
+     */
+    public function update_path(): void
+    {
+        $path_dirname = dirname($this->_path);
+        if ($path_dirname !== '.') {
+            $full_path_dirname = basename(dirname($this->_full_path, 2));
+            if ($path_dirname !== $full_path_dirname) {
+                $this->_path = trailingslashit($full_path_dirname) . basename($this->_path);
+            }
+        }
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Reintroduced the save button because it is removed in 2.5.
+     * @since $ver$
+     */
+    public function settings_save($field, $echo = true): string
+    {
         if (!$this->hasSettingsClass()) {
-            return parent::settings_save($field, $echo);
+            return (string) parent::settings_save($field, $echo);
         }
 
-        $field['type']  = 'submit';
-        $field['name']  = 'gform-settings-save';
+        $field['type'] = 'submit';
+        $field['name'] = 'gform-settings-save';
         $field['class'] = 'button-primary gfbutton';
 
-        if ( ! rgar( $field, 'value' ) ) {
-            $field['value'] = esc_html__( 'Update Settings', 'gravityforms' );
+        if (!rgar($field, 'value')) {
+            $field['value'] = esc_html__('Update Settings', 'gravityforms');
         }
 
-        $attributes = $this->get_field_attributes( $field );
+        $attributes = $this->get_field_attributes($field);
 
-        $html = '<input
-					type="' . esc_attr( $field['type'] ) . '"
-					name="' . esc_attr( $field['name'] ) . '"
-					value="' . esc_attr( $field['value'] ) . '" ' . implode( ' ', $attributes ) . ' />';
+        $html = sprintf(
+            '<button type="%s" name="%s" class="button-primary" %s>%s</button>',
+            esc_attr($field['type']),
+            esc_attr($field['name']),
+            implode(' ', $attributes),
+            esc_attr($field['value'])
+        );
 
-        if ( $echo ) {
+        if ($echo) {
             echo $html;
         }
 

@@ -9,27 +9,27 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see ArrayNotificationRepository}.
- * @since $ver$
+ * @since 1.8.0
  */
 class ArrayNotificationRepositoryTest extends TestCase
 {
     /**
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var ArrayNotificationRepository
      */
     private $repository;
 
     /**
      * Holds some test notifications.
-     * @since $ver$
+     * @since 1.8.0
      * @var Notification[]
      */
     private $notifications;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -46,7 +46,7 @@ class ArrayNotificationRepositoryTest extends TestCase
     /**
      * Test case for {@see ArrayNotificationRepository::getNotifications()} and
      * {@see ArrayNotificationRepository::storeNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testGetNotifications(): void
     {
@@ -58,7 +58,7 @@ class ArrayNotificationRepositoryTest extends TestCase
 
     /**
      * Test case for {@see ArrayNotificationRepository::markAsDismissed()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationRepositoryException
      */
     public function testMarkAsDismissed(): void

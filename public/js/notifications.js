@@ -1,6 +1,6 @@
 /**
  * Javascript that handles the dismissal of notifications.
- * @since $ver$
+ * @since 1.8.0
  */
 ;jQuery(document).ready(function ($) {
     $(document).on('click', '.notice-dismiss', function () {

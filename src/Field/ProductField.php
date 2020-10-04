@@ -4,6 +4,9 @@ namespace GFExcel\Field;
 
 use GFExcel\GFExcelAdmin;
 use GFExcel\Values\BaseValue;
+use GFExcel\Values\CurrencyValue;
+use GFExcel\Values\NumericValue;
+use GFExcel\Values\StringValue;
 
 class ProductField extends SeparableField
 {
@@ -54,15 +57,15 @@ class ProductField extends SeparableField
         return $value;
     }
 
-
     /**
      * Return the last part of the input_id
-     * @param $key
-     * @return int
+     * @param string $key The field input key.
+     * @return int The subfield key.
      */
     private function getSubFieldId($key)
     {
         $key_parts = explode('.', $key);
+
         return (int) end($key_parts);
     }
 
@@ -107,5 +110,36 @@ class ProductField extends SeparableField
             $this->field->formId,
             $this->field->id
         ], (bool) $bool, $this->field);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Values should be wrapped as 3 different types.
+     *
+     * @since 1.8.2
+     */
+    protected function wrap($values, $is_label = false)
+    {
+        $values = $this->validateWrapValues($values);
+
+        $wrapping = [
+            StringValue::class,
+            CurrencyValue::class,
+            NumericValue::class,
+        ];
+
+        if (!$is_label) {
+            $wrapped = [];
+
+            // make sure the type is correct.
+            foreach ($values as $key => $value) {
+                $wrapped[] = new $wrapping[$key]($value, $this->field);
+            }
+
+            return $wrapped;
+        }
+
+        return parent::wrap($values, $is_label);
     }
 }

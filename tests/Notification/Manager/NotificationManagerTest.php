@@ -12,27 +12,27 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for {@see NotificationManager}.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationManagerTest extends TestCase
 {
     /*
      * The class under test.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationManager
      */
     private $manager;
 
     /**
      * A mocked instance of a notification repository.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationRepositoryInterface|MockObject
      */
     private $repository;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.0
      */
     public function setUp(): void
     {
@@ -44,7 +44,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::__construct()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testConstruct(): void
@@ -58,7 +58,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::add()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testAdd(): void
@@ -71,7 +71,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotification(): void
@@ -88,7 +88,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::hasNotification()}.
-     * @since $ver$
+     * @since 1.8.0
      */
     public function testHasNotification(): void
     {
@@ -100,7 +100,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotifications()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGeNotifications(): void
@@ -117,7 +117,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::getNotifications()} with invalid notification type.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testGetNotificationWithInvalidType(): void
@@ -131,7 +131,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismiss(): void
@@ -144,7 +144,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()}.
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismissWithException(): void
@@ -159,7 +159,7 @@ class NotificationManagerTest extends TestCase
 
     /**
      * Test case for {@see NotificationManager::dismiss()} with a {@see NotificationRepositoryException}
-     * @since $ver$
+     * @since 1.8.0
      * @throws NotificationManagerException
      */
     public function testDismissWithRepositoryException(): void
@@ -172,5 +172,32 @@ class NotificationManagerTest extends TestCase
 
         $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
         $this->manager->dismiss('1');
+    }
+
+    /**
+     * Test case for {@see NotificationManager::storeNotification()}.
+     * @since 1.8.0
+     * @throws NotificationManagerException
+     */
+    public function testStoreNotification(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->repository->expects($this->once())->method('storeNotification')->with($notification);
+        $this->manager->storeNotification($notification);
+    }
+
+    /**
+     * Test case for {@see NotificationManager::storeNotification()}.
+     * @since 1.8.0
+     * @throws NotificationManagerException
+     */
+    public function testStoreNotificationWithException(): void
+    {
+        $notification = new Notification('1', 'Test message');
+        $this->repository->expects($this->once())->method('storeNotification')->with($notification)->willThrowException(
+            $e = new NotificationRepositoryException('Some error')
+        );
+        $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
+        $this->manager->storeNotification($notification);
     }
 }

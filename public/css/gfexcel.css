@@ -12,6 +12,7 @@ ul.fields-select {
     padding: 3px 5px;
     border: 1px solid #E1E1E1;
     min-height: 30px;
+    border-radius: 4px;
 }
 
 ul.fields-select li div:not(.move) {
@@ -32,9 +33,14 @@ ul.fields-select li div.move:hover {
     cursor: pointer;
     cursor: -webkit-grab;
 }
+.ui-sortable-handle:hover {
+    background-color: #F0F0F0;
+}
 
+.ui-sortable-handle:active,
 .ui-sortable-helper {
     cursor: -webkit-grabbing;
+
 }
 
 ul.fields-select li {
@@ -45,6 +51,14 @@ ul.fields-select li {
     -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
     -ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
     transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
+}
+ul.fields-select li:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+ul.fields-select li:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .gaddon-section.sortfields table {
@@ -93,6 +107,11 @@ ul.fields-select li {
     display: none;
 }
 
+#gfexcel_enabled_fields {
+    border: 1px solid #1e8cbe;
+}
+
+.gform-settings__wrapper .button.button-cta,
 .button.button-cta {
     background: #5cb85c;
     border-color: #4cae4c;
@@ -101,6 +120,9 @@ ul.fields-select li {
     text-shadow: 0 -1px 1px #4cae4c, 1px 0 1px #4cae4c, 0 1px 1px #4cae4c, -1px 0 1px #4cae4c;
 }
 
+.gform-settings__wrapper .button.button-cta:hover,
+.gform-settings__wrapper .button.button-cta:focus,
+.gform-settings__wrapper .button.button-cta:active,
 .button.button-cta:hover,
 .button.button-cta:focus,
 .button.button-cta:active {
@@ -110,6 +132,7 @@ ul.fields-select li {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 0 #4cae4c;
 }
 
+.gform-settings__wrapper .button.button-danger,
 .button.button-danger {
     background: #cc0000;
     border-color: #A00000;
@@ -118,6 +141,9 @@ ul.fields-select li {
     text-shadow: 0 -1px 1px #A00000, 1px 0 1px #A00000, 0 1px 1px #A00000, -1px 0 1px #A00000;
 }
 
+.gform-settings__wrapper .button.button-danger:hover,
+.gform-settings__wrapper .button.button-danger:focus,
+.gform-settings__wrapper .button.button-danger:active,
 .button.button-danger:hover,
 .button.button-danger:focus,
 .button.button-danger:active {

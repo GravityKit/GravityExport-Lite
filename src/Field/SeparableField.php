@@ -8,10 +8,10 @@ use GFExcel\Values\BaseValue;
 class SeparableField extends BaseField
 {
     /** @var string */
-    const SETTING_KEY = 'field_separation_enabled';
+    public const SETTING_KEY = 'field_separation_enabled';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @return BaseValue[]
      */
     public function getColumns()
@@ -24,7 +24,7 @@ class SeparableField extends BaseField
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @return BaseValue[]
      */
     public function getCells($entry)
@@ -48,13 +48,13 @@ class SeparableField extends BaseField
             $this->field->id
         ], $value, $entry, $this->field);
 
-        return $this->wrap($value);
+        return $this->wrap([$value]);
     }
 
     /**
      * Get the separated fields to go along with the columns.
-     * @param $entry
-     * @return array
+     * @param mixed[] $entry The entry object.
+     * @return mixed[] The field values.
      */
     protected function getSeparatedFields($entry)
     {
@@ -118,8 +118,8 @@ class SeparableField extends BaseField
 
     /**
      * Get the label for a subfield.
-     * @param $field
-     * @return string
+     * @param mixed[] $field The field object.
+     * @return string The sub label.
      */
     protected function getSubLabel($field)
     {

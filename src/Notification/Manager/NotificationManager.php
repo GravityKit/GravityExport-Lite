@@ -9,27 +9,27 @@ use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 
 /**
  * Service to manage the notifications for the plugin.
- * @since $ver$
+ * @since 1.8.0
  */
 class NotificationManager
 {
     /**
      * The notifications
-     * @since $ver$
+     * @since 1.8.0
      * @var Notification[]
      */
     protected $notifications = [];
 
     /**
      * The notification repository.
-     * @since $ver$
+     * @since 1.8.0
      * @var NotificationRepositoryInterface
      */
     protected $repository;
 
     /**
      * Creates a new notification manager..
-     * @since $ver$
+     * @since 1.8.0
      * @param NotificationRepositoryInterface $repository The notification repository.
      */
     public function __construct(NotificationRepositoryInterface $repository)
@@ -41,7 +41,7 @@ class NotificationManager
 
     /**
      * Adds a notification to the notification stack.
-     * @since $ver$
+     * @since 1.8.0
      * @param Notification ...$notifications The notifications.
      */
     public function add(Notification ...$notifications): void
@@ -57,7 +57,7 @@ class NotificationManager
 
     /**
      * Dismisses the notification.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $id The notification id.
      * @throws NotificationManagerException When something went wrong during the dismissal.
      */
@@ -78,7 +78,7 @@ class NotificationManager
 
     /**
      * Returns the notification by id.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $id The id of the notification.
      * @return Notification The notification.
      * @throws NotificationManagerException when the notification does not exist.
@@ -94,7 +94,7 @@ class NotificationManager
 
     /**
      * Get all notifications (filtered on type).
-     * @since $ver$
+     * @since 1.8.0
      * @param string|null $notification_type The type to filter the notifications on.
      * @return Notification[] The notifications.
      * @throws NotificationManagerException When the notification type does not exist.
@@ -126,12 +126,27 @@ class NotificationManager
 
     /**
      * Returns whether the notification exists.
-     * @since $ver$
+     * @since 1.8.0
      * @param string $id The id of the notification.
      * @return bool Whether the notification exists.
      */
     public function hasNotification(string $id): bool
     {
         return array_key_exists($id, $this->notifications);
+    }
+
+    /**
+     * Stores the notification on the repository.
+     * @since 1.8.0
+     * @param Notification $notification The notification to store.
+     * @throws NotificationManagerException When the repository could not store the notification.
+     */
+    public function storeNotification(Notification $notification): void
+    {
+        try {
+            $this->repository->storeNotification($notification);
+        } catch (NotificationRepositoryException $e) {
+            throw new NotificationManagerException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
