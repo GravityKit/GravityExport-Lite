@@ -1345,11 +1345,11 @@ class GFExcelAdmin extends \GFAddOn
         $attributes = $this->get_field_attributes($field);
 
         $html = sprintf(
-            '<button type="%s" name="%s" class="button-primary" %s>%s</button>',
+            '<input type="%s" name="%s" class="button-primary" value="%s" %s/>',
             esc_attr($field['type']),
             esc_attr($field['name']),
-            implode(' ', $attributes),
-            esc_attr($field['value'])
+            esc_attr($field['value']),
+            implode(' ', $attributes)
         );
 
         if ($echo) {
