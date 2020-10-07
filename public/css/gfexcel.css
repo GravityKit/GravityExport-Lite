@@ -12,6 +12,7 @@ ul.fields-select {
     padding: 3px 5px;
     border: 1px solid #E1E1E1;
     min-height: 30px;
+    border-radius: 4px;
 }
 
 ul.fields-select li div:not(.move) {
@@ -47,9 +48,18 @@ ul.fields-select li {
     background-color: #f7f7f7;
     margin: 2px 0;
     padding: 3px;
-    -webkit-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
-    -ms-transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
-    transition: background-color 200ms ease-in-out, color 200ms ease-in-out;;
+    -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
+    -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+    transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+}
+
+ul.fields-select li:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+ul.fields-select li:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .gaddon-section.sortfields table {
