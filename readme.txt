@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.5
-Stable tag: 1.8.4
+Stable tag: 1.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,7 +208,7 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
+= 1.8.5 =
 * Enhancement: You can now sort by subfields like "last name" in a name field.
 * Enhancement: Hover state for sorting items.
 * Enhancement: Added form id to `gfexcel_renderer_cell_properties` hook.
