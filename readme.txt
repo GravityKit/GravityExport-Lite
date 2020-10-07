@@ -211,6 +211,7 @@ Checkout this example:
 = Unreleased =
 * Enhancement: You can now sort by subfields like "last name" in a name field.
 * Enhancement: Hover state for sorting items.
+* Enhancement: Added form id to `gfexcel_renderer_cell_properties` hook.
 
 = 1.8.4 =
 * Bugfix: Product field was unhappy without splitting fields.

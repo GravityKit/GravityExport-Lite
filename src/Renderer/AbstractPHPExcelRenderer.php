@@ -173,7 +173,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                         continue;
                     }
 
-                    $this->setProperties($cell, $value);
+                    $this->setProperties($cell, $value, $form_id);
 
                     $wrap_text = (bool) gf_apply_filters([
                         'gfexcel_renderer_wrap_text',
@@ -304,17 +304,22 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     /**
      * @param Cell $cell The cell.
      * @param string|BaseValue $value The value of the cell.
+     * @param int $form_id The form id.
      * @throws GFExcelException
      */
-    private function setProperties(Cell $cell, $value)
+    private function setProperties(Cell $cell, $value, $form_id)
     {
         $this->setCellUrl($cell, $value);
         $this->setCellStyle($cell, $value);
 
         gf_do_action(
-            ['gfexcel_renderer_cell_properties'],
+            [
+                'gfexcel_renderer_cell_properties',
+                $form_id,
+            ],
             $cell,
-            $value
+            $value,
+            $form_id
         );
     }
 
