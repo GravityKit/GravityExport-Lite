@@ -90,7 +90,7 @@ class GFExcelAdmin extends \GFAddOn
     {
         return [
             'php' => [
-                'version' => '7.1',
+                'version' => '7.2',
                 'extensions' => [
                     'zip',
                     'ctype',

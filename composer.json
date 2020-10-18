@@ -12,8 +12,8 @@
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
-        "php": "^7.1",
-        "phpoffice/phpspreadsheet": "~1.12.0",
+        "php": "^7.2",
+        "phpoffice/phpspreadsheet": "~1.15.0",
         "composer/installers": "~1.0"
     },
     "autoload": {
@@ -31,9 +31,11 @@
         "10up/wp_mock": "0.4.*",
         "szepeviktor/phpstan-wordpress": "^0.6.2",
         "wp-premium/gravityforms": "^2.4",
-        "phpstan/phpstan-mockery": "^0.12.5"
+        "phpstan/phpstan-mockery": "^0.12.5",
+        "overtrue/phplint": "^2.1"
     },
     "scripts": {
+        "linter" : "vendor/bin/phplint --no-cache",
         "test" : "vendor/bin/phpunit"
     }
 }
