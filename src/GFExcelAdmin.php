@@ -3,15 +3,12 @@
 namespace GFExcel;
 
 use GFExcel\Action\CountDownloads;
-use GFExcel\Action\NotificationsAction;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
-use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
-use GFExcel\Shorttag\DownloadUrl;
 
 class GFExcelAdmin extends \GFAddOn
 {
@@ -78,7 +75,6 @@ class GFExcelAdmin extends \GFAddOn
         $this->_short_title = __('Entries in Excel', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
-        $this->registerActions();
         parent::__construct();
     }
 
@@ -1094,16 +1090,39 @@ class GFExcelAdmin extends \GFAddOn
         return $notification;
     }
 
+    /**
+     * Gravity Forms helper method to retrieve the single instance.
+     * @return GFExcelAdmin
+     */
     public static function get_instance()
     {
-        if (self::$_instance == null) {
-            self::$_instance = new GFExcelAdmin();
+        if (self::$_instance === null) {
+            throw new \RuntimeException(sprintf(
+                'No instance of "%s" provided.',
+                self::class
+            ));
         }
 
         return self::$_instance;
     }
 
-    private function getNotifications()
+    /**
+     * Internal method to set the instance.
+     * @since $ver$
+     * @param GFExcelAdmin $addon The single add-on instance.
+     * @internal Do not use this method. It can be removed at any point in the future.
+     */
+    public static function set_instance(GFExcelAdmin $addon): void
+    {
+        self::$_instance = $addon;
+    }
+
+    /**
+     * Returns the notification options list.
+     * @since $ver$
+     * @return mixed[] The notification options.
+     */
+    private function getNotifications(): array
     {
         $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
         foreach ($this->repository->getNotifications() as $key => $notification) {
@@ -1244,19 +1263,6 @@ class GFExcelAdmin extends \GFAddOn
         $digit = ((int) substr($current_count, 0, 1) + 1);
 
         return $digit . substr($current_count, 1);
-    }
-
-    /**
-     * Register native plugin actions
-     * @since 1.6.1
-     * @todo Register everything via a service container.
-     */
-    private function registerActions(): void
-    {
-        new CountDownloads();
-        new DownloadUrl();
-        new NotificationsAction(GFExcel::getNotificationManager());
-        new MigrationManager();
     }
 
     /**

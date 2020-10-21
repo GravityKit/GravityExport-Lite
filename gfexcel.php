@@ -14,20 +14,27 @@
  * @package         GFExcel
  */
 
-
 defined('ABSPATH') or die('No direct access!');
 
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
+use GFExcel\GFExcelConfigConstants;
+use GFExcel\ServiceProvider\AddOnProvider;
+use League\Container\Container;
+use League\Container\ReflectionContainer;
 
 if (!defined('GFEXCEL_PLUGIN_FILE')) {
     define('GFEXCEL_PLUGIN_FILE', __FILE__);
 }
 
-add_action('gform_loaded', static function () {
-    if (!class_exists('GFForms')) {
-        return '';
+add_action('gform_loaded', static function (): void {
+    if (!class_exists('GFForms') || !method_exists('GFForms', 'include_addon_framework')) {
+        return;
     }
+
+    load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
+    GFForms::include_addon_framework();
+
     if (!class_exists('GFExport')) {
         require_once(GFCommon::get_base_path() . '/export.php');
     }
@@ -37,17 +44,28 @@ add_action('gform_loaded', static function () {
         require_once($autoload);
     }
 
-    load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
+    // Start DI container.
+    $container = (new Container())
+        ->defaultToShared()
+        // add internal service provider
+        ->addServiceProvider(new AddOnProvider())
+        // auto wire it up
+        ->delegate(new ReflectionContainer());
 
-    if (!method_exists('GFForms', 'include_addon_framework')) {
-        return false;
-    }
+    // Instantiate add on from container.
+    $addon = $container->get(GFExcelAdmin::class);
 
+    // Dispatch event including the container.
+    do_action('gfexcel_loaded', $container);
+
+    // Set instance for Gravity Forms and register the add-on.
+    GFExcelAdmin::set_instance($addon);
     GFAddOn::register(GFExcelAdmin::class);
 
-    do_action('gfexcel_loaded');
+    // Start actions
+    $container->get(GFExcelConfigConstants::GFEXCEL_ACTION_TAG);
 
     if (!is_admin()) {
-        new GFExcel();
+        $container->get(GFExcel::class);
     }
 });

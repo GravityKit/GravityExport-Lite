@@ -9,11 +9,15 @@ use GF_Field;
 class FieldsRepository
 {
     private $fields = [];
-    private $form = [];
+
+    private $form;
+
     private $meta_fields = [];
 
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
+
     const KEY_ENABLED_FIELDS = 'gfexcel_enabled_fields';
+
     /**
      * @var GFExcelAdmin
      */
@@ -27,19 +31,19 @@ class FieldsRepository
 
     /**
      * Get the fields to show in the excel. Fields can be disabled using the hook.
-     * @param bool $unfiltered
-     * @return GF_Field[] The fields
+     * @param bool $unfiltered Whether to all fields, including the disabled ones.
+     * @return GF_Field[] The fields.
      */
     public function getFields($unfiltered = false)
     {
-        if (empty($this->fields)) {
+        if (empty($this->fields) || $unfiltered) {
             $this->fields = $this->form['fields'];
             $this->addNotesField();
 
             if ($this->useMetaData()) {
                 $fields_map = ['first' => [], 'last' => []];
                 foreach ($this->meta_fields as $key => $field) {
-                    $fields_map[in_array($key, $this->getFirstMetaFields()) ? 'first' : 'last'][] = $field;
+                    $fields_map[in_array($key, $this->getFirstMetaFields(), false) ? 'first' : 'last'][] = $field;
                 }
                 $this->fields = array_merge($fields_map['first'], $this->fields, $fields_map['last']);
             }
@@ -47,6 +51,7 @@ class FieldsRepository
             if ($unfiltered) {
                 $fields = $this->fields;
                 $this->fields = []; //reset
+
                 return $fields;
             }
 
@@ -59,10 +64,9 @@ class FieldsRepository
 
     /**
      * Check if we want meta data, if so, add those fields and format them.
-     * @internal
      * @return boolean
      */
-    private function useMetaData()
+    private function useMetaData(): bool
     {
         $use_metadata = (bool) gf_apply_filters(
             [
@@ -81,6 +85,7 @@ class FieldsRepository
             $this->meta_fields = array_reduce($form['fields'], function ($carry, GF_Field $field) {
                 $field->type = 'meta';
                 $carry[$field->id] = $field;
+
                 return $carry;
             });
         }
@@ -90,7 +95,7 @@ class FieldsRepository
 
     /**
      * Get the id's of the meta fields we want before the rest of the fields
-     * @return array
+     * @return string[] The meta field id's.
      */
     private function getFirstMetaFields(): array
     {
@@ -145,7 +150,8 @@ class FieldsRepository
      */
     public function getDisabledFields()
     {
-        $result = []; //default
+        $result = [];
+
         if (($settings = $this->admin->get_plugin_settings()) && is_array($settings)) {
             foreach ($settings as $key => $value) {
                 if (strpos($key, 'enabled_metafield_') === 0 && $value == 0) {
@@ -159,7 +165,7 @@ class FieldsRepository
         }
 
         return gf_apply_filters([
-            "gfexcel_disabled_fields",
+            'gfexcel_disabled_fields',
             $this->form['id'],
         ], $result);
     }
@@ -180,8 +186,8 @@ class FieldsRepository
 
     /**
      * Sort fields according to sorted keys
-     * @param array $fields
-     * @return GF_Field[]
+     * @param GF_Field[] $fields The unsorted fields.
+     * @return GF_Field[] The sorted fields.
      */
     public function sortFields($fields = [])
     {
@@ -192,6 +198,7 @@ class FieldsRepository
         $sorted_keys = $this->getEnabledFields();
         $fields = array_reduce($fields, static function (array $carry, GF_Field $field): array {
             $carry[$field->id] = $field;
+
             return $carry;
         }, []);
 

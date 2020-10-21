@@ -76,8 +76,6 @@ class GFExcel
         add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('robots_txt', [$this, 'robotsTxt']);
-
-        $this->registerActions();
     }
 
     /** Return the url for the form
@@ -357,25 +355,6 @@ class GFExcel
     }
 
     /**
-     * Register native plugin actions
-     * @since 1.6.1
-     * @return void
-     */
-    private function registerActions()
-    {
-        $actions = [
-            DownloadUrl::class,
-            FilterRequest::class,
-        ];
-
-        foreach ($actions as $action) {
-            if (class_exists($action)) {
-                new $action;
-            }
-        }
-    }
-
-    /**
      * Add's a Disallow for the download URL's.
      * @since 1.7.0
      * @param string $output The robots.txt output
@@ -430,28 +409,5 @@ class GFExcel
     public static function getCombiner(): CombinerInterface
     {
         return apply_filters(GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER, new Combiner());
-    }
-
-    /**
-     * Returns the notification singleton.
-     * @since 1.8.0
-     * @return NotificationManager The notification manager.
-     */
-    public static function getNotificationManager(): NotificationManager
-    {
-        if (!self::$notification_manager) {
-            $repository = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_MANAGER,
-                new NotificationRepository()
-            );
-
-            self::$notification_manager = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
-                new NotificationManager($repository),
-                $repository
-            );
-        }
-
-        return self::$notification_manager;
     }
 }
