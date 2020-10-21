@@ -14,7 +14,8 @@
         "ext-json": "*",
         "php": "^7.2",
         "phpoffice/phpspreadsheet": "~1.15.0",
-        "composer/installers": "~1.0"
+        "composer/installers": "~1.0",
+        "league/container": "^3.3"
     },
     "autoload": {
         "psr-4": {
