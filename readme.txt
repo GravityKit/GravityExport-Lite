@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Resetting the form count could result in an error you would receive per email.
+
 = 1.8.5 =
 * Enhancement: You can now sort by subfields like "last name" in a name field.
 * Enhancement: Hover state for sorting items.
