@@ -237,7 +237,7 @@ class GFExcelAdmin extends \GFAddOn
                         ['gf_action' => null])));
                 wp_redirect($url);
 
-                return;
+                exit(0);
             }
 
             $this->repository = new FormsRepository($form['id']);
