@@ -30,8 +30,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ matrix.php-versions }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
