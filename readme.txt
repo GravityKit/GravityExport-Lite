@@ -5,7 +5,7 @@ Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.5
-Stable tag: 1.8.5
+Stable tag: 1.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -211,6 +211,9 @@ Checkout this example:
 = Unreleased =
 * Dependency: Dropped support for PHP 7.1 since it has been EOL for some time.
 * Enhancement: Updated PHPSpreadsheet to 1.15
+
+= 1.8.6 =
+* Bugfix: Resetting the form count could result in an error you would receive per email.
 
 = 1.8.5 =
 * Enhancement: You can now sort by subfields like "last name" in a name field.
