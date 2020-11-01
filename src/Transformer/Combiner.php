@@ -78,9 +78,7 @@ class Combiner implements CombinerInterface
      */
     public function getRows(?array $entry = null): iterable
     {
-        foreach ($this->rows as $row) {
-            yield $row;
-        }
+        yield from $this->rows;
     }
 
     /**
