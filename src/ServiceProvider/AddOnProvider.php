@@ -15,7 +15,7 @@ use League\Container\Definition\DefinitionInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service provider for the add-on.
+ * Service provider for the gravity forms add-on.
  * @since $ver$
  */
 class AddOnProvider extends AbstractServiceProvider

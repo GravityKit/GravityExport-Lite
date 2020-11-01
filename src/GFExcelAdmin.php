@@ -3,6 +3,8 @@
 namespace GFExcel;
 
 use GFExcel\Action\CountDownloads;
+use GFExcel\Addon\AddonInterface;
+use GFExcel\Addon\AddonTrait;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
@@ -10,16 +12,11 @@ use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 
-class GFExcelAdmin extends \GFAddOn
+class GFExcelAdmin extends \GFAddOn implements AddonInterface
 {
-    public const BULK_DOWNLOAD = 'gfexcel_download';
+    use AddonTrait;
 
-    /**
-     * The addon instance.
-     * @since 1.0.0
-     * @var GFExcelAdmin
-     */
-    private static $_instance;
+    public const BULK_DOWNLOAD = 'gfexcel_download';
 
     /**
      * @inheritdoc
@@ -1088,33 +1085,6 @@ class GFExcelAdmin extends \GFAddOn
         $notification['attachments'][] = $this->_file;
 
         return $notification;
-    }
-
-    /**
-     * Gravity Forms helper method to retrieve the single instance.
-     * @return GFExcelAdmin
-     */
-    public static function get_instance()
-    {
-        if (self::$_instance === null) {
-            throw new \RuntimeException(sprintf(
-                'No instance of "%s" provided.',
-                self::class
-            ));
-        }
-
-        return self::$_instance;
-    }
-
-    /**
-     * Internal method to set the instance.
-     * @since $ver$
-     * @param GFExcelAdmin $addon The single add-on instance.
-     * @internal Do not use this method. It can be removed at any point in the future.
-     */
-    public static function set_instance(GFExcelAdmin $addon): void
-    {
-        self::$_instance = $addon;
     }
 
     /**
