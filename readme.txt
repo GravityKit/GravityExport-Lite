@@ -211,6 +211,7 @@ Checkout this example:
 = Unreleased =
 * Dependency: Dropped support for PHP 7.1 since it has been EOL for some time.
 * Enhancement: Updated PHPSpreadsheet to 1.15
+* Bugfix: Product quantity was set to 1 by default if the value was empty.
 
 = 1.8.6 =
 * Bugfix: Resetting the form count could result in an error you would receive per email.
