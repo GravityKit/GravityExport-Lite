@@ -45,13 +45,13 @@ class ProductField extends SeparableField
 
     /**
      * {@inheritdoc}
-     * Set quantity to 1, if none is given.
+     * Set quantity to 0, if value is empty.
      */
     protected function getFieldValue($entry, $input_id = '')
     {
         $value = parent::getFieldValue($entry, $input_id);
-        if ($this->getSubFieldId($input_id) === 3 && empty($value)) {
-            $value = 1;
+        if (empty($value) && $this->getSubFieldId($input_id) === 3) {
+            $value = 0;
         }
 
         return $value;
