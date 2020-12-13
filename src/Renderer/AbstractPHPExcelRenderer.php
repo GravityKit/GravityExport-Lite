@@ -103,7 +103,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     public function fatalHandler()
     {
         $error = error_get_last();
-        if ($error['type'] === E_ERROR) {
+        if ($error && $error['type'] === E_ERROR) {
             $exception = new \Exception($error['message']);
             $this->handleException($exception);
         }
