@@ -252,8 +252,8 @@ class GFExcel
      */
     public function request($query_vars)
     {
-        if (!isset($query_vars[self::KEY_ACTION]) ||
-            !isset($query_vars[self::KEY_HASH]) ||
+        if (
+            !isset($query_vars[self::KEY_ACTION], $query_vars[self::KEY_HASH]) ||
             $query_vars[self::KEY_ACTION] !== self::$slug ||
             empty($query_vars[self::KEY_HASH])
         ) {
@@ -336,18 +336,17 @@ class GFExcel
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
         // Data is stored in a json_encoded string, so we can't match perfectly.
-        if (!$form_row = $wpdb->get_row(
-            $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
-            ARRAY_A
-        )) {
-            // not even a partial match.
-            return null;
-        }
-
-        // possible match on hash, so check against found form.
-        if (GFExcel::getHash($form_row['form_id']) !== $hash) {
-            //hash doesn't match, so it's probably a partial match
-            return null;
+        if (
+            // Not even a partial match.
+            !($form_row = $wpdb->get_row(
+                $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
+                ARRAY_A
+            )) ||
+            // Possible match on hash, so check against found form.
+            GFExcel::getHash($form_row['form_id']) !== $hash
+        ) {
+            // No match found, so we can try to see if some other plugin can find it.
+            return apply_filters('gfexcel_hash_form_id', null, $hash);
         }
 
         //only now are we home save.
@@ -355,7 +354,7 @@ class GFExcel
     }
 
     /**
-     * Add's a Disallow for the download URL's.
+     * Adds a Disallow for the download URL's.
      * @since 1.7.0
      * @param string $output The robots.txt output
      * @return string the new output.
