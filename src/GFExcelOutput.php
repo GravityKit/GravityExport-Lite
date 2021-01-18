@@ -79,7 +79,7 @@ class GFExcelOutput
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
-        $this->combiner = $combiner ?? GFExcel::getCombiner();
+        $this->combiner = $combiner ?? GFExcel::getCombiner($form_id);
 
         @set_time_limit(0); // suppress warning when disabled
     }

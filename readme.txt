@@ -211,6 +211,8 @@ Checkout this example:
 = Unreleased =
 * Dependency: Dropped support for PHP 7.1 since it has been EOL for some time.
 * Enhancement: Updated PHPSpreadsheet to 1.15
+* Enhancement: Better support for checkbox fields.
+
 = 1.8.7 =
 * Bugfix: Product quantity was set to 1 by default if the value was empty.
 
