@@ -4,7 +4,7 @@ namespace GFExcel\Field;
 
 /**
  * Field transformer for `checkbox` fields.
- * @since $ver$
+ * @since 1.8.8
  */
 class CheckboxField extends BaseField implements RowsInterface
 {
@@ -19,7 +19,7 @@ class CheckboxField extends BaseField implements RowsInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.8
      */
     public function __construct(\GF_Field $field)
     {
@@ -33,7 +33,7 @@ class CheckboxField extends BaseField implements RowsInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.8
      */
     public function getRows(?array $entry = null): iterable
     {
