@@ -16,10 +16,12 @@
 
 defined('ABSPATH') or die('No direct access!');
 
+use GFExcel\Action\ActionAwareInterface;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 use GFExcel\GFExcelConfigConstants;
 use GFExcel\ServiceProvider\AddOnProvider;
+use GFExcel\ServiceProvider\BaseServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
@@ -48,6 +50,7 @@ add_action('gform_loaded', static function (): void {
     $container = (new Container())
         ->defaultToShared()
         // add internal service provider
+        ->addServiceProvider(new BaseServiceProvider())
         ->addServiceProvider(new AddOnProvider())
         // auto wire it up
         ->delegate(new ReflectionContainer());
@@ -63,7 +66,7 @@ add_action('gform_loaded', static function (): void {
     GFAddOn::register(GFExcelAdmin::class);
 
     // Start actions
-    $container->get(GFExcelConfigConstants::GFEXCEL_ACTION_TAG);
+    $container->get(ActionAwareInterface::ACTION_TAG);
 
     if (!is_admin()) {
         $container->get(GFExcel::class);

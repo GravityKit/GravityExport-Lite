@@ -31,7 +31,7 @@ class FieldsRepository
 
     /**
      * Get the fields to show in the excel. Fields can be disabled using the hook.
-     * @param bool $unfiltered Whether to all fields, including the disabled ones.
+     * @param bool $unfiltered Whether to return all fields, including the disabled ones.
      * @return GF_Field[] The fields.
      */
     public function getFields($unfiltered = false)
@@ -172,7 +172,7 @@ class FieldsRepository
 
     /**
      * Return sorted array of the keys of enabled fields
-     * @return array
+     * @return string[] The enabled fields.
      */
     public function getEnabledFields()
     {
@@ -181,7 +181,10 @@ class FieldsRepository
             $result = explode(',', $this->form[static::KEY_ENABLED_FIELDS]);
         }
 
-        return $result;
+        return gf_apply_filters([
+            'gfexcel_enabled_fields',
+            $this->form['id'],
+        ], $result);
     }
 
     /**

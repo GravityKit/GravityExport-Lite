@@ -2,6 +2,7 @@
 
 namespace GFExcel\ServiceProvider;
 
+use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationsAction;
@@ -11,8 +12,6 @@ use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
-use League\Container\Definition\DefinitionInterface;
-use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for the gravity forms add-on.
@@ -25,7 +24,7 @@ class AddOnProvider extends AbstractServiceProvider
      * @since $ver$
      */
     protected $provides = [
-        GFExcelConfigConstants::GFEXCEL_ACTION_TAG,
+        ActionAwareInterface::ACTION_TAG,
         NotificationRepositoryInterface::class,
         NotificationManager::class,
         CountDownloads::class,
@@ -50,20 +49,5 @@ class AddOnProvider extends AbstractServiceProvider
         $this->addAction(FilterRequest::class);
         $this->addAction(MigrationManager::class)->addArgument(NotificationManager::class);
         $this->addAction(NotificationsAction::class)->addArgument(NotificationManager::class);
-    }
-
-    /**
-     * Helper method to quickly add an action.
-     * @since $ver$
-     * @param string $id The id of the definition.
-     * @param mixed $concrete The concrete implementation.
-     * @param bool|null $shared Whether this is a shared instance.
-     * @return DefinitionInterface The definition.
-     */
-    private function addAction(string $id, $concrete = null, ?bool $shared = null): DefinitionInterface
-    {
-        return $this->getLeagueContainer()
-            ->add($id, $concrete, $shared)
-            ->addTag(GFExcelConfigConstants::GFEXCEL_ACTION_TAG);
     }
 }
