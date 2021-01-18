@@ -19,7 +19,7 @@ class Transformer
      */
     protected $fields = [
         'calculation' => 'GFExcel\Field\ProductField',
-        'checkbox' => 'GFExcel\Field\BaseField', //hard reset, this format makes more sense.
+        'checkbox' => 'GFExcel\Field\CheckboxField',
         'date' => 'GFExcel\Field\DateField',
         'fileupload' => 'GFExcel\Field\FileUploadField',
         'list' => 'GFExcel\Field\ListField',
