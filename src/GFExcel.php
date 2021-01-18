@@ -425,11 +425,15 @@ class GFExcel
     /**
      * Returns the combiner instance.
      * @since 1.8.0
+     * @param int|null $form_id The form id.
      * @return CombinerInterface The combiner.
      */
-    public static function getCombiner(): CombinerInterface
+    public static function getCombiner($form_id = null): CombinerInterface
     {
-        return apply_filters(GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER, new Combiner());
+        return gf_apply_filters(array_filter([
+            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER,
+            $form_id
+        ]), new Combiner(), $form_id);
     }
 
     /**

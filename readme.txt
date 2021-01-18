@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Enhancement: Better support for checkbox fields.
+
 = 1.8.7 =
 * Bugfix: Product quantity was set to 1 by default if the value was empty.
 
