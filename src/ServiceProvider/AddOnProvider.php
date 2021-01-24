@@ -6,7 +6,6 @@ use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationsAction;
-use GFExcel\GFExcelConfigConstants;
 use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
@@ -24,7 +23,6 @@ class AddOnProvider extends AbstractServiceProvider
      * @since $ver$
      */
     protected $provides = [
-        ActionAwareInterface::ACTION_TAG,
         NotificationRepositoryInterface::class,
         NotificationManager::class,
         CountDownloads::class,

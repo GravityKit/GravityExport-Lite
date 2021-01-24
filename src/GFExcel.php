@@ -179,13 +179,20 @@ class GFExcel
     public static function getFileExtension($form)
     {
         if (!static::$file_extension) {
-            if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
-                static::$file_extension = 'xlsx'; //default
+            $extension = gf_apply_filters(
+                [
+                    static::KEY_FILE_EXTENSION,
+                    $form['id'] ?? null
+                ],
+                !($form[static::KEY_FILE_EXTENSION] ?? null) ? 'xlsx' : $form[static::KEY_FILE_EXTENSION],
+                $form
+            );
 
-                return static::$file_extension;
+            if (!in_array($extension, static::getPluginFileExtensions(), true)) {
+                $extension = 'xlsx';
             }
 
-            static::$file_extension = $form[static::KEY_FILE_EXTENSION];
+            static::$file_extension = $extension;
         }
 
         return static::$file_extension;

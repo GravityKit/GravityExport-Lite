@@ -58,12 +58,12 @@ add_action('gform_loaded', static function (): void {
     // Instantiate add on from container.
     $addon = $container->get(GFExcelAdmin::class);
 
-    // Dispatch event including the container.
-    do_action('gfexcel_loaded', $container);
-
     // Set instance for Gravity Forms and register the add-on.
     GFExcelAdmin::set_instance($addon);
     GFAddOn::register(GFExcelAdmin::class);
+
+    // Dispatch event including the container.
+    do_action('gfexcel_loaded', $container);
 
     // Start actions
     $container->get(ActionAwareInterface::ACTION_TAG);
