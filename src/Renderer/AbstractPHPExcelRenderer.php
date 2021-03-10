@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 /**
  * The base for a {@see PhpSpreadsheet} renderer.
@@ -24,6 +25,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 {
     /** @var Spreadsheet */
     protected $spreadsheet;
+
+    /**
+     * The writer instances.
+     * @since $ver$
+     * @var IWriter[]
+     */
+    protected $writer = [];
 
     /**
      * Creates an AbstractPHPExcelRenderer instance.
@@ -35,18 +43,44 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
+     * Returns the spreadsheet.
+     * @since $ver$
+     * @return Spreadsheet The spreadsheet.
+     */
+    public function getSpreadsheet(): Spreadsheet
+    {
+        return $this->spreadsheet;
+    }
+
+    /**
+     * Returns the writer instance.
+     * @since $ver$
+     * @param string $extension The file extension.
+     * @return \PhpOffice\PhpSpreadsheet\Writer\IWriter The writer.
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception When the writer could not be found.
+     */
+    public function getWriter(string $extension): IWriter
+    {
+        if (!($this->writer[$extension] ?? null) instanceof IWriter) {
+            $this->writer[$extension] = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+        }
+
+        return $this->writer[$extension];
+    }
+
+    /**
      * This is where the magic happens, and the actual file is being rendered.
      * @param string $extension The file extension to render.
      * @param bool $save Whether to save the current file.
      * @return string|null The filename when saving.
      */
-    public function renderOutput($extension = 'xlsx', $save = false): ?string
+    public function renderOutput($extension = 'xlsx', $save = false)
     {
         $exception = null;
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
             /** @var BaseWriter $objWriter */
-            $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+            $objWriter = $this->getWriter($extension);
             $objWriter->setPreCalculateFormulas(false);
 
             if ($objWriter instanceof Csv) {

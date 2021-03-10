@@ -2,6 +2,7 @@
 
 namespace GFExcel\Repository;
 
+use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 use GFExport;
 use GF_Field;
@@ -209,5 +210,49 @@ class FieldsRepository
         $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'is_object'));
 
         return $fields;
+    }
+
+    /**
+     * Returns the sort field options for a form.
+     * @since $ver$
+     * @param mixed[]|null $form The form object.
+     * @return string[][] The sort field options.
+     */
+    public function getSortFieldOptions(?array $form = null): array
+    {
+        $form = $form ?? $this->form;
+
+        return array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
+            // Fields that have no subfields can be added as they are.
+            if (!$field->get_entry_inputs()) {
+                $fields[] = [
+                    'value' => $field->id,
+                    'label' => $field->label,
+                ];
+
+                return $fields;
+            }
+
+            // Field has subfields. Lets try to add those.
+            foreach ($field->get_entry_inputs() as $sub_field) {
+                // Hidden fields are probably not filled out, so don't show them.
+                if ($sub_field['isHidden'] ?? false) {
+                    continue;
+                }
+
+                $fields[] = [
+                    'value' => $sub_field['id'],
+                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
+                ];
+            }
+
+            return $fields;
+        }, [
+            // Add `date of entry` as first item.
+            [
+                'value' => 'date_created',
+                'label' => __('Date of entry', GFExcel::$slug),
+            ]
+        ]);
     }
 }

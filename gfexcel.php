@@ -9,7 +9,7 @@
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gf-entries-in-excel
  * Domain Path:     /languages
- * Version:         1.8.8
+ * Version:         1.9.0
  *
  * @package         GFExcel
  */
@@ -19,7 +19,6 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
-use GFExcel\GFExcelConfigConstants;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
 use League\Container\Container;
@@ -66,7 +65,12 @@ add_action('gform_loaded', static function (): void {
     do_action('gfexcel_loaded', $container);
 
     // Start actions
-    $container->get(ActionAwareInterface::ACTION_TAG);
+    if ($container->has(ActionAwareInterface::ACTION_TAG)) {
+        $container->get(ActionAwareInterface::ACTION_TAG);
+    }
+    if ($container->has(AddOnProvider::AUTOSTART_TAG)) {
+        $container->get(AddOnProvider::AUTOSTART_TAG);
+    }
 
     if (!is_admin()) {
         $container->get(GFExcel::class);

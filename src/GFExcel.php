@@ -2,11 +2,8 @@
 
 namespace GFExcel;
 
-use GFExcel\Action\FilterRequest;
-use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelRenderer;
-use GFExcel\Shorttag\DownloadUrl;
+use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Combiner;
 use GFExcel\Transformer\CombinerInterface;
 
@@ -35,7 +32,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.8.8';
+    public static $version = '1.9.0';
 
     /**
      * The endpoint slug of the plugin.
@@ -57,13 +54,6 @@ class GFExcel
     public const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
 
     private static $file_extension;
-
-    /**
-     * The notification manager singleton.
-     * @since 1.8.0
-     * @var NotificationManager|null
-     */
-    private static $notification_manager;
 
     /**
      * Instantiates the plugin.
@@ -295,11 +285,7 @@ class GFExcel
             $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
 
             if ($form_id) {
-                $renderer = gf_apply_filters([
-                    GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
-                    $form_id
-                ], new PHPExcelRenderer());
-
+                $renderer = GFExcel::getRenderer($form_id);
                 $output = new GFExcelOutput($form_id, $renderer);
 
                 // trigger download event.
@@ -419,5 +405,19 @@ class GFExcel
             GFExcelConfigConstants::GFEXCEL_DOWNLOAD_COMBINER,
             $form_id
         ]), new Combiner(), $form_id);
+    }
+
+    /**
+     * Returns the renderer instance.
+     * @since $ver$
+     * @param int|null $form_id The form id.
+     * @return RendererInterface The renderer.
+     */
+    public static function getRenderer($form_id = null): RendererInterface
+    {
+       return gf_apply_filters(array_filter([
+            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
+            $form_id
+        ]), new PHPExcelRenderer(), $form_id);
     }
 }

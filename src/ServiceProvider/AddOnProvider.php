@@ -2,7 +2,6 @@
 
 namespace GFExcel\ServiceProvider;
 
-use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationsAction;
@@ -11,6 +10,7 @@ use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
+use League\Container\Definition\DefinitionInterface;
 
 /**
  * Service provider for the gravity forms add-on.
@@ -19,10 +19,18 @@ use GFExcel\Shorttag\DownloadUrl;
 class AddOnProvider extends AbstractServiceProvider
 {
     /**
+     * The string an automatically started service must be tagged with.
+     * @since $ver$
+     * @var string
+     */
+    public const AUTOSTART_TAG = 'gfexcel.autostart';
+
+    /**
      * @inheritdoc
      * @since $ver$
      */
     protected $provides = [
+        self::AUTOSTART_TAG,
         NotificationRepositoryInterface::class,
         NotificationManager::class,
         CountDownloads::class,
@@ -42,10 +50,25 @@ class AddOnProvider extends AbstractServiceProvider
         $container->add(NotificationRepositoryInterface::class, NotificationRepository::class);
         $container->add(NotificationManager::class)->addArgument(NotificationRepositoryInterface::class);
 
-        $this->addAction(CountDownloads::class);
-        $this->addAction(DownloadUrl::class);
-        $this->addAction(FilterRequest::class);
-        $this->addAction(MigrationManager::class)->addArgument(NotificationManager::class);
-        $this->addAction(NotificationsAction::class)->addArgument(NotificationManager::class);
+        $this->addAutoStart(CountDownloads::class);
+        $this->addAutoStart(DownloadUrl::class);
+        $this->addAutoStart(FilterRequest::class);
+        $this->addAutoStart(MigrationManager::class)->addArgument(NotificationManager::class);
+        $this->addAutoStart(NotificationsAction::class)->addArgument(NotificationManager::class);
+    }
+
+    /**
+     * Helper method to quickly add an auto started service.
+     * @since $ver$
+     * @param string $id The id of the definition.
+     * @param mixed $concrete The concrete implementation.
+     * @param bool|null $shared Whether this is a shared instance.
+     * @return DefinitionInterface The definition.
+     */
+    private function addAutoStart(string $id, $concrete = null, ?bool $shared = null): DefinitionInterface
+    {
+        return $this->getLeagueContainer()
+            ->add($id, $concrete, $shared)
+            ->addTag(self::AUTOSTART_TAG);
     }
 }

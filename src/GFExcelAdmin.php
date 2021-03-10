@@ -563,42 +563,9 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
      */
     private function select_sort_field_options($form)
     {
-        $fields = array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
-            // Fields that have no subfields can be added as they are.
-            if (!$field->get_entry_inputs()) {
-                $fields[] = [
-                    'value' => $field->id,
-                    'label' => $field->label,
-                ];
-
-                return $fields;
-            }
-
-            // Field has subfields. Lets try to add those.
-            foreach ($field->get_entry_inputs() as $sub_field) {
-                // Hidden fields are probably not filled out, so don't show them.
-                if ($sub_field['isHidden'] ?? false) {
-                    continue;
-                }
-
-                $fields[] = [
-                    'value' => $sub_field['id'],
-                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
-                ];
-            }
-
-            return $fields;
-        }, [
-            // Add `date of entry` as first item.
-            [
-                'value' => 'date_created',
-                'label' => __('Date of entry', GFExcel::$slug),
-            ]
-        ]);
-
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
-            'choices' => $fields,
+            'choices' => (new FieldsRepository($form))->getSortFieldOptions(),
             'default_value' => $this->repository->getSortField(),
         ]);
     }
@@ -612,14 +579,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
             'choices' => [
-                [
-                    'value' => 'ASC',
-                    'label' => __('Acending', GFExcel::$slug)
-                ],
-                [
-                    'value' => 'DESC',
-                    'label' => __('Descending', GFExcel::$slug)
-                ]
+                ['value' => 'ASC', 'label' => __('Ascending', GFExcel::$slug)],
+                ['value' => 'DESC', 'label' => __('Descending', GFExcel::$slug)],
             ],
             'default_value' => $this->repository->getSortOrder(),
         ]);
