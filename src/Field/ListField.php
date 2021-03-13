@@ -13,6 +13,20 @@ class ListField extends BaseField implements RowsInterface
     private $columns;
 
     /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function __construct(\GF_Field $field)
+    {
+        parent::__construct($field);
+
+        // Normal glue
+        add_filter('gfexcel_combiner_glue_list', static function () {
+            return "\n";
+        });
+    }
+
+    /**
      * Array of needed column names for this field.
      * @return BaseValue[]|string[]
      */
