@@ -83,7 +83,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         return [
             'php' => [
-                'version' => '7.2',
+                'version' => '7.3',
                 'extensions' => [
                     'zip',
                     'ctype',

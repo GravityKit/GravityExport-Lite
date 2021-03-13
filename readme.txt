@@ -3,8 +3,8 @@ Contributors: doekenorg
 Donate link: https://www.paypal.me/doekenorg
 Tags: Gravityforms, Excel, Export, Download, Entries
 Requires at least: 4.0
-Requires PHP: 7.1
-Tested up to: 5.6
+Requires PHP: 7.3
+Tested up to: 5.7
 Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -208,10 +208,14 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
-* Dependency: Dropped support for PHP 7.1 since it has been EOL for some time.
+= Unreleased
+* Bugfix: Default combiner glue for List Fields was accidentally changed.
+* Dependency: Upped minimum support to PHP 7.3 since earlier has been EOL for some time.
 * Enhancement: Updated PHPSpreadsheet to 1.15
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension.
+
+= 1.8.9
+* Conflict: Updated dependencies to resolve conflict with Visualizer.
 
 = 1.8.8 =
 * Enhancement: Better support for checkbox fields.

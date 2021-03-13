@@ -18,7 +18,7 @@
 	],
 	"require": {
 		"ext-json": "*",
-		"php": "^7.2",
+		"php": "^7.3",
 		"gfexcel/base": "dev-master",
 		"composer/installers": "~1.0",
 		"frontpack/composer-assets-plugin": "^0.11.0"
