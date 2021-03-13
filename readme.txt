@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased
+* Bugfix: Default combiner glue for List Fields was accidentally changed.
+
 = 1.8.9
 * Conflict: Updated dependencies to resolve conflict with Visualizer.
 

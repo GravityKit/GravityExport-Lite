@@ -2,7 +2,6 @@
 
 namespace GFExcel\Tests\Transformer;
 
-use GFExcel\Field\BaseField;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\RowsInterface;
 use GFExcel\Tests\TestCase;
