@@ -3,26 +3,20 @@
 namespace GFExcel;
 
 use GFExcel\Action\CountDownloads;
-use GFExcel\Action\NotificationsAction;
+use GFExcel\Addon\AddonInterface;
+use GFExcel\Addon\AddonTrait;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
-use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
-use GFExcel\Shorttag\DownloadUrl;
 
-class GFExcelAdmin extends \GFAddOn
+class GFExcelAdmin extends \GFAddOn implements AddonInterface
 {
-    public const BULK_DOWNLOAD = 'gfexcel_download';
+    use AddonTrait;
 
-    /**
-     * The addon instance.
-     * @since 1.0.0
-     * @var GFExcelAdmin
-     */
-    private static $_instance;
+    public const BULK_DOWNLOAD = 'gfexcel_download';
 
     /**
      * @inheritdoc
@@ -78,7 +72,6 @@ class GFExcelAdmin extends \GFAddOn
         $this->_short_title = __('Entries in Excel', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
-        $this->registerActions();
         parent::__construct();
     }
 
@@ -90,7 +83,7 @@ class GFExcelAdmin extends \GFAddOn
     {
         return [
             'php' => [
-                'version' => '7.2',
+                'version' => '7.3',
                 'extensions' => [
                     'zip',
                     'ctype',
@@ -570,42 +563,9 @@ class GFExcelAdmin extends \GFAddOn
      */
     private function select_sort_field_options($form)
     {
-        $fields = array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
-            // Fields that have no subfields can be added as they are.
-            if (!$field->get_entry_inputs()) {
-                $fields[] = [
-                    'value' => $field->id,
-                    'label' => $field->label,
-                ];
-
-                return $fields;
-            }
-
-            // Field has subfields. Lets try to add those.
-            foreach ($field->get_entry_inputs() as $sub_field) {
-                // Hidden fields are probably not filled out, so don't show them.
-                if ($sub_field['isHidden'] ?? false) {
-                    continue;
-                }
-
-                $fields[] = [
-                    'value' => $sub_field['id'],
-                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
-                ];
-            }
-
-            return $fields;
-        }, [
-            // Add `date of entry` as first item.
-            [
-                'value' => 'date_created',
-                'label' => __('Date of entry', GFExcel::$slug),
-            ]
-        ]);
-
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
-            'choices' => $fields,
+            'choices' => (new FieldsRepository($form))->getSortFieldOptions(),
             'default_value' => $this->repository->getSortField(),
         ]);
     }
@@ -619,14 +579,8 @@ class GFExcelAdmin extends \GFAddOn
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
             'choices' => [
-                [
-                    'value' => 'ASC',
-                    'label' => __('Acending', GFExcel::$slug)
-                ],
-                [
-                    'value' => 'DESC',
-                    'label' => __('Descending', GFExcel::$slug)
-                ]
+                ['value' => 'ASC', 'label' => __('Ascending', GFExcel::$slug)],
+                ['value' => 'DESC', 'label' => __('Descending', GFExcel::$slug)],
             ],
             'default_value' => $this->repository->getSortOrder(),
         ]);
@@ -1094,16 +1048,12 @@ class GFExcelAdmin extends \GFAddOn
         return $notification;
     }
 
-    public static function get_instance()
-    {
-        if (self::$_instance == null) {
-            self::$_instance = new GFExcelAdmin();
-        }
-
-        return self::$_instance;
-    }
-
-    private function getNotifications()
+    /**
+     * Returns the notification options list.
+     * @since $ver$
+     * @return mixed[] The notification options.
+     */
+    private function getNotifications(): array
     {
         $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
         foreach ($this->repository->getNotifications() as $key => $notification) {
@@ -1244,19 +1194,6 @@ class GFExcelAdmin extends \GFAddOn
         $digit = ((int) substr($current_count, 0, 1) + 1);
 
         return $digit . substr($current_count, 1);
-    }
-
-    /**
-     * Register native plugin actions
-     * @since 1.6.1
-     * @todo Register everything via a service container.
-     */
-    private function registerActions(): void
-    {
-        new CountDownloads();
-        new DownloadUrl();
-        new NotificationsAction(GFExcel::getNotificationManager());
-        new MigrationManager();
     }
 
     /**

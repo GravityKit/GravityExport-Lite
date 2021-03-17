@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 /**
  * The base for a {@see PhpSpreadsheet} renderer.
@@ -24,6 +25,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
 {
     /** @var Spreadsheet */
     protected $spreadsheet;
+
+    /**
+     * The writer instances.
+     * @since $ver$
+     * @var IWriter[]
+     */
+    protected $writer = [];
 
     /**
      * Creates an AbstractPHPExcelRenderer instance.
@@ -35,10 +43,36 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
+     * Returns the spreadsheet.
+     * @since $ver$
+     * @return Spreadsheet The spreadsheet.
+     */
+    public function getSpreadsheet(): Spreadsheet
+    {
+        return $this->spreadsheet;
+    }
+
+    /**
+     * Returns the writer instance.
+     * @since $ver$
+     * @param string $extension The file extension.
+     * @return \PhpOffice\PhpSpreadsheet\Writer\IWriter The writer.
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception When the writer could not be found.
+     */
+    public function getWriter(string $extension): IWriter
+    {
+        if (!($this->writer[$extension] ?? null) instanceof IWriter) {
+            $this->writer[$extension] = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+        }
+
+        return $this->writer[$extension];
+    }
+
+    /**
      * This is where the magic happens, and the actual file is being rendered.
-     * @param string $extension
-     * @param bool $save
-     * @return string
+     * @param string $extension The file extension to render.
+     * @param bool $save Whether to save the current file.
+     * @return string|null The filename when saving.
      */
     public function renderOutput($extension = 'xlsx', $save = false)
     {
@@ -46,7 +80,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         try {
             $this->spreadsheet->setActiveSheetIndex(0);
             /** @var BaseWriter $objWriter */
-            $objWriter = IOFactory::createWriter($this->spreadsheet, ucfirst($extension));
+            $objWriter = $this->getWriter($extension);
             $objWriter->setPreCalculateFormulas(false);
 
             if ($objWriter instanceof Csv) {
@@ -100,7 +134,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * Handle fatal error during execution
      * @throws \Exception
      */
-    public function fatalHandler()
+    public function fatalHandler(): void
     {
         $error = error_get_last();
         if ($error && $error['type'] === E_ERROR) {
@@ -114,12 +148,14 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @since 1.0.0
      * @param Worksheet $worksheet The worksheet object.
      * @param int $columns_count The number of columns.
-     * @return $this
+     * @return $this The current instance.
      */
-    protected function autoSizeColumns(Worksheet $worksheet, $columns_count)
+    protected function autoSizeColumns(Worksheet $worksheet, int $columns_count): AbstractPHPExcelRenderer
     {
         for ($i = 1; $i <= $columns_count; $i++) {
-            $worksheet->getColumnDimensionByColumn($i)->setAutoSize(true);
+            if ($dimension = $worksheet->getColumnDimensionByColumn($i)) {
+                $dimension->setAutoSize(true);
+            }
         }
 
         $max_width = gf_apply_filters([
@@ -141,12 +177,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
-     * @param Worksheet $worksheet
-     * @param array $matrix
-     * @param int $form_id
-     * @return $this
+     * Adds a matrix of cells to the a worksheet.
+     * @param Worksheet $worksheet The worksheet object.
+     * @param mixed[] $matrix The cell matrix.
+     * @param int $form_id The form id.
+     * @return $this The current instance.
      */
-    protected function addCellsToWorksheet(Worksheet $worksheet, array $matrix, $form_id)
+    protected function addCellsToWorksheet(Worksheet $worksheet, array $matrix, int $form_id): AbstractPHPExcelRenderer
     {
         foreach ($matrix as $x => $row) {
             $hide_row = (bool) gf_apply_filters([
@@ -154,8 +191,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
                 $form_id,
             ], false, $row);
 
-            if ($hide_row) {
-                $worksheet->getRowDimension($x + 1)->setVisible(false);
+            if ($hide_row && ($row_dimension = $worksheet->getRowDimension($x + 1))) {
+                $row_dimension->setVisible(false);
             }
 
             foreach ($row as $i => $value) {
@@ -190,14 +227,19 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         return $this;
     }
 
+    /**
+     * Should return the filename of the file being rendered.
+     * @return string THe filename
+     */
     abstract protected function getFileName();
 
     /**
-     * @param Worksheet $worksheet
-     * @param array $form
-     * @return $this
+     * Sets the worksheet title for a specific form.
+     * @param Worksheet $worksheet The worksheet object.
+     * @param array $form The form object.
+     * @return $this The current instance.
      */
-    protected function setWorksheetTitle(Worksheet $worksheet, $form)
+    protected function setWorksheetTitle(Worksheet $worksheet, array $form): AbstractPHPExcelRenderer
     {
         $invalidCharacters = Worksheet::getInvalidCharacters();
         // First strip form title, so we still have 30 characters.
@@ -219,7 +261,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @param string|BaseValue $value The value of the cell.
      * @return string The type of the cell.
      */
-    private function getCellType($value)
+    private function getCellType($value): string
     {
         if ($value instanceof BaseValue) {
             if ($value->isNumeric()) {
@@ -236,7 +278,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     /**
      * Retrieve the correctly formatted value of the cell
      * @param string|BaseValue $value The value of the cell.
-     * @return string The string-value of the cell.
+     * @return mixed The string-value of the cell.
      */
     private function getCellValue($value)
     {
@@ -253,7 +295,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @param string|BaseValue $value The value of the cell.
      * @return bool Whether the url was set onto the cell.
      */
-    private function setCellUrl(Cell $cell, $value)
+    private function setCellUrl(Cell $cell, $value): bool
     {
         if (!$value instanceof BaseValue ||
             !$value->getUrl() ||
@@ -272,9 +314,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
+     * Helper method to handle an exception.
      * @param \Throwable|\Exception $exception
      */
-    private function handleException($exception)
+    private function handleException($exception): void
     {
         global $wp_version;
 
@@ -302,12 +345,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     }
 
     /**
+     * Helper method to set cell properties.
      * @param Cell $cell The cell.
      * @param string|BaseValue $value The value of the cell.
      * @param int $form_id The form id.
      * @throws GFExcelException
      */
-    private function setProperties(Cell $cell, $value, $form_id)
+    private function setProperties(Cell $cell, $value, int $form_id): void
     {
         $this->setCellUrl($cell, $value);
         $this->setCellStyle($cell, $value);
@@ -329,7 +373,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @return bool Whether the font style was applied.
      * @throws GFExcelException
      */
-    private function setCellStyle(Cell $cell, $value)
+    private function setCellStyle(Cell $cell, $value): bool
     {
         if (!$value instanceof BaseValue) {
             return false;
@@ -389,7 +433,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @since 1.7.5
      * @param Csv $objWriter The object writer.
      */
-    private function setCsvProperties(Csv $objWriter)
+    private function setCsvProperties(Csv $objWriter): void
     {
         // updates the delimiter
         $objWriter->setDelimiter((string) apply_filters('gfexcel_renderer_csv_delimiter', $objWriter->getDelimiter()));

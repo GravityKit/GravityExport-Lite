@@ -23,29 +23,13 @@ class Migration_1_8_0 extends Migration
     protected static $version = '1.8.0';
 
     /**
-     * The notification manager.
-     * @since 1.8.0
-     * @var NotificationManager
-     */
-    private $notification_manager;
-
-    /**
-     * Creates the migration.
-     * @since 1.8.0
-     */
-    public function __construct()
-    {
-        $this->notification_manager = GFExcel::getNotificationManager();
-    }
-
-    /**
      * @inheritdoc
      * @since 1.8.0
      */
     public function run(): void
     {
         try {
-            $this->notification_manager->storeNotification(
+            $this->manager->getNotificationManager()->storeNotification(
                 new Notification('gfexcel-pro', __(
                     'Hi! I wanted to let you know that a <strong>pro add-on</strong> is being developed to complement <strong>Entries in Excel</strong>. Please <a target="_blank" rel="nofollow" href="https://subscribe.gfexcel.com/pro-add-on">visit this page</a> if you want to learn more.',
                     GFExcel::$slug

@@ -2,11 +2,8 @@
 
 namespace GFExcel;
 
-use GFExcel\Action\FilterRequest;
-use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelRenderer;
-use GFExcel\Shorttag\DownloadUrl;
+use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Combiner;
 use GFExcel\Transformer\CombinerInterface;
 
@@ -35,7 +32,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.8.9';
+    public static $version = '1.9.0';
 
     /**
      * The endpoint slug of the plugin.
@@ -59,13 +56,6 @@ class GFExcel
     private static $file_extension;
 
     /**
-     * The notification manager singleton.
-     * @since 1.8.0
-     * @var NotificationManager|null
-     */
-    private static $notification_manager;
-
-    /**
      * Instantiates the plugin.
      * @since 1.0.0
      */
@@ -76,8 +66,6 @@ class GFExcel
         add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('robots_txt', [$this, 'robotsTxt']);
-
-        $this->registerActions();
     }
 
     /** Return the url for the form
@@ -181,13 +169,20 @@ class GFExcel
     public static function getFileExtension($form)
     {
         if (!static::$file_extension) {
-            if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
-                static::$file_extension = 'xlsx'; //default
+            $extension = gf_apply_filters(
+                [
+                    static::KEY_FILE_EXTENSION,
+                    $form['id'] ?? null
+                ],
+                !($form[static::KEY_FILE_EXTENSION] ?? null) ? 'xlsx' : $form[static::KEY_FILE_EXTENSION],
+                $form
+            );
 
-                return static::$file_extension;
+            if (!in_array($extension, static::getPluginFileExtensions(), true)) {
+                $extension = 'xlsx';
             }
 
-            static::$file_extension = $form[static::KEY_FILE_EXTENSION];
+            static::$file_extension = $extension;
         }
 
         return static::$file_extension;
@@ -254,8 +249,8 @@ class GFExcel
      */
     public function request($query_vars)
     {
-        if (!isset($query_vars[self::KEY_ACTION]) ||
-            !isset($query_vars[self::KEY_HASH]) ||
+        if (
+            !isset($query_vars[self::KEY_ACTION], $query_vars[self::KEY_HASH]) ||
             $query_vars[self::KEY_ACTION] !== self::$slug ||
             empty($query_vars[self::KEY_HASH])
         ) {
@@ -290,11 +285,7 @@ class GFExcel
             $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
 
             if ($form_id) {
-                $renderer = gf_apply_filters([
-                    GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
-                    $form_id
-                ], new PHPExcelRenderer());
-
+                $renderer = GFExcel::getRenderer($form_id);
                 $output = new GFExcelOutput($form_id, $renderer);
 
                 // trigger download event.
@@ -338,18 +329,17 @@ class GFExcel
         $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
         // Data is stored in a json_encoded string, so we can't match perfectly.
-        if (!$form_row = $wpdb->get_row(
-            $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
-            ARRAY_A
-        )) {
-            // not even a partial match.
-            return null;
-        }
-
-        // possible match on hash, so check against found form.
-        if (GFExcel::getHash($form_row['form_id']) !== $hash) {
-            //hash doesn't match, so it's probably a partial match
-            return null;
+        if (
+            // Not even a partial match.
+            !($form_row = $wpdb->get_row(
+                $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
+                ARRAY_A
+            )) ||
+            // Possible match on hash, so check against found form.
+            GFExcel::getHash($form_row['form_id']) !== $hash
+        ) {
+            // No match found, so we can try to see if some other plugin can find it.
+            return apply_filters('gfexcel_hash_form_id', null, $hash);
         }
 
         //only now are we home save.
@@ -357,26 +347,7 @@ class GFExcel
     }
 
     /**
-     * Register native plugin actions
-     * @since 1.6.1
-     * @return void
-     */
-    private function registerActions()
-    {
-        $actions = [
-            DownloadUrl::class,
-            FilterRequest::class,
-        ];
-
-        foreach ($actions as $action) {
-            if (class_exists($action)) {
-                new $action;
-            }
-        }
-    }
-
-    /**
-     * Add's a Disallow for the download URL's.
+     * Adds a Disallow for the download URL's.
      * @since 1.7.0
      * @param string $output The robots.txt output
      * @return string the new output.
@@ -437,25 +408,16 @@ class GFExcel
     }
 
     /**
-     * Returns the notification singleton.
-     * @since 1.8.0
-     * @return NotificationManager The notification manager.
+     * Returns the renderer instance.
+     * @since $ver$
+     * @param int|null $form_id The form id.
+     * @return RendererInterface The renderer.
      */
-    public static function getNotificationManager(): NotificationManager
+    public static function getRenderer($form_id = null): RendererInterface
     {
-        if (!self::$notification_manager) {
-            $repository = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_MANAGER,
-                new NotificationRepository()
-            );
-
-            self::$notification_manager = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
-                new NotificationManager($repository),
-                $repository
-            );
-        }
-
-        return self::$notification_manager;
+       return gf_apply_filters(array_filter([
+            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
+            $form_id
+        ]), new PHPExcelRenderer(), $form_id);
     }
 }
