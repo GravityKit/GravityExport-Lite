@@ -1028,7 +1028,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         }
 
         // get notification to add to by form setting
-        if ($this->repository === null || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+        if ($this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
             //Not the right notification
             return $notification;
         }

@@ -49,6 +49,11 @@ class FieldsRepository
                 $this->fields = array_merge($fields_map['first'], $this->fields, $fields_map['last']);
             }
 
+            // remove display only fields like `html`, `section`
+            $this->fields = array_filter($this->fields, static function(\GF_Field  $field): bool {
+                return !($field->displayOnly ?? false);
+            });
+
             if ($unfiltered) {
                 $fields = $this->fields;
                 $this->fields = []; //reset

@@ -213,6 +213,7 @@ Checkout this example:
 * Dependency: Upped minimum support to PHP 7.3 since earlier has been EOL for some time.
 * Enhancement: Updated PHPSpreadsheet to 1.15
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension.
+* Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
 
 = 1.8.9
 * Conflict: Updated dependencies to resolve conflict with Visualizer.
