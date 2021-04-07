@@ -35,8 +35,8 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
-        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | LC_ALL=C xargs -n 1 sed -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g' -E -i \"\"",
-        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | LC_ALL=C xargs -n 1 sed -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g' -E -i \"\"",
+        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g'",
+        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g'",
         "post-install-cmd": "composer run markbaker-fix-namespace",
         "post-update-cmd": "composer run markbaker-fix-namespace",
         "post-autoload-dump": "composer run markbaker-fix-autoload"

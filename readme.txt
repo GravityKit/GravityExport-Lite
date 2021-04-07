@@ -210,6 +210,7 @@ Checkout this example:
 == Changelog ==
 = Unreleased
 * Bugfix: Default combiner glue for List Fields was accidentally changed.
+* Bugfix: Mark baker dependencies no longer clash with other plugins using the same dependencies.
 
 = 1.8.9
 * Conflict: Updated dependencies to resolve conflict with Visualizer.
