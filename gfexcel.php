@@ -35,6 +35,7 @@ add_action('gform_loaded', static function (): void {
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
     GFForms::include_addon_framework();
+	GFForms::include_feed_addon_framework();
 
     if (!class_exists('GFExport')) {
         require_once(GFCommon::get_base_path() . '/export.php');
