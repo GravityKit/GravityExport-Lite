@@ -208,11 +208,12 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased
+
+= 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.
 * Bugfix: Mark baker dependencies no longer clash with other plugins using the same dependencies.
 
-= 1.8.9
+= 1.8.9 =
 * Conflict: Updated dependencies to resolve conflict with Visualizer.
 
 = 1.8.8 =
@@ -357,7 +358,7 @@ Checkout this example:
 = 1.5.1 =
 * (Awesome) Feature: You can now set the order of the fields by sorting them, using drag and drop!
 * Feature: Add colors and font styles to cells by using the `gfexcel_value_object`-hook (See docs).
-* Feature: Attach a single entry file to a notification email. 
+* Feature: Attach a single entry file to a notification email.
 * Feature: We now support exports in CSV. Why? Because we can! (and also Harry asked me too).
 * Enhancement: You can now add .xlsx or .csv to the end of the URL, to force that output.
 * Enhancement: Added support for the Woocommerce add-on.
