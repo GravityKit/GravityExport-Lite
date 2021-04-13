@@ -35,7 +35,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.8.9';
+    public static $version = '1.8.10';
 
     /**
      * The endpoint slug of the plugin.

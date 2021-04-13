@@ -1,43 +1,43 @@
 === Gravity Forms Entries in Excel ===
-Contributors: doekenorg
-Donate link: https://www.paypal.me/doekenorg
-Tags: Gravityforms, Excel, Export, Download, Entries
+Contributors: gravityview, doekenorg
+Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
+Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.5
-Stable tag: 1.8.9
+Tested up to: 5.7
+Stable tag: 1.8.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Export all Gravity Forms entries to Excel (.xlsx) via a download button OR via a secret (shareable) url.
+Export all Gravity Forms entries to Excel (.xlsx) via a download button or a secret shareable URL.
 
 == Description ==
 
-Export all entries from your forms directly to Excel, using a unique and secure url. No need to login, or create a
-user account for that one person who needs te results. Just copy the url, and give it to the guy who needs it.
-It's that simple.
+> A Pro version is coming soon with advanced functionality! [Sign up for more information!](https://subscribe.gfexcel.com/pro-add-on)
 
-Using Gravity Forms you can export a CSV file, and import it to Excel. But an admin always needs to be involved
-and using Excel to import a CSV is a pain in the butt.
+Export Gravity Forms entries directly to Excel using a unique and secure URL. No need to login or create a
+user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
+It's that simple!
 
-The plugin has a lot of event-hooks to make your Excel output exactly how you want it.
-Check out the FAQ to find out more.
+**Why not export a CSV from Gravity Forms?**
+
+Using Gravity Forms you can export a CSV file and import it to Excel. But an admin always needs to be involved
+and using Excel to import a CSV is a pain.
+
+The plugin has a lot of developer hooks to make your Excel output exactly how you want it. Check out the FAQ to
+find out more.
 
 == Documentation ==
-I've added a documentation website. This docs will be updated from time to time with new features, fields and filters.
-I'm planning to add `recipes` for quick updates, based on your questions. So if you have a specific need; Ask away!
-If you are a developer; this site is probably for you.
 
-Please visit: [gfexcel.com](https://gfexcel.com)
+Please visit [gfexcel.com](https://gfexcel.com) for the documentation site! You'll find available features, fields,
+and filters. If you are a developer; this site is probably for you.
 
-== Donate ==
-Want to help out the development of the plugin, or just buy me a drink 🍺? You can make a donation via my paypal page:
-[paypal.me/doekenorg](https://www.paypal.me/doekenorg). But as always; no pressure.
+We'll be updating the site with "recipes" based on your questions. So if you have a specific need, ask away!
 
 = Requirements =
 
 * PHP 7.1. (No longer active support for 5.6)
-* php-xml and php-zip libraries. The plugin will check for those.
+* `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.0.0 or higher
 
 == Installation ==
@@ -46,7 +46,7 @@ This section describes how to install the plugin and get it working.
 
 1. Upload `gf-entries-in-excel` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Go to Forms > Select a form > Settings > Results in Excel to obtain your url
+1. Go to Forms > Select a form > Settings > Results in Excel to obtain your URL
 1. Download that Excel file!
 
 == Frequently Asked Questions ==
@@ -59,7 +59,7 @@ this feature. Or (since version 1.4.0) you can select individual fields you want
 Just add this to your `functions.php`:
 
 `
-add_filter("gfexcel_output_meta_info","__return_false");
+add_filter( 'gfexcel_output_meta_info', '__return_false' );
 `
 
 = I want to rename the labels, but only in Excel, how can I do this? =
@@ -84,7 +84,7 @@ Great question! Yes you can! You can set it on the setting spage, or make use of
 
 = I have a custom field. Can your plugin handle this? =
 
-You should ask yourself, if your field can handle this plugin! But, yes it can. In multiple ways actually.
+You should ask yourself can your field can handle this plugin! But, yes it can. In multiple ways actually.
 
 The default way the plugins renders the output, is by calling `get_value_export` on the field.
 All Gravity Forms fields need that function, so make sure that is implemented.
@@ -94,9 +94,9 @@ But you can also make your own field-renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
-1. Add your class via the `gfexcel_transformer_fields` hook as: type => Fully Qualified Classname  (eg. $fields['awesome-type'] => 'MyTheme\Field\MyAwsomeField')
+1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwsomeField'`)
 
-= I don't really like the downloaded file name! =
+= I don't like the downloaded file name! =
 
 By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using the settings page, or by using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
 
@@ -109,9 +109,9 @@ Also you can update title, subject and description metadata of the document by u
 Sure, why not. By default we sort on date of entry in acending order. You can change this, per form,
 on the Form settings page (Results in Excel) under "Settings".
 
-= I want to download directly from the forms table without the url! =
+= I want to download directly from the forms table without the URL! =
 
-Allright! No need to yell! For those situation we've added a bulk option on the forms table.
+You're in luck: for those situation we've added a bulk option on the forms table.
 As a bonus, you can select multiple forms, and it will download all results in one file,
 on multiple worksheets (oohhh yeah!)
 
@@ -145,7 +145,7 @@ Since most values are Value Objects, we can interact with them, and trigger a `s
 //add this to your functions.php
 add_filter('gfexcel_value_object',function($value, $field) {
     if($field->formId == 1 && $field->id == 2) {
-        $value->setUrl('http://wordpress.org');
+        $value->setUrl('https://wordpress.org');
     }
 }, 10, 2);
 `
@@ -160,8 +160,8 @@ add_filter('gfexcel_field_notes_enabled','__return_true');
 add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
 `
 
-= It's all to boring in Excel. Can I use some colors? =
-Definitely! You get to change: text color, background color, bold and italic. If that is not enough, you probably just need to add those Clip Arts yourself!
+= It's all too boring in Excel. Can I use some colors? =
+Definitely! You get to change: text color, background color, bold and italic. If that is not enough, you probably just need to add clip art yourself!
 
 `
 //add this to your functions.php
@@ -183,7 +183,7 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 
 = I don't have enough... eh... Memory! =
 Yes, this can happen. And to be frank (actually, I'm not, I'm Doeke), this isn't something that can be fixed.
-As a default, Wordpress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
+As a default, WordPress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
 But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
 `40 MB * 1024 KB = 40.960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
 If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [Woocommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
@@ -204,7 +204,7 @@ Checkout this example:
 == Screenshots ==
 
 1. A 'Entries in Excel' link is added to the form settings
-2. There is your url! Just copy and paste to the browser (or click the download button)
+2. There is your URL! Just copy and paste to the browser (or click the download button)
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
@@ -256,7 +256,7 @@ Checkout this example:
 * Enhancement: Updated PHPSpreadsheet to 1.12 (last to support PHP 7.1).
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Enhancement: Added quick-link to settings on the plugins page.
-* Enhancement: Replaced all translation calls with wordpress native calls to be polite to Poedit.
+* Enhancement: Replaced all translation calls with WordPress native calls to be polite to Poedit.
 * Enhancement: Added some unit tests.
 
 = 1.7.5 =
@@ -278,12 +278,12 @@ Checkout this example:
 
 = 1.7.1 =
 * Bugfix: Column-names now match the filters in the sortable lists.
-* Bugfix: Filters now only respond to the correct url.
+* Bugfix: Filters now only respond to the correct URL.
 * Bugfix: Forgot to update composer.json to reflect minimum PHP version of 7.1. (for Bedrock users).
 * Changed: Updated composer.json to use phpspreadsheet ~1.9.0 to be consistent with the normal plugin version.
 
 = 1.7.0 =
-* Feature: Added field filtering to the url. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
+* Feature: Added field filtering to the URL. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
 * Feature: Added support for [Repeater fields](https://docs.gravityforms.com/repeater-fields/).
 * Feature: Added download links for a single entry on the entry detail page.
 * Feature: Added download link to admin bar for recent forms.
@@ -305,14 +305,14 @@ Checkout this example:
 
 = 1.6.1 =
 * Security: Removed old style URL. If you were using it, please regenerate the URL.
-* Enhancement: Added `[gfexcel_download_link id=2]` short tag for Wordpress and `{gfexcel_download_link}` for GF notification.
+* Enhancement: Added `[gfexcel_download_link id=2]` short tag for WordPress and `{gfexcel_download_link}` for GF notification.
 * Enhancement: Added reset of download counter (also refactored all counter code to SRP class).
 * Enhancement: Added setting to format prices as numeric values.
 * Enhancement: Added a download event so you can append logic to the download moment.
 * Enhancement: Added `CreatedBy` field to easily change `user_id` to `nickname` or `display_name`. Use filter `gfexcel_meta_created_by_property`.
 * Bugfix: Stripping title could cut multibyte character in half, making the xlsx useless.
 * Bugfix: Removed `start_date` or `end_date` from date range filter when empty. Caused errors for some.
-* Bugfix: `created_by` and `payment_date` were not converted to the wordpress timezone.
+* Bugfix: `created_by` and `payment_date` were not converted to the WordPress timezone.
 
 = 1.6.0 =
 * Feature: The renderer now supports transposing. So every column is a row, and vica versa.
@@ -326,7 +326,7 @@ Checkout this example:
 * Enhancement: Added a `gfexcel_output_search_criteria` filter to customize the `search_criteria` for requests.
 * Bugfix: Downloading files didn't work on iOS.
 * Info: PHP 5.6 is no longer actively supported. Will probably still work; but 7.1 is the new minimum.
-* Info: Launched a (first version) documentation site! Checkout http://gfexcel.doeken.org
+* Info: Launched a (first version) documentation site! [Check out gfexcel.com](https://gfexcel.com)
 
 = 1.5.5 =
 * Enhancement: Date fields now export the date according to it's field setting.
@@ -367,12 +367,12 @@ Checkout this example:
 * Bugfix: Lists with a single column could not be exported.
 
 = 1.5.0 =
-* Failed upload. I wish Wordpress would drop the ancient SVN approach!
+* Failed upload. I wish WordPress would drop the ancient SVN approach!
 
 = 1.4.0 =
 * Celebration: 1000+ active installations! Whoop! That is so awesome! Thank you for the support and feedback!
 As a celebration gift I've added some new settings, making the plugin more user-friendly, while maintaining developer-friendliness!
-* Feature / Security: Regenerate url for a form, with fallback to old way. But please update all your urls!
+* Feature / Security: Regenerate URL for a form, with fallback to old way. But please update all your URLs!
 This update also makes the slug more secure and unique by not using the (possibly default) NONCE_SALT.
 * Feature: Disable fields and metadata with checkboxes on the settings page. Can still be overwritten with the hooks.
 * Feature: Enable notes on the settings page. Can still be overwritten with the hook.
@@ -387,13 +387,13 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: Wrapped values in value objects, so we can be more specific in Excel for cell-type-hinting
 * Feature: NumberField added that uses the NumberValue type for Excel
 * Feature: Added filters to typehint cell values. See FAQ for more info.
-* Enhancement: updated cell > url implementation. Each cell can be set individually now. See FAQ for more info.
+* Enhancement: updated cell > URL implementation. Each cell can be set individually now. See FAQ for more info.
 * Upgraded to PHP 5.6 for minimal dependency. Last version with PHP 5.3 was 1.2.3
 (sorry for the mix up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
 
 = 1.2.4 =
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
-* Enhancement: composer.json update to wordpress-plugin for easier installation with bedrock.
+* Enhancement: `composer.json` update to `wordpress-plugin` for easier installation with bedrock.
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
 * Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-seperated values per column.
 * Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
@@ -408,7 +408,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Enhancement: If a cell only contains a URL, that URL is set as a link on that cell, for easy access.
 
 = 1.2.1 =
-* Translation: Added `Dutch` translation + enabled possibility to translate via Wordpress.org. You can help me out!
+* Translation: Added `Dutch` translation + enabled possibility to translate via WordPress.org. You can help me out!
 * Enhancement: Worksheets now have a title, and of course a `gfexcel_renderer_worksheet_title` hook.
 
 = 1.2.0 =
@@ -437,5 +437,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * First release
 
 == Credits ==
+
+- The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
