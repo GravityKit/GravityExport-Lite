@@ -12,6 +12,7 @@ use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
+use Gravity_Forms\Gravity_Forms\Settings\Settings;
 
 class GFExcelAdmin extends \GFAddOn
 {
@@ -474,14 +475,18 @@ class GFExcelAdmin extends \GFAddOn
 
         echo "<br/>";
 
-        echo "<form method=\"post\">";
+        echo '<form method="post" id="gform-settings">';
         $this->securitySettings($form);
 
         $this->generalSettings($form);
 
         $this->sortableFields($form);
 
-        $this->settings_save(['value' => __('Save settings')], GFExcel::$slug);
+        if (class_exists(Settings::class)) {
+            echo (new Settings())->render_save_button();
+        } else {
+            $this->settings_save(['value' => __('Save settings')], GFExcel::$slug);
+        }
         echo "</form>";
     }
 
