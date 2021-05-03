@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Removed deprecation warning on Gravity Forms 2.5
+* Bugfix: Sort order is now saved again on Gravity Forms 2.5
 
 = 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.
