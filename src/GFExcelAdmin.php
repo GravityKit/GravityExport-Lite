@@ -13,7 +13,6 @@ use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
 use GFExcel\Shorttag\DownloadUrl;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Base;
-use Gravity_Forms\Gravity_Forms\Settings\Settings;
 
 class GFExcelAdmin extends \GFAddOn
 {
