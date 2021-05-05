@@ -41,7 +41,7 @@ class DownloadUrl
             return $this->error(sprintf('Form id not found for \'%s\' shorttag.', self::SHORTTAG));
         }
 
-        return $this->getUrl($arguments['id'], $arguments['type'] ?? null);
+        return $this->getUrl( $arguments['id'], rgar( $arguments, 'type' ) );
     }
 
     /**

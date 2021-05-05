@@ -43,9 +43,7 @@ class CountDownloads
     {
         // Get the form data.
         $form_meta = $this->getForm($form_id);
-        $count = array_key_exists(static::KEY_COUNT, $form_meta)
-            ? (int) $form_meta[static::KEY_COUNT]
-            : 0;
+        $count = (int) rgar( $form_meta, static::KEY_COUNT, 0 );
 
         $this->setCounter($form_id, ++$count);
     }
