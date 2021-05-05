@@ -213,6 +213,7 @@ Checkout this example:
 * Bugfix: Sort order is now saved again on Gravity Forms 2.5
 * Bugfix: Improve button appearance on Gravity Forms 2.5
 * Bugfix: Sanitized URLs with `esc_url()` in the dashboard.
+* Bugfix: Resolved some silent PHP warnings.
 
 = 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.

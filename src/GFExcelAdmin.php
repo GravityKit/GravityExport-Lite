@@ -476,6 +476,7 @@ class GFExcelAdmin extends \GFAddOn
         echo "<br/>";
 
         echo '<form method="post" id="gform-settings">';
+
         $this->securitySettings($form);
 
         $this->generalSettings($form);
@@ -772,7 +773,7 @@ class GFExcelAdmin extends \GFAddOn
                         'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
                         'type' => 'radio',
                         'label' => esc_html__('Columns position', GFExcel::$slug),
-                        'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
+                        'default_value' => rgar( $form , GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, 0 ),
                         'choices' => [
                             [
                                 'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
@@ -790,7 +791,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('Custom filename', GFExcel::$slug),
                         'type' => 'text',
                         'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                        'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
+                        'value' => rgar( $form, GFExcel::KEY_CUSTOM_FILENAME ),
                         'description' => esc_html__(
                             'Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.',
                             GFExcel::$slug
@@ -800,7 +801,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('File extension', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_FILE_EXTENSION,
-                        'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
+                        'default_value' => rgar( $form, GFExcel::KEY_FILE_EXTENSION, 'xlsx' ),
                         'choices' => array_map(static function ($extension) {
                             return
                                 [
@@ -814,7 +815,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('Attach single entry to notification', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
-                        'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
+                        'default_value' => rgar( $form, GFExcel::KEY_ATTACHMENT_NOTIFICATION ),
                         'choices' => $this->getNotifications(),
                     ],
                 ],
@@ -850,7 +851,7 @@ class GFExcelAdmin extends \GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
-                    'value' => @$form['gfexcel_disabled_fields'] ?: '',
+                    'value' => rgar( $form, 'gfexcel_disabled_fields', '' ),
                     'choices' => array_map(function (\GF_Field $field) {
                         $label = gf_apply_filters([
                             'gfexcel_field_label',
@@ -868,7 +869,7 @@ class GFExcelAdmin extends \GFAddOn
                 [
                     'label' => esc_html__('Enable & sort the fields', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
-                    'value' => @$form['gfexcel_enabled_fields'] ?: '',
+                    'value' => rgar( $form, 'gfexcel_enabled_fields', '' ),
                     'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
