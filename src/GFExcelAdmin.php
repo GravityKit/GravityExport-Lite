@@ -231,12 +231,14 @@ class GFExcelAdmin extends \GFAddOn
 
         if ($form = $this->get_current_form()) {
             if (isset($_GET['gf_action'])) {
+
                 // trigger action
                 do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
+
+                $url = remove_query_arg( 'gf_action' );
+
                 // redirect back to same page without the action
-                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
-                        ['gf_action' => null])));
-                wp_redirect($url);
+                wp_safe_redirect( $url );
 
                 exit(0);
             }
@@ -467,7 +469,7 @@ class GFExcelAdmin extends \GFAddOn
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
             ) . "
-            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&gf_action=" . CountDownloads::ACTION_RESET . "'>" .
+            <a class='button' href='" . esc_url( add_query_arg( array( 'gf_action' => CountDownloads::ACTION_RESET ) ) ) . "'>" .
             esc_html__('Reset count', GFExcel::$slug) .
             "</a>
             </div></div>
