@@ -1155,7 +1155,7 @@ class GFExcelAdmin extends \GFAddOn
     }
 
     /**
-     * Add's a download button for a single entry on the entry detail page.
+     * Adds a download button for a single entry on the entry detail page.
      * @since 1.7.0
      * @param array $args arguments from metabox.
      * @param array $metabox the metabox information.

@@ -379,7 +379,7 @@ class GFExcel
     }
 
     /**
-     * Add's a Disallow for the download URL's.
+     * Adds a Disallow for the download URLs.
      * @since 1.7.0
      * @param string $output The robots.txt output
      * @return string the new output.
