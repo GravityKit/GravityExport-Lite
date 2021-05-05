@@ -417,7 +417,7 @@ class GFExcelAdmin extends \GFAddOn
             echo "<input
                     type='submit'
                     name='enable_download_url'
-                    class='button-primary'
+                    class='button button-primary primary'
                     value='" . esc_html__('Enable download', GFExcel::$slug) . "'>";
             echo "</form>";
 
@@ -462,7 +462,7 @@ class GFExcelAdmin extends \GFAddOn
             </div>
             
             <div class=\"download-button\">
-                <button class='button-primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
+                <button class='button button-primary primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
             sprintf("%s: <strong>%d</strong>",
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
@@ -1167,8 +1167,8 @@ class GFExcelAdmin extends \GFAddOn
 
         $html = '<div class="gfexcel_entry_download">
             <p>%s</p>
-            <a href="%s" class="button-primary">%s</a>
-            <a href="%s" class="button">%s</a>
+            <a href="%s" class="button button-primary primary">%s</a>
+            <a href="%s" class="button button-secondary">%s</a>
         </div>';
 
         $url = GFExcel::url($form['id']);
