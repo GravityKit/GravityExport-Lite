@@ -1176,9 +1176,9 @@ class GFExcelAdmin extends \GFAddOn
         printf(
             $html,
             __('Download this single entry as a file.', GFExcel::$slug),
-            $url . '.xlsx?entry=' . $entry['id'],
+            esc_url( $url . '.xlsx?entry=' . $entry['id'] ),
             __('Excel', GFExcel::$slug),
-            $url . '.csv?entry=' . $entry['id'],
+            esc_url( $url . '.csv?entry=' . $entry['id'] ),
             __('CSV', GFExcel::$slug)
         );
     }
@@ -1305,7 +1305,7 @@ class GFExcelAdmin extends \GFAddOn
                     'id' => 'gfexcel-form-' . $id . '-download',
                     'parent' => 'gform-form-' . $id,
                     'title' => esc_html__('Download', GFExcel::$slug),
-                    'href' => trailingslashit($url),
+                    'href' => trailingslashit( esc_url( $url ) ),
                 ]);
             }
         }

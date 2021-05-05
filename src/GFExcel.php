@@ -388,7 +388,7 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf('Disallow: %s/%s/', $path, GFExcel::$slug);
+        $line = sprintf('Disallow: %s/%s/', esc_attr( $path ), GFExcel::$slug);
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
