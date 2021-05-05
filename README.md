@@ -24,11 +24,11 @@ I made a [Full documentation](http://gfexcel.doeken.org) site for you developers
 
 ### Like the plugin? Buy me a drink ☕!
 Do you find the plugin helpful? Cool, glad to hear! It's taken me a 'few hours' to create this plugin. 
-It's free for all, but if you'd like, you can [buy me a drink](https://www.paypal.me/doekenorg). 
+It's free for all, but if you'd like, you can [buy me a drink](https://www.paypal.me/GravityView). 
 Being hydrated makes it easier to update the plugin. But no pressure!
 
 ### Credits
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
-<img src="https://raw.githubusercontent.com/doekenorg/gf-entries-in-excel/master/assets/icon-256x256.png" width="128">
+<img src="https://raw.githubusercontent.com/GFExcel/gf-entries-in-excel/master/assets/icon-256x256.png" width="128">

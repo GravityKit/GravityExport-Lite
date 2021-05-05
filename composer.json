@@ -1,12 +1,12 @@
 {
-    "name": "doekenorg/gf-entries-in-excel",
-    "description": "Never waste time importing CSV's again.",
+    "name": "GFExcel/gf-entries-in-excel",
+    "description": "Never waste time importing CSVs again.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "Doeke Norg",
-            "email": "doekenorg@gmail.com"
+            "name": "GravityView",
+            "email": "support@gravityview.co"
         }
     ],
     "minimum-stability": "stable",

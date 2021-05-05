@@ -290,7 +290,7 @@ class GFExcelAdmin extends \GFAddOn
                 ),
                 '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">',
                 '</a>', $this->getUsageCount(), $this->getUsageTarget(),
-                '<a href="https://twitter.com/doekenorg" target="_blank">', '</a>');
+                '<a href="https://twitter.com/GravityView" target="_blank">', '</a>');
             ?>
         </p>
         <p>
@@ -300,7 +300,7 @@ class GFExcelAdmin extends \GFAddOn
             ?>
         </p>
         <p>
-            <a class="button button-cta" href="https://paypal.me/doekenorg"
+            <a class="button button-cta" href="https://paypal.me/GravityView"
                target="_blank"><?php _e('Make a donation', GFExcel::$slug); ?></a>
         </p>
 
@@ -325,7 +325,7 @@ class GFExcelAdmin extends \GFAddOn
                     'Documentation',
                     GFExcel::$slug
                 ) . '" target="_blank">' . esc_html__('Documentation', GFExcel::$slug) . '</a>',
-            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__(
+            'donate' => '<a href="' . esc_url('https://www.paypal.me/GravityView') . '" aria-label="' . esc_attr__(
                     'Make a donation',
                     GFExcel::$slug
                 ) . '">' . esc_html__('Make a donation', GFExcel::$slug) . '</a>',
