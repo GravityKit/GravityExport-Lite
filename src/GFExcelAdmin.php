@@ -231,12 +231,14 @@ class GFExcelAdmin extends \GFAddOn
 
         if ($form = $this->get_current_form()) {
             if (isset($_GET['gf_action'])) {
+
                 // trigger action
                 do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
+
+                $url = remove_query_arg( 'gf_action' );
+
                 // redirect back to same page without the action
-                $url = ($_SERVER['PHP_SELF'] ?: '') . '?' . http_build_query(array_filter(array_merge($_GET,
-                        ['gf_action' => null])));
-                wp_redirect($url);
+                wp_safe_redirect( $url );
 
                 exit(0);
             }
@@ -260,7 +262,7 @@ class GFExcelAdmin extends \GFAddOn
         ?>
         <div class="hr-divider"></div>
 
-        <a name="help-me-out"></a>
+        <a id="help-me-out"></a>
         <h3>
             <span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', GFExcel::$slug); ?></span>
         </h3>
@@ -290,7 +292,7 @@ class GFExcelAdmin extends \GFAddOn
                 ),
                 '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">',
                 '</a>', $this->getUsageCount(), $this->getUsageTarget(),
-                '<a href="https://twitter.com/doekenorg" target="_blank">', '</a>');
+                '<a href="https://twitter.com/GravityView" target="_blank">', '</a>');
             ?>
         </p>
         <p>
@@ -300,7 +302,7 @@ class GFExcelAdmin extends \GFAddOn
             ?>
         </p>
         <p>
-            <a class="button button-cta" href="https://paypal.me/doekenorg"
+            <a class="button button-cta" href="https://paypal.me/GravityView"
                target="_blank"><?php _e('Make a donation', GFExcel::$slug); ?></a>
         </p>
 
@@ -325,7 +327,7 @@ class GFExcelAdmin extends \GFAddOn
                     'Documentation',
                     GFExcel::$slug
                 ) . '" target="_blank">' . esc_html__('Documentation', GFExcel::$slug) . '</a>',
-            'donate' => '<a href="' . esc_url('https://www.paypal.me/doekenorg') . '" aria-label="' . esc_attr__(
+            'donate' => '<a href="' . esc_url('https://www.paypal.me/GravityView') . '" aria-label="' . esc_attr__(
                     'Make a donation',
                     GFExcel::$slug
                 ) . '">' . esc_html__('Make a donation', GFExcel::$slug) . '</a>',
@@ -417,7 +419,7 @@ class GFExcelAdmin extends \GFAddOn
             echo "<input
                     type='submit'
                     name='enable_download_url'
-                    class='button-primary'
+                    class='button button-primary primary'
                     value='" . esc_html__('Enable download', GFExcel::$slug) . "'>";
             echo "</form>";
 
@@ -462,12 +464,12 @@ class GFExcelAdmin extends \GFAddOn
             </div>
             
             <div class=\"download-button\">
-                <button class='button-primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
+                <button class='button button-primary primary'>" . esc_html__('Download', GFExcel::$slug) . "</button> " .
             sprintf("%s: <strong>%d</strong>",
                 __('Download count', GFExcel::$slug),
                 $this->download_count($form)
             ) . "
-            <a class='button' href='?" . $_SERVER['QUERY_STRING'] . "&gf_action=" . CountDownloads::ACTION_RESET . "'>" .
+            <a class='button' href='" . esc_url( add_query_arg( array( 'gf_action' => CountDownloads::ACTION_RESET ) ) ) . "'>" .
             esc_html__('Reset count', GFExcel::$slug) .
             "</a>
             </div></div>
@@ -476,6 +478,7 @@ class GFExcelAdmin extends \GFAddOn
         echo "<br/>";
 
         echo '<form method="post" id="gform-settings">';
+
         $this->securitySettings($form);
 
         $this->generalSettings($form);
@@ -772,7 +775,7 @@ class GFExcelAdmin extends \GFAddOn
                         'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
                         'type' => 'radio',
                         'label' => esc_html__('Columns position', GFExcel::$slug),
-                        'default_value' => @$form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE] ?: 0,
+                        'default_value' => \rgar( $form , GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, 0 ),
                         'choices' => [
                             [
                                 'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
@@ -790,7 +793,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('Custom filename', GFExcel::$slug),
                         'type' => 'text',
                         'name' => GFExcel::KEY_CUSTOM_FILENAME,
-                        'value' => @$form[GFExcel::KEY_CUSTOM_FILENAME],
+                        'value' => \rgar( $form, GFExcel::KEY_CUSTOM_FILENAME ),
                         'description' => esc_html__(
                             'Only letters, numbers and dashes are allowed. The rest will be stripped. Leave empty for default.',
                             GFExcel::$slug
@@ -800,7 +803,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('File extension', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_FILE_EXTENSION,
-                        'default_value' => @$form[GFExcel::KEY_FILE_EXTENSION],
+                        'default_value' => \rgar( $form, GFExcel::KEY_FILE_EXTENSION, 'xlsx' ),
                         'choices' => array_map(static function ($extension) {
                             return
                                 [
@@ -814,7 +817,7 @@ class GFExcelAdmin extends \GFAddOn
                         'label' => esc_html__('Attach single entry to notification', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
-                        'default_value' => @$form[GFExcel::KEY_ATTACHMENT_NOTIFICATION],
+                        'default_value' => \rgar( $form, GFExcel::KEY_ATTACHMENT_NOTIFICATION ),
                         'choices' => $this->getNotifications(),
                     ],
                 ],
@@ -850,7 +853,7 @@ class GFExcelAdmin extends \GFAddOn
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
-                    'value' => @$form['gfexcel_disabled_fields'] ?: '',
+                    'value' => \rgar( $form, 'gfexcel_disabled_fields', '' ),
                     'choices' => array_map(function (\GF_Field $field) {
                         $label = gf_apply_filters([
                             'gfexcel_field_label',
@@ -868,7 +871,7 @@ class GFExcelAdmin extends \GFAddOn
                 [
                     'label' => esc_html__('Enable & sort the fields', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
-                    'value' => @$form['gfexcel_enabled_fields'] ?: '',
+                    'value' => \rgar( $form, 'gfexcel_enabled_fields', '' ),
                     'move_to' => 'gfexcel_disabled_fields',
                     'type' => 'sortable',
                     'class' => 'fields-select',
@@ -904,10 +907,10 @@ class GFExcelAdmin extends \GFAddOn
         $name = '' . esc_attr($field['name']);
         $value = $field instanceof Base
             ? $field->get_value()
-            : rgar($field, 'value'); //comma-separated list from database
+            : \rgar($field, 'value'); //comma-separated list from database
 
         // If no choices were provided and there is a no choices message, display it.
-        if ((empty($field['choices']) || !rgar($field, 'choices')) && rgar($field, 'no_choices')) {
+        if ((empty($field['choices']) || !\rgar($field, 'choices')) && \rgar($field, 'no_choices')) {
             $html = $field['no_choices'];
         } else {
             $html = sprintf(
@@ -932,7 +935,7 @@ class GFExcelAdmin extends \GFAddOn
                 );
             }, $field['choices'])), $field['move_to']);
 
-            $html .= rgar($field, 'after_select');
+            $html .= \rgar($field, 'after_select');
         }
 
         if ($this->field_failed_validation($field)) {
@@ -952,10 +955,10 @@ class GFExcelAdmin extends \GFAddOn
      */
     public function single_setting_row_sortable($field)
     {
-        $display = rgar($field, 'hidden') || rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
+        $display = \rgar($field, 'hidden') || \rgar($field, 'type') == 'hidden' ? 'style="display:none;"' : '';
 
         // Prepare setting description.
-        $description = rgar($field,
+        $description = \rgar($field,
             'description') ? '<span class="gf_settings_description">' . $field['description'] . '</span>' : null;
 
         if (array_key_exists('side', $field) && $field['side'] === "left") {
@@ -1087,7 +1090,7 @@ class GFExcelAdmin extends \GFAddOn
         }
 
         // get notification to add to by form setting
-        if ($this->repository === null || $this->repository->getSelectedNotification() !== rgar($notification, 'id')) {
+        if ($this->repository === null || $this->repository->getSelectedNotification() !== \rgar($notification, 'id')) {
             //Not the right notification
             return $notification;
         }
@@ -1120,7 +1123,7 @@ class GFExcelAdmin extends \GFAddOn
     {
         $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
         foreach ($this->repository->getNotifications() as $key => $notification) {
-            $options[] = ['label' => rgar($notification, 'name', __('Unknown')), 'value' => $key];
+            $options[] = ['label' => \rgar($notification, 'name', __('Unknown')), 'value' => $key];
         }
 
         return $options;
@@ -1155,20 +1158,20 @@ class GFExcelAdmin extends \GFAddOn
     }
 
     /**
-     * Add's a download button for a single entry on the entry detail page.
+     * Adds a download button for a single entry on the entry detail page.
      * @since 1.7.0
      * @param array $args arguments from metabox.
      * @param array $metabox the metabox information.
      */
     public static function single_entry_download($args, $metabox)
     {
-        $form = rgar($args, 'form', []);
-        $entry = rgar($args, 'entry', []);
+        $form = \rgar($args, 'form', []);
+        $entry = \rgar($args, 'entry', []);
 
         $html = '<div class="gfexcel_entry_download">
             <p>%s</p>
-            <a href="%s" class="button-primary">%s</a>
-            <a href="%s" class="button">%s</a>
+            <a href="%s" class="button button-primary primary">%s</a>
+            <a href="%s" class="button button-secondary">%s</a>
         </div>';
 
         $url = GFExcel::url($form['id']);
@@ -1176,9 +1179,9 @@ class GFExcelAdmin extends \GFAddOn
         printf(
             $html,
             __('Download this single entry as a file.', GFExcel::$slug),
-            $url . '.xlsx?entry=' . $entry['id'],
+            esc_url( $url . '.xlsx?entry=' . $entry['id'] ),
             __('Excel', GFExcel::$slug),
-            $url . '.csv?entry=' . $entry['id'],
+            esc_url( $url . '.csv?entry=' . $entry['id'] ),
             __('CSV', GFExcel::$slug)
         );
     }
@@ -1305,7 +1308,7 @@ class GFExcelAdmin extends \GFAddOn
                     'id' => 'gfexcel-form-' . $id . '-download',
                     'parent' => 'gform-form-' . $id,
                     'title' => esc_html__('Download', GFExcel::$slug),
-                    'href' => trailingslashit($url),
+                    'href' => trailingslashit( esc_url( $url ) ),
                 ]);
             }
         }

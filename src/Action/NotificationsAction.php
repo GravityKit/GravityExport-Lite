@@ -80,18 +80,18 @@ class NotificationsAction
         $notification_id = $_POST['notification_key'] ?? null;
         $nonce = $_POST['nonce'] ?? null;
 
-        if (!$notification_id || !$nonce || !wp_verify_nonce($nonce, self::KEY_NONCE)) {
+        if ( ! $notification_id || ! $nonce || ! wp_verify_nonce( $nonce, self::KEY_NONCE ) ) {
             wp_die('No key or (valid) nonce provided.', 'Something went wrong.', [
                 'response' => 400,
             ]);
         } else {
             try {
-                $this->manager->dismiss($notification_id);
+                $this->manager->dismiss( $notification_id );
                 wp_die();
-            } catch (NotificationManagerException $e) {
-                wp_die($e->getMessage(), 'Something went wrong.', [
+            } catch ( NotificationManagerException $e ) {
+                wp_die( $e->getMessage(), 'Something went wrong.', [
                     'response' => 400,
-                ]);
+                ] );
             }
         }
     }
