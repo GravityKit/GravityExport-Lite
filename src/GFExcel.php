@@ -303,6 +303,14 @@ class GFExcel
         $output = new GFExcelOutput($form_id, $renderer);
 
         // trigger download event.
+        /**
+         * Runs before download has been rendered but after it has been processed.
+         *
+         * @used-by \GFExcel\Action\CountDownloads::incrementCounter
+         *
+         * @param int $form_id ID of the form being downloaded
+         * @param GFExcelOutput Output of the file
+         */
         do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
 
         return $output->render();

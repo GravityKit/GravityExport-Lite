@@ -262,7 +262,7 @@ class GFExcelAdmin extends \GFAddOn
         ?>
         <div class="hr-divider"></div>
 
-        <a name="help-me-out"></a>
+        <a id="help-me-out"></a>
         <h3>
             <span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', GFExcel::$slug); ?></span>
         </h3>
