@@ -209,7 +209,7 @@ Checkout this example:
 
 == Changelog ==
 
-= 1.9.0 on May 6, 2021 =
+= 1.8.11 on May 6, 2021 =
 * Enhancement: Updated PHPSpreadsheet to 1.15.
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
 * Enhancement: composer.json constraints updated for Bedrock users.
