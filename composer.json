@@ -1,12 +1,16 @@
 {
-    "name": "gfexcel/gf-entries-in-excel",
-    "description": "Never waste time importing CSVs again.",
+    "name": "doekenorg/gf-entries-in-excel",
+    "description": "The fastest way to export from Gravity Forms.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "GravityView",
             "email": "support@gravityview.co"
+        },
+        {
+            "name": "Doeke Norg",
+            "email": "doekenorg@gmail.com"
         }
     ],
     "minimum-stability": "stable",
