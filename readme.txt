@@ -208,12 +208,11 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
-* Enhancement: composer.json constraints updated for bedrock users.
 
-= 1.9.0 on May 5, 2021 =
+= 1.9.0 on May 6, 2021 =
 * Enhancement: Updated PHPSpreadsheet to 1.15.
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
+* Enhancement: composer.json constraints updated for Bedrock users.
 * Bugfix: Removed deprecation warning on Gravity Forms 2.5.
 * Bugfix: Sort order is now saved again on Gravity Forms 2.5.
 * Bugfix: Improve button appearance on Gravity Forms 2.5.
