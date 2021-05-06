@@ -290,7 +290,7 @@ class GFExcel
             return;
         }
 
-        $form_id = \rgar( $wp->query_vars, 'gfexcel_download_form' );
+        $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
 
         if ( !$form_id ) {
             return; }
