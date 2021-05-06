@@ -84,15 +84,15 @@ class NotificationsAction
             wp_die('No key or (valid) nonce provided.', 'Something went wrong.', [
                 'response' => 400,
             ]);
-        }
-
-        try {
-            $this->manager->dismiss($notification_id);
-            wp_die();
-        } catch (NotificationManagerException $e) {
-            wp_die($e->getMessage(), 'Something went wrong.', [
-                'response' => 400,
-            ]);
+        } else {
+            try {
+                $this->manager->dismiss( $notification_id );
+                wp_die();
+            } catch ( NotificationManagerException $e ) {
+                wp_die( $e->getMessage(), 'Something went wrong.', [
+                    'response' => 400,
+                ] );
+            }
         }
     }
 
