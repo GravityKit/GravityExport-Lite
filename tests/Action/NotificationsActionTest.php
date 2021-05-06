@@ -99,6 +99,8 @@ class NotificationsActionTest extends TestCase
      */
     public function testDismissNotificationWithInvalidValues(): void
     {
+        unset( $_POST['notification_key'] );
+
         \WP_Mock::userFunction('wp_die', [
             'args' => [
                 'No key or (valid) nonce provided.',
