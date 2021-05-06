@@ -290,7 +290,7 @@ class GFExcel
             return;
         }
 
-        $form_id = rgar( $wp->query_vars, 'gfexcel_download_form' );
+        $form_id = \rgar( $wp->query_vars, 'gfexcel_download_form' );
 
         if ( !$form_id ) {
             return; }
@@ -430,7 +430,7 @@ class GFExcel
 
         $meta = \GFFormsModel::get_form_meta($form_id);
 
-        return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
+        return (bool) \rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 
     /**

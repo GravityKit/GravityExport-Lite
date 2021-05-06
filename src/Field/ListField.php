@@ -91,7 +91,7 @@ class ListField extends BaseField implements RowsInterface
                     $result = [];
                     foreach ($this->getColumns() as $column) {
                         $column = $column instanceof BaseValue ? $column->getValue() : $column;
-	                    $result[$column] = rgar( $row, $column );
+	                    $result[$column] = \rgar( $row, $column );
                     }
                     yield $this->wrap(array_values($result));
                 }

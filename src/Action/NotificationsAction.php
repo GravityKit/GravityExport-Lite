@@ -77,8 +77,8 @@ class NotificationsAction
      */
     public function dismissNotification(): void
     {
-        $notification_id = rgar( $_POST, 'notification_key' );
-        $nonce = rgar( $_POST, 'nonce' );
+        $notification_id = \rgar( $_POST, 'notification_key' );
+        $nonce = \rgar( $_POST, 'nonce' );
 
         if ( ! $notification_id || ! $nonce || ! wp_verify_nonce( $nonce, self::KEY_NONCE ) ) {
             wp_die('No key or (valid) nonce provided.', 'Something went wrong.', [
