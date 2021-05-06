@@ -93,8 +93,8 @@ class FilterRequest
         }
 
         $this->parseDates($query_vars);
-        $this->parseFilters(rgar($query_vars, self::FILTER, ''));
-        $this->parseEntry(rgar($query_vars, self::ENTRY));
+        $this->parseFilters(\rgar($query_vars, self::FILTER, ''));
+        $this->parseEntry(\rgar($query_vars, self::ENTRY));
 
         return $query_vars;
     }
@@ -108,7 +108,7 @@ class FilterRequest
     public function setSearchCriteria($criteria)
     {
         // remap the filters so it's following the rules.
-        $field_filters = rgar($criteria, 'field_filters', []);
+        $field_filters = \rgar($criteria, 'field_filters', []);
 
         $criteria['field_filters'] = array_merge($field_filters, $this->field_filters);
         $criteria = array_merge($criteria, $this->general_filters);
@@ -179,8 +179,8 @@ class FilterRequest
     private function parseDates(array $query_vars)
     {
         $dates = [
-            self::START_DATE => rgar($query_vars, self::START_DATE, null),
-            self::END_DATE => rgar($query_vars, self::END_DATE, null),
+            self::START_DATE => \rgar($query_vars, self::START_DATE, null),
+            self::END_DATE => \rgar($query_vars, self::END_DATE, null),
         ];
 
         $this->general_filters = array_merge($this->general_filters, array_filter($dates));

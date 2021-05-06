@@ -5,17 +5,17 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.7
-Stable tag: 1.8.10
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Export all Gravity Forms entries to Excel (.xlsx) via a download button or a secret shareable URL.
+Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button or a secret shareable URL.
 
 == Description ==
 
 > A Pro version is coming soon with advanced functionality! [Sign up for more information!](https://subscribe.gfexcel.com/pro-add-on)
 
-Export Gravity Forms entries directly to Excel using a unique and secure URL. No need to login or create a
+Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
 user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
 It's that simple!
 
@@ -210,6 +210,15 @@ Checkout this example:
 == Changelog ==
 = Unreleased =
 * Enhancement: composer.json constraints updated for bedrock users.
+
+= 1.9.0 on May 5, 2021 =
+* Enhancement: Updated PHPSpreadsheet to 1.15.
+* Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
+* Bugfix: Removed deprecation warning on Gravity Forms 2.5.
+* Bugfix: Sort order is now saved again on Gravity Forms 2.5.
+* Bugfix: Improve button appearance on Gravity Forms 2.5.
+* Bugfix: Sanitized URLs with `esc_url()` in the dashboard.
+* Bugfix: Resolved some silent PHP warnings.
 
 = 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.

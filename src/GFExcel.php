@@ -281,28 +281,39 @@ class GFExcel
      * Actually triggers the download response.
      * @since 1.7.0
      * @param \WP $wp Wordpress request instance.
-     * @return mixed The output will be the file.
+     * @return mixed|void The output will be the file.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function downloadFile(\WP $wp)
     {
-        if (array_key_exists('gfexcel_download_form', $wp->query_vars)) {
-            $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
-
-            if ($form_id) {
-                $renderer = gf_apply_filters([
-                    GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
-                    $form_id
-                ], new PHPExcelRenderer());
-
-                $output = new GFExcelOutput($form_id, $renderer);
-
-                // trigger download event.
-                do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
-
-                return $output->render();
-            }
+        if ( ! array_key_exists( 'gfexcel_download_form', $wp->query_vars ) ) {
+            return;
         }
+
+        $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
+
+        if ( !$form_id ) {
+            return; }
+
+        $renderer = gf_apply_filters([
+            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
+            $form_id
+        ], new PHPExcelRenderer());
+
+        $output = new GFExcelOutput($form_id, $renderer);
+
+        // trigger download event.
+        /**
+         * Runs before download has been rendered but after it has been processed.
+         *
+         * @used-by \GFExcel\Action\CountDownloads::incrementCounter
+         *
+         * @param int $form_id ID of the form being downloaded
+         * @param GFExcelOutput Output of the file
+         */
+        do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
+
+        return $output->render();
     }
 
     /**
@@ -376,7 +387,7 @@ class GFExcel
     }
 
     /**
-     * Add's a Disallow for the download URL's.
+     * Adds a Disallow for the download URLs.
      * @since 1.7.0
      * @param string $output The robots.txt output
      * @return string the new output.
@@ -385,7 +396,7 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf('Disallow: %s/%s/', $path, GFExcel::$slug);
+        $line = sprintf('Disallow: %s/%s/', esc_attr( $path ), GFExcel::$slug);
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
@@ -419,7 +430,7 @@ class GFExcel
 
         $meta = \GFFormsModel::get_form_meta($form_id);
 
-        return (bool) rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
+        return (bool) \rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
     }
 
     /**

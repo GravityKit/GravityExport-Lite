@@ -84,7 +84,7 @@ class FormsRepository
      */
     public function getNotifications()
     {
-        return rgar($this->form, 'notifications', []);
+        return \rgar($this->form, 'notifications', []);
     }
 
     /**
@@ -92,7 +92,7 @@ class FormsRepository
      */
     public function getSelectedNotification()
     {
-        return rgar($this->form, GFExcel::KEY_ATTACHMENT_NOTIFICATION, '');
+        return \rgar($this->form, GFExcel::KEY_ATTACHMENT_NOTIFICATION, '');
     }
 
     /**
