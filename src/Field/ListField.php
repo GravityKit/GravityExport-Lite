@@ -14,7 +14,7 @@ class ListField extends BaseField implements RowsInterface
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.8.10
      */
     public function __construct(\GF_Field $field)
     {
