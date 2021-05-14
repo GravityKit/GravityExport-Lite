@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.7.1
-Stable tag: 1.8.11
+Stable tag: 1.8.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,8 +209,8 @@ Checkout this example:
 
 == Changelog ==
 
-= 1.8.11 on May 6, 2021 =
-* Enhancement: Updated PHPSpreadsheet to 1.15.
+= 1.8.12 on May 14, 2021 =
+* Enhancement: Updated PHPSpreadsheet to 1.17.
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
 * Enhancement: composer.json constraints updated for Bedrock users.
 * Bugfix: Removed deprecation warning on Gravity Forms 2.5.
@@ -218,6 +218,9 @@ Checkout this example:
 * Bugfix: Improve button appearance on Gravity Forms 2.5.
 * Bugfix: Sanitized URLs with `esc_url()` in the dashboard.
 * Bugfix: Resolved some silent PHP warnings.
+
+= 1.8.11 =
+Not released on WordPress due to linter issues.
 
 = 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.

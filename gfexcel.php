@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     Gravity Forms Entries in Excel
- * Version:         1.8.11
+ * Version:         1.8.12
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityView
