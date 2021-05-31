@@ -209,6 +209,9 @@ Checkout this example:
 
 == Changelog ==
 
+= develop =
+* Bugfix: Plugin would not activate on hosts running PHP 7.1.
+
 = 1.8.12 on May 14, 2021 =
 * Enhancement: Updated PHPSpreadsheet to 1.17.
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
