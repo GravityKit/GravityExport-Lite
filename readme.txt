@@ -209,7 +209,7 @@ Checkout this example:
 
 == Changelog ==
 
-= 1.8.13 on May 31, 2021 =
+= 1.8.13 on June 10, 2021 =
 * Bugfix: Plugin would not activate on hosts running PHP 7.1.
 
 = 1.8.12 on May 14, 2021 =
