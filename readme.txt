@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.7.1
-Stable tag: 1.8.12
+Stable tag: 1.8.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -208,6 +208,9 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.8.13 on May 31, 2021 =
+* Bugfix: Plugin would not activate on hosts running PHP 7.1.
 
 = 1.8.12 on May 14, 2021 =
 * Enhancement: Updated PHPSpreadsheet to 1.17.
