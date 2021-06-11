@@ -15,7 +15,7 @@ out more.
 
 ### Requirements
 
-* PHP 7.1 or higher
+* PHP 7.3 or higher
 * `php-xml` and `php-zip` libraries.
 * Gravity Forms 2.0 or higher
 
