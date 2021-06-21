@@ -430,13 +430,13 @@ class GFExcelAdmin extends \GFAddOn
         echo "<form method=\"post\">";
         printf(
             "<p>
-            <input style='width:90%%; margin-bottom: 5px;' type='text' value='%s' readonly />&nbsp<br/><input
+            <input class='widefat' type='text' value='%s' readonly />&nbsp<br/><input
             onclick=\"%s\"
             class='button' type='submit' name='regenerate_hash'
             value='" . __('Regenerate url', GFExcel::$slug) . "'/>
             <input
             onclick=\"%s\"
-            class='button button-danger' type='submit' name='disable_download_url'
+            class='button button-danger button-small alignright' type='submit' name='disable_download_url'
             value='" . __('Disable download', GFExcel::$slug) . "'/>
         </p>",
             $url,
