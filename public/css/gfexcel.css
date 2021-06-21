@@ -90,7 +90,7 @@ ul.fields-select li:last-child {
 }
 
 .sortfields .fa-bars {
-    color: #DDD;
+    color: #ccd0d4;
     margin-right: 5px;
 }
 
@@ -102,7 +102,7 @@ ul.fields-select li:last-child {
 }
 
 .sortfields li.light-up {
-    background-color: #006799;
+    background-color: #006899;
     color: #FFF;
 }
 
