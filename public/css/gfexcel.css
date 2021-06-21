@@ -8,6 +8,13 @@
     }
 }
 
+#tab_gf-entries-in-excel {
+    font-size: 14px;
+}
+.gaddon-section-title {
+    font-size: 1.1em;
+}
+
 .gaddon-setting-inline {
     display: inline-block;
     line-height: 26px;
@@ -39,9 +46,12 @@ ul.fields-select li div.move:hover {
     color: #006799;
 }
 
-.ui-sortable-handle {
+.sortfields .ui-sortable-handle {
     cursor: pointer;
     cursor: -webkit-grab;
+    padding: 7px;
+    margin: 5px 0;
+    border-radius: 3px;
 }
 .ui-sortable-handle:hover {
     background-color: #F0F0F0;
@@ -92,6 +102,11 @@ ul.fields-select li:last-child {
 .sortfields .fa-bars {
     color: #ccd0d4;
     margin-right: 5px;
+    margin-left: 0;
+}
+.rtl .sortfields .fa-bars {
+    margin-left: 5px;
+    margin-right: 0;
 }
 
 .sortfields .field {
@@ -112,6 +127,25 @@ ul.fields-select li:last-child {
 
 #gfexcel_disabled_fields .move i.fa-close {
     display: none;
+}
+
+.sortfields [class*=fa-] {
+    padding: 4px 5px;
+    border-radius: 3px;
+}
+
+.sortfields div.move:hover [class*=fa-] {
+    background-color: #006899;
+    color: white;
+}
+
+/** Don't show sort handle in disabled fields. Not using display: none; to maintain spacing. */
+#gfexcel_disabled_fields .fa-bars {
+    visibility: hidden;
+    width: 0;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #gfexcel_enabled_fields .move i.fa-arrow-right {
