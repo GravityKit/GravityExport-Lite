@@ -1,3 +1,13 @@
+/** Override Gravity Forms to make settings menu full-width at width when WP collapses sidebar */
+@media only screen and (max-width: 782px) {
+    body .gform-settings__wrapper {
+        grid-template-columns: none;
+    }
+    body .gform-settings__navigation {
+        margin-bottom: 1em;
+    }
+}
+
 .gaddon-setting-inline {
     display: inline-block;
     line-height: 26px;
