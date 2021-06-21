@@ -174,7 +174,7 @@ class GFExcelAdmin extends \GFAddOn
 
                         'choices' => [
                             [
-                                'label' => esc_html__('Enable hyperlinks on url-only columns', GFExcel::$slug),
+                                'label' => esc_html__('Enable hyperlinks on URL-only columns', GFExcel::$slug),
                                 'name' => 'hyperlinks_enabled',
                                 'default_value' => true,
                             ]
@@ -387,13 +387,13 @@ class GFExcelAdmin extends \GFAddOn
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
-                \GFCommon::add_message(__('The download url has been regenerated.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download URL has been regenerated.', GFExcel::$slug), false);
             } elseif (!rgempty('enable_download_url')) {
                 $form = GFExcel::setHash($form['id']);
-                \GFCommon::add_message(__('The download url has been enabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download URL has been enabled.', GFExcel::$slug), false);
             } elseif (!rgempty('disable_download_url')) {
                 $form = GFExcel::setHash($form['id'], '');
-                \GFCommon::add_message(__('The download url has been disabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The download URL has been disabled.', GFExcel::$slug), false);
             }
         }
 
@@ -403,11 +403,15 @@ class GFExcelAdmin extends \GFAddOn
             esc_html__(GFExcel::$name, GFExcel::$slug)
         );
 
+	    printf( '<div class="gaddon-section__download_count">%s: <strong>%d</strong> %s</div>',
+		    __( 'Download count', GFExcel::$slug ),
+		    $this->download_count( $form ),
+		    '<a role="button" href="' . esc_url( add_query_arg( array( 'gf_action' => CountDownloads::ACTION_RESET ) ) ) . '">' . esc_html__( 'Reset count', GFExcel::$slug ) . '</a>'
+	    );
+
         $this->downloadURLSettings($form);
 
-	    $this->downloadFileSettings($form);
-
-        echo "<br/>";
+        $this->downloadFileSettings($form);
 
         echo '<form method="post" id="gform-settings">';
 
@@ -422,7 +426,7 @@ class GFExcelAdmin extends \GFAddOn
         } else {
             $this->settings_save(['value' => __('Save settings')], GFExcel::$slug);
         }
-        echo "</form>";
+        echo '</form>';
     }
 
 	/**
@@ -431,35 +435,38 @@ class GFExcelAdmin extends \GFAddOn
 	 * @param array $form The form information.
 	 */
 	function downloadFileSettings( $form ) {
+
+		$url = GFExcel::url( $form['id'] );
+
+		if ( ! $url ) {
+		    return;
+		}
+
+	    echo '<div class="gaddon-section__download_file">';
 		printf(
-			'<h4 class="gaddon-section-title gf_settings_subgroup_title">%s</h4>',
+			'<h4 class="gaddon-section-title gf_settings_subgroup_title"><i class="dashicons dashicons-download"></i> %s</h4>',
 			esc_html__( 'Download file', GFExcel::$slug )
 		);
-		echo "<form method=\"post\" action=\"" . $url . "\" target=\"_blank\">
-        <h4>" . esc_html__( 'Select (optional) Date Range', GFExcel::$slug ) . ' ' .
-		     gform_tooltip( 'export_date_range', '', true ) . '</h4>' .
-		     "<div class='download-block'>
-            <div class=\"date-field\">
-                <input type=\"text\" id=\"start_date\" name=\"start_date\" style=\"width:90%\" />
-                <label for=\"start_date\">" . esc_html__( 'Start', 'gravityforms' ) . "</label>
+		echo '<form method="post" action="' . esc_url( $url ) . '" target="_blank">
+            <label for="start_date">' . esc_html__( 'Select Date Range (optional)', GFExcel::$slug ) . ' ' .
+		     gform_tooltip( 'export_date_range', '', true ) . '</label>' .
+		     '<div class="download-block">
+                <div class="date-field">
+                    <input type="text" id="start_date" name="start_date" />
+                    <label for="start_date">' . esc_html__( 'Start', 'gravityforms' ) . '</label>
+                </div>
+    
+                <div class="date-field">
+                    <input type="text" id="end_date" name="end_date" />
+                    <label for="end_date">' . esc_html__( 'End', 'gravityforms' ) . '</label>
+                </div>
+                
+                <div class="download-button">
+                    <button class="button primary button-primary">' . esc_html__( 'Download', GFExcel::$slug ) . '</button>
+                </div>
             </div>
-
-            <div class=\"date-field\">
-                <input type=\"text\" id=\"end_date\" name=\"end_date\" style=\"width:90%\" />
-                <label for=\"end_date\">" . esc_html__( 'End', 'gravityforms' ) . "</label>
-            </div>
-            
-            <div class=\"download-button\">
-                <button class='button button-primary primary'>" . esc_html__( 'Download', GFExcel::$slug ) . '</button> ' .
-		     sprintf( '%s: <strong>%d</strong>',
-			     __( 'Download count', GFExcel::$slug ),
-			     $this->download_count( $form )
-		     ) . "
-            <a class='button' href='" . esc_url( add_query_arg( array( 'gf_action' => CountDownloads::ACTION_RESET ) ) ) . "'>" .
-		     esc_html__( 'Reset count', GFExcel::$slug ) .
-		     '</a>
-            </div></div>
         </form>';
+		echo '</div>';
 	}
 
 	/**
@@ -470,15 +477,15 @@ class GFExcelAdmin extends \GFAddOn
 	function downloadURLSettings( $form ) {
 		printf(
 			'<h4 class="gaddon-section-title gf_settings_subgroup_title">%s</h4>',
-			esc_html__( 'Download url', GFExcel::$slug )
+			esc_html__( 'Download URL', GFExcel::$slug )
 		);
 
 		$url = GFExcel::url( $form['id'] );
 
 		if ( ! $url ) {
-			echo "<form method=\"post\">";
+			echo '<form method="post">';
 			echo '<p>' .
-			     __( 'The download url is not (yet) enabled. Click the button to enable this feature.', GFExcel::$slug ) .
+			     esc_html__( 'The download URL is not (yet) enabled. Click the button to enable this feature.', GFExcel::$slug ) .
 			     '</p>';
 
 			echo "<input
@@ -488,25 +495,25 @@ class GFExcelAdmin extends \GFAddOn
                     value='" . esc_html__( 'Enable download', GFExcel::$slug ) . "'>";
 			echo '</form>';
 
-			// Downlad is disabled, so other settings are hidden.
+			// Download is disabled, so other settings are hidden.
 			return;
 		}
 
-		echo "<form method=\"post\">";
+		echo '<form method="post">';
 		printf(
-			"<p>
-            <input class='widefat' type='text' value='%s' readonly />&nbsp<br/><input
-            onclick=\"%s\"
-            class='button' type='submit' name='regenerate_hash'
-            value='" . __( 'Regenerate url', GFExcel::$slug ) . "'/>
+			'<p>
+            <input class="widefat" type="text" value="%s" readonly /><input
+            onclick="%s"
+            class="button white" type="submit" name="regenerate_hash"
+            value="' . esc_html__( 'Regenerate URL', GFExcel::$slug ) . '"/>
             <input
-            onclick=\"%s\"
-            class='button button-danger button-small alignright' type='submit' name='disable_download_url'
-            value='" . __( 'Disable download', GFExcel::$slug ) . "'/>
-        </p>",
+            onclick="%s"
+            class="button button-danger button-small alignright" type="submit" name="disable_download_url"
+            value="' . esc_html__( 'Disable download', GFExcel::$slug ) . '"/>
+        </p>',
 			$url,
-			"return confirm('" . __( 'This changes the download url permanently!', GFExcel::$slug ) . "');",
-			"return confirm('" . __( 'This disables and removes the download url!', GFExcel::$slug ) . "');"
+			"return confirm('" . esc_js( 'This changes the download URL permanently!', GFExcel::$slug ) . "');",
+			"return confirm('" . esc_js( 'This disables and removes the download URL!', GFExcel::$slug ) . "');"
 		);
 		echo '</form>';
 	}
@@ -735,6 +742,7 @@ class GFExcelAdmin extends \GFAddOn
                         'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
                         'label' => __('Download permissions', GFExcel::$slug),
                         'type' => 'select',
+                        'description' => sprintf( esc_html__( 'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.', GFExcel::$slug ), '<code>gravityforms_export_entries</code>' ),
                         'default_value' => GFExcel::isAllSecured(),
                         'choices' => array_filter([
                             GFExcel::isAllSecured() ? null :
@@ -745,7 +753,7 @@ class GFExcelAdmin extends \GFAddOn
                                 ],
                             [
                                 'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
-                                'label' => __('Only verified users can download', GFExcel::$slug),
+                                'label' => __('Logged-in users who have "Export Entries" access', GFExcel::$slug),
                                 'value' => true,
                             ],
                         ]),
@@ -768,7 +776,7 @@ class GFExcelAdmin extends \GFAddOn
                 'fields' => [
                     [
                         'name' => 'enable_notes',
-                        'label' => esc_html__('Enable notes', GFExcel::$slug),
+                        'label' => esc_html__('Include entry notes', GFExcel::$slug),
                         'type' => 'checkbox',
                         'choices' => [
                             [
@@ -792,7 +800,7 @@ class GFExcelAdmin extends \GFAddOn
                     [
                         'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
                         'type' => 'radio',
-                        'label' => esc_html__('Columns position', GFExcel::$slug),
+                        'label' => esc_html__('Column position', GFExcel::$slug),
                         'default_value' => \rgar( $form , GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, 0 ),
                         'choices' => [
                             [
@@ -822,6 +830,7 @@ class GFExcelAdmin extends \GFAddOn
                         'type' => 'select',
                         'name' => GFExcel::KEY_FILE_EXTENSION,
                         'default_value' => \rgar( $form, GFExcel::KEY_FILE_EXTENSION, 'xlsx' ),
+                        'description' => sprintf( esc_html__('Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.', GFExcel::$slug ), '<code>.' . implode( '</code>, <code>.', GFExcel::getPluginFileExtensions() ) . '</code>' ),
                         'choices' => array_map(static function ($extension) {
                             return
                                 [
@@ -863,7 +872,7 @@ class GFExcelAdmin extends \GFAddOn
         $this->single_section([
             'title' => esc_html__('Field settings', GFExcel::$slug),
             'class' => 'sortfields',
-            'description' => wpautop( esc_html__( 'Drag & drop fields to re-order them in the exported file.', GFExcel::$slug ) ),
+            'description' => esc_html__( 'Drag & drop fields to re-order them in the exported file.', GFExcel::$slug ),
             'fields' => [
                 [
                     'label' => esc_html__('Disabled fields', GFExcel::$slug),
@@ -1319,7 +1328,7 @@ class GFExcelAdmin extends \GFAddOn
             return $output;
         }, []);
 
-        // add download url to every form that has a hash.
+        // add download URL to every form that has a hash.
         foreach ($form_ids as $id) {
             $url = GFExcel::url($id);
             if ($url) {
