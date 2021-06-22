@@ -3,19 +3,19 @@ Contributors: gravityview, doekenorg
 Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
 Requires at least: 4.0
-Requires PHP: 7.3
-Tested up to: 5.7
-Stable tag: 1.9.0
+Requires PHP: 7.1
+Tested up to: 5.7.1
+Stable tag: 1.8.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Export all Gravity Forms entries to Excel (.xlsx) via a download button or a secret shareable URL.
+Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button or a secret shareable URL.
 
 == Description ==
 
 > A Pro version is coming soon with advanced functionality! [Sign up for more information!](https://subscribe.gfexcel.com/pro-add-on)
 
-Export Gravity Forms entries directly to Excel using a unique and secure URL. No need to login or create a
+Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
 user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
 It's that simple!
 
@@ -208,13 +208,25 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
 = Unreleased =
-* Bugfix: Removed deprecation warning on Gravity Forms 2.5
-* Bugfix: Sort order is now saved again on Gravity Forms 2.5
-* Dependency: Upped minimum support to PHP 7.3 since earlier has been EOL for some time.
-* Enhancement: Updated PHPSpreadsheet to 1.15
-* Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension.
 * Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
+
+= 1.8.13 on June 10, 2021 =
+* Bugfix: Plugin would not activate on hosts running PHP 7.1.
+
+= 1.8.12 on May 14, 2021 =
+* Enhancement: Updated PHPSpreadsheet to 1.17.
+* Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
+* Enhancement: composer.json constraints updated for Bedrock users.
+* Bugfix: Removed deprecation warning on Gravity Forms 2.5.
+* Bugfix: Sort order is now saved again on Gravity Forms 2.5.
+* Bugfix: Improve button appearance on Gravity Forms 2.5.
+* Bugfix: Sanitized URLs with `esc_url()` in the dashboard.
+* Bugfix: Resolved some silent PHP warnings.
+
+= 1.8.11 =
+Not released on WordPress due to linter issues.
 
 = 1.8.10 on April 13, 2021 =
 * Bugfix: Default combiner glue for List Fields was accidentally changed.

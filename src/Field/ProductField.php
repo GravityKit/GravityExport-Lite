@@ -93,7 +93,7 @@ class ProductField extends SeparableField
             return $value;
         }
 
-        return \GFCommon::to_number($value, rgar($entry, 'currency'));
+        return \GFCommon::to_number($value, \rgar($entry, 'currency'));
     }
 
     /**
