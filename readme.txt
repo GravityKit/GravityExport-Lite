@@ -24,7 +24,7 @@ It's that simple!
 Using Gravity Forms you can export a CSV file and import it to Excel. But an admin always needs to be involved
 and using Excel to import a CSV is a pain.
 
-We've writting an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/).
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/).
 
 == Documentation ==
 
