@@ -211,6 +211,8 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Checkboxes didn't get all the hooks applied on export.
 
 = Unreleased =
 * Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.

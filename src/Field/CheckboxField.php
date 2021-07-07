@@ -37,7 +37,9 @@ class CheckboxField extends BaseField implements RowsInterface
      */
     public function getRows(?array $entry = null): iterable
     {
-        if (!is_array($inputs = $this->field->get_entry_inputs())) {
+	    $inputs = $this->field->get_entry_inputs();
+
+        if (!is_array($inputs)) {
             $value = \GFCommon::selection_display(
                 rgar($entry, $this->field->id),
                 $this->field,
@@ -48,7 +50,7 @@ class CheckboxField extends BaseField implements RowsInterface
             foreach ($inputs as $input) {
                 $index = (string) $input['id'];
                 if (!rgempty($index, $entry)) {
-                    $value = \GFCommon::selection_display(rgar($entry, $index), $this->field, rgar($entry, 'currency'));
+	                $value = $this->getFieldValue($entry, $index);
 
                     yield $this->wrap([$value]);
                 }
