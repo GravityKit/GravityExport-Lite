@@ -42,6 +42,13 @@ class CheckboxField extends BaseField implements RowsInterface
             if (!rgempty($index, $entry)) {
                 $value = $this->getFieldValue($entry, $index);
 
+                $value = gf_apply_filters([
+                    'gfexcel_field_value',
+                    $this->field->get_input_type(),
+                    $this->field->formId,
+                    $this->field->id
+                ], $value, $entry, $this->field);
+
                 yield $this->wrap([$value]);
             }
         }
