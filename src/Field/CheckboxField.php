@@ -40,7 +40,14 @@ class CheckboxField extends BaseField implements RowsInterface
         foreach ($this->field->get_entry_inputs() as $input) {
             $index = (string) $input['id'];
             if (!rgempty($index, $entry)) {
-                $value = \GFCommon::selection_display(\rgar($entry, $index), $this->field, \rgar($entry, 'currency'));
+                $value = $this->getFieldValue($entry, $index);
+
+                $value = gf_apply_filters([
+                    'gfexcel_field_value',
+                    $this->field->get_input_type(),
+                    $this->field->formId,
+                    $this->field->id
+                ], $value, $entry, $this->field);
 
                 yield $this->wrap([$value]);
             }

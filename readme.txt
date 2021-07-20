@@ -1,11 +1,11 @@
 === Gravity Forms Entries in Excel ===
 Contributors: gravityview, doekenorg
 Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
-Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries
+Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.7.1
-Stable tag: 1.8.13
+Tested up to: 5.8
+Stable tag: 1.8.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,19 +13,18 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
-> A Pro version is coming soon with advanced functionality! [Sign up for more information!](https://subscribe.gfexcel.com/pro-add-on)
+> A Pro version with advanced functionality is available for pre-sale! [Learn more & pre-order](https://gravityview.co/extensions/gf-excel-pro/)
 
 Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
 user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
 It's that simple!
 
-**Why not export a CSV from Gravity Forms?**
+**Why not export from Gravity Forms?**
 
 Using Gravity Forms you can export a CSV file and import it to Excel. But an admin always needs to be involved
 and using Excel to import a CSV is a pain.
 
-The plugin has a lot of developer hooks to make your Excel output exactly how you want it. Check out the FAQ to
-find out more.
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/).
 
 == Documentation ==
 
@@ -38,7 +37,7 @@ We'll be updating the site with "recipes" based on your questions. So if you hav
 
 * PHP 7.1. (No longer active support for 5.6)
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
-* Gravity Forms 2.0.0 or higher
+* Gravity Forms 2.0 or higher
 
 == Installation ==
 
@@ -84,21 +83,22 @@ Great question! Yes you can! You can set it on the setting spage, or make use of
 
 = I have a custom field. Can your plugin handle this? =
 
-You should ask yourself can your field can handle this plugin! But, yes it can. In multiple ways actually.
+Yes it can, in multiple ways:
 
-The default way the plugins renders the output, is by calling `get_value_export` on the field.
+The default way the plugins renders output is by calling `get_value_export` on the field.
 All Gravity Forms fields need that function, so make sure that is implemented.
 The result is one column with the output combined to one cell per row.
 
-But you can also make your own field-renderer, like this:
+But you can also make your own field renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
 1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwsomeField'`)
 
-= I don't like the downloaded file name! =
+= How can I change the downloaded file name? =
 
-By now you really should know you can change almost every aspect of this plugin. Don't like the name? Change it using the settings page, or by using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
+By now you really should know you can change almost every aspect of this plugin. Don't like the name?
+Change it using the settings page, or by using the `gfexcel_renderer_filename` or `gfexcel_renderer_filename_{form_id}` hooks.
 
 Also you can update title, subject and description metadata of the document by using
 `gfexcel_renderer_title(_{form_id})`, `gfexcel_renderer_subject(_{form_id})` and
@@ -107,13 +107,13 @@ Also you can update title, subject and description metadata of the document by u
 = Can I change the sort order of the rows? =
 
 Sure, why not. By default we sort on date of entry in acending order. You can change this, per form,
-on the Form settings page (Results in Excel) under "Settings".
+on the Form settings page (Entries in Excel) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
 
 You're in luck: for those situation we've added a bulk option on the forms table.
 As a bonus, you can select multiple forms, and it will download all results in one file,
-on multiple worksheets (oohhh yeah!)
+on multiple worksheets (!!!)
 
 = How can I disable the hyperlinks on URL-only cells? =
 You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks`-hook.
@@ -124,6 +124,7 @@ add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 `
 
 = My numbers are formatted as a string, how can I change the celltype? =
+
 A numberfield is formatted as a number, but most fields default to a string.
 As of this moment, there are 3 field types. `Boolean`,`String` and `Numeric`. You can set these per field.
 `
@@ -160,8 +161,9 @@ add_filter('gfexcel_field_notes_enabled','__return_true');
 add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
 `
 
-= It's all too boring in Excel. Can I use some colors? =
-Definitely! You get to change: text color, background color, bold and italic. If that is not enough, you probably just need to add clip art yourself!
+= How do I add colors? It's all too boring in Excel. =
+
+Definitely! You get to change: text color, background color, bold and italic. If that is not enough, maybe you should add clip art!
 
 `
 //add this to your functions.php
@@ -181,16 +183,17 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 }, 10, 3);
 `
 
-= I don't have enough... eh... Memory! =
-Yes, this can happen. And to be frank (actually, I'm not, I'm Doeke), this isn't something that can be fixed.
+= I don't have enough memory! =
+
+Yes, this can happen. Unfortunately, this isn't something that can be fixed without modifying your
 As a default, WordPress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
 But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
-`40 MB * 1024 KB = 40.960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
-If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [Woocommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
+`40 MB * 1024 KB = 40,960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
+If you're around this cell-count, and the renderer fails; try to upgrade the `WP_MEMORY_LIMIT`. Checkout [WooCommerce's Docs](https://docs.woocommerce.com/document/increasing-the-wordpress-memory-limit/) for some tips.
 
 = Can I hide a row, but not remove it? =
-You got something to hide, eh? We got you "covered". You can hide a row by adding a hook. Why a hook and not a nice GUI? Because everyone has different reasons for hiding stuff. So I couldn't come up with a better solution for now.
-Checkout this example:
+
+You can hide a row by adding a hook. Checkout this example:
 
 `add_filter('gfexcel_renderer_hide_row', function ($hide, $row) {
      foreach ($row as $column) {
@@ -208,6 +211,10 @@ Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.8.14 on July 20, 2021 =
+* Enhancement: Improved usability on small screens and enhanced accessibility.
+* Bugfix: Incorrect or incomplete export of certain form field values (e.g., Gravity Forms Survey fields).
 
 = 1.8.13 on June 10, 2021 =
 * Bugfix: Plugin would not activate on hosts running PHP 7.1.
