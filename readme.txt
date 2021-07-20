@@ -211,6 +211,8 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+= Unreleased =
+* Bugfix: Checkboxes didn't get all the hooks applied on export.
 
 = 1.8.13 on June 10, 2021 =
 * Bugfix: Plugin would not activate on hosts running PHP 7.1.
