@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.1
 Tested up to: 5.8
-Stable tag: 1.8.13
+Stable tag: 1.8.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -211,11 +211,13 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
-* Bugfix: Checkboxes didn't get all the hooks applied on export.
 
 = Unreleased =
 * Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
+
+= 1.8.14 on July 20, 2021 =
+* Enhancement: Improved usability on small screens and enhanced accessibility.
+* Bugfix: Incorrect or incomplete export of certain form field values (e.g., Gravity Forms Survey fields).
 
 = 1.8.13 on June 10, 2021 =
 * Bugfix: Plugin would not activate on hosts running PHP 7.1.
