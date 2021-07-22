@@ -67,7 +67,7 @@ Sure, makes sense. You can override the label hooking into
 `gfexcel_field_label`, `gfexcel_field_label_{type}`, `gfexcel_field_label_{type}_{form_id}` or
 `gfexcel_field_label_{type}_{form_id}_{field_id}`
 
-The field object is provided as parameter, so you can check for type and stuff programatically.
+The field object is provided as parameter, so you can check for type and stuff programmatically.
 
 = How can I change the value of a field in Excel? =
 
@@ -76,9 +76,9 @@ You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field
 
 The entry array is provided as a parameter, so you can combine fields if you want.
 
-= Can I seperate the fields of an address into multiple columns? =
+= Can I separate the fields of an address into multiple columns? =
 
-Great question! Yes you can! You can set it on the setting spage, or make use of the following hooks to get that working:
+Great question! Yes you can! You can set it on the settings page, or make use of the following hooks to get that working:
 `gfexcel_field_separated_{type}_{form_id}_{field_id}` where every variable is optional.
 
 = I have a custom field. Can your plugin handle this? =
@@ -93,7 +93,7 @@ But you can also make your own field renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
-1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwsomeField'`)
+1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwesomeField'`)
 
 = How can I change the downloaded file name? =
 
@@ -106,7 +106,7 @@ Also you can update title, subject and description metadata of the document by u
 
 = Can I change the sort order of the rows? =
 
-Sure, why not. By default we sort on date of entry in acending order. You can change this, per form,
+Sure, why not. By default we sort on date of entry in ascending order. You can change this, per form,
 on the Form settings page (Entries in Excel) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
@@ -123,9 +123,9 @@ You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks
 add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 `
 
-= My numbers are formatted as a string, how can I change the celltype? =
+= My numbers are formatted as a string, how can I change the cell type? =
 
-A numberfield is formatted as a number, but most fields default to a string.
+A number field is formatted as a number, but most fields default to a string.
 As of this moment, there are 3 field types. `Boolean`,`String` and `Numeric`. You can set these per field.
 `
 //add this to your functions.php
@@ -134,7 +134,7 @@ use GFExcel\Values\BaseValue;
 add_filter('gfexcel_value_type',function($type, $field) {
     if($field->formId == 1 && $field->id == 2) {
         //Possible values are 'bool', 'string' or 'numeric',
-        //or, use the constant, preffered:
+        //or, use the constant, preferred:
         return BaseValue::TYPE_NUMERIC; //TYPE_STRING, TYPE_BOOL
     }
 }, 10, 2);
@@ -338,12 +338,12 @@ Not released on WordPress due to linter issues.
 * Bugfix: `created_by` and `payment_date` were not converted to the WordPress timezone.
 
 = 1.6.0 =
-* Feature: The renderer now supports transposing. So every column is a row, and vica versa.
+* Feature: The renderer now supports transposing. So every column is a row, and vice versa.
 * Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
 * Feature: Added a "download" link per form on the Forms page. Less clicks for that file!
 * Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout the FAQ for more info.
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
-* Enhancement: Product and calculation have some specific rendering on single field for clearity.
+* Enhancement: Product and calculation have some specific rendering on single field for clarity.
 * Enhancement: Now supports *Gravity Forms Chained Selects*.
 * Enhancement: Querying entries in smaller sets to avoid massive database queries that can choke a database server.
 * Enhancement: Added a `gfexcel_output_search_criteria` filter to customize the `search_criteria` for requests.
@@ -358,7 +358,7 @@ Not released on WordPress due to linter issues.
 * Enhancement: Subfield labels can now also be overwritten with the `gfexcel_field_value`-hook.
 * Bugfix: Found a memory leakage in retrieving fields for every row. Will now be retrieved only once per file.
 * Bugfix: Custom Sub field labels were not exported.
-* Bugfix: I spelled 'separate' wrong, and therefor the hooks were also wrong. **Please update your hooks If you use them!**
+* Bugfix: I spelled 'separate' wrong, and therefore the hooks were also wrong. **Please update your hooks If you use them!**
 
 = 1.5.4 =
 * Language: Finnish language files added thanks to @Nomafin!
@@ -418,9 +418,9 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
 * Enhancement: `composer.json` update to `wordpress-plugin` for easier installation with bedrock.
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
-* Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-seperated values per column.
+* Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-separate values per column.
 * Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
-* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_seperated` to split date and time in 2 columns.
+* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_separated` to split date and time in 2 columns.
 * Bugfix: Plugin hooks later, so filters also work on bulk-download files.
 
 = 1.2.3 =
