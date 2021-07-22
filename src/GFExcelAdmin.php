@@ -431,7 +431,7 @@ class GFExcelAdmin extends \GFAddOn
 
 	/**
 	 * Adds the Download URL settings for the plugin.
-	 * @since TODO
+	 * @since 1.8.14
 	 * @param array $form The form information.
 	 */
 	function downloadFileSettings( $form ) {
@@ -471,7 +471,7 @@ class GFExcelAdmin extends \GFAddOn
 
 	/**
 	 * Adds the Download URL settings for the plugin.
-	 * @since TODO
+	 * @since 1.8.14
 	 * @param array $form The form information.
 	 */
 	function downloadURLSettings( $form ) {
