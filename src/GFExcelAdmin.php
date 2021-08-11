@@ -527,6 +527,10 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
      */
     public function bulk_actions($actions)
     {
+        if( 'form_list' !== \GFForms::get_page() ) {
+	        return $actions;
+        }
+
         $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', GFExcel::$slug);
 
         return $actions;
