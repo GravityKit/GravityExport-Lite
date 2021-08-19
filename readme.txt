@@ -214,6 +214,8 @@ You can hide a row by adding a hook. Checkout this example:
 
 = Unreleased =
 * Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
+* Enhancement: Added a `gfexcel_output_sorting_options` filter to set sorting options.
+* Enhancement: Added a `gfexcel_get_entries` filter to override default logic responsible for querying DB entries.
 
 = 1.8.14 on July 20, 2021 =
 * Enhancement: Improved usability on small screens and enhanced accessibility.

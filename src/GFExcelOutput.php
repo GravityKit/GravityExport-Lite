@@ -220,18 +220,22 @@ class GFExcelOutput
      */
     private function getEntries()
     {
-        $search_criteria = gf_apply_filters([
-            'gfexcel_output_search_criteria',
-            $this->form_id,
-        ], [
-            'status' => 'active',
-        ], $this->form_id);
-
         if (empty($this->entries)) {
-            $sorting = $this->getSorting($this->form_id);
-            $page_size = 100;
-            $i = 0;
-            $entries = [];
+	        $page_size = 100;
+	        $i         = 0;
+	        $entries   = [];
+
+	        $search_criteria = gf_apply_filters(
+		        [ 'gfexcel_output_search_criteria', $this->form_id ],
+		        [ 'status' => 'active' ],
+		        $this->form_id
+	        );
+
+	        $sorting = gf_apply_filters(
+		        [ 'gfexcel_output_sorting_options', $this->form_id ],
+		        $this->getSorting( $this->form_id ),
+		        $this->form_id,
+	        );
 
             // prevent a multi-k database query to build up the array.
             $loop = true;
@@ -241,7 +245,18 @@ class GFExcelOutput
                     'page_size' => $page_size,
                 ];
 
-                $new_entries = \GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
+	            if ( gf_has_filter( [ 'gfexcel_get_entries', $this->form_id ] ) ) {
+		            $new_entries = gf_apply_filters(
+			            [ 'gfexcel_get_entries', $this->form_id ],
+			            $this->form_id,
+			            $search_criteria,
+			            $sorting,
+			            $paging
+		            );
+	            } else {
+		            $new_entries = \GFAPI::get_entries( $this->form_id, $search_criteria, $sorting, $paging );
+	            }
+
                 $count = count($new_entries);
                 if ($count > 0) {
                     $entries[] = $new_entries;
