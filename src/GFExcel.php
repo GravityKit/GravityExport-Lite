@@ -168,24 +168,24 @@ class GFExcel
      */
     public static function getFileExtension($form)
     {
-        if (!static::$file_extension) {
-            $extension = gf_apply_filters(
-                [
-                    static::KEY_FILE_EXTENSION,
-                    $form['id'] ?? null
-                ],
-                !($form[static::KEY_FILE_EXTENSION] ?? null) ? 'xlsx' : $form[static::KEY_FILE_EXTENSION],
-                $form
-            );
+	    if ( ! static::$file_extension ) {
+		    $extension = gf_apply_filters(
+			    [
+				    static::KEY_FILE_EXTENSION,
+				    $form['id'] ?? null
+			    ],
+			    ! ( $form[ static::KEY_FILE_EXTENSION ] ?? null ) ? 'xlsx' : $form[ static::KEY_FILE_EXTENSION ],
+			    $form
+		    );
 
-            if (!in_array($extension, static::getPluginFileExtensions(), true)) {
-                $extension = 'xlsx';
-            }
+		    if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
+			    $extension = 'xlsx';
+		    }
 
-            static::$file_extension = $extension;
-        }
+		    return $extension;
+	    }
 
-        return static::$file_extension;
+	    return static::$file_extension;
     }
 
     /**
