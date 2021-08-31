@@ -74,11 +74,12 @@ class GFExcelOutput
      * @param RendererInterface $renderer The renderer.
      * @param CombinerInterface|null $combiner The combiner. {@since 1.8.0}
      */
-    public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null)
+    public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null, $feed_id = null)
     {
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
+        $this->feed_id = $feed_id;
         $this->combiner = $combiner ?? GFExcel::getCombiner($form_id);
 
         @set_time_limit(0); // suppress warning when disabled
@@ -220,58 +221,65 @@ class GFExcelOutput
      */
     private function getEntries()
     {
-        if (empty($this->entries)) {
-	        $page_size = 100;
-	        $i         = 0;
-	        $entries   = [];
+	    if ( empty( $this->entries ) ) {
+		    $page_size = 100;
+		    $i         = 0;
+		    $entries   = [];
 
-	        $search_criteria = gf_apply_filters(
-		        [ 'gfexcel_output_search_criteria', $this->form_id ],
-		        [ 'status' => 'active' ],
-		        $this->form_id
-	        );
+		    $search_criteria = gf_apply_filters(
+			    [ 'gfexcel_output_search_criteria', $this->form_id, $this->feed_id ],
+			    [ 'status' => 'active' ],
+			    $this->form_id,
+			    $this->feed_id
+		    );
 
-	        $sorting = gf_apply_filters(
-		        [ 'gfexcel_output_sorting_options', $this->form_id ],
-		        $this->getSorting( $this->form_id ),
-		        $this->form_id,
-	        );
+		    $sorting = gf_apply_filters(
+			    [ 'gfexcel_output_sorting_options', $this->form_id, $this->feed_id ],
+			    $this->getSorting( $this->form_id ),
+			    $this->form_id,
+			    $this->feed_id
+		    );
 
-            // prevent a multi-k database query to build up the array.
-            $loop = true;
-            while ($loop) {
-                $paging = [
-                    'offset' => ($i * $page_size),
-                    'page_size' => $page_size,
-                ];
+		    // prevent a multi-k database query to build up the array.
+		    $loop = true;
+		    while ( $loop ) {
+			    $new_entries = null;
 
-	            if ( gf_has_filter( [ 'gfexcel_get_entries', $this->form_id ] ) ) {
-		            $new_entries = gf_apply_filters(
-			            [ 'gfexcel_get_entries', $this->form_id ],
-			            $this->form_id,
-			            $search_criteria,
-			            $sorting,
-			            $paging
-		            );
-	            } else {
-		            $new_entries = \GFAPI::get_entries( $this->form_id, $search_criteria, $sorting, $paging );
-	            }
+			    $paging = [
+				    'offset'    => ( $i * $page_size ),
+				    'page_size' => $page_size,
+			    ];
 
-                $count = count($new_entries);
-                if ($count > 0) {
-                    $entries[] = $new_entries;
-                }
+			    $new_entries = gf_apply_filters(
+				    [ 'gfexcel_get_entries', $this->form_id, $this->feed_id ],
+				    $this->form_id,
+				    $this->feed_id,
+				    $search_criteria,
+				    $sorting,
+				    $paging
+			    );
 
-                ++$i; // increase for the loop
 
-                if ($count < $page_size) {
-                    $loop = false; // stop looping
-                }
-            }
-            $this->entries = array_merge([], ...$entries);
-        }
+			    if ( is_null( $new_entries ) || $new_entries === $this->form_id ) {
+				    $new_entries = \GFAPI::get_entries( $this->form_id, $search_criteria, $sorting, $paging );
+			    }
 
-        return $this->entries;
+			    $count = count( $new_entries );
+			    if ( $count > 0 ) {
+				    $entries[] = $new_entries;
+			    }
+
+			    ++$i; // increase for the loop
+
+			    if ( $count < $page_size ) {
+				    $loop = false; // stop looping
+			    }
+		    }
+
+		    $this->entries = array_merge( [], ...$entries );
+	    }
+
+	    return $this->entries;
     }
 
     /**

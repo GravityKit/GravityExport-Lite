@@ -257,19 +257,28 @@ class GFExcel
             return $query_vars;
         }
 
-        $form_id = $this->getFormIdByHash($query_vars[self::KEY_HASH]);
-        if ($form_id) {
-            if (self::canDownloadForm($form_id)) {
-                $query_vars['gfexcel_download_form'] = $form_id;
-            } else {
-                $query_vars['error'] = \WP_Http::FORBIDDEN;
-            }
-        } else {
-            // Not found
-            $query_vars['error'] = \WP_Http::NOT_FOUND;
-        }
+	    $feed = $this->getFeedByHash( $query_vars[ self::KEY_HASH ] );
 
-        return $query_vars;
+	    $form_id = rgar( $feed, 'form_id', null );
+	    $feed_id = rgar( $feed, 'id', null );
+
+	    if ( ! $form_id ) {
+		    $form_id = $this->getFormIdByHash( $query_vars[ self::KEY_HASH ] );
+	    }
+
+	    if ( $form_id ) {
+		    if ( self::canDownloadForm( $form_id ) ) {
+			    $query_vars['gfexcel_download_form'] = $form_id;
+			    $query_vars['gfexcel_download_feed'] = $feed_id;
+		    } else {
+			    $query_vars['error'] = \WP_Http::FORBIDDEN;
+		    }
+	    } else {
+		    // Not found
+		    $query_vars['error'] = \WP_Http::NOT_FOUND;
+	    }
+
+	    return $query_vars;
     }
 
     /**
@@ -286,13 +295,14 @@ class GFExcel
         }
 
         $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
+        $feed_id = $wp->query_vars['gfexcel_download_feed'] ?? null;
 
         if ( !$form_id ) {
             return;
         }
 
 	    $renderer = GFExcel::getRenderer($form_id);
-	    $output = new GFExcelOutput($form_id, $renderer);
+	    $output = new GFExcelOutput($form_id, $renderer, null, $feed_id);
 
         // trigger download event.
         /**
@@ -357,6 +367,34 @@ class GFExcel
         //only now are we home save.
         return (int) $form_row['form_id'];
     }
+
+	/**
+	 * Helper method to retrieve feed data using unique URL hash value.
+	 *
+	 * @param string $hash Hash.
+	 *
+	 * @since 1.9
+	 *
+	 * @return array|null Feed data.
+	 */
+	private function getFeedByHash( $hash ) {
+		global $wpdb;
+
+		$feeds = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND meta LIKE '%s' ORDER BY `feed_order`, `id` LIMIT 1",
+			'%' . $wpdb->esc_like( $hash ) . '%'
+		), ARRAY_A );
+
+		$feed = reset( $feeds );
+
+		if ( ! $feed || ! isset( $feed['meta'] ) ) {
+			return apply_filters('gfexcel_hash_feed', null, $hash);
+		}
+
+		$feed['meta'] = json_decode( $feed['meta'], true );
+
+		return $hash === rgars( $feed, 'meta/hash' ) ? $feed : null;
+	}
 
     /**
      * Adds a Disallow for the download URLs.
