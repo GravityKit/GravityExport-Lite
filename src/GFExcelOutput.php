@@ -45,9 +45,16 @@ class GFExcelOutput
 
     /**
      * The form object.
+     * @since 1.9
      * @var mixed[]
      */
     private $form;
+
+	/**
+	 * The feed object.
+	 * @var mixed[]
+	 */
+	private $feed;
 
     /**
      * The form entries.
@@ -182,6 +189,22 @@ class GFExcelOutput
 
         return $this->form;
     }
+
+	/**
+	 * Retrieve feed from GF API.
+	 *
+	 * @since 1.9
+	 *
+	 * @return array|false
+	 */
+	private function getFeed()
+	{
+		if ( ! $this->feed ) {
+			$this->feed = \GFAPI::get_feed( $this->feed_id );
+		}
+
+		return $this->feed;
+	}
 
     /**
      * Add multiple columns at once
