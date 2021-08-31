@@ -36,6 +36,13 @@ class GFExcelOutput
      */
     private $form_id;
 
+	/**
+	 * The feed id.
+	 * @since 1.9
+	 * @var int
+	 */
+	private $feed_id;
+
     /**
      * The form object.
      * @var mixed[]
