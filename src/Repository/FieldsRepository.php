@@ -13,6 +13,12 @@ class FieldsRepository
 
     private $form;
 
+	/**
+	 * @since 1.9
+	 * @var array GF Feed object.
+	 */
+    private $feed;
+
     private $meta_fields = [];
 
     const KEY_DISABLED_FIELDS = 'gfexcel_disabled_fields';
@@ -24,9 +30,10 @@ class FieldsRepository
      */
     private $admin;
 
-    public function __construct(array $form)
+    public function __construct(array $form, array $feed = [])
     {
         $this->form = $form;
+        $this->feed = $feed;
         $this->admin = GFExcelAdmin::get_instance();
     }
 
@@ -170,10 +177,14 @@ class FieldsRepository
             $result = explode(',', $this->form[static::KEY_DISABLED_FIELDS]);
         }
 
-        return gf_apply_filters([
-            'gfexcel_disabled_fields',
-            $this->form['id'],
-        ], $result);
+	    $form_id = rgar( $this->form, 'id' );
+	    $feed_id = rgar( $this->feed, 'id' );
+
+	    return gf_apply_filters( [
+		    'gfexcel_disabled_fields',
+		    rgar( $this->form, 'id' ),
+		    rgar( $this->feed, 'id' )
+	    ], $result, $form_id, $feed_id );
     }
 
     /**
@@ -187,10 +198,14 @@ class FieldsRepository
             $result = explode(',', $this->form[static::KEY_ENABLED_FIELDS]);
         }
 
-        return gf_apply_filters([
-            'gfexcel_enabled_fields',
-            $this->form['id'],
-        ], $result);
+        $form_id = rgar( $this->form, 'id' );
+        $feed_id = rgar( $this->feed, 'id' );
+
+	    return gf_apply_filters( [
+		    'gfexcel_enabled_fields',
+		    rgar( $this->form, 'id' ),
+		    rgar( $this->feed, 'id' )
+	    ], $result, $form_id, $feed_id );
     }
 
     /**

@@ -107,7 +107,7 @@ class GFExcelOutput
     public function getFields(): array
     {
         if (!$this->repository) {
-            $this->repository = new FieldsRepository($this->getForm());
+	        $this->repository = new FieldsRepository( $this->getForm(), $this->getFeed() );
         }
 
         return $this->repository->getFields();
