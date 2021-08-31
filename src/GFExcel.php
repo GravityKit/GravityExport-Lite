@@ -242,7 +242,7 @@ class GFExcel
     }
 
     /**
-     * Hooks into the request and outputs the file as the HHTP response.
+     * Hooks into the request and outputs the file as the HTTP response.
      * @since 1.0.0
      * @param string[] $query_vars The original query vars.
      * @return string[] The new query vars.
