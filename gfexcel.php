@@ -25,8 +25,12 @@ use GFExcel\ServiceProvider\BaseServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
-if (!defined('GFEXCEL_PLUGIN_FILE')) {
-    define('GFEXCEL_PLUGIN_FILE', __FILE__);
+if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
+	define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
+	define( 'GFEXCEL_PLUGIN_VERSION', '1.9.0' );
 }
 
 add_action('gform_loaded', static function (): void {

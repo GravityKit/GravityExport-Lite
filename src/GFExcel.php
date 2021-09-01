@@ -32,7 +32,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.9.0';
+    public static $version = GFEXCEL_PLUGIN_VERSION;
 
     /**
      * The endpoint slug of the plugin.
