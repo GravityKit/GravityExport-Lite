@@ -976,11 +976,15 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     }
 
     /**
-     * Add javascript and custom css to the page
+     * Add JavaScript and custom CSS to the page.
      */
     public function register_assets()
     {
-        $this->sortable_script(['gfexcel_enabled_fields', 'gfexcel_disabled_fields'], 'fields-select');
+	    if ( 'gf_edit_forms' !== rgget( 'page' ) || 'gf-entries-in-excel' !== rgget( 'subview' ) ) {
+		    return;
+	    }
+
+	    $this->sortable_script( [ 'gfexcel_enabled_fields', 'gfexcel_disabled_fields' ], 'fields-select' );
     }
 
     /**
