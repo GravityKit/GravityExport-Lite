@@ -249,21 +249,28 @@ class GFExcel
      */
     public function request($query_vars)
     {
-        if (
-            !isset($query_vars[self::KEY_ACTION], $query_vars[self::KEY_HASH]) ||
-            $query_vars[self::KEY_ACTION] !== self::$slug ||
-            empty($query_vars[self::KEY_HASH])
-        ) {
-            return $query_vars;
-        }
+	    if (
+		    ! isset( $query_vars[ self::KEY_ACTION ], $query_vars[ self::KEY_HASH ] ) ||
+		    $query_vars[ self::KEY_ACTION ] !== self::$slug ||
+		    empty( $query_vars[ self::KEY_HASH ] )
+	    ) {
+		    return $query_vars;
+	    }
 
-	    $feed = $this->getFeedByHash( $query_vars[ self::KEY_HASH ] );
+	    $hash = $query_vars[ self::KEY_HASH ];
+
+	    if ( preg_match( '/\\.(' . GFExcel::getPluginFileExtensions( true ) . ')$/is', $hash, $match ) ) {
+		    $hash                   = str_replace( $match[0], '', $hash );
+		    static::$file_extension = $match[1];
+	    }
+
+	    $feed = $this->getFeedByHash( $hash );
 
 	    $form_id = rgar( $feed, 'form_id', null );
 	    $feed_id = rgar( $feed, 'id', null );
 
 	    if ( ! $form_id ) {
-		    $form_id = $this->getFormIdByHash( $query_vars[ self::KEY_HASH ] );
+		    $form_id = $this->getFormIdByHash( $hash );
 	    }
 
 	    if ( $form_id ) {
@@ -337,36 +344,31 @@ class GFExcel
      * @param string $hash The hash.
      * @return int|null The form id.
      */
-    private function getFormIdByHash($hash)
-    {
-        global $wpdb;
+	private function getFormIdByHash($hash)
+	{
+		global $wpdb;
 
-        if (preg_match('/\\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', $hash, $match)) {
-            $hash = str_replace($match[0], '', $hash);
-            static::$file_extension = $match[1];
-        }
+		$table_name = \GFFormsModel::get_meta_table_name();
+		$wildcard = '%';
+		$like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
-        $table_name = \GFFormsModel::get_meta_table_name();
-        $wildcard = '%';
-        $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
+		// Data is stored in a json_encoded string, so we can't match perfectly.
+		if (
+			// Not even a partial match.
+			!($form_row = $wpdb->get_row(
+				$wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
+				ARRAY_A
+			)) ||
+			// Possible match on hash, so check against found form.
+			GFExcel::getHash($form_row['form_id']) !== $hash
+		) {
+			// No match found, so we can try to see if some other plugin can find it.
+			return apply_filters('gfexcel_hash_form_id', null, $hash);
+		}
 
-        // Data is stored in a json_encoded string, so we can't match perfectly.
-        if (
-            // Not even a partial match.
-            !($form_row = $wpdb->get_row(
-                $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
-                ARRAY_A
-            )) ||
-            // Possible match on hash, so check against found form.
-            GFExcel::getHash($form_row['form_id']) !== $hash
-        ) {
-            // No match found, so we can try to see if some other plugin can find it.
-            return apply_filters('gfexcel_hash_form_id', null, $hash);
-        }
-
-        //only now are we home save.
-        return (int) $form_row['form_id'];
-    }
+		//only now are we home save.
+		return (int) $form_row['form_id'];
+	}
 
 	/**
 	 * Helper method to retrieve feed data using unique URL hash value.
