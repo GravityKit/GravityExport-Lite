@@ -41,6 +41,17 @@ class GFExcel
      */
     public static $slug = 'gf-entries-in-excel';
 
+	/**
+	 * The endpoint slug of the plugin.
+	 * @since 1.0.0
+	 * @var string
+	 */
+	private $endpoints = array(
+		'gf-entries-in-excel',
+		'gravityexport-lite',
+		'gravityexport',
+	);
+
     public const KEY_HASH = 'gfexcel_hash';
 
     public const KEY_ACTION = 'gfexcel_action';
@@ -61,7 +72,7 @@ class GFExcel
      */
     public function __construct()
     {
-        add_action('init', [$this, 'addPermalinkRule']);
+        add_action('init', [$this, 'addPermalinkRules']);
         add_action('request', [$this, 'request']);
         add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
@@ -224,21 +235,33 @@ class GFExcel
     }
 
     /**
-     * Registers the permalink structure for the download
+     * Registers the permalink structures for the download
+     *
      * @since 1.0.0
      */
-    public function addPermalinkRule()
-    {
-        add_rewrite_rule(
-            '^' . static::$slug . '/(.+)/?$',
-            'index.php?' . self::KEY_ACTION . '=' . static::$slug . '&' . self::KEY_HASH . '=$matches[1]',
-            'top'
-        );
+    public function addPermalinkRules() {
 
-        $rules = get_option('rewrite_rules');
-        if (!isset($rules['^' . static::$slug . '/(.+)/?$'])) {
-            flush_rewrite_rules();
-        }
+	    $rewrite_rules = get_option( 'rewrite_rules' );
+	    $flush_rules   = false;
+
+	    foreach ( $this->endpoints as $endpoint ) {
+
+		    $endpoint_regex = '^' . $endpoint . '/(.+)/?$';
+
+		    add_rewrite_rule(
+			    $endpoint_regex,
+			    'index.php?' . self::KEY_ACTION . '=' . $endpoint . '&' . self::KEY_HASH . '=$matches[1]',
+			    'top'
+		    );
+
+		    if ( ! isset( $rewrite_rules[ $endpoint_regex ] ) ) {
+			    $flush_rules = true;
+		    }
+	    }
+
+	    if ( $flush_rules ) {
+		    flush_rewrite_rules();
+	    }
     }
 
     /**
@@ -251,9 +274,12 @@ class GFExcel
     {
 	    if (
 		    ! isset( $query_vars[ self::KEY_ACTION ], $query_vars[ self::KEY_HASH ] ) ||
-		    $query_vars[ self::KEY_ACTION ] !== self::$slug ||
 		    empty( $query_vars[ self::KEY_HASH ] )
 	    ) {
+		    return $query_vars;
+	    }
+
+	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], $this->endpoints, true ) ) {
 		    return $query_vars;
 	    }
 
@@ -333,7 +359,7 @@ class GFExcel
      */
     public function getQueryVars($vars)
     {
-        return array_merge($vars, [
+        return array_merge( $vars, [
             self::KEY_ACTION,
             self::KEY_HASH,
         ]);
@@ -408,14 +434,18 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf('Disallow: %s/%s/', esc_attr( $path ), GFExcel::$slug);
+
+        $lines = '';
+        foreach( $this->endpoints as $endpoint ) {
+	        $lines .= sprintf( 'Disallow: %s/%s/', esc_attr( $path ), $endpoint ) . "\n";
+        }
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
-            return str_replace($matches[0], $matches[0] . "\n" . $line, $output);
+            return str_replace($matches[0], $matches[0] . "\n" . $lines, $output);
         }
 
-        return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $line));
+        return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $lines));
     }
 
     /**
