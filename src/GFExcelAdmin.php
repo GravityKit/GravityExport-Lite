@@ -1243,9 +1243,12 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     /**
      * Get the current usage count from the plugin repo.
      * Info is cached for a week.
+     *
+     * @param bool $number_format Whether to return a formatted number.
+     *
      * @return string
      */
-    private function getUsageCount()
+    private function getUsageCount( $number_format = true )
     {
         if (!$active_installs = get_transient(GFExcel::$slug . '-active_installs')) {
             if (!function_exists('plugins_api')) {
@@ -1260,25 +1263,32 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 return __('countless', GFExcel::$slug);
             }
             $active_installs = $data->active_installs;
-            set_transient(GFExcel::$slug . '-active_installs', $active_installs, (60 * 60 * 24 * 7));
+            set_transient(GFExcel::$slug . '-active_installs', $active_installs, WEEK_IN_SECONDS );
         }
 
-        return $active_installs . '+';
+        return $number_format ? number_format_i18n( $active_installs, 0 ) : $active_installs;
     }
 
     /**
      * Get a target usage count for the plugin repo.
+     *
+     * @param bool $number_format Whether to return a formatted number.
+     *
      * @return string
      */
-    private function getUsageTarget()
+    private function getUsageTarget( $number_format = true )
     {
-        $current_count = $this->getUsageCount();
-        if ($current_count === __('countless', GFExcel::$slug)) {
-            return __('even more', GFExcel::$slug);
-        }
-        $digit = ((int) substr($current_count, 0, 1) + 1);
+	    $current_count = $this->getUsageCount( false );
+	    if ( $current_count === __( 'countless', GFExcel::$slug ) ) {
+		    return __( 'even more', GFExcel::$slug );
+	    }
 
-        return $digit . substr($current_count, 1);
+	    // What step should we reach for?
+	    $next_level = 1000;
+
+	    $usage_target = ( ( $current_count / $next_level ) + 1 ) * $next_level;
+
+	    return $number_format ? number_format_i18n( $usage_target ) : $usage_target;
     }
 
     /**
