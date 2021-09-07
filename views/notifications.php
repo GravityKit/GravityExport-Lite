@@ -27,7 +27,6 @@ foreach ($notifications as $notification):
     <?php } ?>
             class="notice<?php echo $dismissible; ?> notice-<?php echo $notification->getType(); ?>">
         <p>
-            <strong><?php esc_html_e('GravityExport Lite', GFExcel::$slug); ?></strong><br/>
             <?php echo $notification->getMessage(); ?>
         </p>
     </div>
