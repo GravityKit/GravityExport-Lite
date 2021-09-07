@@ -319,29 +319,38 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      */
     private function handleException($exception): void
     {
-        global $wp_version;
+	    global $wp_version;
 
-        echo '<p><strong>Gravity Forms Entries in Excel: Whoops, unfortunately something is broken.</strong></p>';
-        echo '<p><strong>Error message</strong>: ' . nl2br($exception->getMessage()) . ' </p>';
-        echo '<p>If you need support for this, please contact me via the';
-        echo " <a target='_blank' href='https://wordpress.org/support/plugin/gf-entries-in-excel'>support forum</a> ";
-        echo 'on the wordpress plugin.</p>';
-        echo '<p>Check if someone else had the same error, before posting a new support question.<br/>';
-        echo 'And when opening a new question, <strong>please use the error message ';
-        echo 'as the title</strong>, and:</> <p><strong>Include the following details in your message:</strong></p>';
-        echo '<ul>';
-        echo '<li>Plugin Version: ' . GFExcel::$version . '</li>';
-        echo '<li>Gravity Forms Version: ' . GFForms::$version . '</li>';
-        echo '<li>PHP Version: ' . PHP_VERSION;
-        if (PHP_VERSION_ID < 50601) {
-            echo ' (this version is too low, please update to at least PHP 5.6)';
-        }
-        echo '</li>';
-        echo '<li>Wordpress Version: ' . $wp_version . '</li>';
-        echo '<li>Error message: ' . nl2br($exception->getMessage()) . '</li>';
-        echo '<li>Error stack trace:<br/><br/>' . nl2br($exception->getTraceAsString()) . '</li>';
-        echo '</ul>';
-        exit;
+	    $output = [];
+
+	    $output[] = '<h3>' . esc_html__( 'GravityExport Lite: Something is broken', GFExcel::$slug ) . '</h3>';
+	    $output[] = '<strong>' . esc_html__( 'Error message:', GFExcel::$slug ) . '</strong>' . esc_html( nl2br( $exception->getMessage() ) );
+	    $output[] = "\n\n"; // Insert paragraph
+	    $output[] = sprintf( esc_html__( 'If you need support, please contact us via <a target="_blank" href="%s">WordPress.org support forum</a>.', GFExcel::$slug ), 'https://wordpress.org/support/plugin/gf-entries-in-excel' );
+	    $output[] = "\n\n"; // Insert paragraph
+	    $output[] = esc_html__( 'Check if someone else had the same error before posting a new support question.', GFExcel::$slug );
+	    $output[] = "\n\n"; // Insert paragraph
+	    $output[] = esc_html__( 'And when opening a new question, <strong>please use the error message as the title</strong>.', GFExcel::$slug );
+	    $output[] = "\n\n"; // Insert paragraph
+	    $output[] = '<strong>' . esc_html__( 'Include the following details in your message:', GFExcel::$slug ) . '</strong>';
+	    $output[] = '<ul>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Plugin Version: %s', GFExcel::$slug ), GFExcel::$version ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Gravity Forms Version: %s', GFExcel::$slug ), GFForms::$version ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'PHP Version: %s', GFExcel::$slug ), PHP_VERSION );
+	    if ( PHP_VERSION_ID < 50601 ) {
+		    $output[] = esc_html__( ' (this version is too low, please update to at least PHP 5.6)', GFExcel::$slug );
+	    }
+	    $output[] = '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'WordPress Version: %s', GFExcel::$slug ), esc_html( $wp_version ) ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Error message: %s', GFExcel::$slug ), nl2br( $exception->getMessage() ) ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Error stack trace: %s', GFExcel::$slug ), '<br/><br/>' . nl2br( $exception->getTraceAsString() ) ) . '</li>';
+	    $output[] = '</ul>';
+
+	    $output_string = implode( '', $output );
+
+	    echo wpautop( $output_string );
+
+	    exit;
     }
 
     /**
