@@ -103,113 +103,129 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
     public function plugin_settings_fields()
     {
-        $settings_fields = [
-            [
-                'description' => $this->plugin_settings_description(),
-                'fields' => [
-                    [
-                        'name' => 'field_separate',
-                        'label' => esc_html__('Multiple Columns', GFExcel::$slug),
-                        'type' => 'checkbox',
-                        'choices' => [
-                            [
-                                'label' => esc_html__(
-                                    'Split multi-fields (name, address) into multiple columns',
-                                    GFExcel::$slug
-                                ),
-                                'name' => SeparableField::SETTING_KEY,
-                                // backwards compatible with last known setting
-                                'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
-                            ]
-                        ]
-                    ],
-                    [
-                        'name' => 'notes',
-                        'label' => esc_html__('Notes', 'gravityforms'),
-                        'type' => 'checkbox',
-                        'choices' => [
-                            [
-                                'label' => esc_html__('Enable notes by default', GFExcel::$slug),
-                                'name' => 'notes_enabled',
-                                'default_value' => false,
-                            ]
-                        ]
-                    ],
-                    [
-                        'name' => 'sections',
-                        'label' => esc_html__('Sections', GFExcel::$slug),
-                        'type' => 'checkbox',
-                        'choices' => [
-                            [
-                                'label' => esc_html__('Enable (empty) section column', GFExcel::$slug),
-                                'name' => 'sections_enabled',
-                                'default_value' => false,
-                            ]
-                        ]
-                    ],
-                    [
-                        'name' => 'fileuploads',
-                        'label' => esc_html__('File Uploads', GFExcel::$slug),
-                        'type' => 'checkbox',
+        $settings_sections = [];
 
-                        'choices' => [
-                            [
-                                'label' => esc_html__('Enable file upload columns', GFExcel::$slug),
-                                'name' => 'fileuploads_enabled',
-                                'default_value' => true,
-                            ]
-                        ]
-                    ],
-                    [
-                        'name' => 'hyperlinks',
-                        'label' => esc_html__('Hyperlinks', GFExcel::$slug),
-                        'type' => 'checkbox',
-
-                        'choices' => [
-                            [
-                                'label' => esc_html__('Enable hyperlinks on URL-only columns', GFExcel::$slug),
-                                'name' => 'hyperlinks_enabled',
-                                'default_value' => true,
-                            ]
-                        ]
-                    ],
-                    [
-                        'name' => 'products_price',
-                        'label' => esc_html__('Product Fields', GFExcel::$slug),
-                        'type' => 'checkbox',
-
-                        'choices' => [
-                            [
-                                'label' => esc_html__(
-                                    'Export prices as numeric fields, without currency symbol ($)',
-                                    GFExcel::$slug
-                                ),
-                                'name' => ProductField::SETTING_KEY,
-                                'default_value' => false,
-                            ]
-                        ]
-                    ]
+        $settings_sections[] = [
+            'name'        => 'asdasd',
+            'id'          => 'gravityexport-lite-rating-fieldset',
+            'title'       => '&nbsp;',
+            'description' => $this->get_rating_message(),
+            'fields'      => [
+                [
+                    'name'  => 'gravityexport-rocks',
+                    'type'  => 'hidden',
+                    'value' => 'You should try it!',
                 ],
-            ],
-            [
-                'title' => esc_html__('Default Enabled Meta Fields', GFExcel::$slug ),
-                'fields' => [
-                    [
-                        'name' => 'enabled_metafields',
-                        'description' => esc_html__(
-                            'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
-                            GFExcel::$slug
-                        ),
-                        'type' => 'checkbox',
-                        'choices' => $this->meta_fields(),
-                    ]
-                ]
             ],
         ];
 
-	    if ( ! class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
-		    $settings_fields[] = [
-			    'title'       => 'GravityExport',
+	    $settings_sections[] = [
+            'title' => esc_html__( 'GravityExport Lite Settings', GFExcel::$slug ),
+            'description' => $this->plugin_settings_description(),
+            'fields' => [
+                [
+                    'name' => 'field_separate',
+                    'label' => esc_html__('Multiple Columns', GFExcel::$slug),
+                    'type' => 'checkbox',
+                    'choices' => [
+                        [
+                            'label' => esc_html__(
+                                'Split multi-fields (name, address) into multiple columns',
+                                GFExcel::$slug
+                            ),
+                            'name' => SeparableField::SETTING_KEY,
+                            // backwards compatible with last known setting
+                            'default_value' => static::get_instance()->get_plugin_setting('field_address_split_enabled')
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'notes',
+                    'label' => esc_html__('Notes', 'gravityforms'),
+                    'type' => 'checkbox',
+                    'choices' => [
+                        [
+                            'label' => esc_html__('Enable notes by default', GFExcel::$slug),
+                            'name' => 'notes_enabled',
+                            'default_value' => false,
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'sections',
+                    'label' => esc_html__('Sections', GFExcel::$slug),
+                    'type' => 'checkbox',
+                    'choices' => [
+                        [
+                            'label' => esc_html__('Enable (empty) section column', GFExcel::$slug),
+                            'name' => 'sections_enabled',
+                            'default_value' => false,
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'fileuploads',
+                    'label' => esc_html__('File Uploads', GFExcel::$slug),
+                    'type' => 'checkbox',
+
+                    'choices' => [
+                        [
+                            'label' => esc_html__('Enable file upload columns', GFExcel::$slug),
+                            'name' => 'fileuploads_enabled',
+                            'default_value' => true,
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'hyperlinks',
+                    'label' => esc_html__('Hyperlinks', GFExcel::$slug),
+                    'type' => 'checkbox',
+
+                    'choices' => [
+                        [
+                            'label' => esc_html__('Enable hyperlinks on URL-only columns', GFExcel::$slug),
+                            'name' => 'hyperlinks_enabled',
+                            'default_value' => true,
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'products_price',
+                    'label' => esc_html__('Product Fields', GFExcel::$slug),
+                    'type' => 'checkbox',
+
+                    'choices' => [
+                        [
+                            'label' => esc_html__(
+                                'Export prices as numeric fields, without currency symbol ($)',
+                                GFExcel::$slug
+                            ),
+                            'name' => ProductField::SETTING_KEY,
+                            'default_value' => false,
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $settings_sections[] = [
+            'title' => esc_html__('Default Enabled Meta Fields', GFExcel::$slug ),
+            'fields' => [
+                [
+                    'name' => 'enabled_metafields',
+                    'description' => esc_html__(
+                        'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
+                        GFExcel::$slug
+                    ),
+                    'type' => 'checkbox',
+                    'choices' => $this->meta_fields(),
+                ]
+            ]
+        ];
+
+	    if ( class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
+		    $settings_sections[] = [
+			    'title'       => '',
 			    'description' => $this->get_gravityexport_message(),
 			    'fields'      => [
 				    [
@@ -221,7 +237,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 		    ];
 	    }
 
-        return $settings_fields;
+        return $settings_sections;
     }
 
     public function init_admin()
@@ -263,46 +279,55 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         add_filter('wp_before_admin_bar_render', [__CLASS__, 'admin_bar'], 20);
     }
 
-    public function get_gravityexport_message()
+    public function get_rating_message()
     {
         ob_start();
         ?>
-        <p>
-            <?php
-            printf(' ' . \esc_html__(
-                    'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
-                    GFExcel::$slug
-                ),
-                '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/?filter=5#new-post" target="_blank">',
-                '</a>', $this->getUsageCount(), $this->getUsageTarget(),
-            );
-            ?>
-        </p>
-        <p>
-            <?php printf( esc_html__( 'Be the first to know about updates by %sfollowing us on Twitter%s.', GFExcel::$slug ), '<a href="https://twitter.com/GravityView" target="_blank">', '</a>'); ?>
-        </p>
+        <div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
+            <h3><?php esc_html_e( 'Gravity Forms Entries in Excel is now GravityExport Lite!', GFExcel::$slug ); ?></h3>
 
-        <div id="gravityexport-additional-features" class="wrap">
-            <h2><?php esc_html_e('GravityExport brings additional features!', GFExcel::$slug); ?> 🤩</h2>
+            <p><?php esc_html_e( 'It\'s the same great plugin with a new name.', GFExcel::$slug ); ?></p>
+
+            <p><?php
+		        printf(' ' . esc_html__(
+				        'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
+				        GFExcel::$slug
+			        ),
+			        '<strong><a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/?filter=5#new-post" target="_blank" title="' . esc_attr__( 'This link opens in a new window', GFExcel::$slug ) . '">',
+			        '</a></strong>', esc_html( $this->getUsageCount() ), esc_html( $this->getUsageTarget() ),
+		        );
+		        ?>
+            </p>
+        </div>
+	    <?php
+	    return ob_get_clean();
+    }
+
+	public function get_gravityexport_message()
+    {
+        ob_start();
+        ?>
+        <div id="gravityexport-additional-features" class="wrap gravityexport-lite-callout">
+            <h2><?php esc_html_e('Upgrade to GravityExport for additional features:', GFExcel::$slug); ?></h2>
 
             <div>
-                <h3><?php esc_html_e( 'Save exports to Dropbox, FTP, &amp; local', GFExcel::$slug ); ?></h3>
+                <h3><?php esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', GFExcel::$slug ); ?> 💾</h3>
                 <p><?php esc_html_e( 'Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally.', GFExcel::$slug ); ?></p>
             </div>
 
             <div>
-                <h3><?php esc_html_e( 'Filter exports with Conditional Logic', GFExcel::$slug ); ?></h3>
+                <h3><?php esc_html_e( 'Filter exports with Conditional Logic', GFExcel::$slug ); ?> 😎</h3>
                 <p><?php esc_html_e( 'Create advanced filters, including exporting entries created by only the currently logged-in user.', GFExcel::$slug ); ?></p>
             </div>
 
             <div>
-                <h3><?php esc_html_e( 'Ready for data analysis 📊', GFExcel::$slug ); ?></h3>
+                <h3><?php esc_html_e( 'Exports are ready for data analysis', GFExcel::$slug ); ?> 📊</h3>
                 <p><?php esc_html_e( 'When analyzing data, you want fields with multiple values broken into multiple rows each with one value. If you work with data, you&rsquo;ll love this feature!', GFExcel::$slug ); ?></p>
             </div>
 
             <p>
                 <a class="button button-hero button-cta" href="https://gravityview.co/extensions/gravityexport/"
-                   target="_blank"><?php _e('Learn More About GravityExport', GFExcel::$slug); ?></a>
+                   target="_blank"><?php esc_html_e('Get Access to GravityExport', GFExcel::$slug); ?></a>
             </p>
         </div>
         <?php
