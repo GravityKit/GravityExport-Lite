@@ -109,7 +109,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 'fields' => [
                     [
                         'name' => 'field_separate',
-                        'label' => esc_html__('Multiple columns', GFExcel::$slug),
+                        'label' => esc_html__('Multiple Columns', GFExcel::$slug),
                         'type' => 'checkbox',
                         'choices' => [
                             [
@@ -149,7 +149,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     ],
                     [
                         'name' => 'fileuploads',
-                        'label' => esc_html__('File uploads', GFExcel::$slug),
+                        'label' => esc_html__('File Uploads', GFExcel::$slug),
                         'type' => 'checkbox',
 
                         'choices' => [
@@ -175,7 +175,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     ],
                     [
                         'name' => 'products_price',
-                        'label' => esc_html__('Product fields', GFExcel::$slug),
+                        'label' => esc_html__('Product Fields', GFExcel::$slug),
                         'type' => 'checkbox',
 
                         'choices' => [
@@ -192,16 +192,15 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 ],
             ],
             [
+                'title' => esc_html__('Default Enabled Meta Fields', GFExcel::$slug ),
                 'fields' => [
                     [
                         'name' => 'enabled_metafields',
-                        'label' => esc_html__('Enabled meta fields', GFExcel::$slug),
                         'description' => esc_html__(
                             'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
                             GFExcel::$slug
                         ),
                         'type' => 'checkbox',
-
                         'choices' => $this->meta_fields(),
                     ]
                 ]
@@ -484,7 +483,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     type='submit'
                     name='enable_download_url'
                     class='button button-primary primary'
-                    value='" . esc_html__( 'Enable download', GFExcel::$slug ) . "'>";
+                    value='" . esc_html__( 'Enable Download', GFExcel::$slug ) . "'>";
 			echo '</form>';
 
 			// Download is disabled, so other settings are hidden.
@@ -501,7 +500,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
             <input
             onclick="%s"
             class="button button-danger button-small alignright" type="submit" name="disable_download_url"
-            value="' . esc_html__( 'Disable download', GFExcel::$slug ) . '"/>
+            value="' . esc_html__( 'Disable Download', GFExcel::$slug ) . '"/>
         </p>',
 			$url,
 			"return confirm('" . esc_js( 'This changes the download URL permanently!', GFExcel::$slug ) . "');",
