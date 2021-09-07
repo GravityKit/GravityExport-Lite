@@ -286,7 +286,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         <div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
             <h3><?php esc_html_e( 'Gravity Forms Entries in Excel is now GravityExport Lite!', GFExcel::$slug ); ?></h3>
 
-            <p><?php esc_html_e( 'It\'s the same great plugin with a new name.', GFExcel::$slug ); ?></p>
+            <p><?php echo strtr( esc_html__( 'It\'s the same great plugin [link]with a new name[/link].', GFExcel::$slug ), [
+                    '[link]' => '<a href="https://gravityview.co/gravity-forms-entries-in-excel/" target="_blank" title="' . esc_attr__( 'This link opens in a new window', GFExcel::$slug ) . '">',
+                    '[/link]' => '</a>',
+            ] );
+            ?></p>
 
             <p><?php
 		        printf(' ' . esc_html__(
@@ -308,7 +312,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         ob_start();
         ?>
         <div id="gravityexport-additional-features" class="wrap gravityexport-lite-callout">
-            <h2><?php esc_html_e('Upgrade to GravityExport for additional features:', GFExcel::$slug); ?></h2>
+            <h2><?php esc_html_e('Upgrade to GravityExport for these useful features:', GFExcel::$slug); ?></h2>
 
             <div>
                 <h3><?php esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', GFExcel::$slug ); ?> 💾</h3>
@@ -327,7 +331,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
             <p>
                 <a class="button button-hero button-cta" href="https://gravityview.co/extensions/gravityexport/"
-                   target="_blank"><?php esc_html_e('Get Access to GravityExport', GFExcel::$slug); ?></a>
+                   target="_blank" title="<?php esc_attr_e( 'This link opens in a new window', GFExcel::$slug ); ?>"><?php esc_html_e('Gain Powerful Features with GravityExport', GFExcel::$slug); ?>️</a>
             </p>
         </div>
         <?php

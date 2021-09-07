@@ -1,11 +1,11 @@
-=== Gravity Forms Entries in Excel ===
+=== GravityExport Lite (Gravity Forms Entries in Excel) ===
 Contributors: gravityview, doekenorg
 Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.8
-Stable tag: 1.8.14
+Tested up to: 5.8.1
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
