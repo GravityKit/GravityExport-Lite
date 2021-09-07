@@ -212,9 +212,19 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= 1.9 on September 7, 2021 =
+
+* **Gravity Forms Entries in Excel is now known as GravityExport Lite**
+	- Same plugin and functionality you love!
+	- Internal code restructuring ensures better extensibility and facilitates new feature development (coming in future versions!)
+	- Ready to be used with [GravityExport](https://gravityview.co/extensions/gravityexport/) that brings additional functionality to an already full-featured plugin.
+* Enhancement: Improved Gravity Forms 2.5 compatibility.
+
+__Developer Updates:__
+
+**Please note that `gfexcel_*` hooks will be gradually renamed while retaining backward compatibility.**
+
 * Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
-* Enhancement: Added a `gfexcel_output_sorting_options` filter to set sorting options.
 * Enhancement: Added a `gfexcel_output_sorting_options` filter to set sorting options.
 * Enhancement: Added a `gfexcel_hash_form_id` filter to get form ID from the unique URL hash value.
 * Enhancement: Added a `gfexcel_hash_feed_data` filter to get feed object from the unique URL hash value.
