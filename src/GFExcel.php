@@ -18,14 +18,14 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $name = 'Gravity Forms Entries in Excel';
+    public static $name = 'GravityExport Lite';
 
     /**
      * Short name of the plugin
      * @since 1.0.0
      * @var string
      */
-    public static $shortname = 'Entries in Excel';
+    public static $shortname = 'GravityExport Lite';
 
     /**
      * Current version of the plugin

@@ -69,8 +69,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = __('Gravity Forms Entries in Excel', GFExcel::$slug);
-        $this->_short_title = __('Entries in Excel', GFExcel::$slug);
+        $this->_title = __('GravityExport Lite', GFExcel::$slug);
+        $this->_short_title = __('GravityExport Lite', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         parent::__construct();
@@ -727,6 +727,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
             ]
         ]);
     }
+
 
     /**
      * Adds the general settings for the plugin.
