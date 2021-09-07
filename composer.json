@@ -52,11 +52,5 @@
         "post-install-cmd": "composer run markbaker-fix-namespace",
         "post-update-cmd": "composer run markbaker-fix-namespace",
         "post-autoload-dump": "composer run markbaker-fix-autoload"
-    },
-    "extra": {
-        "assets-dir": "public/addon",
-        "assets-files": {
-            "gfexcel/base": "public"
-        }
     }
 }
