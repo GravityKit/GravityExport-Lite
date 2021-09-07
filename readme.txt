@@ -30,14 +30,11 @@ We've written an article that contains all you need to know about [exporting dat
 
 == Documentation ==
 
-Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme) for the documentation site! You'll find available features, fields,
-and filters. If you are a developer; this site is probably for you.
-
-We'll be updating the site with "recipes" based on your questions. So if you have a specific need, ask away!
+Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme) for the documentation site! You'll find available features, fields, and filters. If you are a developer; this site is probably for you.
 
 = Requirements =
 
-* PHP 7.1. (No longer active support for 5.6)
+* PHP 7.1
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.0 or higher
 
