@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b4960f7ede69e73dfcaafffc56370b3",
+    "content-hash": "cd80116de7850aa1200cb0c8f5be0d35",
     "packages": [
         {
             "name": "composer/installers",
@@ -3887,32 +3887,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
-        },
-        {
-            "name": "wp-premium/gravityforms",
-            "version": "2.4.20",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-premium/gravityforms.git",
-                "reference": "a9c8f2de051e016e096069210ecd5fb8f5a19801"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-premium/gravityforms/zipball/a9c8f2de051e016e096069210ecd5fb8f5a19801",
-                "reference": "a9c8f2de051e016e096069210ecd5fb8f5a19801",
-                "shasum": ""
-            },
-            "type": "wordpress-plugin",
-            "autoload": {
-                "classmap": [
-                    "."
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "support": {
-                "source": "https://github.com/wp-premium/gravityforms/tree/2.4.20"
-            },
-            "time": "2020-10-01T12:09:03+00:00"
         }
     ],
     "aliases": [],
