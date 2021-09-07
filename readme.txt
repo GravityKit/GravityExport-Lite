@@ -52,7 +52,7 @@ This section describes how to install the plugin and get it working.
 
 == Frequently Asked Questions ==
 
-= I don't want the the metadata like ID, date, and IP in my file =
+= I don't want the metadata like ID, date, and IP in my file =
 
 No problem. You can use the `gfexcel_output_meta_info` or `gfexcel_output_meta_info_{form_id}` hooks to disable
 this feature. Or (since version 1.4.0) you can select individual fields you want to exclude on the settings page.
@@ -95,7 +95,7 @@ But you can also make your own field renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
-1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwesomeField'`)
+1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (e.g., `$fields['awesome-type'] => 'MyTheme\Field\MyAwesomeField'`)
 
 = How can I change the downloaded file name? =
 
@@ -108,12 +108,12 @@ Also you can update title, subject and description metadata of the document by u
 
 = Can I change the sort order of the rows? =
 
-Sure, why not. By default we sort on date of entry in ascending order. You can change this, per form,
+Sure, why not. By default, we sort on date of entry in ascending order. You can change this, per form,
 on the Form settings page (Entries in Excel) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
 
-You're in luck: for those situation we've added a bulk option on the forms table.
+You're in luck: for those situations we've added a bulk option on the forms table.
 As a bonus, you can select multiple forms, and it will download all results in one file,
 on multiple worksheets (!!!)
 
@@ -160,7 +160,7 @@ By default the notes are disabled for performance. If you'd like to add these to
 //add this to your functions.php
 add_filter('gfexcel_field_notes_enabled','__return_true');
 //or
-add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
+add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // e.g., gfexcel_field_notes_enabled_2
 `
 
 = How do I add colors? It's all too boring in Excel. =
@@ -281,7 +281,7 @@ Not released on WordPress due to linter issues.
 
 = 1.8.2 =
 * Bugfix: Empty numeric values are not allowed by PhpSpreadsheet anymore. So much for SemVer :-)
-* Bugfix: Product subfields we're all parsed as currency. Now its all the correct type.
+* Bugfix: Product subfields were all parsed as currency. Now they are the correct type.
 
 = 1.8.1 =
 * Bugfix: Numeric values were presented as currency by default.
@@ -358,9 +358,9 @@ Not released on WordPress due to linter issues.
 * Bugfix: `created_by` and `payment_date` were not converted to the WordPress timezone.
 
 = 1.6.0 =
-* Feature: The renderer now supports transposing. So every column is a row, and vice versa.
+* Feature: The renderer now supports transposing, so that every column is a row and vice versa.
 * Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
-* Feature: Added a "download" link per form on the Forms page. Less clicks for that file!
+* Feature: Added a "download" link per form on the Forms page. Fewer clicks for that file!
 * Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout the FAQ for more info.
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
 * Enhancement: Product and calculation have some specific rendering on single field for clarity.
@@ -372,7 +372,7 @@ Not released on WordPress due to linter issues.
 * Info: Launched a (first version) documentation site! [Check out gfexcel.com](https://gfexcel.com)
 
 = 1.5.5 =
-* Enhancement: Date fields now export the date according to it's field setting.
+* Enhancement: Date fields now export the date according to its field setting.
 * Enhancement: Value Objects (BaseValue) can reference `getField()`, `getFieldType()` and `getFieldId()` to help with filtering.
 * Enhancement: Name fields can now also be split up in to multiple fields. Made this a generic setting on the settings page. Please re-save your settings!
 * Enhancement: Subfield labels can now also be overwritten with the `gfexcel_field_value`-hook.
@@ -432,13 +432,13 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: Added filters to typehint cell values. See FAQ for more info.
 * Enhancement: updated cell > URL implementation. Each cell can be set individually now. See FAQ for more info.
 * Upgraded to PHP 5.6 for minimal dependency. Last version with PHP 5.3 was 1.2.3
-(sorry for the mix up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
+(sorry for the mix-up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
 
 = 1.2.4 =
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
 * Enhancement: `composer.json` update to `wordpress-plugin` for easier installation with bedrock.
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
-* Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-separate values per column.
+* Feature: New ListField transformer. Splits list fields into its own Excel columns, with newline-separate values per column.
 * Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
 * Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_separated` to split date and time in 2 columns.
 * Bugfix: Plugin hooks later, so filters also work on bulk-download files.
@@ -465,7 +465,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: SectionField added to disable empty section columns. Disabled by default. Enable with `gfexcel_field_section_enabled` hook (return true).
 * Feature: FileUploadField added to disable file upload columns. Enabled by default. Disable with `gfexcel_field_fileuploads_enabled` hook (return false).
 * Update: Wait until plugins are loaded. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
-* Bugfix: Changed the permalink registration so it works with multi site combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
+* Bugfix: Changed the permalink registration so that it works with multisite combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
 * Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
 
 = 1.0.2 =
