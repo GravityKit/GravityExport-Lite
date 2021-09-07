@@ -389,14 +389,19 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
             return $actions;
         }
 
-        // plugin is active
-        if (array_key_exists('deactivate', $actions)) {
-            $actions[] = implode('', [
-                '<a target="_blank" rel="nofollow" href="https://subscribe.gfexcel.com/pro-add-on"><b>',
-                esc_html__('Pro version?', 'gravityforms'),
-                '</b></a>',
-            ]);
-        }
+        // Already has GravityExport
+	    if ( class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
+	        return $actions;
+	    }
+
+	    // Lite is active
+	    if ( array_key_exists( 'deactivate', $actions ) ) {
+		    $actions[] = implode( '', [
+			    '<a target="_blank" rel="nofollow noopener" href="https://gravityview.co/extensions/gravityexport/"><b>⚡️ ',
+			    esc_html__( 'Gain Access to More Features', 'gk-gravityexport' ),
+			    '</b></a>',
+		    ] );
+	    }
 
         return $actions;
     }
