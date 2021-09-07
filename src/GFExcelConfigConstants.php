@@ -29,4 +29,10 @@ class GFExcelConfigConstants
      * @since 1.8.0
      */
     public const GFEXCEL_NOTIFICATION_REPOSITORY = 'gfexcel_notification_repository';
+
+    /**
+     * The key that is applied on the tagged actions.
+     * @since $ver$
+     */
+    public const GFEXCEL_ACTION_TAG = 'gfexcel_action';
 }

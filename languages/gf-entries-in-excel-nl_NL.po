@@ -257,7 +257,7 @@ msgid "Date of entry"
 msgstr "Inzendingsdatum"
 
 #: src/GFExcelAdmin.php:576
-msgid "Acending"
+msgid "Ascending"
 msgstr "Oplopend"
 
 #: src/GFExcelAdmin.php:580

@@ -4,6 +4,7 @@ namespace GFExcel\Migration\Manager;
 
 use GFExcel\Migration\Exception\MigrationException;
 use GFExcel\Migration\Migration;
+use GFExcel\Notification\Manager\NotificationManager;
 
 /**
  * The migration manager.
@@ -33,12 +34,32 @@ class MigrationManager
     private $migrations;
 
     /**
+     * The notification manager.
+     * @since $ver$
+     * @var NotificationManager
+     */
+    private $notification_manager;
+
+    /**
      * Creates the manager.
      * @since 1.8.0
+     * @param NotificationManager $notification_manager The notification manager.
      */
-    public function __construct()
+    public function __construct(NotificationManager $notification_manager)
     {
+        $this->notification_manager = $notification_manager;
+
         add_action('upgrader_process_complete', [$this, 'migrate']);
+    }
+
+    /**
+     * Returns the notification manager.
+     * @since $ver$
+     * @return NotificationManager The notification manager.
+     */
+    public function getNotificationManager(): NotificationManager
+    {
+        return $this->notification_manager;
     }
 
     /**
@@ -62,10 +83,10 @@ class MigrationManager
                 // Update version.
                 update_option(self::OPTION_MIGRATION_VERSION, $migration::getVersion());
             }
-
-            // Clear running status.
-            delete_transient(self::TRANSIENT_MIGRATION_RUNNING);
         }
+
+        // Clear running status.
+        delete_transient(self::TRANSIENT_MIGRATION_RUNNING);
     }
 
     /**
@@ -77,8 +98,13 @@ class MigrationManager
     {
         $this->migrations = array_filter($migrations, function ($migration) {
             return $migration instanceof Migration &&
-                version_compare($migration::getVersion(), $this->get_latest_version(), '>');
+                version_compare($migration::getVersion(), $this->getLatestVersion(), '>');
         });
+
+        // Inject manager.
+        foreach ($this->migrations as $migration) {
+            $migration->setManager($this);
+        }
 
         // sort migrations based on the version.
         usort($this->migrations, static function (Migration $migration_a, Migration $migration_b): int {
@@ -126,7 +152,7 @@ class MigrationManager
      * @since 1.8.0
      * @return string
      */
-    private function get_latest_version(): string
+    private function getLatestVersion(): string
     {
         return get_option(self::OPTION_MIGRATION_VERSION, '0.0.0') ?: '0.0.0';
     }

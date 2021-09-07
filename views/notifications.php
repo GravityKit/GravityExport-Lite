@@ -27,8 +27,7 @@ foreach ($notifications as $notification):
     <?php } ?>
             class="notice<?php echo $dismissible; ?> notice-<?php echo $notification->getType(); ?>">
         <p>
-            <strong><?php _e('Gravity Forms Entries in Excel', GFExcel::$slug); ?></strong><br/>
-            <?php _e($notification->getMessage(), GFExcel::$slug); ?>
+            <?php echo $notification->getMessage(); ?>
         </p>
     </div>
 <?php endforeach;
