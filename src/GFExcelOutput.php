@@ -36,11 +36,25 @@ class GFExcelOutput
      */
     private $form_id;
 
+	/**
+	 * The feed id.
+	 * @since 1.9
+	 * @var int
+	 */
+	private $feed_id;
+
     /**
      * The form object.
+     * @since 1.9
      * @var mixed[]
      */
     private $form;
+
+	/**
+	 * The feed object.
+	 * @var mixed[]
+	 */
+	private $feed;
 
     /**
      * The form entries.
@@ -74,11 +88,12 @@ class GFExcelOutput
      * @param RendererInterface $renderer The renderer.
      * @param CombinerInterface|null $combiner The combiner. {@since 1.8.0}
      */
-    public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null)
+    public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null, $feed_id = null)
     {
         $this->transformer = new Transformer();
         $this->renderer = $renderer;
         $this->form_id = $form_id;
+        $this->feed_id = $feed_id;
         $this->combiner = $combiner ?? GFExcel::getCombiner($form_id);
 
         @set_time_limit(0); // suppress warning when disabled
@@ -92,7 +107,7 @@ class GFExcelOutput
     public function getFields(): array
     {
         if (!$this->repository) {
-            $this->repository = new FieldsRepository($this->getForm());
+	        $this->repository = new FieldsRepository( $this->getForm(), $this->getFeed() );
         }
 
         return $this->repository->getFields();
@@ -175,6 +190,22 @@ class GFExcelOutput
         return $this->form;
     }
 
+	/**
+	 * Retrieve feed from GF API.
+	 *
+	 * @since 1.9
+	 *
+	 * @return array|false
+	 */
+	private function getFeed()
+	{
+		if ( ! $this->feed ) {
+			$this->feed = \GFAPI::get_feed( $this->feed_id );
+		}
+
+		return $this->feed;
+	}
+
     /**
      * Add multiple columns at once
      * @param array $columns
@@ -220,43 +251,65 @@ class GFExcelOutput
      */
     private function getEntries()
     {
-        $search_criteria = gf_apply_filters([
-            'gfexcel_output_search_criteria',
-            $this->form_id,
-        ], [
-            'status' => 'active',
-        ], $this->form_id);
+	    if ( empty( $this->entries ) ) {
+		    $page_size = 100;
+		    $i         = 0;
+		    $entries   = [];
 
-        if (empty($this->entries)) {
-            $sorting = $this->getSorting($this->form_id);
-            $page_size = 100;
-            $i = 0;
-            $entries = [];
+		    $search_criteria = gf_apply_filters(
+			    [ 'gfexcel_output_search_criteria', $this->form_id, $this->feed_id ],
+			    [ 'status' => 'active' ],
+			    $this->form_id,
+			    $this->feed_id
+		    );
 
-            // prevent a multi-k database query to build up the array.
-            $loop = true;
-            while ($loop) {
-                $paging = [
-                    'offset' => ($i * $page_size),
-                    'page_size' => $page_size,
-                ];
+		    $sorting = gf_apply_filters(
+			    [ 'gfexcel_output_sorting_options', $this->form_id, $this->feed_id ],
+			    $this->getSorting( $this->form_id ),
+			    $this->form_id,
+			    $this->feed_id
+		    );
 
-                $new_entries = \GFAPI::get_entries($this->form_id, $search_criteria, $sorting, $paging);
-                $count = count($new_entries);
-                if ($count > 0) {
-                    $entries[] = $new_entries;
-                }
+		    // prevent a multi-k database query to build up the array.
+		    $loop = true;
+		    while ( $loop ) {
+			    $new_entries = null;
 
-                ++$i; // increase for the loop
+			    $paging = [
+				    'offset'    => ( $i * $page_size ),
+				    'page_size' => $page_size,
+			    ];
 
-                if ($count < $page_size) {
-                    $loop = false; // stop looping
-                }
-            }
-            $this->entries = array_merge([], ...$entries);
-        }
+			    $new_entries = gf_apply_filters(
+				    [ 'gfexcel_get_entries', $this->form_id, $this->feed_id ],
+				    $this->form_id,
+				    $this->feed_id,
+				    $search_criteria,
+				    $sorting,
+				    $paging
+			    );
 
-        return $this->entries;
+
+			    if ( is_null( $new_entries ) || $new_entries === $this->form_id ) {
+				    $new_entries = \GFAPI::get_entries( $this->form_id, $search_criteria, $sorting, $paging );
+			    }
+
+			    $count = count( $new_entries );
+			    if ( $count > 0 ) {
+				    $entries[] = $new_entries;
+			    }
+
+			    ++$i; // increase for the loop
+
+			    if ( $count < $page_size ) {
+				    $loop = false; // stop looping
+			    }
+		    }
+
+		    $this->entries = array_merge( [], ...$entries );
+	    }
+
+	    return $this->entries;
     }
 
     /**

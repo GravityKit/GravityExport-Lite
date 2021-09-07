@@ -1,11 +1,11 @@
-=== Gravity Forms Entries in Excel ===
+=== GravityExport Lite (Gravity Forms Entries in Excel) ===
 Contributors: gravityview, doekenorg
-Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
+Donate link: https://gravityview.co/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.1
-Tested up to: 5.8
-Stable tag: 1.8.14
+Tested up to: 5.8.1
+Stable tag: 1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,22 +13,24 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
-> A Pro version with advanced functionality is available for pre-sale! [Learn more & pre-order](https://gravityview.co/extensions/gf-excel-pro/)
+> Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
+>
+> [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
 Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
 user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
 It's that simple!
 
-**Why not export from Gravity Forms?**
+**Why not export entries from Gravity Forms?**
 
-Using Gravity Forms you can export a CSV file and import it to Excel. But an admin always needs to be involved
+Using Gravity Forms, you can export a CSV file and import it to Excel. But an admin always needs to be involved
 and using Excel to import a CSV is a pain.
 
-We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/).
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
 
 == Documentation ==
 
-Please visit [gfexcel.com](https://gfexcel.com) for the documentation site! You'll find available features, fields,
+Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme) for the documentation site! You'll find available features, fields,
 and filters. If you are a developer; this site is probably for you.
 
 We'll be updating the site with "recipes" based on your questions. So if you have a specific need, ask away!
@@ -50,7 +52,7 @@ This section describes how to install the plugin and get it working.
 
 == Frequently Asked Questions ==
 
-= I don't want the the metadata like ID, date, and IP in my file =
+= I don't want the metadata like ID, date, and IP in my file =
 
 No problem. You can use the `gfexcel_output_meta_info` or `gfexcel_output_meta_info_{form_id}` hooks to disable
 this feature. Or (since version 1.4.0) you can select individual fields you want to exclude on the settings page.
@@ -67,7 +69,7 @@ Sure, makes sense. You can override the label hooking into
 `gfexcel_field_label`, `gfexcel_field_label_{type}`, `gfexcel_field_label_{type}_{form_id}` or
 `gfexcel_field_label_{type}_{form_id}_{field_id}`
 
-The field object is provided as parameter, so you can check for type and stuff programatically.
+The field object is provided as parameter, so you can check for type and stuff programmatically.
 
 = How can I change the value of a field in Excel? =
 
@@ -76,9 +78,9 @@ You can override the value by hooking into `gfexcel_field_value`, `gfexcel_field
 
 The entry array is provided as a parameter, so you can combine fields if you want.
 
-= Can I seperate the fields of an address into multiple columns? =
+= Can I separate the fields of an address into multiple columns? =
 
-Great question! Yes you can! You can set it on the setting spage, or make use of the following hooks to get that working:
+Great question! Yes you can! You can set it on the settings page, or make use of the following hooks to get that working:
 `gfexcel_field_separated_{type}_{form_id}_{field_id}` where every variable is optional.
 
 = I have a custom field. Can your plugin handle this? =
@@ -93,7 +95,7 @@ But you can also make your own field renderer, like this:
 
 1. Make a class that extends `GFExcel\Field\BaseField` (recommended) or extends `GFExcel\Field\AbstractField` or implements `GFExcel\Field\FieldInterface`
 1. Return your needed columns and cells by implementing `getColumns` and `getCells`. (See `AddressField` for some inspiration)
-1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (eg. `$fields['awesome-type'] => 'MyTheme\Field\MyAwsomeField'`)
+1. Add your class via the `gfexcel_transformer_fields` hook as: `type => Fully Qualified Classname`  (e.g., `$fields['awesome-type'] => 'MyTheme\Field\MyAwesomeField'`)
 
 = How can I change the downloaded file name? =
 
@@ -106,12 +108,12 @@ Also you can update title, subject and description metadata of the document by u
 
 = Can I change the sort order of the rows? =
 
-Sure, why not. By default we sort on date of entry in acending order. You can change this, per form,
+Sure, why not. By default, we sort on date of entry in ascending order. You can change this, per form,
 on the Form settings page (Entries in Excel) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
 
-You're in luck: for those situation we've added a bulk option on the forms table.
+You're in luck: for those situations we've added a bulk option on the forms table.
 As a bonus, you can select multiple forms, and it will download all results in one file,
 on multiple worksheets (!!!)
 
@@ -123,9 +125,9 @@ You can disable the hyperlinks by using the `gfexcel_renderer_disable_hyperlinks
 add_filter('gfexcel_renderer_disable_hyperlinks','__return_true');
 `
 
-= My numbers are formatted as a string, how can I change the celltype? =
+= My numbers are formatted as a string, how can I change the cell type? =
 
-A numberfield is formatted as a number, but most fields default to a string.
+A number field is formatted as a number, but most fields default to a string.
 As of this moment, there are 3 field types. `Boolean`,`String` and `Numeric`. You can set these per field.
 `
 //add this to your functions.php
@@ -134,7 +136,7 @@ use GFExcel\Values\BaseValue;
 add_filter('gfexcel_value_type',function($type, $field) {
     if($field->formId == 1 && $field->id == 2) {
         //Possible values are 'bool', 'string' or 'numeric',
-        //or, use the constant, preffered:
+        //or, use the constant, preferred:
         return BaseValue::TYPE_NUMERIC; //TYPE_STRING, TYPE_BOOL
     }
 }, 10, 2);
@@ -158,7 +160,7 @@ By default the notes are disabled for performance. If you'd like to add these to
 //add this to your functions.php
 add_filter('gfexcel_field_notes_enabled','__return_true');
 //or
-add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // eg. gfexcel_field_notes_enabled_2
+add_filter('gfexcel_field_notes_enabled_{formid}','__return_true'); // e.g., gfexcel_field_notes_enabled_2
 `
 
 = How do I add colors? It's all too boring in Excel. =
@@ -212,6 +214,24 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= 1.9 on September 7, 2021 =
+
+* **Gravity Forms Entries in Excel is now known as GravityExport Lite**
+	- Same plugin and functionality you love!
+	- Internal code restructuring ensures better extensibility and facilitates new feature development (coming in future versions!)
+	- Ready to be used with [GravityExport](https://gravityview.co/extensions/gravityexport/) that brings additional functionality to an already full-featured plugin.
+* Enhancement: Improved Gravity Forms 2.5 compatibility.
+
+__Developer Updates:__
+
+**Please note that `gfexcel_*` hooks will be gradually renamed while retaining backward compatibility.**
+
+* Enhancement: Removed all `displayOnly` fields from the export list like the normal export function.
+* Enhancement: Added a `gfexcel_output_sorting_options` filter to set sorting options.
+* Enhancement: Added a `gfexcel_hash_form_id` filter to get form ID from the unique URL hash value.
+* Enhancement: Added a `gfexcel_hash_feed_data` filter to get feed object from the unique URL hash value.
+* Enhancement: Added a `gfexcel_get_entries_<form_id>_<feed_id>` filter to override default logic responsible for querying DB entries.
+
 = 1.8.14 on July 20, 2021 =
 * Enhancement: Improved usability on small screens and enhanced accessibility.
 * Bugfix: Incorrect or incomplete export of certain form field values (e.g., Gravity Forms Survey fields).
@@ -261,7 +281,7 @@ Not released on WordPress due to linter issues.
 
 = 1.8.2 =
 * Bugfix: Empty numeric values are not allowed by PhpSpreadsheet anymore. So much for SemVer :-)
-* Bugfix: Product subfields we're all parsed as currency. Now its all the correct type.
+* Bugfix: Product subfields were all parsed as currency. Now they are the correct type.
 
 = 1.8.1 =
 * Bugfix: Numeric values were presented as currency by default.
@@ -338,12 +358,12 @@ Not released on WordPress due to linter issues.
 * Bugfix: `created_by` and `payment_date` were not converted to the WordPress timezone.
 
 = 1.6.0 =
-* Feature: The renderer now supports transposing. So every column is a row, and vica versa.
+* Feature: The renderer now supports transposing, so that every column is a row and vice versa.
 * Feature: Added a date range filter. Also included as `start_date` and `end_date` query_parameters.
-* Feature: Added a "download" link per form on the Forms page. Less clicks for that file!
+* Feature: Added a "download" link per form on the Forms page. Fewer clicks for that file!
 * Feature: Hide a row by hooking into `gfexcel_renderer_hide_row`. Checkout the FAQ for more info.
 * Enhancement: All separable fields are handled as such, except for checkboxes. Made no sense.
-* Enhancement: Product and calculation have some specific rendering on single field for clearity.
+* Enhancement: Product and calculation have some specific rendering on single field for clarity.
 * Enhancement: Now supports *Gravity Forms Chained Selects*.
 * Enhancement: Querying entries in smaller sets to avoid massive database queries that can choke a database server.
 * Enhancement: Added a `gfexcel_output_search_criteria` filter to customize the `search_criteria` for requests.
@@ -352,13 +372,13 @@ Not released on WordPress due to linter issues.
 * Info: Launched a (first version) documentation site! [Check out gfexcel.com](https://gfexcel.com)
 
 = 1.5.5 =
-* Enhancement: Date fields now export the date according to it's field setting.
+* Enhancement: Date fields now export the date according to its field setting.
 * Enhancement: Value Objects (BaseValue) can reference `getField()`, `getFieldType()` and `getFieldId()` to help with filtering.
 * Enhancement: Name fields can now also be split up in to multiple fields. Made this a generic setting on the settings page. Please re-save your settings!
 * Enhancement: Subfield labels can now also be overwritten with the `gfexcel_field_value`-hook.
 * Bugfix: Found a memory leakage in retrieving fields for every row. Will now be retrieved only once per file.
 * Bugfix: Custom Sub field labels were not exported.
-* Bugfix: I spelled 'separate' wrong, and therefor the hooks were also wrong. **Please update your hooks If you use them!**
+* Bugfix: I spelled 'separate' wrong, and therefore the hooks were also wrong. **Please update your hooks If you use them!**
 
 = 1.5.4 =
 * Language: Finnish language files added thanks to @Nomafin!
@@ -412,15 +432,15 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: Added filters to typehint cell values. See FAQ for more info.
 * Enhancement: updated cell > URL implementation. Each cell can be set individually now. See FAQ for more info.
 * Upgraded to PHP 5.6 for minimal dependency. Last version with PHP 5.3 was 1.2.3
-(sorry for the mix up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
+(sorry for the mix-up, the new renderer forced my hand, and I forgot about this, otherwise the versioning had gone up sooner.)
 
 = 1.2.4 =
 * Enhancement: moved away from deprecated PhpExcel to PhpSpreadsheet (Thanks @ravloony).
 * Enhancement: `composer.json` update to `wordpress-plugin` for easier installation with bedrock.
 * Enhancement: Metadata now uses GFExport to get all metadata; so a row now has all metadata. Can still be disabled.
-* Feature: New ListField transformer. Splits list fields into it's own excel columns, with newline-seperated values per column.
+* Feature: New ListField transformer. Splits list fields into its own Excel columns, with newline-separate values per column.
 * Feature: New meta fields transformer. Special filter hooks for meta fields with `gfexcel_meta_value`.
-* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_seperated` to split date and time in 2 columns.
+* Feature: New meta subfield transformer for `date_created`. Use `gfexcel_meta_date_created_separated` to split date and time in 2 columns.
 * Bugfix: Plugin hooks later, so filters also work on bulk-download files.
 
 = 1.2.3 =
@@ -445,7 +465,7 @@ This update also makes the slug more secure and unique by not using the (possibl
 * Feature: SectionField added to disable empty section columns. Disabled by default. Enable with `gfexcel_field_section_enabled` hook (return true).
 * Feature: FileUploadField added to disable file upload columns. Enabled by default. Disable with `gfexcel_field_fileuploads_enabled` hook (return false).
 * Update: Wait until plugins are loaded. Need to be sure Gravity Forms is active. This caused a problem in some multisite implementations.
-* Bugfix: Changed the permalink registration so it works with multi site combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
+* Bugfix: Changed the permalink registration so that it works with multisite combined with the GF API (thanks for the assist @zitomerh). No need to reactivate the plugin now.
 * Bugfix: In Standard URL permalink structure, the hash wasn't escaped properly
 
 = 1.0.2 =

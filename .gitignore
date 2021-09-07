@@ -7,3 +7,4 @@ vendor/
 deploy.sh
 .idea
 wp-content
+*cache

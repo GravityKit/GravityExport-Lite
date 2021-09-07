@@ -2,11 +2,8 @@
 
 namespace GFExcel;
 
-use GFExcel\Action\FilterRequest;
-use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Renderer\PHPExcelRenderer;
-use GFExcel\Shorttag\DownloadUrl;
+use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Combiner;
 use GFExcel\Transformer\CombinerInterface;
 
@@ -21,21 +18,21 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $name = 'Gravity Forms Entries in Excel';
+    public static $name = 'GravityExport Lite';
 
     /**
      * Short name of the plugin
      * @since 1.0.0
      * @var string
      */
-    public static $shortname = 'Entries in Excel';
+    public static $shortname = 'GravityExport Lite';
 
     /**
      * Current version of the plugin
      * @since 1.0.0
      * @var string
      */
-    public static $version = '1.8.14';
+    public static $version = GFEXCEL_PLUGIN_VERSION;
 
     /**
      * The endpoint slug of the plugin.
@@ -43,6 +40,17 @@ class GFExcel
      * @var string
      */
     public static $slug = 'gf-entries-in-excel';
+
+	/**
+	 * The endpoint slug of the plugin.
+	 * @since 1.0.0
+	 * @var string
+	 */
+	private $endpoints = array(
+		'gf-entries-in-excel',
+		'gravityexport-lite',
+		'gravityexport',
+	);
 
     public const KEY_HASH = 'gfexcel_hash';
 
@@ -59,25 +67,16 @@ class GFExcel
     private static $file_extension;
 
     /**
-     * The notification manager singleton.
-     * @since 1.8.0
-     * @var NotificationManager|null
-     */
-    private static $notification_manager;
-
-    /**
      * Instantiates the plugin.
      * @since 1.0.0
      */
     public function __construct()
     {
-        add_action('init', [$this, 'addPermalinkRule']);
+        add_action('init', [$this, 'addPermalinkRules']);
         add_action('request', [$this, 'request']);
         add_action('parse_request', [$this, 'downloadFile']);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('robots_txt', [$this, 'robotsTxt']);
-
-        $this->registerActions();
     }
 
     /** Return the url for the form
@@ -180,17 +179,24 @@ class GFExcel
      */
     public static function getFileExtension($form)
     {
-        if (!static::$file_extension) {
-            if (!$form || !array_key_exists(static::KEY_FILE_EXTENSION, $form)) {
-                static::$file_extension = 'xlsx'; //default
+	    if ( ! static::$file_extension ) {
+		    $extension = gf_apply_filters(
+			    [
+				    static::KEY_FILE_EXTENSION,
+				    $form['id'] ?? null
+			    ],
+			    ! ( $form[ static::KEY_FILE_EXTENSION ] ?? null ) ? 'xlsx' : $form[ static::KEY_FILE_EXTENSION ],
+			    $form
+		    );
 
-                return static::$file_extension;
-            }
+		    if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
+			    $extension = 'xlsx';
+		    }
 
-            static::$file_extension = $form[static::KEY_FILE_EXTENSION];
-        }
+		    return $extension;
+	    }
 
-        return static::$file_extension;
+	    return static::$file_extension;
     }
 
     /**
@@ -229,58 +235,89 @@ class GFExcel
     }
 
     /**
-     * Registers the permalink structure for the download
+     * Registers the permalink structures for the download
+     *
      * @since 1.0.0
      */
-    public function addPermalinkRule()
-    {
-        add_rewrite_rule(
-            '^' . static::$slug . '/(.+)/?$',
-            'index.php?' . self::KEY_ACTION . '=' . static::$slug . '&' . self::KEY_HASH . '=$matches[1]',
-            'top'
-        );
+    public function addPermalinkRules() {
 
-        $rules = get_option('rewrite_rules');
-        if (!isset($rules['^' . static::$slug . '/(.+)/?$'])) {
-            flush_rewrite_rules();
-        }
+	    $rewrite_rules = get_option( 'rewrite_rules' );
+	    $flush_rules   = false;
+
+	    foreach ( $this->endpoints as $endpoint ) {
+
+		    $endpoint_regex = '^' . $endpoint . '/(.+)/?$';
+
+		    add_rewrite_rule(
+			    $endpoint_regex,
+			    'index.php?' . self::KEY_ACTION . '=' . $endpoint . '&' . self::KEY_HASH . '=$matches[1]',
+			    'top'
+		    );
+
+		    if ( ! isset( $rewrite_rules[ $endpoint_regex ] ) ) {
+			    $flush_rules = true;
+		    }
+	    }
+
+	    if ( $flush_rules ) {
+		    flush_rewrite_rules();
+	    }
     }
 
     /**
-     * Hooks into the request and outputs the file as the HHTP response.
+     * Hooks into the request and outputs the file as the HTTP response.
      * @since 1.0.0
      * @param string[] $query_vars The original query vars.
      * @return string[] The new query vars.
      */
     public function request($query_vars)
     {
-        if (!isset($query_vars[self::KEY_ACTION]) ||
-            !isset($query_vars[self::KEY_HASH]) ||
-            $query_vars[self::KEY_ACTION] !== self::$slug ||
-            empty($query_vars[self::KEY_HASH])
-        ) {
-            return $query_vars;
-        }
+	    if (
+		    ! isset( $query_vars[ self::KEY_ACTION ], $query_vars[ self::KEY_HASH ] ) ||
+		    empty( $query_vars[ self::KEY_HASH ] )
+	    ) {
+		    return $query_vars;
+	    }
 
-        $form_id = $this->getFormIdByHash($query_vars[self::KEY_HASH]);
-        if ($form_id) {
-            if (self::canDownloadForm($form_id)) {
-                $query_vars['gfexcel_download_form'] = $form_id;
-            } else {
-                $query_vars['error'] = \WP_Http::FORBIDDEN;
-            }
-        } else {
-            // Not found
-            $query_vars['error'] = \WP_Http::NOT_FOUND;
-        }
+	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], $this->endpoints, true ) ) {
+		    return $query_vars;
+	    }
 
-        return $query_vars;
+	    $hash = $query_vars[ self::KEY_HASH ];
+
+	    if ( preg_match( '/\\.(' . GFExcel::getPluginFileExtensions( true ) . ')$/is', $hash, $match ) ) {
+		    $hash                   = str_replace( $match[0], '', $hash );
+		    static::$file_extension = $match[1];
+	    }
+
+	    $feed = $this->getFeedByHash( $hash );
+
+	    $form_id = rgar( $feed, 'form_id', null );
+	    $feed_id = rgar( $feed, 'id', null );
+
+	    if ( ! $form_id ) {
+		    $form_id = $this->getFormIdByHash( $hash );
+	    }
+
+	    if ( $form_id ) {
+		    if ( self::canDownloadForm( $form_id ) ) {
+			    $query_vars['gfexcel_download_form'] = $form_id;
+			    $query_vars['gfexcel_download_feed'] = $feed_id;
+		    } else {
+			    $query_vars['error'] = \WP_Http::FORBIDDEN;
+		    }
+	    } else {
+		    // Not found
+		    $query_vars['error'] = \WP_Http::NOT_FOUND;
+	    }
+
+	    return $query_vars;
     }
 
     /**
      * Actually triggers the download response.
      * @since 1.7.0
-     * @param \WP $wp Wordpress request instance.
+     * @param \WP $wp WordPress request instance.
      * @return mixed|void The output will be the file.
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -291,16 +328,14 @@ class GFExcel
         }
 
         $form_id = $wp->query_vars['gfexcel_download_form'] ?? null;
+        $feed_id = $wp->query_vars['gfexcel_download_feed'] ?? null;
 
         if ( !$form_id ) {
-            return; }
+            return;
+        }
 
-        $renderer = gf_apply_filters([
-            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
-            $form_id
-        ], new PHPExcelRenderer());
-
-        $output = new GFExcelOutput($form_id, $renderer);
+	    $renderer = GFExcel::getRenderer($form_id);
+	    $output = new GFExcelOutput($form_id, $renderer, null, $feed_id);
 
         // trigger download event.
         /**
@@ -324,7 +359,7 @@ class GFExcel
      */
     public function getQueryVars($vars)
     {
-        return array_merge($vars, [
+        return array_merge( $vars, [
             self::KEY_ACTION,
             self::KEY_HASH,
         ]);
@@ -335,56 +370,59 @@ class GFExcel
      * @param string $hash The hash.
      * @return int|null The form id.
      */
-    private function getFormIdByHash($hash)
-    {
-        global $wpdb;
+	private function getFormIdByHash($hash)
+	{
+		global $wpdb;
 
-        if (preg_match('/\\.(' . GFExcel::getPluginFileExtensions(true) . ')$/is', $hash, $match)) {
-            $hash = str_replace($match[0], '', $hash);
-            static::$file_extension = $match[1];
-        }
+		$table_name = \GFFormsModel::get_meta_table_name();
+		$wildcard = '%';
+		$like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
 
-        $table_name = \GFFormsModel::get_meta_table_name();
-        $wildcard = '%';
-        $like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
+		// Data is stored in a json_encoded string, so we can't match perfectly.
+		if (
+			// Not even a partial match.
+			!($form_row = $wpdb->get_row(
+				$wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
+				ARRAY_A
+			)) ||
+			// Possible match on hash, so check against found form.
+			GFExcel::getHash($form_row['form_id']) !== $hash
+		) {
+			// No match found, so we can try to see if some other plugin can find it.
+			return apply_filters('gfexcel_hash_form_id', null, $hash);
+		}
 
-        // Data is stored in a json_encoded string, so we can't match perfectly.
-        if (!$form_row = $wpdb->get_row(
-            $wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
-            ARRAY_A
-        )) {
-            // not even a partial match.
-            return null;
-        }
+		//only now are we home save.
+		return (int) $form_row['form_id'];
+	}
 
-        // possible match on hash, so check against found form.
-        if (GFExcel::getHash($form_row['form_id']) !== $hash) {
-            //hash doesn't match, so it's probably a partial match
-            return null;
-        }
+	/**
+	 * Helper method to retrieve feed data using unique URL hash value.
+	 *
+	 * @param string $hash Hash.
+	 *
+	 * @since 1.9
+	 *
+	 * @return array|null Feed data.
+	 */
+	private function getFeedByHash( $hash ) {
+		global $wpdb;
 
-        //only now are we home save.
-        return (int) $form_row['form_id'];
-    }
+		$feeds = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND meta LIKE '%s' ORDER BY `feed_order`, `id` LIMIT 1",
+			'%' . $wpdb->esc_like( $hash ) . '%'
+		), ARRAY_A );
 
-    /**
-     * Register native plugin actions
-     * @since 1.6.1
-     * @return void
-     */
-    private function registerActions()
-    {
-        $actions = [
-            DownloadUrl::class,
-            FilterRequest::class,
-        ];
+		$feed = reset( $feeds );
 
-        foreach ($actions as $action) {
-            if (class_exists($action)) {
-                new $action;
-            }
-        }
-    }
+		if ( ! $feed || ! isset( $feed['meta'] ) ) {
+			return apply_filters('gfexcel_hash_feed', null, $hash);
+		}
+
+		$feed['meta'] = json_decode( $feed['meta'], true );
+
+		return $hash === rgars( $feed, 'meta/hash' ) ? $feed : null;
+	}
 
     /**
      * Adds a Disallow for the download URLs.
@@ -396,14 +434,18 @@ class GFExcel
     {
         $site_url = parse_url(site_url());
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
-        $line = sprintf('Disallow: %s/%s/', esc_attr( $path ), GFExcel::$slug);
+
+        $lines = '';
+        foreach( $this->endpoints as $endpoint ) {
+	        $lines .= sprintf( 'Disallow: %s/%s/', esc_attr( $path ), $endpoint ) . "\n";
+        }
 
         // there can be only one `user-agent: *` line, so we make sure it's just below.
         if (preg_match('/user-agent:\s*\*/is', $output, $matches)) {
-            return str_replace($matches[0], $matches[0] . "\n" . $line, $output);
+            return str_replace($matches[0], $matches[0] . "\n" . $lines, $output);
         }
 
-        return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $line));
+        return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $lines));
     }
 
     /**
@@ -448,25 +490,16 @@ class GFExcel
     }
 
     /**
-     * Returns the notification singleton.
-     * @since 1.8.0
-     * @return NotificationManager The notification manager.
+     * Returns the renderer instance.
+     * @since 1.9.0
+     * @param int|null $form_id The form id.
+     * @return RendererInterface The renderer.
      */
-    public static function getNotificationManager(): NotificationManager
+    public static function getRenderer($form_id = null): RendererInterface
     {
-        if (!self::$notification_manager) {
-            $repository = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_MANAGER,
-                new NotificationRepository()
-            );
-
-            self::$notification_manager = apply_filters(
-                GFExcelConfigConstants::GFEXCEL_NOTIFICATION_REPOSITORY,
-                new NotificationManager($repository),
-                $repository
-            );
-        }
-
-        return self::$notification_manager;
+       return gf_apply_filters(array_filter([
+            GFExcelConfigConstants::GFEXCEL_DOWNLOAD_RENDERER,
+            $form_id
+        ]), new PHPExcelRenderer(), $form_id);
     }
 }
