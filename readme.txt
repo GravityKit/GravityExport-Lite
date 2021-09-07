@@ -214,7 +214,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= 1.9 on September 7, 2021 =
+= 1.9.0 on September 7, 2021 =
 
 * **Gravity Forms Entries in Excel is now known as GravityExport Lite**
 	- Same plugin and functionality you love!
