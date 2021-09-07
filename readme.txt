@@ -1,6 +1,6 @@
 === GravityExport Lite (Gravity Forms Entries in Excel) ===
 Contributors: gravityview, doekenorg
-Donate link: https://gravityview.co/gravity-forms-entries-in-excel/
+Donate link: https://gravityview.co/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.1
@@ -13,22 +13,24 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
-> A Pro version with advanced functionality is available for pre-sale! [Learn more & pre-order](https://gravityview.co/extensions/gf-excel-pro/)
+> Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
+>
+> [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
 Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
 user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
 It's that simple!
 
-**Why not export from Gravity Forms?**
+**Why not export entries from Gravity Forms?**
 
-Using Gravity Forms you can export a CSV file and import it to Excel. But an admin always needs to be involved
+Using Gravity Forms, you can export a CSV file and import it to Excel. But an admin always needs to be involved
 and using Excel to import a CSV is a pain.
 
-We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/).
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
 
 == Documentation ==
 
-Please visit [gfexcel.com](https://gfexcel.com) for the documentation site! You'll find available features, fields,
+Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme) for the documentation site! You'll find available features, fields,
 and filters. If you are a developer; this site is probably for you.
 
 We'll be updating the site with "recipes" based on your questions. So if you have a specific need, ask away!
