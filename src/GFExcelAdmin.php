@@ -69,8 +69,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     public function __construct()
     {
         $this->_version = GFExcel::$version;
-        $this->_title = __('GravityExport Lite', GFExcel::$slug);
-        $this->_short_title = __('GravityExport Lite', GFExcel::$slug);
+        $this->_title = esc_html__('GravityExport Lite', GFExcel::$slug);
+        $this->_short_title = esc_html__('GravityExport Lite', GFExcel::$slug);
         $this->_slug = GFExcel::$slug;
 
         parent::__construct();
@@ -106,9 +106,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         $settings_sections = [];
 
         $settings_sections[] = [
-            'name'        => 'asdasd',
             'id'          => 'gravityexport-lite-rating-fieldset',
-            'title'       => '&nbsp;',
             'description' => $this->get_rating_message(),
             'fields'      => [
                 [
@@ -120,7 +118,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         ];
 
 	    $settings_sections[] = [
-            'title' => esc_html__( 'GravityExport Lite Settings', GFExcel::$slug ),
+            'title' => esc_html__( 'Default Settings', GFExcel::$slug ),
             'description' => $this->plugin_settings_description(),
             'fields' => [
                 [
@@ -284,14 +282,6 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         ob_start();
         ?>
         <div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
-            <h3><?php esc_html_e( 'Gravity Forms Entries in Excel is now GravityExport Lite!', GFExcel::$slug ); ?></h3>
-
-            <p><?php echo strtr( esc_html__( 'It\'s the same great plugin [link]with a new name[/link].', GFExcel::$slug ), [
-                    '[link]' => '<a href="https://gravityview.co/gravity-forms-entries-in-excel/" target="_blank" title="' . esc_attr__( 'This link opens in a new window', GFExcel::$slug ) . '">',
-                    '[/link]' => '</a>',
-            ] );
-            ?></p>
-
             <p><?php
 		        printf(' ' . esc_html__(
 				        'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
@@ -410,7 +400,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         $form_actions['download'] = array(
             'label' => __('Download', GFExcel::$slug),
-            'title' => __('Download entries in Excel', GFExcel::$slug),
+            'title' => __('Download an Export', GFExcel::$slug),
             'url' => GFExcel::url($form_id),
             'menu_class' => 'download',
         );
@@ -432,13 +422,13 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         if ($this->is_postback()) {
             if (!rgempty('regenerate_hash')) {
                 $form = GFExcel::setHash($form['id']);
-                \GFCommon::add_message(__('The download URL has been regenerated.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The Download URL has been regenerated.', GFExcel::$slug), false);
             } elseif (!rgempty('enable_download_url')) {
                 $form = GFExcel::setHash($form['id']);
-                \GFCommon::add_message(__('The download URL has been enabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The Download URL has been enabled.', GFExcel::$slug), false);
             } elseif (!rgempty('disable_download_url')) {
                 $form = GFExcel::setHash($form['id'], '');
-                \GFCommon::add_message(__('The download URL has been disabled.', GFExcel::$slug), false);
+                \GFCommon::add_message(__('The Download URL has been disabled.', GFExcel::$slug), false);
             }
         }
 
@@ -449,7 +439,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         );
 
 	    printf( '<div class="gaddon-section__download_count">%s: <strong>%d</strong> %s</div>',
-		    __( 'Download count', GFExcel::$slug ),
+		    esc_html__( 'Download Count', GFExcel::$slug ),
 		    $this->download_count( $form ),
 		    '<a role="button" href="' . esc_url( add_query_arg( array( 'gf_action' => CountDownloads::ACTION_RESET ) ) ) . '">' . esc_html__( 'Reset count', GFExcel::$slug ) . '</a>'
 	    );
@@ -469,7 +459,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         if (method_exists($this, 'get_settings_renderer') && $this->get_settings_renderer() !== false) {
             echo $this->get_settings_renderer()->render_save_button();
         } else {
-            $this->settings_save(['value' => __('Save settings')], GFExcel::$slug);
+            $this->settings_save(['value' => esc_html__('Save Settings', GFExcel::$slug ) ]);
         }
         echo '</form>';
     }
@@ -490,7 +480,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	    echo '<div class="gaddon-section__download_file">';
 		printf(
 			'<h4 class="gaddon-section-title gf_settings_subgroup_title"><i class="dashicons dashicons-download"></i> %s</h4>',
-			esc_html__( 'Download file', GFExcel::$slug )
+			esc_html__( 'Download File', GFExcel::$slug )
 		);
 		echo '<form method="post" action="' . esc_url( $url ) . '" target="_blank">
             <label for="start_date">' . esc_html__( 'Select Date Range (optional)', GFExcel::$slug ) . ' ' .
@@ -609,7 +599,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	        return $actions;
         }
 
-        $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one Excel file', GFExcel::$slug);
+        $actions[self::BULK_DOWNLOAD] = esc_html__('Download as one file', GFExcel::$slug);
 
         return $actions;
     }
@@ -668,8 +658,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         $this->settings_select([
             'name' => 'gfexcel_output_sort_order',
             'choices' => [
-                ['value' => 'ASC', 'label' => __('Ascending', GFExcel::$slug)],
-                ['value' => 'DESC', 'label' => __('Descending', GFExcel::$slug)],
+                ['value' => 'ASC', 'label' => esc_html__('Ascending', GFExcel::$slug)],
+                ['value' => 'DESC', 'label' => esc_html__('Descending', GFExcel::$slug)],
             ],
             'default_value' => $this->repository->getSortOrder(),
         ]);
@@ -746,11 +736,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         $this->settings([
             [
-                'title' => __('Security settings', GFExcel::$slug),
+                'title' => __('Security Settings', GFExcel::$slug),
                 'fields' => [
                     [
                         'name' => GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED,
-                        'label' => __('Download permissions', GFExcel::$slug),
+                        'label' => esc_html__('Download Permissions', GFExcel::$slug),
                         'type' => 'select',
                         'description' => sprintf( esc_html__( 'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.', GFExcel::$slug ), '<code>gravityforms_export_entries</code>' ),
                         'default_value' => GFExcel::isAllSecured(),
@@ -783,11 +773,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         $this->settings(apply_filters('gfexcel_general_settings', [
             [
-                'title' => __('General settings', GFExcel::$slug),
+                'title' => __('General Settings', GFExcel::$slug),
                 'fields' => [
                     [
                         'name' => 'enable_notes',
-                        'label' => esc_html__('Include entry notes', GFExcel::$slug),
+                        'label' => esc_html__('Include Entry Notes', GFExcel::$slug),
                         'type' => 'checkbox',
                         'choices' => [
                             [
@@ -801,7 +791,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     [
                         'name' => 'order_by',
                         'type' => 'callback',
-                        'label' => esc_html__('Order by', GFExcel::$slug),
+                        'label' => esc_html__('Order By', GFExcel::$slug),
                         'callback' => function () use ($form) {
                             $this->select_sort_field_options($form);
                             echo ' ';
@@ -811,7 +801,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     [
                         'name' => GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE,
                         'type' => 'radio',
-                        'label' => esc_html__('Column position', GFExcel::$slug),
+                        'label' => esc_html__('Column Position', GFExcel::$slug),
                         'default_value' => \rgar( $form , GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, 0 ),
                         'choices' => [
                             [
@@ -827,7 +817,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                         ]
                     ],
                     [
-                        'label' => esc_html__('Custom filename', GFExcel::$slug),
+                        'label' => esc_html__('Custom Filename', GFExcel::$slug),
                         'type' => 'text',
                         'name' => GFExcel::KEY_CUSTOM_FILENAME,
                         'value' => \rgar( $form, GFExcel::KEY_CUSTOM_FILENAME ),
@@ -837,7 +827,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                         ),
                     ],
                     [
-                        'label' => esc_html__('File extension', GFExcel::$slug),
+                        'label' => esc_html__('File Extension', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_FILE_EXTENSION,
                         'default_value' => \rgar( $form, GFExcel::KEY_FILE_EXTENSION, 'xlsx' ),
@@ -852,7 +842,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                         }, GFExcel::getPluginFileExtensions()),
                     ],
                     [
-                        'label' => esc_html__('Attach single entry to notification', GFExcel::$slug),
+                        'label' => esc_html__('Attach Single Entry to Notification', GFExcel::$slug),
                         'type' => 'select',
                         'name' => GFExcel::KEY_ATTACHMENT_NOTIFICATION,
                         'default_value' => \rgar( $form, GFExcel::KEY_ATTACHMENT_NOTIFICATION ),
@@ -881,12 +871,12 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         $active_fields = $repository->sortFields($active_fields);
 
         $this->single_section([
-            'title' => esc_html__('Field settings', GFExcel::$slug),
+            'title' => esc_html__('Field Settings', GFExcel::$slug),
             'class' => 'sortfields',
             'description' => esc_html__( 'Drag & drop fields to re-order them in the exported file.', GFExcel::$slug ),
             'fields' => [
                 [
-                    'label' => esc_html__('Disabled fields', GFExcel::$slug),
+                    'label' => esc_html__('Disabled Fields', GFExcel::$slug),
                     'name' => 'gfexcel_disabled_fields',
                     'move_to' => 'gfexcel_enabled_fields',
                     'type' => 'sortable',
@@ -908,7 +898,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     }, $inactive_fields),
                 ],
                 [
-                    'label' => esc_html__('Enabled fields', GFExcel::$slug),
+                    'label' => esc_html__('Enabled Fields', GFExcel::$slug),
                     'name' => 'gfexcel_enabled_fields',
                     'value' => \rgar( $form, 'gfexcel_enabled_fields', '' ),
                     'move_to' => 'gfexcel_disabled_fields',
@@ -1062,7 +1052,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         if (GFExcel::url($form['id'])) {
             $meta_boxes[] = [
-                'title' => esc_html__(GFExcel::$shortname, GFExcel::$slug),
+                'title' => esc_html__( 'GravityExport Lite', GFExcel::$slug),
                 'callback' => [__CLASS__, 'single_entry_download'],
                 'context' => 'side',
                 'priority' => 'high',
@@ -1160,7 +1150,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
      */
     private function getNotifications(): array
     {
-        $options = [['label' => __('Select a notification', GFExcel::$slug), 'value' => '']];
+        $options = [['label' => __('Select a Notification', GFExcel::$slug), 'value' => '']];
         foreach ($this->repository->getNotifications() as $key => $notification) {
             $options[] = ['label' => \rgar($notification, 'name', __('Unknown')), 'value' => $key];
         }
@@ -1217,11 +1207,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
         printf(
             $html,
-            __('Download this single entry as a file.', GFExcel::$slug),
+	        esc_html__('Download this single entry as a file.', GFExcel::$slug),
             esc_url( $url . '.xlsx?entry=' . $entry['id'] ),
-            __('Excel', GFExcel::$slug),
+            esc_html__('Excel', GFExcel::$slug),
             esc_url( $url . '.csv?entry=' . $entry['id'] ),
-            __('CSV', GFExcel::$slug)
+	        esc_html__('CSV', GFExcel::$slug)
         );
     }
 
