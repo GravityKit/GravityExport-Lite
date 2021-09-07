@@ -103,7 +103,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
     public function plugin_settings_fields()
     {
-        return [
+        $settings_fields = [
             [
                 'description' => $this->plugin_settings_description(),
                 'fields' => [
@@ -204,8 +204,24 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                         'choices' => $this->meta_fields(),
                     ]
                 ]
-            ]
+            ],
         ];
+
+	    if ( ! class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
+		    $settings_fields[] = [
+			    'title'       => 'GravityExport',
+			    'description' => $this->get_gravityexport_message(),
+			    'fields'      => [
+				    [
+					    'name'  => 'gravityexport-rocks',
+					    'type'  => 'hidden',
+					    'value' => 'You should try it!',
+				    ],
+			    ],
+		    ];
+	    }
+
+        return $settings_fields;
     }
 
     public function init_admin()
@@ -247,57 +263,50 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         add_filter('wp_before_admin_bar_render', [__CLASS__, 'admin_bar'], 20);
     }
 
-    public function render_settings($sections)
+    public function get_gravityexport_message()
     {
-        parent::render_settings($sections);
+        ob_start();
         ?>
-        <div class="hr-divider"></div>
-
-        <a id="help-me-out"></a>
-        <h3>
-            <span><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Help me out!', GFExcel::$slug); ?></span>
-        </h3>
-
         <p>
             <?php
-            esc_html_e('I honestly ❤️ developing this plugin. It\'s fun, I get some practice, and I want to give back to the open-source community. But a good plugin, is a plugin that is constantly being updated and getting better. And I need your help to achieve this!',
-                GFExcel::$slug);
-            ?>
-        </p>
-        <p>
-            <?php
-            printf(' ' . esc_html__(
-                    'If you find a bug 🐞 or need a feature 💡, %slet me know%s! I\'m very open to suggestions and ways to make the plugin more accessible.',
+            printf(' ' . \esc_html__(
+                    'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
                     GFExcel::$slug
                 ),
-                '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel" target="_blank">',
-                '</a>'
+                '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/?filter=5#new-post" target="_blank">',
+                '</a>', $this->getUsageCount(), $this->getUsageTarget(),
             );
             ?>
         </p>
         <p>
-            <?php
-            printf(' ' . esc_html__(
-                    'If you like the plugin, let me know, and maybe more important; 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news! Be the first to know about updates by %sfollowing me on twitter%s.',
-                    GFExcel::$slug
-                ),
-                '<a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/#new-post" target="_blank">',
-                '</a>', $this->getUsageCount(), $this->getUsageTarget(),
-                '<a href="https://twitter.com/GravityView" target="_blank">', '</a>');
-            ?>
-        </p>
-        <p>
-            <?php
-            esc_html_e('Also, If you ❤️ the plugin, and it helps you a lot, please consider making a small donation 💰 and buy me a beer 🍺.',
-                GFExcel::$slug);
-            ?>
-        </p>
-        <p>
-            <a class="button button-cta" href="https://paypal.me/GravityView"
-               target="_blank"><?php _e('Make a donation', GFExcel::$slug); ?></a>
+            <?php printf( esc_html__( 'Be the first to know about updates by %sfollowing us on Twitter%s.', GFExcel::$slug ), '<a href="https://twitter.com/GravityView" target="_blank">', '</a>'); ?>
         </p>
 
+        <div id="gravityexport-additional-features" class="wrap">
+            <h2><?php esc_html_e('GravityExport brings additional features!', GFExcel::$slug); ?> 🤩</h2>
+
+            <div>
+                <h3><?php esc_html_e( 'Save exports to Dropbox, FTP, &amp; local', GFExcel::$slug ); ?></h3>
+                <p><?php esc_html_e( 'Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally.', GFExcel::$slug ); ?></p>
+            </div>
+
+            <div>
+                <h3><?php esc_html_e( 'Filter exports with Conditional Logic', GFExcel::$slug ); ?></h3>
+                <p><?php esc_html_e( 'Create advanced filters, including exporting entries created by only the currently logged-in user.', GFExcel::$slug ); ?></p>
+            </div>
+
+            <div>
+                <h3><?php esc_html_e( 'Ready for data analysis 📊', GFExcel::$slug ); ?></h3>
+                <p><?php esc_html_e( 'When analyzing data, you want fields with multiple values broken into multiple rows each with one value. If you work with data, you&rsquo;ll love this feature!', GFExcel::$slug ); ?></p>
+            </div>
+
+            <p>
+                <a class="button button-hero button-cta" href="https://gravityview.co/extensions/gravityexport/"
+                   target="_blank"><?php _e('Learn More About GravityExport', GFExcel::$slug); ?></a>
+            </p>
+        </div>
         <?php
+        return ob_get_clean();
     }
 
     /**
