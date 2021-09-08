@@ -3,9 +3,9 @@ Contributors: gravityview, doekenorg
 Donate link: https://gravityview.co/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
-Requires PHP: 7.1
-Tested up to: 5.8.1
-Stable tag: 1.9.0
+Requires PHP: 7.2
+Tested up to: 5.8
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,7 @@ Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gr
 
 = Requirements =
 
-* PHP 7.1
+* PHP 7.2
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.0 or higher
 
@@ -211,6 +211,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= 1.9.1 on September 8, 2021 =
+
+* **GravityExport Lite** requires PHP 7.2
+* Bugfix: Fatal error when trying to download an export file.
+
 = 1.9.0 on September 7, 2021 =
 
 * **Gravity Forms Entries in Excel is now known as GravityExport Lite**
@@ -237,7 +242,7 @@ __Developer Updates:__
 * Bugfix: Plugin would not activate on hosts running PHP 7.1.
 
 = 1.8.12 on May 14, 2021 =
-* Enhancement: Updated PHPSpreadsheet to 1.17.
+* Enhancement: Updated PhpSpreadsheet to 1.17.
 * Enhancement: Added `gfexcel_file_extension` webhook to overwrite the extension (by default, `.xlsx`).
 * Enhancement: composer.json constraints updated for Bedrock users.
 * Bugfix: Removed deprecation warning on Gravity Forms 2.5.
@@ -293,7 +298,7 @@ Not released on WordPress due to linter issues.
 * Bugfix: 'gfexcel_renderer_csv_include_separator_line' had a typo.
 * Bugfix: List field threw notice when you changed the column names.
 * Bugfix: Disabled warning when `set_time_limit` is not allowed to prevent failing download.
-* Enhancement: Updated PHPSpreadsheet to 1.12 (last to support PHP 7.1).
+* Enhancement: Updated PhpSpreadsheet to 1.12 (last to support PHP 7.1).
 * Enhancement: Added quick-link to documentation on the plugins page.
 * Enhancement: Added quick-link to settings on the plugins page.
 * Enhancement: Replaced all translation calls with WordPress native calls to be polite to Poedit.
@@ -320,7 +325,7 @@ Not released on WordPress due to linter issues.
 * Bugfix: Column-names now match the filters in the sortable lists.
 * Bugfix: Filters now only respond to the correct URL.
 * Bugfix: Forgot to update composer.json to reflect minimum PHP version of 7.1. (for Bedrock users).
-* Changed: Updated composer.json to use phpspreadsheet ~1.9.0 to be consistent with the normal plugin version.
+* Changed: Updated composer.json to use PhpSpreadsheet ~1.9.0 to be consistent with the normal plugin version.
 
 = 1.7.0 =
 * Feature: Added field filtering to the URL. Checkout [the documentation](https://gfexcel.com/docs/filtering/) for more info.
@@ -334,7 +339,7 @@ Not released on WordPress due to linter issues.
 * Enhancement: Added a `gfexcel_download_renderer` hook to inject a custom renderer.
 * Bugfix: Prevent notice at render-time for `ob_end_clean`.
 * Bugfix: Reset download hash and counter on duplicated form.
-* Updated: PHPSpreadsheet updated to 1.9.0. Package to `^1.3`.
+* Updated: PhpSpreadsheet updated to 1.9.0. Package to `^1.3`.
 
 = 1.6.3 =
 * Bugfix: Radio and checkboxes caused unforeseen error on short tag for GF.

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     GravityExport Lite
- * Version:         1.9.0
+ * Version:         1.9.1
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityView
@@ -29,7 +29,22 @@ if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '1.9.0' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '1.9.1' );
+}
+
+if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
+	define( 'GFEXCEL_MIN_PHP_VERSION', '7.3' );
+}
+
+if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
+	$show_minimum_php_version_message = function () {
+		$message = wpautop( sprintf( esc_html__( 'GravityExport Lite requires PHP %s or newer.', 'gf-entries-in-excel' ), GFEXCEL_MIN_PHP_VERSION ) );
+		echo "<div class='error'>$message</div>";
+	};
+
+	add_action( 'admin_notices', $show_minimum_php_version_message );
+
+	return;
 }
 
 add_action('gform_loaded', static function (): void {

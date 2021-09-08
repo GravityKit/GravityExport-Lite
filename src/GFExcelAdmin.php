@@ -288,7 +288,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 				        GFExcel::$slug
 			        ),
 			        '<strong><a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/?filter=5#new-post" target="_blank" title="' . esc_attr__( 'This link opens in a new window', GFExcel::$slug ) . '">',
-			        '</a></strong>', esc_html( $this->getUsageCount() ), esc_html( $this->getUsageTarget() ),
+			        '</a></strong>', esc_html( $this->getUsageCount() ), esc_html( $this->getUsageTarget() )
 		        );
 		        ?>
             </p>
