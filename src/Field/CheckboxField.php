@@ -37,19 +37,30 @@ class CheckboxField extends BaseField implements RowsInterface
      */
     public function getRows(?array $entry = null): iterable
     {
-        foreach ($this->field->get_entry_inputs() as $input) {
-            $index = (string) $input['id'];
-            if (!rgempty($index, $entry)) {
-                $value = $this->getFieldValue($entry, $index);
+	    $inputs = $this->field->get_entry_inputs();
 
-                $value = gf_apply_filters([
-                    'gfexcel_field_value',
-                    $this->field->get_input_type(),
-                    $this->field->formId,
-                    $this->field->id
-                ], $value, $entry, $this->field);
+        if (!is_array($inputs)) {
+            $value = \GFCommon::selection_display(
+                rgar($entry, $this->field->id),
+                $this->field,
+                rgar($entry, 'currency')
+            );
+            yield $this->wrap([$value]);
+        } else {
+            foreach ($inputs as $input) {
+                $index = (string) $input['id'];
+                if (!rgempty($index, $entry)) {
+	                $value = $this->getFieldValue($entry, $index);
 
-                yield $this->wrap([$value]);
+	                $value = gf_apply_filters([
+		                'gfexcel_field_value',
+		                $this->field->get_input_type(),
+		                $this->field->formId,
+		                $this->field->id
+	                ], $value, $entry, $this->field);
+
+	                yield $this->wrap([$value]);
+                }
             }
         }
     }

@@ -3,7 +3,7 @@
 namespace GFExcel\Exception;
 
 /**
- * Base exception for Gravity Forms Entries in Excel.
+ * Base exception for GravityExport Lite.
  */
 class Exception extends \Exception
 {

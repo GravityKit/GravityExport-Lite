@@ -63,7 +63,7 @@ class NotificationsAction
             return [
                 new Notification(
                     'manager-error',
-                    __('The notifications could not be retrieved.', GFExcel::$slug),
+                    esc_html__('The notifications could not be retrieved.', GFExcel::$slug),
                     Notification::TYPE_ERROR,
                     false
                 )

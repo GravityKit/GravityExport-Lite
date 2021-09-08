@@ -145,12 +145,8 @@ class NotificationsActionTest extends TestCase
      */
     public function testRegisterScripts(): void
     {
-        if (!defined('GFEXCEL_PLUGIN_FILE')) {
-            define('GFEXCEL_PLUGIN_FILE', 'test');
-        }
-
         \WP_Mock::userFunction('plugin_dir_url', [
-            'args' => ['test'],
+            'args' => [GFEXCEL_PLUGIN_FILE],
             'return' => 'test-path/',
         ]);
 
