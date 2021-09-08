@@ -200,7 +200,13 @@ class GFExcelOutput
 	private function getFeed()
 	{
 		if ( ! $this->feed ) {
-			$this->feed = \GFAPI::get_feed( $this->feed_id );
+			$feed = \GFAPI::get_feed( $this->feed_id );
+
+			if ( is_wp_error( $feed ) ) {
+				$feed = [];
+			}
+
+			$this->feed = $feed;
 		}
 
 		return $this->feed;

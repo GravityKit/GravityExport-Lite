@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0fa47aebd57b99096d20706f026845b",
+    "content-hash": "0bdb1a5d5d65ec9f5e228e91568926a1",
     "packages": [
         {
             "name": "composer/installers",
@@ -212,17 +212,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GFExcel/base.git",
-                "reference": "1534b922cf8ec4e5f02e3cef2a7b8d4e770198e5"
+                "reference": "8d1966b9e5c4c9071777de7140696163da317dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GFExcel/base/zipball/1534b922cf8ec4e5f02e3cef2a7b8d4e770198e5",
-                "reference": "1534b922cf8ec4e5f02e3cef2a7b8d4e770198e5",
+                "url": "https://api.github.com/repos/GFExcel/base/zipball/8d1966b9e5c4c9071777de7140696163da317dc5",
+                "reference": "8d1966b9e5c4c9071777de7140696163da317dc5",
                 "shasum": ""
             },
             "require": {
-                "league/container": "^3.3",
-                "phpoffice/phpspreadsheet": "1.12"
+                "league/container": "^3.3"
             },
             "require-dev": {
                 "overtrue/phplint": "^2.3",
@@ -258,12 +257,12 @@
                     "email": "info@gfexcel.com"
                 }
             ],
-            "description": "Base for Gravity Forms Entries in Excel (Pro)",
+            "description": "Base for GravityExport",
             "support": {
                 "source": "https://github.com/GFExcel/base/tree/master",
                 "issues": "https://github.com/GFExcel/base/issues"
             },
-            "time": "2021-09-02T14:41:16+00:00"
+            "time": "2021-09-08T02:34:27+00:00"
         },
         {
             "name": "league/container",
@@ -3898,7 +3897,7 @@
     "prefer-lowest": false,
     "platform": {
         "ext-json": "*",
-        "php": "^7.1"
+        "php": "^7.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
