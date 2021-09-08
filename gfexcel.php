@@ -32,6 +32,21 @@ if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
 	define( 'GFEXCEL_PLUGIN_VERSION', '1.9.0' );
 }
 
+if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
+	define( 'GFEXCEL_MIN_PHP_VERSION', '7.2' );
+}
+
+if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
+	$show_minimum_php_version_message = function () {
+		$message = wpautop( sprintf( esc_html__( 'GravityExport Lite requires PHP %s or newer.', 'gf-entries-in-excel' ), GFEXCEL_MIN_PHP_VERSION ) );
+		echo "<div class='error'>$message</div>";
+	};
+
+	add_action( 'admin_notices', $show_minimum_php_version_message );
+
+	return;
+}
+
 add_action('gform_loaded', static function (): void {
     if (!class_exists('GFForms') || !method_exists('GFForms', 'include_addon_framework')) {
         return;
