@@ -18,6 +18,8 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 >
 > [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
+[youtube https://youtu.be/diqNgFCguM4]
+
 ### Export entries using a secure URL
 
 When you configure a new export, the plugin will generate a secure download URL that you can share with anyone who needs the data (No need to log in!). Reports will automatically update as new entries are added.
