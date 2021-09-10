@@ -18,21 +18,51 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 >
 > [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
-[youtube https://youtu.be/diqNgFCguM4]
-
 ### Export entries using a secure URL
 
 When you configure a new export, the plugin will generate a secure download URL that you can share with anyone who needs the data (No need to log in!). Reports will automatically update as new entries are added.
 
+#### GravityExport Lite includes many features:
+
+- Limit access to downloads—either make a URL public or require users to be logged-in with correct permissions
+- Download reports from multiple forms at once
+- Export entry notes along with entries
+- Transpose data (instead of one entry per-row, it would be one column per row)
+- Attach entry exports to notifications
+
+[youtube https://youtu.be/diqNgFCguM4]
+
 ### Export directly to Excel (.xlsx)
 
-Export your entries directly to .xlsx format. No more wasting time importing your CSV files into Excel and reformatting columns.
+Export your entries directly to .xlsx format. No more wasting time importing your CSV files into Excel and re-configuring columns.
+
+### Export as CSV
+
+If you'd prefer to have your reports generated as CSV, GravityExport Lite makes it easy.
+
+### Add search filters to the URL
+
+Once you have your download URL, you can easily [filter by date range and field value](https://gfexcel.com/docs/filtering/).
 
 ### Configure export fields
 
-Configure the fields to be included in Instead of configuring the export fields every time you export a CSV in Gravity Forms,
+Save time generating exports in Gravity Forms: Configure the fields that are included in your CSV or Excel export. No need to set up every time!
 
-### Gain powerful functionality
+### Documentation & support
+
+If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravityview.co/category/783-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
+
+If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
+
+#### Requirements
+
+* PHP 7.2
+* `php-xml` and `php-zip` libraries. The plugin will check for those.
+* Gravity Forms 2.0 or higher
+
+<hr>
+
+### Gain additional powerful functionality
 
 The [full version of GravityExport](https://gravityview.co/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-full-version) unlocks these game-changing features:
 
@@ -48,18 +78,6 @@ Create multiple export URLs that output to different formats and include differe
 Make it easier to process your Gravity Forms data by splitting fields with multiple values into different rows.
 
 We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
-
-### Documentation & support
-
-If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravityview.co/category/783-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
-
-If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
-
-#### Requirements
-
-* PHP 7.2
-* `php-xml` and `php-zip` libraries. The plugin will check for those.
-* Gravity Forms 2.0 or higher
 
 #### Credits
 
