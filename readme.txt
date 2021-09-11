@@ -13,30 +13,77 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
+> ### GravityExport is the ultimate no-hassle solution for exporting data from Gravity Forms.
 > Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
 >
 > [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
-Export Gravity Forms entries directly to Excel or CSV using a unique and secure URL. No need to login or create a
-user account for that one person who needs the results. Just copy the URL, and give it to the person who needs it.
-It's that simple!
+### Export entries using a secure URL
 
-**Why not export entries from Gravity Forms?**
+When you configure a new export, the plugin will generate a secure download URL that you can share with anyone who needs the data (No need to log in!). Reports will automatically update as new entries are added.
 
-Using Gravity Forms, you can export a CSV file and import it to Excel. But an admin always needs to be involved
-and using Excel to import a CSV is a pain.
+#### GravityExport Lite includes many features:
 
-We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
+- Limit access to downloads—either make a URL public or require users to be logged-in with correct permissions
+- Download reports from multiple forms at once
+- Export entry notes along with entries
+- Transpose data (instead of one entry per-row, it would be one column per row)
+- Attach entry exports to notifications
 
-== Documentation ==
+[youtube https://youtu.be/diqNgFCguM4]
 
-Please visit [gfexcel.com](https://gfexcel.com?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme) for the documentation site! You'll find available features, fields, and filters. If you are a developer; this site is probably for you.
+### Export directly to Excel (.xlsx)
 
-= Requirements =
+Export your entries directly to .xlsx format. No more wasting time importing your CSV files into Excel and re-configuring columns.
+
+### Export as CSV
+
+If you'd prefer to have your reports generated as CSV, GravityExport Lite makes it easy.
+
+### Add search filters to the URL
+
+Once you have your download URL, you can easily [filter by date range and field value](https://gfexcel.com/docs/filtering/).
+
+### Configure export fields
+
+Save time generating exports in Gravity Forms: Configure the fields that are included in your CSV or Excel export. No need to set up every time!
+
+### Documentation & support
+
+If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravityview.co/category/783-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
+
+If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
+
+#### Requirements
 
 * PHP 7.2
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.0 or higher
+
+<hr>
+
+### Gain additional powerful functionality
+
+The [full version of GravityExport](https://gravityview.co/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-full-version) unlocks these game-changing features:
+
+* 📄 **PDF Export**
+GravityExport supports exporting entries as PDF! You can choose to have a PDF generated for each entry or one PDF that includes all entries. You can also customize the PDF output by adjusting the size, orientation, and more.
+* 📦 **Dropbox integration**
+Save your form data directly to Dropbox.
+* 👩🏽‍💻 **Send reports to FTP**
+Store reports on your own FTP server! GravityExport supports the SFTP, FTP + SSL, and FTP protocols.
+* ⬇️ **Multiple download URLs**
+Create multiple export URLs that output to different formats and include different fields.
+* 📊 **Export data ready for analysis**
+Make it easier to process your Gravity Forms data by splitting fields with multiple values into different rows.
+
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
+
+#### Credits
+
+- The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
+- Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
+- Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
 == Installation ==
 
@@ -480,9 +527,3 @@ This update also makes the slug more secure and unique by not using the (possibl
 
 = 1.0 =
 * First release
-
-== Credits ==
-
-- The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
-- Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
