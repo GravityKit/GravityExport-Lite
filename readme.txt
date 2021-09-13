@@ -258,6 +258,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Bugfix: Fatal error when using Gravity Forms ≤2.4.23.
+	- We highly recommend upgrading to Gravity Forms >2.5 .
+
 = 1.9.1 on September 8, 2021 =
 
 * **GravityExport Lite** requires PHP 7.2

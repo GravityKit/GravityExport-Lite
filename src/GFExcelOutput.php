@@ -200,13 +200,10 @@ class GFExcelOutput
 	private function getFeed()
 	{
 		if ( ! $this->feed ) {
-			$feed = \GFAPI::get_feed( $this->feed_id );
+			// TODO: Use \GFAPI::get_feed when GF minimum version requirement is bumped to ≥2.4.24
+			$feeds = \GFAPI::get_feeds( $this->feed_id, null, null, null );
 
-			if ( is_wp_error( $feed ) ) {
-				$feed = [];
-			}
-
-			$this->feed = $feed;
+			$this->feed = ! is_wp_error( $feeds ) ? $feeds[0] : [];
 		}
 
 		return $this->feed;
