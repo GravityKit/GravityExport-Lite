@@ -261,7 +261,7 @@ You can hide a row by adding a hook. Checkout this example:
 = 1.9.2 on September 13, 2021 =
 
 * Bugfix: Fatal error when using Gravity Forms ≤2.4.23.
-	- We highly recommend upgrading to Gravity Forms >2.5 .
+	- We highly recommend upgrading to Gravity Forms >2.5.
 
 = 1.9.1 on September 8, 2021 =
 
