@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.8
-Stable tag: 1.9.1
+Stable tag: 1.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 1.9.2 on September 13, 2021 =
 
 * Bugfix: Fatal error when using Gravity Forms ≤2.4.23.
 	- We highly recommend upgrading to Gravity Forms >2.5 .
