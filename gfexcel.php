@@ -17,6 +17,7 @@
 defined('ABSPATH') or die('No direct access!');
 
 use GFExcel\Action\ActionAwareInterface;
+use GFExcel\Addon\GFExcelAddon;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
 use GFExcel\ServiceProvider\AddOnProvider;
@@ -74,12 +75,19 @@ add_action('gform_loaded', static function (): void {
         // auto wire it up
         ->delegate(new ReflectionContainer());
 
+    // Instantiate add on from container. todo: remove
+    $old_addon = $container->get(GFExcelAdmin::class);
+
+    // Set instance for Gravity Forms and register the add-on. todo: remove
+    GFExcelAdmin::set_instance($old_addon);
+    GFAddOn::register(GFExcelAdmin::class);
+
     // Instantiate add on from container.
-    $addon = $container->get(GFExcelAdmin::class);
+    $addon = $container->get(GFExcelAddon::class);
 
     // Set instance for Gravity Forms and register the add-on.
-    GFExcelAdmin::set_instance($addon);
-    GFAddOn::register(GFExcelAdmin::class);
+    GFExcelAddon::set_instance($addon);
+    GFAddOn::register(GFExcelAddon::class);
 
     // Dispatch event including the container.
     do_action('gfexcel_loaded', $container);
@@ -88,6 +96,7 @@ add_action('gform_loaded', static function (): void {
     if ($container->has(ActionAwareInterface::ACTION_TAG)) {
         $container->get(ActionAwareInterface::ACTION_TAG);
     }
+
     if ($container->has(AddOnProvider::AUTOSTART_TAG)) {
         $container->get(AddOnProvider::AUTOSTART_TAG);
     }
