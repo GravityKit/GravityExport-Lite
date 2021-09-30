@@ -408,7 +408,15 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         return $form_actions;
     }
 
-    public function form_settings($form)
+	/**
+	 * @inheritdoc
+	 * @since 1.9.3
+	 */
+    public function form_settings_fields( $form ) {
+	    return parent::form_settings_fields( $form );
+    }
+
+	public function form_settings($form)
     {
         //reads current form settings
         $settings = $this->get_form_settings($form);
