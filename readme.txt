@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Bugfix: GravityExport Lite feed settings page would break when using the latest version of Gravity Forms.
+
 = 1.9.2 on September 13, 2021 =
 
 * Bugfix: Fatal error when using Gravity Forms ≤2.4.23.
