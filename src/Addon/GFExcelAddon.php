@@ -3,15 +3,21 @@
 namespace GFExcel\Addon;
 
 use GFExcel\GFExcel;
+use GFExcel\GravityForms\Field\Sortable;
 use GFExcel\Repository\FieldsRepository;
+use GFExcel\Template\TemplateAware;
+use GFExcel\Template\TemplateAwareInterface;
+use Gravity_Forms\Gravity_Forms\Settings\Fields;
 
 /**
  * GravityExport Lite add-on.
  * @since $ver$
  */
-class GFExcelAddon extends \GFFeedAddon implements AddonInterface
+class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAwareInterface
 {
     use AddonTrait;
+    use AddonHelperTrait;
+    use TemplateAware;
 
     /**
      * @inheritdoc
@@ -47,46 +53,70 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface
      * @inheritdoc
      * @since $ver$
      */
+    public function init_admin(): void
+    {
+        parent::init_admin();
+
+        add_action('admin_enqueue_scripts', [$this, 'register_assets']);
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
     public function feed_settings_fields(): array
     {
+        // Register custom fields first.
+        Fields::register('sortable', Sortable::class);
+
         $feed = $this->get_current_feed();
 
-        $settings_sections[] =
-            [
-                'title' => __('Security Settings', GFExcel::$slug),
-                'fields' => [
-                    [
-                        'name' => 'is_secured',
-                        'label' => esc_html__('Download Permissions', GFExcel::$slug),
-                        'type' => 'select',
-                        'description' => sprintf(
-                            esc_html__(
-                                'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
-                                GFExcel::$slug
-                            ),
-                            '<code>gravityforms_export_entries</code>'
+        $settings_sections[] = [
+            'title' => __('Download settings', GFExcel::$slug),
+            'fields' => [
+                [
+                    'label' => esc_html__('Download URL', GFExcel::$slug),
+                    'name' => 'hash',
+                    'type' => 'download_url',
+                ],
+            ],
+        ];
+
+        $settings_sections[] = [
+            'title' => __('Security Settings', GFExcel::$slug),
+            'fields' => [
+                [
+                    'name' => 'is_secured',
+                    'label' => esc_html__('Download Permissions', GFExcel::$slug),
+                    'type' => 'select',
+                    'description' => sprintf(
+                        esc_html__(
+                            'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
+                            GFExcel::$slug
                         ),
-                        'default_value' => 0,
-                        'choices' => (static function (): array {
-                            $options = [];
-                            if (!GFExcel::isAllSecured()) {
-                                $options[] = [
-                                    'name' => 'is_secured',
-                                    'label' => __('Everyone can download', GFExcel::$slug),
-                                    'value' => 0,
-                                ];
-                            }
+                        '<code>gravityforms_export_entries</code>'
+                    ),
+                    'default_value' => 0,
+                    'choices' => (static function (): array {
+                        $options = [];
+                        if (!GFExcel::isAllSecured()) {
                             $options[] = [
                                 'name' => 'is_secured',
-                                'label' => __('Logged-in users who have "Export Entries" access', GFExcel::$slug),
-                                'value' => 1,
+                                'label' => __('Everyone can download', GFExcel::$slug),
+                                'value' => 0,
                             ];
+                        }
+                        $options[] = [
+                            'name' => 'is_secured',
+                            'label' => __('Logged-in users who have "Export Entries" access', GFExcel::$slug),
+                            'value' => 1,
+                        ];
 
-                            return $options;
-                        })(),
-                    ],
+                        return $options;
+                    })(),
                 ],
-            ];
+            ],
+        ];
 
         $settings_sections[] = apply_filters(
             'gfexcel_general_settings',
@@ -172,7 +202,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface
                         'label' => esc_html__('File Extension', GFExcel::$slug),
                         'type' => 'select',
                         'name' => 'file_extension',
-                        'class'   => 'small-text',
+                        'class' => 'small-text',
                         'description' => sprintf(
                             esc_html__(
                                 'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
@@ -198,6 +228,53 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface
                 ],
             ]
         );
+
+        $repository = new FieldsRepository($this->get_current_form());
+        $disabled_fields = $repository->getDisabledFields();
+        $all_fields = $repository->getFields($unfiltered = true);
+
+        $active_fields = $inactive_fields = [];
+        foreach ($all_fields as $field) {
+            $array_name = in_array($field->id, $disabled_fields, false) ? 'inactive_fields' : 'active_fields';
+            ${$array_name}[] = $field;
+        }
+
+        $active_fields = $repository->sortFields($active_fields);
+
+        $settings_sections[] = [
+            'title' => esc_html__('Field settings', GFExcel::$slug),
+            'class' => 'sortfields',
+            'fields' => [
+                [
+                    'label' => esc_html__('Disabled fields', GFExcel::$slug),
+                    'name' => 'disabled_fields',
+                    'move_to' => 'enabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'side' => 'left',
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $this->get_field_label($field),
+                        ];
+                    }, $inactive_fields),
+                ],
+                [
+                    'label' => esc_html__('Enable & sort the fields', GFExcel::$slug),
+                    'name' => 'enabled_fields',
+                    'move_to' => 'disabled_fields',
+                    'type' => 'sortable',
+                    'class' => 'fields-select',
+                    'side' => 'right',
+                    'choices' => array_map(function (\GF_Field $field) {
+                        return [
+                            'value' => $field->id,
+                            'label' => $this->get_field_label($field),
+                        ];
+                    }, $active_fields),
+                ],
+            ],
+        ];
 
         return $settings_sections;
     }
@@ -234,5 +311,97 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface
         }
 
         return $options;
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function styles(): array
+    {
+        return array_merge(parent::styles(), [
+            [
+                'handle' => 'gravityexport-lite',
+                'src' => $this->assets_dir . 'public/css/gravityexport-lite.css',
+                'enqueue' => [
+                    ['admin_page' => 'form_settings', 'tab' => $this->get_slug()],
+                    ['admin_page' => 'plugin_settings', 'tab' => $this->get_slug()],
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function scripts(): array
+    {
+        return array_merge(parent::scripts(), [
+            [
+                'handle' => 'jquery-ui-sortable',
+                'enqueue' => [
+                    [
+                        'admin_page' => 'form_settings',
+                        'tab' => $this->get_slug(),
+                    ],
+                ],
+            ],
+            [
+                'handle' => 'gfexcel-js',
+                'src' => $this->assets_dir . 'public/js/gfexcel.js',
+                'enqueue' => [
+                    [
+                        'admin_page' => 'form_settings',
+                        'tab' => $this->get_slug(),
+                    ],
+                ],
+                'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
+            ],
+        ]);
+    }
+
+    public function settings_select($field, $echo = true): string
+    {
+        return parent::settings_select($field, $echo);
+    }
+
+    /**
+     * Retrieves the formatted label for a field.
+     * @since $ver$
+     * @param \GF_Field $field The field.
+     * @return string The formatted label.
+     */
+    private function get_field_label(\GF_Field $field): string
+    {
+        return gf_apply_filters(
+            [
+                'gfexcel_field_label',
+                $field->get_input_type(),
+                $field->formId,
+                $field->id,
+            ],
+            $field->get_field_label(true, ''),
+            $field
+        );
+    }
+
+    /**
+     * Add JavaScript and custom CSS to the page.
+     */
+    public function register_assets(): void
+    {
+        if ('gf_edit_forms' !== rgget('page') || $this->get_slug() !== rgget('subview')) {
+            return;
+        }
+
+        wp_add_inline_script(
+            'gfexcel-js',
+            sprintf(
+                '(function($) { $(document).ready(function() { gfexcel_sortable(\'%s\', \'%s\'); }); })(jQuery);',
+                '#enabled_fields, #disabled_fields',
+                'fields-select'
+            )
+        );
     }
 }

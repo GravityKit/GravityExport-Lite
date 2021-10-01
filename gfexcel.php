@@ -20,8 +20,10 @@ use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GFExcelAddon;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
+use GFExcel\GravityForms\Field\Sortable;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
+use Gravity_Forms\Gravity_Forms\Settings\Fields;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
@@ -88,6 +90,8 @@ add_action('gform_loaded', static function (): void {
     // Set instance for Gravity Forms and register the add-on.
     GFExcelAddon::set_instance($addon);
     GFAddOn::register(GFExcelAddon::class);
+
+    $addon->setAssetsDir(plugin_dir_url(GFEXCEL_PLUGIN_FILE));
 
     // Dispatch event including the container.
     do_action('gfexcel_loaded', $container);

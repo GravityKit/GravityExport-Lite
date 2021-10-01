@@ -1,0 +1,16 @@
+.gform-settings-panel.sortfields .gform-settings-panel__content {
+    display: flex;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.gform-settings-panel.sortfields .gform-settings-panel__content > div {
+    flex: 1;
+    flex-basis: 50%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.fields-select#enabled_fields .move i.fa-arrow-right,
+.fields-select#disabled_fields .move i.fa-close {
+    display: none;
+}
