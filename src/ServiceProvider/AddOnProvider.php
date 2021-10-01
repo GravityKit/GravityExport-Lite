@@ -10,15 +10,13 @@ use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
-use GFExcel\Template\TemplateAwareInterface;
 use League\Container\Definition\DefinitionInterface;
-use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
  * @since $ver$
  */
-class AddOnProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
+class AddOnProvider extends AbstractServiceProvider
 {
     /**
      * The string an automatically started service must be tagged with.
@@ -72,16 +70,5 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
         return $this->getLeagueContainer()
             ->add($id, $concrete, $shared)
             ->addTag(self::AUTOSTART_TAG);
-    }
-
-    /**
-     * @inheritdoc
-     * @since $ver$
-     */
-    public function boot(): void
-    {
-        $this->getLeagueContainer()
-            ->inflector(TemplateAwareInterface::class)
-            ->invokeMethod('addTemplateFolder', [dirname(GFEXCEL_PLUGIN_FILE) . '/templates/']);
     }
 }
