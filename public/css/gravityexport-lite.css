@@ -1,15 +1,24 @@
-.gform-settings-panel.sortfields .gform-settings-panel__content {
-    display: flex;
-    margin-left: -10px;
-    margin-right: -10px;
+.gform-settings-panel.sortfields ul.fields-select {
+    padding: 1px 5px;
 }
 
-.gform-settings-panel.sortfields .gform-settings-panel__content > div {
-    flex: 1;
-    flex-basis: 50%;
-    margin-left: 10px;
-    margin-right: 10px;
+.gform-settings-panel.sortfields .gform-settings-field {
+    margin-top: 20px;
 }
+
+#gform_setting_sortfields .gform-settings-nested-fields {
+    border: 0;
+    margin: 0 -10px;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#gform_setting_sortfields .gform-settings-field__sortable {
+    flex: 0 1 50%;
+    margin: 0 10px;
+}
+
 .fields-select#enabled_fields .move i.fa-arrow-right,
 .fields-select#disabled_fields .move i.fa-close {
     display: none;

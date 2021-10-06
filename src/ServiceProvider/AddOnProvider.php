@@ -3,20 +3,25 @@
 namespace GFExcel\ServiceProvider;
 
 use GFExcel\Action\CountDownloads;
+use GFExcel\Action\DownloadUrlDisableAction;
+use GFExcel\Action\DownloadUrlEnableAction;
+use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationsAction;
+use GFExcel\Generator\HashGeneratorInterface;
 use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
 use League\Container\Definition\DefinitionInterface;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
  * @since $ver$
  */
-class AddOnProvider extends AbstractServiceProvider
+class AddOnProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     /**
      * The string an automatically started service must be tagged with.
@@ -70,5 +75,16 @@ class AddOnProvider extends AbstractServiceProvider
         return $this->getLeagueContainer()
             ->add($id, $concrete, $shared)
             ->addTag(self::AUTOSTART_TAG);
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function boot(): void
+    {
+        $this->addAction(DownloadUrlEnableAction::class)->addArgument(HashGeneratorInterface::class);
+        $this->addAction(DownloadUrlResetAction::class)->addArgument(HashGeneratorInterface::class);
+        $this->addAction(DownloadUrlDisableAction::class);
     }
 }

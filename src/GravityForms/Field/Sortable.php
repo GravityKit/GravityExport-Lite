@@ -37,12 +37,6 @@ class Sortable extends Base
      */
     public $choices;
 
-
-    public function __construct($props, $settings)
-    {
-        parent::__construct($props, $settings);
-    }
-
     /**
      * @inheritDoc
      * @since $ver$

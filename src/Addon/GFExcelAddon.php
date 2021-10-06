@@ -2,22 +2,23 @@
 
 namespace GFExcel\Addon;
 
+use GFExcel\Action\ActionAware;
+use GFExcel\Action\ActionAwareInterface;
 use GFExcel\GFExcel;
+use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\Sortable;
 use GFExcel\Repository\FieldsRepository;
-use GFExcel\Template\TemplateAware;
-use GFExcel\Template\TemplateAwareInterface;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
 
 /**
  * GravityExport Lite add-on.
  * @since $ver$
  */
-class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAwareInterface
+class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface
 {
+    use ActionAware;
     use AddonTrait;
     use AddonHelperTrait;
-    use TemplateAware;
 
     /**
      * @inheritdoc
@@ -57,7 +58,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
     {
         parent::init_admin();
 
-        add_action('admin_enqueue_scripts', [$this, 'register_assets']);
+        add_action('admin_enqueue_scripts', \Closure::fromCallable([$this, 'register_sortable_js']));
     }
 
     /**
@@ -67,9 +68,10 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
     public function feed_settings_fields(): array
     {
         // Register custom fields first.
+        Fields::register('download_url', DownloadUrl::class);
         Fields::register('sortable', Sortable::class);
 
-        $feed = $this->get_current_feed();
+        $form = $this->get_current_form();
 
         $settings_sections[] = [
             'title' => __('Download settings', GFExcel::$slug),
@@ -78,6 +80,41 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
                     'label' => esc_html__('Download URL', GFExcel::$slug),
                     'name' => 'hash',
                     'type' => 'download_url',
+                ],
+                [
+                    'label' => esc_html__('Custom Filename', GFExcel::$slug),
+                    'type' => 'text',
+                    'name' => 'custom_filename',
+                    'placeholder' => sprintf(esc_html__('Default: %s', GFExcel::$slug), GFExcel::getFilename($form)),
+                    'class' => 'medium code',
+                    'description' => esc_html__(
+                        'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default.',
+                        'gk-gravityexport'
+                    ),
+                    'save_callback' => function ($field, $value) {
+                        return sanitize_file_name($value);
+                    },
+                ],
+                [
+                    'label' => esc_html__('File Extension', GFExcel::$slug),
+                    'type' => 'select',
+                    'name' => 'file_extension',
+                    'class' => 'small-text',
+                    'description' => sprintf(
+                        esc_html__(
+                            'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
+                            GFExcel::$slug
+                        ),
+                        '<code>.' . implode('</code>, <code>.', GFExcel::getPluginFileExtensions()) . '</code>'
+                    ),
+                    'choices' => array_map(static function ($extension) {
+                        return
+                            [
+                                'name' => 'file_extension',
+                                'label' => '.' . $extension,
+                                'value' => $extension,
+                            ];
+                    }, GFExcel::getPluginFileExtensions()),
                 ],
             ],
         ];
@@ -136,90 +173,6 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
                         ],
                     ],
                     [
-                        'name' => 'order_by',
-                        'label' => esc_html__('Order By', GFExcel::$slug),
-                        'type' => 'callback',
-                        'callback' => function () {
-                            $sort_field = [
-                                'name' => 'sort_field',
-                                'choices' => (new FieldsRepository($this->get_current_form()))->getSortFieldOptions(),
-                            ];
-
-                            $sort_order = [
-                                'name' => 'sort_order',
-                                'type' => 'select',
-                                'choices' => [
-                                    [
-                                        'value' => 'ASC',
-                                        'label' => esc_html__('Ascending', 'gk-gravityexport'),
-                                    ],
-                                    [
-                                        'value' => 'DESC',
-                                        'label' => esc_html__('Descending', 'gk-gravityexport'),
-                                    ],
-                                ],
-                            ];
-
-                            $this->settings_select($sort_field);
-                            $this->settings_select($sort_order);
-                        },
-                    ],
-                    [
-                        'name' => 'is_transposed',
-                        'type' => 'radio',
-                        'label' => esc_html__('Column Position', GFExcel::$slug),
-                        'default_value' => 0,
-                        'choices' => [
-                            [
-                                'name' => 'is_transposed',
-                                'label' => esc_html__('At the top (normal)', GFExcel::$slug),
-                                'value' => 0,
-                            ],
-                            [
-                                'name' => 'is_transposed',
-                                'label' => esc_html__('At the left (transposed)', GFExcel::$slug),
-                                'value' => 1,
-                            ],
-                        ],
-                    ],
-                    [
-                        'label' => esc_html__('Custom Filename', GFExcel::$slug),
-                        'type' => 'text',
-                        'name' => 'custom_filename',
-                        'class' => 'medium code',
-                        'description' => sprintf(
-                            esc_html__(
-                                'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default (for example: %s).',
-                                'gk-gravityexport'
-                            ),
-                            '<code>' . esc_html(GFExcel::getFilename($this->get_current_form())) . '</code>'
-                        ),
-                        'save_callback' => function ($field, $value) {
-                            return sanitize_file_name($value);
-                        },
-                    ],
-                    [
-                        'label' => esc_html__('File Extension', GFExcel::$slug),
-                        'type' => 'select',
-                        'name' => 'file_extension',
-                        'class' => 'small-text',
-                        'description' => sprintf(
-                            esc_html__(
-                                'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
-                                GFExcel::$slug
-                            ),
-                            '<code>.' . implode('</code>, <code>.', GFExcel::getPluginFileExtensions()) . '</code>'
-                        ),
-                        'choices' => array_map(static function ($extension) {
-                            return
-                                [
-                                    'name' => 'file_extension',
-                                    'label' => '.' . $extension,
-                                    'value' => $extension,
-                                ];
-                        }, GFExcel::getPluginFileExtensions()),
-                    ],
-                    [
                         'label' => esc_html__('Attach Single Entry to Notification', GFExcel::$slug),
                         'type' => 'select',
                         'name' => 'attachment_notification',
@@ -231,7 +184,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
 
         $repository = new FieldsRepository($this->get_current_form());
         $disabled_fields = $repository->getDisabledFields();
-        $all_fields = $repository->getFields($unfiltered = true);
+        $all_fields = $repository->getFields(true);
 
         $active_fields = $inactive_fields = [];
         foreach ($all_fields as $field) {
@@ -242,36 +195,93 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
         $active_fields = $repository->sortFields($active_fields);
 
         $settings_sections[] = [
+
             'title' => esc_html__('Field settings', GFExcel::$slug),
-            'class' => 'sortfields',
             'fields' => [
                 [
-                    'label' => esc_html__('Disabled fields', GFExcel::$slug),
-                    'name' => 'disabled_fields',
-                    'move_to' => 'enabled_fields',
-                    'type' => 'sortable',
-                    'class' => 'fields-select',
-                    'side' => 'left',
-                    'choices' => array_map(function (\GF_Field $field) {
-                        return [
-                            'value' => $field->id,
-                            'label' => $this->get_field_label($field),
-                        ];
-                    }, $inactive_fields),
+                    'name' => 'is_transposed',
+                    'type' => 'radio',
+                    'label' => esc_html__('Column Position', GFExcel::$slug),
+                    'default_value' => 0,
+                    'choices' => [
+                        [
+                            'name' => 'is_transposed',
+                            'label' => esc_html__('At the top (normal)', GFExcel::$slug),
+                            'value' => 0,
+                        ],
+                        [
+                            'name' => 'is_transposed',
+                            'label' => esc_html__('At the left (transposed)', GFExcel::$slug),
+                            'value' => 1,
+                        ],
+                    ],
                 ],
                 [
-                    'label' => esc_html__('Enable & sort the fields', GFExcel::$slug),
-                    'name' => 'enabled_fields',
-                    'move_to' => 'disabled_fields',
-                    'type' => 'sortable',
-                    'class' => 'fields-select',
-                    'side' => 'right',
-                    'choices' => array_map(function (\GF_Field $field) {
-                        return [
-                            'value' => $field->id,
-                            'label' => $this->get_field_label($field),
+                    'name' => 'order_by',
+                    'label' => esc_html__('Order By', GFExcel::$slug),
+                    'type' => 'callback',
+                    'callback' => function () {
+                        $sort_field = [
+                            'name' => 'sort_field',
+                            'choices' => (new FieldsRepository($this->get_current_form()))->getSortFieldOptions(),
                         ];
-                    }, $active_fields),
+
+                        $sort_order = [
+                            'name' => 'sort_order',
+                            'type' => 'select',
+                            'choices' => [
+                                [
+                                    'value' => 'ASC',
+                                    'label' => esc_html__('Ascending', 'gk-gravityexport'),
+                                ],
+                                [
+                                    'value' => 'DESC',
+                                    'label' => esc_html__('Descending', 'gk-gravityexport'),
+                                ],
+                            ],
+                        ];
+
+                        $this->settings_select($sort_field);
+                        $this->settings_select($sort_order);
+                    },
+                ],
+                [
+                    'name' => 'sortfields',
+                    'type' => 'html',
+                    'html' => sprintf(
+                        '<p>%s</p>',
+                        esc_html__('Drag & drop fields to re-order them in the exported file.', GFExcel::$slug)
+                    ),
+                    'fields' => [
+                        [
+                            'label' => esc_html__('Disabled fields', GFExcel::$slug),
+                            'name' => 'disabled_fields',
+                            'move_to' => 'enabled_fields',
+                            'type' => 'sortable',
+                            'class' => 'fields-select',
+                            'side' => 'left',
+                            'choices' => array_map(function (\GF_Field $field) {
+                                return [
+                                    'value' => $field->id,
+                                    'label' => $this->get_field_label($field),
+                                ];
+                            }, $inactive_fields),
+                        ],
+                        [
+                            'label' => esc_html__('Enable & sort the fields', GFExcel::$slug),
+                            'name' => 'enabled_fields',
+                            'move_to' => 'disabled_fields',
+                            'type' => 'sortable',
+                            'class' => 'fields-select',
+                            'side' => 'right',
+                            'choices' => array_map(function (\GF_Field $field) {
+                                return [
+                                    'value' => $field->id,
+                                    'label' => $this->get_field_label($field),
+                                ];
+                            }, $active_fields),
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -361,6 +371,31 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
         ]);
     }
 
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function save_feed_settings($feed_id, $form_id, $settings)
+    {
+        // In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
+        $action = rgpost('gform-settings-save');
+
+        if ($this->hasAction($action)) {
+            // Prevent indefinite loop in case action's fire() method calls save_feed_settings().
+            unset($_POST['gform-settings-save']);
+
+            $this->getAction($action)->fire($this, [$feed_id, $form_id, $settings]);
+
+            return $feed_id;
+        }
+
+        return parent::save_feed_settings($feed_id, $form_id, $settings);
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
     public function settings_select($field, $echo = true): string
     {
         return parent::settings_select($field, $echo);
@@ -387,9 +422,10 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, TemplateAware
     }
 
     /**
-     * Add JavaScript and custom CSS to the page.
+     * Add sortable javascript to the page.
+     * @since $ver$
      */
-    public function register_assets(): void
+    private function register_sortable_js(): void
     {
         if ('gf_edit_forms' !== rgget('page') || $this->get_slug() !== rgget('subview')) {
             return;
