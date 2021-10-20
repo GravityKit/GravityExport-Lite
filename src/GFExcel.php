@@ -2,6 +2,7 @@
 
 namespace GFExcel;
 
+use GFExcel\Addon\GFExcelAddon;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Combiner;
@@ -155,49 +156,47 @@ class GFExcel
 
     /**
      * Return the custom filename if it has one.
-     * @param array $form
-     * @return bool|string
+     * @param array $form The form object.
+     * @return string The filename.
      */
-    public static function getFilename($form)
-    {
-        if (!array_key_exists(static::KEY_CUSTOM_FILENAME, $form) || empty(trim($form[static::KEY_CUSTOM_FILENAME]))) {
-            return sprintf(
-                'gfexcel-%d-%s-%s',
-                $form['id'],
-                sanitize_title($form['title']),
-                date('Ymd')
-            );
-        }
+	public static function getFilename( $form ) {
+		$form_id  = rgar( $form, 'id', 0 );
+		$filename = GFExcelAddon::get_instance()->get_feed_meta_field( 'custom_filename', $form_id );
 
-        return $form[static::KEY_CUSTOM_FILENAME];
-    }
+		return $filename ?: sprintf(
+			'gfexcel-%d-%s-%s',
+			$form_id,
+			sanitize_title( $form['title'] ),
+			date( 'Ymd' )
+		);
+	}
 
     /**
      * Return the file extension to use for renderer and output
      * @param array $form The form object.
      * @return string The file extension.
      */
-    public static function getFileExtension($form)
-    {
-	    if ( ! static::$file_extension ) {
-		    $extension = gf_apply_filters(
-			    [
-				    static::KEY_FILE_EXTENSION,
-				    $form['id'] ?? null
-			    ],
-			    ! ( $form[ static::KEY_FILE_EXTENSION ] ?? null ) ? 'xlsx' : $form[ static::KEY_FILE_EXTENSION ],
-			    $form
-		    );
+	public static function getFileExtension( $form ) {
+		if ( ! static::$file_extension ) {
+			$form_id   = rgar( $form, 'id', 0 );
+			$extension = gf_apply_filters(
+				[
+					static::KEY_FILE_EXTENSION,
+					$form_id,
+				],
+				GFExcelAddon::get_instance()->get_feed_meta_field( 'file_extension', $form_id, 'xlsx' ),
+				$form
+			);
 
-		    if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
-			    $extension = 'xlsx';
-		    }
+			if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
+				$extension = 'xlsx';
+			}
 
-		    return $extension;
-	    }
+			return $extension;
+		}
 
-	    return static::$file_extension;
-    }
+		return static::$file_extension;
+	}
 
     /**
      * Helper method to retrieve the available file extensions for the plugin.
@@ -292,12 +291,8 @@ class GFExcel
 
 	    $feed = $this->getFeedByHash( $hash );
 
-	    $form_id = rgar( $feed, 'form_id', null );
-	    $feed_id = rgar( $feed, 'id', null );
-
-	    if ( ! $form_id ) {
-		    $form_id = $this->getFormIdByHash( $hash );
-	    }
+	    $form_id = rgar( $feed, 'form_id' );
+	    $feed_id = rgar( $feed, 'id' );
 
 	    if ( $form_id ) {
 		    if ( self::canDownloadForm( $form_id ) ) {
@@ -365,37 +360,6 @@ class GFExcel
         ]);
     }
 
-    /**
-     * Helper method to retrieve the form id from the hash.
-     * @param string $hash The hash.
-     * @return int|null The form id.
-     */
-	private function getFormIdByHash($hash)
-	{
-		global $wpdb;
-
-		$table_name = \GFFormsModel::get_meta_table_name();
-		$wildcard = '%';
-		$like = $wildcard . $wpdb->esc_like(json_encode($hash)) . $wildcard;
-
-		// Data is stored in a json_encoded string, so we can't match perfectly.
-		if (
-			// Not even a partial match.
-			!($form_row = $wpdb->get_row(
-				$wpdb->prepare("SELECT form_id FROM {$table_name} WHERE display_meta LIKE %s", $like),
-				ARRAY_A
-			)) ||
-			// Possible match on hash, so check against found form.
-			GFExcel::getHash($form_row['form_id']) !== $hash
-		) {
-			// No match found, so we can try to see if some other plugin can find it.
-			return apply_filters('gfexcel_hash_form_id', null, $hash);
-		}
-
-		//only now are we home save.
-		return (int) $form_row['form_id'];
-	}
-
 	/**
 	 * Helper method to retrieve feed data using unique URL hash value.
 	 *
@@ -416,7 +380,7 @@ class GFExcel
 		$feed = reset( $feeds );
 
 		if ( ! $feed || ! isset( $feed['meta'] ) ) {
-			return apply_filters('gfexcel_hash_feed', null, $hash);
+			return apply_filters( 'gfexcel_hash_feed', null, $hash );
 		}
 
 		$feed['meta'] = json_decode( $feed['meta'], true );
@@ -464,16 +428,15 @@ class GFExcel
      * @param int $form_id
      * @return bool Whether this form is secured.
      */
-    public static function isFormSecured(int $form_id)
-    {
-        if (self::isAllSecured()) {
-            return true;
-        }
+	public static function isFormSecured( int $form_id ) {
+		if ( self::isAllSecured() ) {
+			return true;
+		}
 
-        $meta = \GFFormsModel::get_form_meta($form_id);
+		$feed   = GFExcelAddon::get_instance()->get_feed_by_form_id($form_id);
 
-        return (bool) \rgar($meta, GFExcelConfigConstants::GFEXCEL_DOWNLOAD_SECURED, false);
-    }
+		return (bool) rgars( $feed, 'meta/is_secured', false );
+	}
 
     /**
      * Returns the combiner instance.
