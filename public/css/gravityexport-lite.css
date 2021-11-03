@@ -1,11 +1,3 @@
-.gform-settings-panel.sortfields ul.fields-select {
-    padding: 1px 5px;
-}
-
-.gform-settings-panel.sortfields .gform-settings-field {
-    margin-top: 20px;
-}
-
 #gform_setting_sortfields .gform-settings-nested-fields {
     border: 0;
     margin: 0 -10px;
@@ -22,4 +14,84 @@
 .fields-select#enabled_fields .move i.fa-arrow-right,
 .fields-select#disabled_fields .move i.fa-close {
     display: none;
+}
+
+ul.fields-select {
+    background-color: #FFF;
+    padding: 1px 5px;
+    border: 1px solid #E1E1E1;
+    min-height: 30px;
+    border-radius: 4px;
+}
+
+ul.fields-select .fa-bars {
+    color: #ccd0d4;
+    margin-right: 5px;
+    margin-left: 0;
+}
+
+ul.fields-select li div:not(.move) {
+    flex: 1;
+}
+
+.rtl ul.fields-select .fa-bars {
+    margin-left: 5px;
+    margin-right: 0;
+}
+ul.fields-select li div.move {
+    font-weight: bold;
+    padding: 0 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+ul.fields-select li div.move:hover {
+    color: #006899;
+}
+
+ul.fields-select li {
+    display: flex;
+    background-color: #f7f7f7;
+    margin: 2px 0;
+    padding: 3px;
+    -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
+    -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+    transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+}
+
+ul.fields-select li:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+ul.fields-select li:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+ul.fields-select .ui-sortable-handle {
+    cursor: pointer;
+    cursor: -webkit-grab;
+    padding: 7px;
+    margin: 5px 0;
+    border-radius: 3px;
+}
+
+ul.fields-select .ui-sortable-handle:hover {
+    background-color: #F0F0F0;
+}
+
+ul.fields-select li.light-up {
+    background-color: #006799;
+    color: #FFF;
+}
+
+ul.fields-select li.light-up i {
+    color: #fff;
+}
+
+.ui-sortable-handle:active,
+.ui-sortable-helper {
+    cursor: -webkit-grabbing;
 }
