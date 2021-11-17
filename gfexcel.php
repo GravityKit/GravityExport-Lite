@@ -20,10 +20,8 @@ use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GFExcelAddon;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelAdmin;
-use GFExcel\GravityForms\Field\Sortable;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
-use Gravity_Forms\Gravity_Forms\Settings\Fields;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 

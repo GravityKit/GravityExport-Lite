@@ -5,9 +5,11 @@ namespace GFExcel\Addon;
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\GFExcel;
+use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\Sortable;
 use GFExcel\Repository\FieldsRepository;
+use GFExcel\Repository\FormRepositoryInterface;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
 
 /**
@@ -24,31 +26,54 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 * @since $ver$
 	 */
 	protected $_multiple_feeds = false;
+
 	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
 	protected $_title = 'GravityExport Lite (V2)';
+
 	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
 	protected $_short_title = 'GravityExport Lite (V2)';
+
 	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
 	protected $_slug = 'gravityexport-lite';
+
 	/**
 	 * @since $ver$
 	 * @var string Feed settings permissions.
 	 */
 	protected $_capabilities_form_settings = 'gravityforms_export_entries';
+
 	/**
+	 * A micro cache for the feed object.
 	 * @since $ver$
 	 * @var array|null GF feed object.
 	 */
 	private $feed = [];
+
+	/**
+	 * The form repository.
+	 * @since $ver$
+	 * @var FormRepositoryInterface
+	 */
+	private $form_repository;
+
+	/**
+	 * @inheritdoc
+	 * @since $ver$
+	 */
+	public function __construct(FormRepositoryInterface $form_repository) {
+		parent::__construct();
+
+		$this->form_repository = $form_repository;
+	}
 
 	/**
 	 * @inheritdoc
@@ -66,10 +91,29 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 */
 	public function feed_settings_fields(): array {
 		// Register custom fields first.
+		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
 		Fields::register( 'sortable', Sortable::class );
 
 		$form = $this->get_current_form();
+
+		// Only show
+		if ( ! $this->get_setting( 'hash' ) ) {
+			$settings_sections[] = [
+				'title'  => __( 'Activate GravityExport', GFExcel::$slug ),
+				'fields' => [
+					[
+
+						'name' => 'hash',
+						'type' => 'download_url',
+					],
+				],
+			];
+
+			add_filter( 'gform_settings_save_button', '__return_null' );
+
+			return $settings_sections;
+		}
 
 		$settings_sections[] = [
 			'title'  => __( 'Download settings', GFExcel::$slug ),
@@ -119,8 +163,29 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 		];
 
 		$settings_sections[] = [
-			'title'  => __( 'Security Settings', GFExcel::$slug ),
+			'id'     => 'gk-section-download-file',
+			'title'  => __( 'Download File', GFExcel::$slug ),
 			'fields' => [
+				[
+					'name'    => 'download_file',
+					'label'   => esc_html__( 'Select Date Range (optional)', GFExcel::$slug ),
+					'tooltip' => 'export_date_range',
+					'type'    => 'download_file',
+					'url'     => $this->form_repository->getDownloadUrl($this->get_current_settings()),
+				],
+				[
+					'name'  => 'download_count',
+					'label' => esc_html__( 'Download Count', GFExcel::$slug ),
+					'type'  => 'download_count',
+				],
+			],
+		];
+
+		$settings_sections[] = [
+			'id'          => 'gk-section-security',
+			'collapsible' => true,
+			'title'       => __( 'Security Settings', GFExcel::$slug ),
+			'fields'      => [
 				[
 					'name'          => 'is_secured',
 					'label'         => esc_html__( 'Download Permissions', GFExcel::$slug ),
@@ -157,8 +222,10 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 		$settings_sections[] = apply_filters(
 			'gfexcel_general_settings',
 			[
-				'title'  => __( 'General Settings', GFExcel::$slug ),
-				'fields' => [
+				'id'          => 'gk-general-security',
+				'collapsible' => true,
+				'title'       => __( 'General Settings', GFExcel::$slug ),
+				'fields'      => [
 					[
 						'name'    => 'enable_notes',
 						'label'   => esc_html__( 'Include Entry Notes', GFExcel::$slug ),
@@ -176,6 +243,53 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 						'type'    => 'select',
 						'name'    => 'attachment_notification',
 						'choices' => $this->getNotifications(),
+					],
+					[
+						'name'          => 'is_transposed',
+						'type'          => 'radio',
+						'label'         => esc_html__( 'Column Position', GFExcel::$slug ),
+						'default_value' => 0,
+						'choices'       => [
+							[
+								'name'  => 'is_transposed',
+								'label' => esc_html__( 'At the top (normal)', GFExcel::$slug ),
+								'value' => 0,
+							],
+							[
+								'name'  => 'is_transposed',
+								'label' => esc_html__( 'At the left (transposed)', GFExcel::$slug ),
+								'value' => 1,
+							],
+						],
+					],
+					[
+						'name'     => 'order_by',
+						'label'    => esc_html__( 'Order By', GFExcel::$slug ),
+						'type'     => 'callback',
+						'callback' => function () {
+							$sort_field = [
+								'name'    => 'sort_field',
+								'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
+							];
+
+							$sort_order = [
+								'name'    => 'sort_order',
+								'type'    => 'select',
+								'choices' => [
+									[
+										'value' => 'ASC',
+										'label' => esc_html__( 'Ascending', 'gk-gravityexport' ),
+									],
+									[
+										'value' => 'DESC',
+										'label' => esc_html__( 'Descending', 'gk-gravityexport' ),
+									],
+								],
+							];
+
+							$this->settings_select( $sort_field );
+							$this->settings_select( $sort_order );
+						},
 					],
 				],
 			]
@@ -196,56 +310,10 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 		$active_fields = $repository->sortFields( $active_fields );
 
 		$settings_sections[] = [
-
-			'title'  => esc_html__( 'Field settings', GFExcel::$slug ),
-			'fields' => [
-				[
-					'name'          => 'is_transposed',
-					'type'          => 'radio',
-					'label'         => esc_html__( 'Column Position', GFExcel::$slug ),
-					'default_value' => 0,
-					'choices'       => [
-						[
-							'name'  => 'is_transposed',
-							'label' => esc_html__( 'At the top (normal)', GFExcel::$slug ),
-							'value' => 0,
-						],
-						[
-							'name'  => 'is_transposed',
-							'label' => esc_html__( 'At the left (transposed)', GFExcel::$slug ),
-							'value' => 1,
-						],
-					],
-				],
-				[
-					'name'     => 'order_by',
-					'label'    => esc_html__( 'Order By', GFExcel::$slug ),
-					'type'     => 'callback',
-					'callback' => function () {
-						$sort_field = [
-							'name'    => 'sort_field',
-							'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
-						];
-
-						$sort_order = [
-							'name'    => 'sort_order',
-							'type'    => 'select',
-							'choices' => [
-								[
-									'value' => 'ASC',
-									'label' => esc_html__( 'Ascending', 'gk-gravityexport' ),
-								],
-								[
-									'value' => 'DESC',
-									'label' => esc_html__( 'Descending', 'gk-gravityexport' ),
-								],
-							],
-						];
-
-						$this->settings_select( $sort_field );
-						$this->settings_select( $sort_order );
-					},
-				],
+			'id'          => 'gk-section-fields',
+			'collapsible' => true,
+			'title'       => esc_html__( 'Field settings', GFExcel::$slug ),
+			'fields'      => [
 				[
 					'name'   => 'sortfields',
 					'type'   => 'html',
@@ -371,7 +439,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	public function save_feed_settings( $feed_id, $form_id, $settings ) {
+	final public function save_feed_settings( $feed_id, $form_id, $settings ) {
 		// In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
 		$action = rgpost( 'gform-settings-save' );
 
@@ -433,6 +501,19 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 				'fields-select'
 			)
 		);
+	}
+
+	/**
+	 * @inheritdoc
+	 *
+	 * Overwritten to add custom after-render hook.
+	 *
+	 * @since $ver$
+	 */
+	final public function feed_edit_page( $form, $feed_id ) {
+		parent::feed_edit_page( $form, $feed_id );
+
+		do_action( 'gk-gravityexport-after_feed_edit_page', $form, $feed_id );
 	}
 
 	/**
