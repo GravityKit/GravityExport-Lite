@@ -16,7 +16,7 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields;
  * GravityExport Lite add-on.
  * @since $ver$
  */
-class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
+final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
 	use ActionAware;
 	use AddonTrait;
 	use AddonHelperTrait;
@@ -69,7 +69,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	public function __construct(FormRepositoryInterface $form_repository) {
+	public function __construct( FormRepositoryInterface $form_repository ) {
 		parent::__construct();
 
 		$this->form_repository = $form_repository;
@@ -103,7 +103,6 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 				'title'  => __( 'Activate GravityExport', GFExcel::$slug ),
 				'fields' => [
 					[
-
 						'name' => 'hash',
 						'type' => 'download_url',
 					],
@@ -171,7 +170,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 					'label'   => esc_html__( 'Select Date Range (optional)', GFExcel::$slug ),
 					'tooltip' => 'export_date_range',
 					'type'    => 'download_file',
-					'url'     => $this->form_repository->getDownloadUrl($this->get_current_settings()),
+					'url'     => $this->form_repository->getDownloadUrl( $this->get_current_settings() ),
 				],
 				[
 					'name'  => 'download_count',
@@ -439,7 +438,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	final public function save_feed_settings( $feed_id, $form_id, $settings ) {
+	public function save_feed_settings( $feed_id, $form_id, $settings ) {
 		// In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
 		$action = rgpost( 'gform-settings-save' );
 
@@ -510,7 +509,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 *
 	 * @since $ver$
 	 */
-	final public function feed_edit_page( $form, $feed_id ) {
+	public function feed_edit_page( $form, $feed_id ) {
 		parent::feed_edit_page( $form, $feed_id );
 
 		do_action( 'gk-gravityexport-after_feed_edit_page', $form, $feed_id );
@@ -525,7 +524,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 *
 	 * @return array|null The feed.
 	 */
-	final public function get_feed_by_form_id( int $form_id = 0 ) {
+	public function get_feed_by_form_id( int $form_id = 0 ) {
 		if ( ! $form_id ) {
 			$form    = $this->get_current_form();
 			$form_id = rgar( $form, 'id', 0 );
@@ -550,7 +549,7 @@ class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareIn
 	 *
 	 * @return array|null The field value.
 	 */
-	final public function get_feed_meta_field( string $field, int $form_id = 0, $default = null ) {
+	public function get_feed_meta_field( string $field, int $form_id = 0, $default = null ) {
 		$feed = $this->get_feed_by_form_id( $form_id );
 
 		return rgars( $feed, sprintf( 'meta/%s', $field ), $default );
