@@ -258,6 +258,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Enhancement: `gform_export_separator` filter will also be used to determine the delimiter.
+* Enhancement: `gform_include_bom_export_entries` filter will also be used to determine BOM character use.
+
 = 1.9.3 on September 30, 2021 =
 
 * Bugfix: Feed settings page would break when using Gravity Forms ≥2.5.10.1.
