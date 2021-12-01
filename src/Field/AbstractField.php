@@ -77,6 +77,25 @@ abstract class AbstractField implements FieldInterface
         }, $values);
     }
 
+	/**
+	 * Helper method to apply the regular value filters.
+	 * @since $ver$
+	 *
+	 * @param  mixed  $value  The value to filter.
+	 * @param  array  $entry  The entry object.
+	 * @param  array  $context  Optional additional context.
+	 *
+	 * @return mixed The filtered value.
+	 */
+	final protected function filter_value( $value, array $entry, array $context = [] ) {
+		return gf_apply_filters( [
+			'gfexcel_field_value',
+			$this->field->get_input_type(),
+			$this->field->formId,
+			$this->field->id,
+		], $value, $entry, $this->field, $context );
+	}
+
     /**
      * Validates the values provided to the `wrap` method.
      * @since 1.8.4

@@ -23,33 +23,29 @@ class SeparableField extends BaseField
         return $this->wrap($this->getSeparatedColumns(), true);
     }
 
-    /**
-     * @inheritdoc
-     * @return BaseValue[]
-     */
-    public function getCells($entry)
-    {
-        $fields = gf_apply_filters([
-            'gfexcel_field_' . $this->field->get_input_type() . '_fields',
-            $this->field->formId,
-            $this->field->id
-        ], $this->getSeparatedFields($entry), $entry);
+	/**
+	 * @inheritdoc
+	 * @return BaseValue[]
+	 */
+	public function getCells( $entry ) {
+		$fields = gf_apply_filters( [
+			'gfexcel_field_' . $this->field->get_input_type() . '_fields',
+			$this->field->formId,
+			$this->field->id,
+		], $this->getSeparatedFields( $entry ), $entry );
 
-        if ($this->isSeparationEnabled()) {
-            return $this->wrap($fields);
-        }
+		if ( $this->isSeparationEnabled() ) {
+			$fields = array_map( function ( $value ) use ( $entry ) {
+				return $this->filter_value( $value, $entry );
+			}, $fields );
 
-        $value = implode("\n", array_filter($fields));
+			return $this->wrap( $fields );
+		}
 
-        $value = gf_apply_filters([
-            'gfexcel_field_value',
-            $this->field->get_input_type(),
-            $this->field->formId,
-            $this->field->id
-        ], $value, $entry, $this->field);
+		$value = $this->filter_value( implode( "\n", array_filter( $fields ) ), $entry );
 
-        return $this->wrap([$value]);
-    }
+		return $this->wrap( [ $value ] );
+	}
 
     /**
      * Get the separated fields to go along with the columns.
