@@ -255,15 +255,15 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         parent::init();
 
-	    if ( ( $action = rgget( 'gf_action' ) ) && ( $id = rgget( 'id' ) ) ) {
-		    // trigger action
-		    do_action( 'gfexcel_action_' . strtolower( trim( $action ) ), $id, $this );
+        if (($action = rgget('gf_action')) && ($id = rgget('id'))) {
+            // trigger action
+            do_action('gfexcel_action_' . strtolower(trim($action)), $id, $this);
 
-		    // redirect back to same page without the action
-		    wp_safe_redirect( remove_query_arg( 'gf_action' ) );
+            // redirect back to same page without the action
+            wp_safe_redirect(remove_query_arg('gf_action'));
 
-		    exit( 0 );
-	    }
+            exit(0);
+        }
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
