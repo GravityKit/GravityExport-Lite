@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Default value of file upload was not available without saving the general settings once.
+
 = 1.9.3 on September 30, 2021 =
 
 * Bugfix: Feed settings page would break when using Gravity Forms ≥2.5.10.1.
