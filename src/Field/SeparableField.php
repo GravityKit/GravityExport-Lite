@@ -5,6 +5,10 @@ namespace GFExcel\Field;
 use GFExcel\GFExcelAdmin;
 use GFExcel\Values\BaseValue;
 
+/**
+ * A field transformer that serves as the base for every field that has sub fields.
+ * @since 1.6.0
+ */
 class SeparableField extends BaseField
 {
     /** @var string */
@@ -112,13 +116,13 @@ class SeparableField extends BaseField
     protected function getVisibleSubfields()
     {
         return array_filter((array) $this->field->get_entry_inputs(), function ($subfield) {
-            return isset($subfield['isHidden']) ? !$subfield['isHidden'] : true;
+            return ! isset( $subfield['isHidden'] ) || ! $subfield['isHidden'];
         });
     }
 
     /**
      * Get the label for a subfield.
-     * @param mixed[] $field The field object.
+     * @param array|\ArrayAccess $field The field object.
      * @return string The sub label.
      */
     protected function getSubLabel($field)
