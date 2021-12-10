@@ -1363,7 +1363,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	/**
 	 * Helper function to retrieve the required form repository, with micro cache.
 	 *
-	 * @since $ver$
+	 * @since 1.10
 	 *
 	 * @param string|int|null $form_id The form id.
 	 *
