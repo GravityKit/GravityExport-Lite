@@ -679,11 +679,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     private function saveSettings($form): void
     {
 
-	    // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
-	    // so we check for others here.
-	    $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
-		    return ( stripos($key, 'gfexcel_') === 0 || stripos($key, 'gravityexport') === 0 );
-	    });
+        // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
+        // so we check for others here.
+        $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
+            return ( stripos($key, 'gfexcel_') === 0 || stripos($key, 'gravityexport') === 0 );
+        });
 
         $form_meta = \GFFormsModel::get_form_meta($form['id']);
 
