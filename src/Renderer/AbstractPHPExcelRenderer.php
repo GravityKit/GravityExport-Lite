@@ -445,7 +445,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
     private function setCsvProperties(Csv $objWriter): void
     {
         // updates the delimiter
-        $objWriter->setDelimiter((string) apply_filters('gfexcel_renderer_csv_delimiter', $objWriter->getDelimiter()));
+	    $delimiter = apply_filters( 'gform_export_separator', $objWriter->getDelimiter() );
+	    $objWriter->setDelimiter( (string) apply_filters( 'gfexcel_renderer_csv_delimiter', $delimiter ) );
 
         // updates the enclosure
         $objWriter->setEnclosure((string) apply_filters('gfexcel_renderer_csv_enclosure', $objWriter->getEnclosure()));
@@ -457,7 +458,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
         ));
 
         // whether to use a BOM
-        $objWriter->setUseBOM((bool) apply_filters('gfexcel_renderer_csv_use_bom', $objWriter->getUseBOM()));
+	    $use_bom = apply_filters( 'gform_include_bom_export_entries', $objWriter->getUseBOM() );
+	    $objWriter->setUseBOM( (bool) apply_filters( 'gfexcel_renderer_csv_use_bom', $use_bom ) );
 
         // whether to include a separator line
         $objWriter->setIncludeSeparatorLine((bool) apply_filters(
