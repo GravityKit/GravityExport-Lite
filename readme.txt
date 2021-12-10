@@ -260,6 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 = Unreleased =
 
+* Bugfix: Default value of file upload was not available without saving the general settings once.
 * Bugfix: Gravity Perks: Live Preview (show hidden) would not work properly.
 
 = 1.9.3 on September 30, 2021 =
