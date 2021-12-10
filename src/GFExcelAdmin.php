@@ -679,8 +679,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     private function saveSettings($form): void
     {
 
-        // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
-        // so we check for others here.
+	    // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
+	    // so we check for others here.
 	    $gfexcel_keys = array_filter(array_keys($_POST), static function ($key) {
 		    return ( stripos($key, 'gfexcel_') === 0 || stripos($key, 'gravityexport') === 0 );
 	    });
@@ -727,8 +727,8 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         $settings = array_filter((array) parent::get_form_settings($form));
 
-	    // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
-	    // so we add the values back in here.
+        // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
+        // so we add the values back in here.
         return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form, $extra_settings) {
 
             if ( stripos($key, 'gfexcel_') === 0 || stripos($key, 'gravityexport') === 0 ) {
