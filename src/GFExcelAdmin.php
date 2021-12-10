@@ -35,8 +35,12 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
      */
     protected $_capabilities_settings_page = 'gravityforms_export_entries';
 
-    /** @var FormsRepository|null micro cache */
-    private $repository;
+    /**
+     * Microcache for form repositories.
+     * @since $ver$
+     * @var array<int, FormsRepository>
+     */
+    private $form_repositories = [];
 
     /** @var string  micro cache for file name */
     private $_file = '';
@@ -251,21 +255,15 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         parent::init();
 
-        if ($form = $this->get_current_form()) {
-            if (isset($_GET['gf_action'])) {
-                // trigger action
-                do_action('gfexcel_action_' . trim(strtolower((string) $_GET['gf_action'])), $form['id'], $this);
+	    if ( ( $action = rgget( 'gf_action' ) ) && ( $id = rgget( 'id' ) ) ) {
+		    // trigger action
+		    do_action( 'gfexcel_action_' . strtolower( trim( $action ) ), $id, $this );
 
-                $url = remove_query_arg( 'gf_action' );
+		    // redirect back to same page without the action
+		    wp_safe_redirect( remove_query_arg( 'gf_action' ) );
 
-                // redirect back to same page without the action
-                wp_safe_redirect( $url );
-
-                exit(0);
-            }
-
-            $this->repository = new FormsRepository($form['id']);
-        }
+		    exit( 0 );
+	    }
 
         add_action('gform_notification', [$this, 'handle_notification'], 10, 3);
         add_action('gform_after_email', [$this, 'remove_temporary_file'], 10, 13);
@@ -653,7 +651,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         $this->settings_select([
             'name' => 'gfexcel_output_sort_field',
             'choices' => (new FieldsRepository($form))->getSortFieldOptions(),
-            'default_value' => $this->repository->getSortField(),
+            'default_value' => $this->getFormRepository()->getSortField(),
         ]);
     }
 
@@ -669,7 +667,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 ['value' => 'ASC', 'label' => esc_html__('Ascending', GFExcel::$slug)],
                 ['value' => 'DESC', 'label' => esc_html__('Descending', GFExcel::$slug)],
             ],
-            'default_value' => $this->repository->getSortOrder(),
+            'default_value' => $this->getFormRepository()->getSortOrder(),
         ]);
     }
 
@@ -1126,15 +1124,11 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
      */
     public function handle_notification($notification, $form, $entry)
     {
-        if (!$this->repository) {
-            $this->repository = new FormsRepository($form['id']);
-        }
-
         // get notification to add to by form setting
-        if ($this->repository->getSelectedNotification() !== \rgar($notification, 'id')) {
-            //Not the right notification
-            return $notification;
-        }
+	    if ( $this->getFormRepository( $form['id'] )->getSelectedNotification() !== \rgar( $notification, 'id' ) ) {
+		    // Not the right notification
+		    return $notification;
+	    }
 
         // create a file based on the settings in the form, with only this entry.
         $output = new GFExcelOutput($form['id'], new PHPExcelRenderer());
@@ -1159,7 +1153,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     private function getNotifications(): array
     {
         $options = [['label' => __('Select a Notification', GFExcel::$slug), 'value' => '']];
-        foreach ($this->repository->getNotifications() as $key => $notification) {
+        foreach ($this->getFormRepository()->getNotifications() as $key => $notification) {
             $options[] = ['label' => \rgar($notification, 'name', __('Unknown')), 'value' => $key];
         }
 
@@ -1365,4 +1359,22 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
             }
         }
     }
+
+	/**
+	 * Helper function to retrieve the required form repository, with micro cache.
+	 *
+	 * @since 1.10
+	 *
+	 * @param string|int|null $form_id The form id.
+	 *
+	 * @return FormsRepository The form repository.
+	 */
+	private function getFormRepository( $form_id = null ): FormsRepository {
+		$form_id = (int) ( $form_id ?: rgget( 'id' ) );
+		if ( ! isset( $this->form_repositories[ $form_id ] ) ) {
+			$this->form_repositories[ $form_id ] = new FormsRepository( $form_id );
+		}
+
+		return $this->form_repositories[ $form_id ];
+	}
 }
