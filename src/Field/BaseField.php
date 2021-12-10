@@ -17,14 +17,7 @@ class BaseField extends AbstractField
      */
     public function getCells($entry)
     {
-        $value = $this->getFieldValue($entry);
-
-        $value = gf_apply_filters([
-            'gfexcel_field_value',
-            $this->field->get_input_type(),
-            $this->field->formId,
-            $this->field->id
-        ], $value, $entry, $this->field);
+	    $value = $this->filter_value( $this->getFieldValue( $entry ), $entry );
 
         return $this->wrap([$value]);
     }
