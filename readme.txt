@@ -262,6 +262,8 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Enhancement: `gform_export_separator` filter will also be used to determine the delimiter.
 * Enhancement: `gform_include_bom_export_entries` filter will also be used to determine BOM character use.
+* Bugfix: Default value of file upload was not available without saving the general settings once.
+* Bugfix: Gravity Perks: Live Preview (show hidden) would not work properly.
 
 = 1.9.3 on September 30, 2021 =
 
