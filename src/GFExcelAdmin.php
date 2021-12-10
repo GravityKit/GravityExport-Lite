@@ -1253,7 +1253,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
     {
         if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
             return (int) $form[GFExcel::KEY_ENABLED_NOTES];
-        };
+        }
 
         return $this->get_plugin_setting('notes_enabled');
     }
