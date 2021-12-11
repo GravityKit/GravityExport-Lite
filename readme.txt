@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.8
-Stable tag: 1.9.4
+Stable tag: 1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= 1.9.4 on December 10, 2021 =
+= 1.10 on December 10, 2021 =
 
 * Enhancement: Support for Gravity Perks Nested Forms.
 * Enhancement: `gfexcel_field_value` filters will also be applied on subfields of separable fields.
