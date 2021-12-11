@@ -50,14 +50,7 @@ class CheckboxField extends BaseField implements RowsInterface
             foreach ($inputs as $input) {
                 $index = (string) $input['id'];
                 if (!rgempty($index, $entry)) {
-	                $value = $this->getFieldValue($entry, $index);
-
-	                $value = gf_apply_filters([
-		                'gfexcel_field_value',
-		                $this->field->get_input_type(),
-		                $this->field->formId,
-		                $this->field->id
-	                ], $value, $entry, $this->field);
+	                $value = $this->filter_value( $this->getFieldValue( $entry, $index ), $entry );
 
 	                yield $this->wrap([$value]);
                 }
