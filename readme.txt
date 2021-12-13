@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= 1.10.1 on December 10, 2021 =
+
+* Bufgix: Fatal error when using the plugin with PHP <7.4.
+
 = 1.10 on December 10, 2021 =
 
 * Enhancement: Support for Gravity Perks Nested Forms.
