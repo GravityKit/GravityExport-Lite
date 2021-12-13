@@ -13,6 +13,11 @@
             "email": "doekenorg@gmail.com"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "7.2"
+        }
+    },
     "minimum-stability": "stable",
     "repositories": [
         {
