@@ -15,7 +15,7 @@
     ],
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.2.34"
         }
     },
     "minimum-stability": "stable",
