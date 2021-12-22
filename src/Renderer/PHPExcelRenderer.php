@@ -4,11 +4,10 @@ namespace GFExcel\Renderer;
 
 use GFExcel\GFExcel;
 
-class PHPExcelRenderer extends AbstractPHPExcelRenderer implements RendererInterface
+class PHPExcelRenderer extends AbstractPHPExcelRenderer
 {
     private $columns;
     private $rows;
-    private $form;
     private $worksheet;
     private $extension;
 
