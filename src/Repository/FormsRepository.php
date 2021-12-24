@@ -4,36 +4,45 @@ namespace GFExcel\Repository;
 
 use GFAPI;
 use GFExcel\Addon\GFExcelAddon;
-use GFExcel\GFExcelAdmin;
 
+/**
+ * Forms repository for Gravity Forms' forms.
+ */
 class FormsRepository {
 	/** @var array|false */
 	private $form;
-	/**
-	 * @var GFExcelAdmin
-	 */
-	private $admin;
 
+	/**
+	 * The Gravity Export addon.
+	 * @since $ver$
+	 * @var GFExcelAddon
+	 */
+	private $addon;
+
+	/**
+	 * Creates the Forms Repository.
+	 *
+	 * @param string|int $form_id The form id.
+	 */
 	public function __construct( $form_id ) {
 		$this->form  = $form_id ? GFAPI::get_form( $form_id ) : [];
-		$this->admin = GFExcelAdmin::get_instance();
+		$this->addon = GFExcelAddon::get_instance();
 	}
 
 	/**
-	 * Whether to show notes based on setting or filter
+	 * Whether to show notes based on setting or filter.
 	 * @return bool
 	 */
-	public function showNotes() {
-		$value = false; //default
-		if ( $setting = $this->admin->get_plugin_setting( 'notes_enabled' ) ) {
-			$value = (bool) $setting;
-		}
+	public function showNotes(): bool {
+		// Plugin has global setting.
+		$plugin_setting = (bool) $this->addon->get_plugin_setting( 'notes_enabled' );
 
-		$form_id = rgar( $this->getForm(), 'id', 0 );
+		// Form can overwrite that setting.
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
+		$setting = $this->addon->get_feed_meta_field( 'enable_notes', $form_id, $plugin_setting );
 
-		$value = GFExcelAddon::get_instance()->get_feed_meta_field( 'enable_notes', $form_id, $value );
-
-		return (bool) gf_apply_filters( [ 'gfexcel_field_notes_enabled', $form_id ], $value );
+		// Hook can overwrite the setting too.
+		return (bool) gf_apply_filters( [ 'gfexcel_field_notes_enabled', $form_id ], $setting, $form_id );
 	}
 
 	/**
@@ -41,21 +50,21 @@ class FormsRepository {
 	 * @return mixed
 	 */
 	public function getSortField() {
-		$form_id = rgar( $this->getForm(), 'id', 0 );
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
 
-		$value = GFExcelAddon::get_instance()->get_feed_meta_field( 'sort_field', $form_id, 'date_created' );
+		$value = $this->addon->get_feed_meta_field( 'sort_field', $form_id, 'date_created' );
 
 		return gf_apply_filters( [ 'gfexcel_output_sort_field', $form_id ], $value );
 	}
 
 	/**
-	 * In what order should the data be sorted
-	 * @return string
+	 * In what order should the data be sorted.
+	 * @return string The sort order.
 	 */
-	public function getSortOrder() {
-		$form_id = rgar( $this->getForm(), 'id', 0 );
+	public function getSortOrder(): string {
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
 
-		$value = GFExcelAddon::get_instance()->get_feed_meta_field( 'sort_order', $form_id, 'ASC' );
+		$value = $this->addon->get_feed_meta_field( 'sort_order', $form_id, 'ASC' );
 
 		$value = gf_apply_filters( [ 'gfexcel_output_sort_order', $form_id ], $value );
 
@@ -67,7 +76,7 @@ class FormsRepository {
 	 * Return the notifications for this form
 	 * @return array
 	 */
-	public function getNotifications() {
+	public function getNotifications(): array {
 		return \rgar( $this->form, 'notifications', [] );
 	}
 
@@ -75,10 +84,10 @@ class FormsRepository {
 	 * Returns the selected notification.
 	 * @return string
 	 */
-	public function getSelectedNotification() {
-		return GFExcelAddon::get_instance()->get_feed_meta_field(
+	public function getSelectedNotification(): string {
+		return (string) $this->addon->get_feed_meta_field(
 			'attachment_notification',
-			rgar( $this->form, 'id', 0 ),
+			\rgar( $this->form, 'id', 0 ),
 			''
 		);
 	}

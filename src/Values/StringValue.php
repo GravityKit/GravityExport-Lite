@@ -2,7 +2,7 @@
 
 namespace GFExcel\Values;
 
-use GFExcel\GFExcelAdmin;
+use GFExcel\Addon\GFExcelAddon;
 
 /**
  * Value object that represents a string.
@@ -21,37 +21,34 @@ class StringValue extends BaseValue
         $this->setUrlAsLink();
     }
 
-    /**
-     * Check if the value is a url, and set that url as a link on the cell
-     * @since 1.3.0
-     */
-    protected function setUrlAsLink()
-    {
-        if ($this->isUrl($this->value) && $this->hasHyperlinksEnabled()) {
-            $this->setUrl($this->value);
-        }
-    }
+	/**
+	 * Check if the value is a URL, and set that URL as a link on the cell.
+	 * @since 1.3.0
+	 */
+	protected function setUrlAsLink(): void {
+		if ( $this->isUrl( $this->value ) && $this->hasHyperlinksEnabled() ) {
+			$this->setUrl( $this->value );
+		}
+	}
 
     /**
-     * Quick test if value is a url.
+     * Quick test if value is a URL.
      * @param string $value The value.
-     * @return bool Whether the value is a url.
+     * @return bool Whether the value is a URL.
      */
-    protected function isUrl($value)
-    {
-        return (bool) preg_match(
-            '%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i',
-            $value
-        );
-    }
+	protected function isUrl( string $value ): bool {
+		return (bool) preg_match(
+			'%^(https?|ftps?)://([A-Z0-9][A-Z0-9_-]*(?:.[A-Z0-9][A-Z0-9_-]*)+):?(d+)?/?%i',
+			$value
+		);
+	}
 
     /**
      * Returns whether the `hyperlinks_enabled` setting is true.
      * @since 1.3.0
      * @return bool Whether the hyperlinks are enabled.
      */
-    private function hasHyperlinksEnabled()
-    {
-        return (bool) GFExcelAdmin::get_instance()->get_plugin_setting('hyperlinks_enabled');
-    }
+	private function hasHyperlinksEnabled(): bool {
+		return (bool) ( GFExcelAddon::get_instance()->get_plugin_setting( 'hyperlinks_enabled' ) ?? true );
+	}
 }

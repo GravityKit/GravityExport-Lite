@@ -17,11 +17,20 @@ class SingleFeedMigration extends Migration {
 	protected static $version = '2.0.0';
 
 	/**
-	 * Mapping from old name to new name.
+	 * Mapping from the old addon settings names to the new names.
 	 * @since $ver$
 	 * @var string[]
 	 */
-	private static $mapping = [
+	private static $addon_mapping = [
+		'field_address_split_enabled' => 'field_separation_enabled',
+	];
+
+	/**
+	 * Mapping from the old form settings names to the new names.
+	 * @since $ver$
+	 * @var string[]
+	 */
+	private static $feed_mapping = [
 		'gfexcel_hash'                    => 'hash',
 		'gfexcel_enabled_notes'           => 'enable_notes',
 		'gfexcel_output_sort_field'       => 'sort_field',
@@ -41,6 +50,8 @@ class SingleFeedMigration extends Migration {
 	 * @since $ver$
 	 */
 	public function run(): void {
+		$this->migrateAddonSettings();
+
 		$forms = \GFFormsModel::get_form_ids();
 		foreach ( array_chunk( $forms, 50 ) as $form_ids ) {
 			$this->updateForms( $form_ids );
@@ -77,12 +88,12 @@ class SingleFeedMigration extends Migration {
 	 * @throws MigrationException
 	 */
 	private function updateForm( array $form ): void {
-		$old_settings = array_intersect_key( $form, self::$mapping );
+		$old_settings = array_intersect_key( $form, self::$feed_mapping );
 		$new_settings = [];
 
 		// Predefined settings.
 		foreach ( $old_settings as $key => $value ) {
-			$new_settings[ self::$mapping[ $key ] ] = $value;
+			$new_settings[ self::$feed_mapping[ $key ] ] = $value;
 		}
 
 		$addon = GFExcelAddon::get_instance();
@@ -97,5 +108,26 @@ class SingleFeedMigration extends Migration {
 		if ( $result instanceof \WP_Error ) {
 			throw new MigrationException( $result->get_error_message() );
 		}
+	}
+
+	/**
+	 * Migrates the old add-on settings to the new add-on.
+	 * @since $ver$
+	 */
+	private function migrateAddonSettings(): void {
+		// Get all the old settings.
+		$settings = get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
+
+		foreach (self::$addon_mapping as $old => $new) {
+			// Update old to new setting name, if the new setting name isn't already present.
+			if (isset($settings[$old]) && !isset($settings[$new])) {
+				$settings[$new] = $settings[$old];
+			}
+
+			// Remove old setting name.
+			unset($settings[$old]);
+		}
+
+		GFExcelAddon::get_instance()->update_plugin_settings($settings);
 	}
 }
