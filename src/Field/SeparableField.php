@@ -5,6 +5,10 @@ namespace GFExcel\Field;
 use GFExcel\GFExcelAdmin;
 use GFExcel\Values\BaseValue;
 
+/**
+ * A field transformer that serves as the base for every field that has sub fields.
+ * @since 1.6.0
+ */
 class SeparableField extends BaseField
 {
     /** @var string */
@@ -23,33 +27,29 @@ class SeparableField extends BaseField
         return $this->wrap($this->getSeparatedColumns(), true);
     }
 
-    /**
-     * @inheritdoc
-     * @return BaseValue[]
-     */
-    public function getCells($entry)
-    {
-        $fields = gf_apply_filters([
-            'gfexcel_field_' . $this->field->get_input_type() . '_fields',
-            $this->field->formId,
-            $this->field->id
-        ], $this->getSeparatedFields($entry), $entry);
+	/**
+	 * @inheritdoc
+	 * @return BaseValue[]
+	 */
+	public function getCells( $entry ) {
+		$fields = gf_apply_filters( [
+			'gfexcel_field_' . $this->field->get_input_type() . '_fields',
+			$this->field->formId,
+			$this->field->id,
+		], $this->getSeparatedFields( $entry ), $entry );
 
-        if ($this->isSeparationEnabled()) {
-            return $this->wrap($fields);
-        }
+		if ( $this->isSeparationEnabled() ) {
+			$fields = array_map( function ( $value ) use ( $entry ) {
+				return $this->filter_value( $value, $entry );
+			}, $fields );
 
-        $value = implode("\n", array_filter($fields));
+			return $this->wrap( $fields );
+		}
 
-        $value = gf_apply_filters([
-            'gfexcel_field_value',
-            $this->field->get_input_type(),
-            $this->field->formId,
-            $this->field->id
-        ], $value, $entry, $this->field);
+		$value = $this->filter_value( implode( "\n", array_filter( $fields ) ), $entry );
 
-        return $this->wrap([$value]);
-    }
+		return $this->wrap( [ $value ] );
+	}
 
     /**
      * Get the separated fields to go along with the columns.
@@ -112,13 +112,13 @@ class SeparableField extends BaseField
     protected function getVisibleSubfields()
     {
         return array_filter((array) $this->field->get_entry_inputs(), function ($subfield) {
-            return isset($subfield['isHidden']) ? !$subfield['isHidden'] : true;
+            return ! isset( $subfield['isHidden'] ) || ! $subfield['isHidden'];
         });
     }
 
     /**
      * Get the label for a subfield.
-     * @param mixed[] $field The field object.
+     * @param array|\ArrayAccess $field The field object.
      * @return string The sub label.
      */
     protected function getSubLabel($field)
