@@ -225,7 +225,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
             ]
         ];
 
-	    if ( class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
+	    if ( ! class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
 		    $settings_sections[] = [
 			    'title'       => '',
 			    'description' => $this->get_gravityexport_message(),
