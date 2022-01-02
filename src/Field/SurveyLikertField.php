@@ -65,7 +65,7 @@ class SurveyLikertField extends SeparableField {
 	}
 
 	/**
-	 *
+	 * Whether this field has multiple rows.
 	 * @since $ver$
 	 */
 	protected function hasMultipleRows(): bool {
