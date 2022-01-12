@@ -61,4 +61,3 @@ final class Usage {
 		return (string) $number_format ? number_format_i18n( $usage_target ) : $usage_target;
 	}
 }
-

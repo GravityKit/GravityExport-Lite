@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     GravityExport Lite
- * Version:         1.10.1
+ * Version:         2.0.0
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityView
@@ -19,7 +19,6 @@ defined('ABSPATH') or die('No direct access!');
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GFExcelAddon;
 use GFExcel\GFExcel;
-use GFExcel\GFExcelAdmin;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
 use League\Container\Container;
@@ -30,7 +29,7 @@ if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '1.10.1' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '2.0.0' );
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
@@ -54,6 +53,7 @@ add_action('gform_loaded', static function (): void {
     }
 
     load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
+
     GFForms::include_addon_framework();
 	GFForms::include_feed_addon_framework();
 
@@ -66,6 +66,12 @@ add_action('gform_loaded', static function (): void {
         require_once($autoload);
     }
 
+	/**
+	 * Making sure old version of plugins still work.
+	 * @deprecated Can be removed in next major release.
+	 */
+    class_alias(GFExcelAddon::class, '\GFExcel\GFExcelAdmin');
+
     // Start DI container.
     $container = (new Container())
         ->defaultToShared()
@@ -74,13 +80,6 @@ add_action('gform_loaded', static function (): void {
         ->addServiceProvider(new AddOnProvider())
         // auto wire it up
         ->delegate(new ReflectionContainer());
-
-    // Instantiate add on from container. todo: remove
-    $old_addon = $container->get(GFExcelAdmin::class);
-
-    // Set instance for Gravity Forms and register the add-on. todo: remove
-    GFExcelAdmin::set_instance($old_addon);
-    GFAddOn::register(GFExcelAdmin::class);
 
     // Instantiate add on from container.
     $addon = $container->get(GFExcelAddon::class);
