@@ -216,22 +216,23 @@ class GFExcel
         return $extensions;
     }
 
-    /**
-     * Whether the current user can download the form.
-     * @since 1.7.0
-     * @param int $form_id The form id of the form to download.
-     * @return bool Whether the current user can download the file.
-     */
-    private static function canDownloadForm(int $form_id)
-    {
-        // public urls can always be downloaded.
-        if (!self::isFormSecured($form_id)) {
-            return true;
-        }
+	/**
+	 * Whether the current user can download the form.
+	 * @since 1.7.0
+	 *
+	 * @param int $form_id The form id of the form to download.
+	 *
+	 * @return bool Whether the current user can download the file.
+	 */
+	public static function canDownloadForm( int $form_id ): bool {
+		// public urls can always be downloaded.
+		if ( ! self::isFormSecured( $form_id ) ) {
+			return true;
+		}
 
-        // does the user have rights?
-        return \GFCommon::current_user_can_any('gravityforms_export_entries');
-    }
+		// does the user have rights?
+		return \GFCommon::current_user_can_any( 'gravityforms_export_entries' );
+	}
 
     /**
      * Registers the permalink structures for the download

@@ -8,9 +8,11 @@ use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\GFExcel;
+use GFExcel\GFExcelOutput;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\Sortable;
+use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormRepositoryInterface;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
@@ -23,6 +25,12 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	use ActionAware;
 	use AddonTrait;
 	use AddonHelperTrait;
+
+	/**
+	 * Slug for bulk action download.
+	 * @since $ver$
+	 */
+	private const BULK_DOWNLOAD = 'gk-download';
 
 	/**
 	 * @inheritdoc
@@ -100,6 +108,8 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		parent::init_admin();
 
 		add_action( 'admin_enqueue_scripts', \Closure::fromCallable( [ $this, 'register_sortable_js' ] ) );
+		add_action( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
+		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
 	}
 
 	/**
@@ -817,5 +827,71 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		$feed = $this->get_feed_by_form_id( $form_id );
 
 		return rgars( $feed, sprintf( 'meta/%s', $field ), $default );
+	}
+
+	/**
+	 * Add GravityExport download option to bulk action dropdown.
+	 *
+	 * @param array $actions The current actions.
+	 *
+	 * @return array The new actions.
+	 */
+	private function bulk_actions( array $actions ): array {
+		if ( 'form_list' === \GFForms::get_page() ) {
+			$actions[ self::BULK_DOWNLOAD ] = esc_html__( 'Download as one file', GFExcel::$slug );
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * /**
+	 * Handles the download of multiple forms as a bulk action.
+	 * @since 1.2.0
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
+	 */
+	private function handle_bulk_actions(): void {
+		if (
+			! current_user_can( 'editor' )
+			&& ! current_user_can( 'administrator' )
+			&& ! \GFCommon::current_user_can_any( 'gravityforms_export_entries' )
+		) {
+			return;
+		}
+
+		if ( $this->get_bulk_action() !== self::BULK_DOWNLOAD || ! array_key_exists( 'form', $_REQUEST ) ) {
+			return;
+		}
+
+		$form_ids = (array) $_REQUEST['form'];
+		if ( count( $form_ids ) < 1 ) {
+			return;
+		}
+
+		$renderer = count( $form_ids ) > 1
+			? new PHPExcelMultisheetRenderer()
+			: GFExcel::getRenderer( current( $form_ids ) );
+
+		foreach ( $form_ids as $form_id ) {
+			$feed   = $this->get_feed_by_form_id( $form_id );
+			$output = new GFExcelOutput( (int) $form_id, $renderer, null, $feed['id'] ?? null );
+			$output->render();
+		}
+
+		$renderer->renderOutput();
+	}
+
+	/**
+	 * {@see \GFFeedAddOn::get_bulk_action()}.
+	 * @since $ver$
+	 * @return null|string The current action.
+	 */
+	private function get_bulk_action(): ?string {
+		$action = rgpost( 'action' );
+		if ( empty( $action ) || $action === '-1' ) {
+			$action = rgpost( 'action2' );
+		}
+
+		return empty( $action ) || $action === '-1' ? null : $action;
 	}
 }
