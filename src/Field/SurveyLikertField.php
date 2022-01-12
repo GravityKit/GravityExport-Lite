@@ -68,7 +68,7 @@ class SurveyLikertField extends SeparableField {
 	 * Whether this field has multiple rows.
 	 * @since $ver$
 	 */
-	protected function hasMultipleRows(): bool {
+	private function hasMultipleRows(): bool {
 		return $this->field->gsurveyLikertEnableMultipleRows ?? false;
 	}
 
