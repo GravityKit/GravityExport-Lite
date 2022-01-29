@@ -23,16 +23,27 @@ class SurveyLikertField extends SeparableField {
 			return parent::getFieldValue( $entry, $input_id );
 		}
 
-		$value = $entry[ $input_id ?: $this->field->id ] ?? ':';
+		if( $input_id ) {
+			$entry_key = $input_id;
+		} else {
+			$entry_key = $this->field->id;
+		}
+
+		$value = $entry[ $entry_key ] ?? '';
+
 		// If this is not a multi row value; add a colon, so we can still get $column.
 		if ( strpos( $value, ':' ) === false ) {
 			$value = ':' . $value;
 		}
 
+		// There will always be a colon; there will always be a $column set.
 		[ , $column ] = explode( ':', $value );
 
 		foreach ( $this->field->choices as $choice ) {
-			if ( ( $choice['value'] ?? '' ) === $column ) {
+
+			$choice_value = $choice['value'] ?? '';
+
+			if ( $choice_value === $column ) {
 				return $choice['score'];
 			}
 		}
