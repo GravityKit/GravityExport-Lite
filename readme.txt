@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 5.8
-Stable tag: 1.10.1
+Stable tag: 1.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -258,15 +258,15 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= 1.11 on January 31, 2022 =
 
 * Feature: Survey Likert fields can return the score instead of the value by applying the `gfexcel_field_likert_use_score` hook.
-* Bugfix: Possible errors when using `gform_export_separator` callbacks with 2 expected parameters.
 * Enhancement: Updated all `gfexcel_renderer_csv_*` hooks to include the form id.
+* Bugfix: Possible errors when using `gform_export_separator` callbacks with 2 expected parameters.
 
 = 1.10.1 on December 10, 2021 =
 
-* Bufgix: Fatal error when using the plugin with PHP <7.4.
+* Bugfix: Fatal error when using the plugin with PHP <7.4.
 
 = 1.10 on December 10, 2021 =
 

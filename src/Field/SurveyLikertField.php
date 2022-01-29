@@ -4,7 +4,7 @@ namespace GFExcel\Field;
 
 /**
  * A field transformer for the `likert` field from the Gravity Forms Survey Plugin.
- * @since $ver$
+ * @since 1.11
  * @see \GF_Field_Likert
  */
 class SurveyLikertField extends SeparableField {
@@ -16,7 +16,7 @@ class SurveyLikertField extends SeparableField {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 1.11
 	 */
 	public function getFieldValue( $entry, $input_id = '' ) {
 		if ( ! $this->useScoreOutput() ) {
@@ -53,7 +53,7 @@ class SurveyLikertField extends SeparableField {
 
 	/**
 	 * Whether to use the score instead of the text value.
-	 * @since $ver$
+	 * @since 1.11
 	 * @return bool Whether to use the score as output.
 	 */
 	private function useScoreOutput(): bool {
@@ -69,7 +69,7 @@ class SurveyLikertField extends SeparableField {
 	 *
 	 * Overwritten so single row fields will still return the correct columns.
 	 *
-	 * @since $ver$
+	 * @since 1.11
 	 */
 	protected function isSeparationEnabled() {
 		return parent::isSeparationEnabled() && $this->hasMultipleRows();
@@ -77,7 +77,7 @@ class SurveyLikertField extends SeparableField {
 
 	/**
 	 * Whether this field has multiple rows.
-	 * @since $ver$
+	 * @since 1.11
 	 */
 	private function hasMultipleRows(): bool {
 		return $this->field->gsurveyLikertEnableMultipleRows ?? false;
@@ -88,7 +88,7 @@ class SurveyLikertField extends SeparableField {
 	 *
 	 * Overwritten so single row values will also be retrieved.
 	 *
-	 * @since $ver$
+	 * @since 1.11
 	 */
 	public function getCells( $entry ) {
 		return $this->hasMultipleRows()
