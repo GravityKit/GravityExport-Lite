@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased
+* Bugfix: Possible errors when using `gform_export_separator` callbacks with 2 expected parameters.
+* Enhancement: Updated all `gfexcel_renderer_csv_*` hooks to include the form id.
+
 = 1.10.1 on December 10, 2021 =
 
 * Bufgix: Fatal error when using the plugin with PHP <7.4.

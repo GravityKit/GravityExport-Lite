@@ -729,7 +729,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
         // get_posted_settings() doesn't capture all the settings added using the `gfexcel_general_settings` filter,
         // so we add the values back in here.
-        return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form, $extra_settings) {
+        return array_merge($settings, array_reduce(array_keys($form), function ($settings, $key) use ($form) {
 
             if ( stripos($key, 'gfexcel_') === 0 || stripos($key, 'gravityexport') === 0 ) {
                 $settings[$key] = $form[$key];
