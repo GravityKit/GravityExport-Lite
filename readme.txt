@@ -261,6 +261,8 @@ You can hide a row by adding a hook. Checkout this example:
 = Unreleased =
 
 * Feature: Survey Likert fields can return the score instead of the value by applying the `gfexcel_field_likert_use_score` hook.
+* Bugfix: Possible errors when using `gform_export_separator` callbacks with 2 expected parameters.
+* Enhancement: Updated all `gfexcel_renderer_csv_*` hooks to include the form id.
 
 = 1.10.1 on December 10, 2021 =
 
