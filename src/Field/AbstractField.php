@@ -120,7 +120,7 @@ abstract class AbstractField implements FieldInterface
      *
      * @param array $entry The entry object.
      * @param string $input_id The id of the input field.
-     * @return array|string The value of the field.
+     * @return array|string|int The value of the field. May be `0` if not found.
      */
     protected function getFieldValue($entry, $input_id = '')
     {
