@@ -21,7 +21,7 @@ use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 /**
  * The base for a {@see PhpSpreadsheet} renderer.
  */
-abstract class AbstractPHPExcelRenderer extends AbstractRenderer
+abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements RendererInterface
 {
     /** @var Spreadsheet */
     protected $spreadsheet;
@@ -32,6 +32,13 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @var IWriter[]
      */
     protected $writer = [];
+
+	/**
+	 * The current form object.
+	 * @since $ver$
+	 * @var array
+	 */
+    protected $form = [];
 
     /**
      * Creates an AbstractPHPExcelRenderer instance.
@@ -442,29 +449,44 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer
      * @since 1.7.5
      * @param Csv $objWriter The object writer.
      */
-    private function setCsvProperties(Csv $objWriter): void
-    {
-        // updates the delimiter
-	    $delimiter = apply_filters( 'gform_export_separator', $objWriter->getDelimiter() );
-	    $objWriter->setDelimiter( (string) apply_filters( 'gfexcel_renderer_csv_delimiter', $delimiter ) );
+	private function setCsvProperties( Csv $objWriter ): void {
+		// updates the delimiter
+		$form_id   = $this->form['id'] ?? 0;
+		$delimiter = gf_apply_filters( [ 'gform_export_separator', $form_id ], $objWriter->getDelimiter(), $form_id );
 
-        // updates the enclosure
-        $objWriter->setEnclosure((string) apply_filters('gfexcel_renderer_csv_enclosure', $objWriter->getEnclosure()));
+		$objWriter->setDelimiter( (string) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_delimiter', $form_id ],
+			$delimiter,
+			$form_id
+		) );
 
-        // updates the line ending
-        $objWriter->setLineEnding((string) apply_filters(
-            'gfexcel_renderer_csv_line_ending',
-            $objWriter->getLineEnding()
-        ));
+		// updates the enclosure
+		$objWriter->setEnclosure( (string) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_enclosure', $form_id ],
+			$objWriter->getEnclosure(),
+			$form_id
+		) );
 
-        // whether to use a BOM
-	    $use_bom = apply_filters( 'gform_include_bom_export_entries', $objWriter->getUseBOM() );
-	    $objWriter->setUseBOM( (bool) apply_filters( 'gfexcel_renderer_csv_use_bom', $use_bom ) );
+		// updates the line ending
+		$objWriter->setLineEnding( (string) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_line_ending', $form_id ],
+			$objWriter->getLineEnding(),
+			$form_id
+		) );
 
-        // whether to include a separator line
-        $objWriter->setIncludeSeparatorLine((bool) apply_filters(
-            'gfexcel_renderer_csv_include_separator_line',
-            $objWriter->getIncludeSeparatorLine()
-        ));
-    }
+		// whether to use a BOM
+		$use_bom = apply_filters( 'gform_include_bom_export_entries', $objWriter->getUseBOM(), $this->form );
+		$objWriter->setUseBOM( (bool) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_use_bom', $form_id ],
+			$use_bom,
+			$form_id
+		) );
+
+		// whether to include a separator line
+		$objWriter->setIncludeSeparatorLine( (bool) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_include_separator_line', $form_id ],
+			$objWriter->getIncludeSeparatorLine(),
+			$form_id
+		) );
+	}
 }
