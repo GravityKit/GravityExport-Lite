@@ -16,6 +16,10 @@
     "config": {
         "platform": {
             "php": "7.2.34"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "frontpack/composer-assets-plugin": true
         }
     },
     "minimum-stability": "stable",
