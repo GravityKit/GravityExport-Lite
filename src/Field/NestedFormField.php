@@ -2,7 +2,7 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\Transformer\Combiner;
+use GFExcel\GFExcel;
 use GFExcel\Transformer\Transformer;
 use GFExcel\Transformer\TransformerAwareInterface;
 
@@ -33,10 +33,10 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 		if ( ! class_exists( 'GP_Nested_Forms' ) ) {
 			yield [];
 		} else {
-			$value   = $entry[ $this->field->id ] ?? null;
+			$value          = $entry[ $this->field->id ] ?? null;
 			$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $value );
 
-			$combiner = new Combiner();
+			$combiner = GFExcel::getCombiner($this->field->formId);
 
 			foreach ( $nested_entries as $nested_entry ) {
 				$combiner->parseEntry( $this->getNestedFields(), $nested_entry );

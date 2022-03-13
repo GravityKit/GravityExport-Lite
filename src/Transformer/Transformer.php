@@ -81,11 +81,9 @@ class Transformer {
 
 	/**
 	 * Get the list of fields, but hooked, so we can append.
-	 * @return array
+	 * @return string[] The field classnames.
 	 */
 	private function getFields(): array {
-		return (array) gf_apply_filters( [
-			'gfexcel_transformer_fields',
-		], $this->fields );
+		return (array) apply_filters( 'gfexcel_transformer_fields', $this->fields );
 	}
 }
