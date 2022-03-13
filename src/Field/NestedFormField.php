@@ -18,24 +18,24 @@ class NestedFormField extends SeparableField implements RowsInterface {
 			$value = $entry[ $this->field->id ] ?? null;
 			$keys  = array_flip( $this->field->gpnfFields ?? [] );
 
-            $nested_form = \GFAPI::get_form( $this->field->gpnfForm );
+			$nested_form = \GFAPI::get_form( $this->field->gpnfForm );
 
-            /** @var array<\GF_Field> $fields */
-            $fields = array_reduce( $nested_form['fields'], function (array $fields, \GF_Field $field ) {
-                if (in_array( $field->id, $this->field->gpnfFields ?? [], false )) {
-                    $fields[$field->id] = $field;
+			/** @var array<\GF_Field> $fields */
+			$fields = array_reduce( $nested_form['fields'], function ( array $fields, \GF_Field $field ) {
+				if ( in_array( $field->id, $this->field->gpnfFields ?? [], false ) ) {
+					$fields[ $field->id ] = $field;
 
-                    return $fields;
-                }
-            }, []);
+					return $fields;
+				}
+			}, [] );
 
 			// Map all   entries to filter out the unwanted values.
 			yield from array_map( function ( array $entry ) use ( $keys, $fields ): array {
-               $values = array_intersect_key( $entry, $keys );
+				$values = array_intersect_key( $entry, $keys );
 
-                return $this->wrap( array_values( array_map(function($value, $field_id)  use ($entry, $fields) {
-                   return $fields[$field_id]->get_value_export( $entry, '', true, true );
-               }, $values, array_keys($values) ) ) );
+				return $this->wrap( array_values( array_map( function ( $value, $field_id ) use ( $entry, $fields ) {
+					return $fields[ $field_id ]->get_value_export( $entry, '', true, true );
+				}, $values, array_keys( $values ) ) ) );
 
 			}, \GP_Nested_Forms::get_instance()->get_entries( $value ) );
 		}
