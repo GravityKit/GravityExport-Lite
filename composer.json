@@ -13,6 +13,15 @@
             "email": "doekenorg@gmail.com"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "7.2.34"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "frontpack/composer-assets-plugin": true
+        }
+    },
     "minimum-stability": "stable",
     "repositories": [
         {
@@ -48,8 +57,8 @@
     "scripts": {
         "linter": "vendor/bin/phplint --no-cache",
         "test": "vendor/bin/phpunit",
-        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g'",
-        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g'",
+        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g' && find ./vendor -name \"*_gfe\" -delete",
+        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g' && find ./vendor -name \"*_gfe\" -delete",
         "post-install-cmd": "composer run markbaker-fix-namespace",
         "post-update-cmd": "composer run markbaker-fix-namespace",
         "post-autoload-dump": "composer run markbaker-fix-autoload"

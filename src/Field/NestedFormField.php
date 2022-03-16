@@ -4,12 +4,12 @@ namespace GFExcel\Field;
 
 /**
  * A field transformer for {@see \GP_Nested_Form_Field}.
- * @since $ver$
+ * @since 1.10
  */
 class NestedFormField extends SeparableField implements RowsInterface {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 1.10
 	 */
 	public function getRows( ?array $entry = null ): iterable {
 		if ( ! class_exists( 'GP_Nested_Forms' ) ) {
@@ -31,7 +31,7 @@ class NestedFormField extends SeparableField implements RowsInterface {
 	 *
 	 * Overwritten to retrieve the columns from the nested form.
 	 *
-	 * @since $ver$
+	 * @since 1.10
 	 */
 	protected function getSeparatedColumns(): array {
 		if ( ! class_exists( 'GP_Nested_Forms' ) || ! $nested_form = \GFAPI::get_form( $this->field->gpnfForm ) ) {

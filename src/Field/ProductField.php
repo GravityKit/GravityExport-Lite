@@ -11,11 +11,11 @@ use GFExcel\Values\StringValue;
 class ProductField extends SeparableField
 {
     /** @var string */
-    const SETTING_KEY = 'numeric_price_enabled';
+    public const SETTING_KEY = 'numeric_price_enabled';
 
     /**
      * {@inheritdoc}
-     * Usual code, but with a prepend for quantity and price for single field rendering.
+     * Usual code, but with a prepended string for quantity and price for single field rendering.
      */
     protected function getSeparatedFields($entry)
     {
