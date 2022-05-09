@@ -52,7 +52,6 @@ final class NotificationAttachmentAction {
 
 		// save the file to a temporary file
 		$this->file = $output->render( $save = true );
-		var_dump($this->file);
 		if ( ! file_exists( $this->file ) ) {
 			return $notification;
 		}
