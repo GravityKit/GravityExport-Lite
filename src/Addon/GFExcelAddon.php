@@ -323,7 +323,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 					],
 				],
 			]
-		));
+		) );
 
 		$form            = $this->get_current_form();
 		$feed_id         = $this->get_default_feed_id( rgar( $form, 'id', 0 ) );
@@ -402,6 +402,20 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	 */
 	public function plugin_settings_icon(): string {
 		return $this->get_menu_icon();
+	}
+
+	/**
+	 * Returns the feed settings for this form for backwards compatibility.
+	 * @since $ver$
+	 *
+	 * @param array $form The form object.
+	 *
+	 * @return array The feed settings.
+	 */
+	public function get_form_settings( $form ): array {
+		$feed = $this->get_feed_by_form_id( $form['id'] );
+
+		return \rgar( $feed, 'meta', [] );
 	}
 
 	/**
@@ -800,7 +814,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	 *
 	 * @return array|null The feed.
 	 */
-	public function get_feed_by_form_id( int $form_id = 0 ) {
+	public function get_feed_by_form_id( int $form_id = 0 ): ?array {
 		if ( ! $form_id ) {
 			$form    = $this->get_current_form();
 			$form_id = rgar( $form, 'id', 0 );
@@ -808,10 +822,10 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 
 		if ( ! isset( $this->feed[ $form_id ] ) ) {
 			$feed_id                = $this->get_default_feed_id( $form_id );
-			$this->feed[ $form_id ] = $this->get_feed( $feed_id );
+			$this->feed[ $form_id ] = $this->get_feed( $feed_id ) ?: null;
 		}
 
-		return $this->feed[ $form_id ];
+		return $this->feed[ $form_id ] ?? null;
 	}
 
 	/**

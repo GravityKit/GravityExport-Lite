@@ -88,12 +88,14 @@ class SingleFeedMigration extends Migration {
 	 * @throws MigrationException
 	 */
 	private function updateForm( array $form ): void {
-		$old_settings = array_intersect_key( $form, self::$feed_mapping );
+		$old_settings = array_filter( $form, function ( $key ) {
+			return preg_match( '/^(gfexcel|gravityexport)/is', $key );
+		}, ARRAY_FILTER_USE_KEY );
 		$new_settings = [];
 
 		// Predefined settings.
 		foreach ( $old_settings as $key => $value ) {
-			$new_settings[ self::$feed_mapping[ $key ] ] = $value;
+			$new_settings[ self::$feed_mapping[ $key ] ?? $key ] = $value;
 		}
 
 		$addon = GFExcelAddon::get_instance();
@@ -118,16 +120,16 @@ class SingleFeedMigration extends Migration {
 		// Get all the old settings.
 		$settings = get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
 
-		foreach (self::$addon_mapping as $old => $new) {
+		foreach ( self::$addon_mapping as $old => $new ) {
 			// Update old to new setting name, if the new setting name isn't already present.
-			if (isset($settings[$old]) && !isset($settings[$new])) {
-				$settings[$new] = $settings[$old];
+			if ( isset( $settings[ $old ] ) && ! isset( $settings[ $new ] ) ) {
+				$settings[ $new ] = $settings[ $old ];
 			}
 
 			// Remove old setting name.
-			unset($settings[$old]);
+			unset( $settings[ $old ] );
 		}
 
-		GFExcelAddon::get_instance()->update_plugin_settings($settings);
+		GFExcelAddon::get_instance()->update_plugin_settings( $settings );
 	}
 }

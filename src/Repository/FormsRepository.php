@@ -77,7 +77,7 @@ class FormsRepository {
 	 * @return array
 	 */
 	public function getNotifications(): array {
-		return \rgar( $this->form, 'notifications', [] );
+		return \rgar( $this->getForm(), 'notifications', [] );
 	}
 
 	/**
@@ -90,6 +90,18 @@ class FormsRepository {
 			\rgar( $this->form, 'id', 0 ),
 			''
 		);
+	}
+
+	/**
+	 *
+	 * @since $ver$
+	 * @return bool Whether the form should be transposed.
+	 */
+	public function isTransposed(): bool {
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
+		$value   = $this->addon->get_feed_meta_field( 'is_transposed', $form_id, false );
+
+		return gf_apply_filters( [ 'gfexcel_renderer_transpose', $form_id ], $value );
 	}
 
 	/**
