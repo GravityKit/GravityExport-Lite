@@ -7,6 +7,7 @@ use GFExcel\Action\DownloadUrlDisableAction;
 use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Action\FilterRequest;
+use GFExcel\Action\NotificationAttachmentAction;
 use GFExcel\Action\NotificationsAction;
 use GFExcel\Generator\HashGeneratorInterface;
 use GFExcel\Migration\Manager\MigrationManager;
@@ -42,6 +43,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
         FilterRequest::class,
         NotificationsAction::class,
         MigrationManager::class,
+	    NotificationAttachmentAction::class,
     ];
 
     /**
@@ -60,6 +62,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
         $this->addAutoStart(FilterRequest::class);
         $this->addAutoStart(MigrationManager::class)->addArgument(NotificationManager::class);
         $this->addAutoStart(NotificationsAction::class)->addArgument(NotificationManager::class);
+        $this->addAutoStart(NotificationAttachmentAction::class);
     }
 
     /**

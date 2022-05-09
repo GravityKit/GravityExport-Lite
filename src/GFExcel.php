@@ -63,8 +63,6 @@ class GFExcel
 
     public const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
 
-    public const KEY_ATTACHMENT_NOTIFICATION = 'gfexcel_attachment_notification';
-
     private static $file_extension;
 
     /**
