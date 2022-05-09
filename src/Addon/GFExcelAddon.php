@@ -142,7 +142,9 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		}
 
 		$settings_sections[] = [
+            'id' => 'gk-gravity-export-download',
 			'title'  => __( 'Download settings', GFExcel::$slug ),
+            'collapsible' => true,
 			'fields' => [
 				[
 					'label' => esc_html__( 'Download URL', GFExcel::$slug ),

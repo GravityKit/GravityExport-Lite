@@ -72,6 +72,8 @@ class DownloadUrl extends Base {
 	 * @return string
 	 */
 	private function get_read_only_url_input(): string {
+		ob_start();
+
 		$this->settings->render_field(
 			new Text(
 				[
