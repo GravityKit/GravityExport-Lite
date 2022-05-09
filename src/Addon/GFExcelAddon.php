@@ -247,81 +247,83 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 			],
 		];
 
-		$settings_sections[] = apply_filters(
+		$settings_sections = array_merge( $settings_sections, apply_filters(
 			'gfexcel_general_settings',
 			[
-				'id'          => 'gk-general-security',
-				'collapsible' => true,
-				'title'       => __( 'General Settings', GFExcel::$slug ),
-				'fields'      => [
-					[
-						'name'    => 'enable_notes',
-						'label'   => esc_html__( 'Include Entry Notes', GFExcel::$slug ),
-						'type'    => 'checkbox',
-						'choices' => [
-							[
-								'name'  => 'enable_notes',
-								'label' => esc_html__( 'Yes, enable the notes for every entry', GFExcel::$slug ),
-								'value' => '1',
-							],
-						],
-					],
-					[
-						'label'   => esc_html__( 'Attach Single Entry to Notification', GFExcel::$slug ),
-						'type'    => 'select',
-						'name'    => 'attachment_notification',
-						'choices' => $this->getNotifications(),
-					],
-					[
-						'name'          => 'is_transposed',
-						'type'          => 'radio',
-						'label'         => esc_html__( 'Column Position', GFExcel::$slug ),
-						'default_value' => 0,
-						'choices'       => [
-							[
-								'name'  => 'is_transposed',
-								'label' => esc_html__( 'At the top (normal)', GFExcel::$slug ),
-								'value' => 0,
-							],
-							[
-								'name'  => 'is_transposed',
-								'label' => esc_html__( 'At the left (transposed)', GFExcel::$slug ),
-								'value' => 1,
-							],
-						],
-					],
-					[
-						'name'     => 'order_by',
-						'label'    => esc_html__( 'Order By', GFExcel::$slug ),
-						'type'     => 'callback',
-						'callback' => function () {
-							$sort_field = [
-								'name'    => 'sort_field',
-								'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
-							];
-
-							$sort_order = [
-								'name'    => 'sort_order',
-								'type'    => 'select',
-								'choices' => [
-									[
-										'value' => 'ASC',
-										'label' => esc_html__( 'Ascending', GFExcel::$slug ),
-									],
-									[
-										'value' => 'DESC',
-										'label' => esc_html__( 'Descending', GFExcel::$slug ),
-									],
+				[
+					'id'          => 'gk-general-security',
+					'collapsible' => true,
+					'title'       => __( 'General Settings', GFExcel::$slug ),
+					'fields'      => [
+						[
+							'name'    => 'enable_notes',
+							'label'   => esc_html__( 'Include Entry Notes', GFExcel::$slug ),
+							'type'    => 'checkbox',
+							'choices' => [
+								[
+									'name'  => 'enable_notes',
+									'label' => esc_html__( 'Yes, enable the notes for every entry', GFExcel::$slug ),
+									'value' => '1',
 								],
-							];
+							],
+						],
+						[
+							'label'   => esc_html__( 'Attach Single Entry to Notification', GFExcel::$slug ),
+							'type'    => 'select',
+							'name'    => 'attachment_notification',
+							'choices' => $this->getNotifications(),
+						],
+						[
+							'name'          => 'is_transposed',
+							'type'          => 'radio',
+							'label'         => esc_html__( 'Column Position', GFExcel::$slug ),
+							'default_value' => 0,
+							'choices'       => [
+								[
+									'name'  => 'is_transposed',
+									'label' => esc_html__( 'At the top (normal)', GFExcel::$slug ),
+									'value' => 0,
+								],
+								[
+									'name'  => 'is_transposed',
+									'label' => esc_html__( 'At the left (transposed)', GFExcel::$slug ),
+									'value' => 1,
+								],
+							],
+						],
+						[
+							'name'     => 'order_by',
+							'label'    => esc_html__( 'Order By', GFExcel::$slug ),
+							'type'     => 'callback',
+							'callback' => function () {
+								$sort_field = [
+									'name'    => 'sort_field',
+									'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
+								];
 
-							$this->settings_select( $sort_field );
-							$this->settings_select( $sort_order );
-						},
+								$sort_order = [
+									'name'    => 'sort_order',
+									'type'    => 'select',
+									'choices' => [
+										[
+											'value' => 'ASC',
+											'label' => esc_html__( 'Ascending', GFExcel::$slug ),
+										],
+										[
+											'value' => 'DESC',
+											'label' => esc_html__( 'Descending', GFExcel::$slug ),
+										],
+									],
+								];
+
+								$this->settings_select( $sort_field );
+								$this->settings_select( $sort_order );
+							},
+						],
 					],
 				],
 			]
-		);
+		));
 
 		$form            = $this->get_current_form();
 		$feed_id         = $this->get_default_feed_id( rgar( $form, 'id', 0 ) );
