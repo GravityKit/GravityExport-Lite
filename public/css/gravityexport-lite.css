@@ -38,6 +38,7 @@ ul.fields-select li div:not(.move) {
     margin-left: 5px;
     margin-right: 0;
 }
+
 ul.fields-select li div.move {
     font-weight: bold;
     padding: 0 5px;
@@ -94,4 +95,19 @@ ul.fields-select li.light-up i {
 .ui-sortable-handle:active,
 .ui-sortable-helper {
     cursor: -webkit-grabbing;
+}
+
+.download-block {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 3px 0;
+}
+
+.download-block .date-field {
+    margin-right: 10px;
+    width: 200px;
+}
+.download-block .download-button {
+    margin-top: 10px;
+    flex-basis: 100%;
 }
