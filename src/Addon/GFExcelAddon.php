@@ -148,6 +148,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 					'label' => esc_html__( 'Download URL', GFExcel::$slug ),
 					'name'  => 'hash',
 					'type'  => 'download_url',
+					'assets_dir' => $this->assets_dir,
 				],
 				[
 					'label'         => esc_html__( 'Custom Filename', GFExcel::$slug ),
@@ -686,7 +687,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		return array_merge( parent::styles(), [
 			[
 				'handle'  => 'gravityexport-lite',
-				'src'     => $this->assets_dir . 'public/css/gravityexport-lite.css',
+				'src'     => $this->assets_dir . 'css/gravityexport-lite.css',
 				'enqueue' => [
 					[ 'admin_page' => 'form_settings', 'tab' => $this->get_slug() ],
 					[ 'admin_page' => 'plugin_settings', 'tab' => $this->get_slug() ],
@@ -712,7 +713,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 			],
 			[
 				'handle'  => 'gfexcel-js',
-				'src'     => $this->assets_dir . 'public/js/gfexcel.js',
+				'src'     => $this->assets_dir . 'js/gfexcel.js',
 				'enqueue' => [
 					[
 						'admin_page' => 'form_settings',

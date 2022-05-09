@@ -88,7 +88,7 @@ add_action('gform_loaded', static function (): void {
     GFExcelAddon::set_instance($addon);
     GFAddOn::register(GFExcelAddon::class);
 
-    $addon->setAssetsDir(plugin_dir_url(GFEXCEL_PLUGIN_FILE));
+    $addon->setAssetsDir(plugin_dir_url(GFEXCEL_PLUGIN_FILE) . 'public/');
 
     // Dispatch event including the container.
     do_action('gfexcel_loaded', $container);
