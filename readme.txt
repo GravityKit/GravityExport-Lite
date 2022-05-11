@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Nested form results could have the wrong order.
+
 = 1.11 on January 31, 2022 =
 
 * Feature: Survey Likert fields can return the score instead of the value by applying the `gfexcel_field_likert_use_score` hook.

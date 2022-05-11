@@ -16,14 +16,30 @@ class NestedFormField extends SeparableField implements RowsInterface {
 			yield [];
 		} else {
 			$value = $entry[ $this->field->id ] ?? null;
-			$keys  = array_flip( $this->field->gpnfFields ?? [] );
 
 			// Map all entries to filter out the unwanted values.
-			yield from array_map( function ( array $entry ) use ( $keys ): array {
-				// Retrieve only the fields that are set on the form field.
-				return $this->wrap( array_values( array_intersect_key( $entry, $keys ) ) );
+			yield from array_map( function ( array $entry ): array {
+				return $this->wrap( array_values( $this->sortNestedKeys( $entry ) ) );
 			}, \GP_Nested_Forms::get_instance()->get_entries( $value ) );
 		}
+	}
+
+	/**
+	 * Sorts the entry values based on the order given by the field.
+	 * @since $ver$
+	 *
+	 * @param array $entry The unsorted entry.
+	 *
+	 * @return array The Sorted entry.
+	 */
+	private function sortNestedKeys( array $entry ): array {
+		$result = [];
+
+		foreach ( $this->field->gpnfFields as $key ) {
+			$result[ $key ] = $entry[ $key ] ?? null;
+		}
+
+		return $result;
 	}
 
 	/**
