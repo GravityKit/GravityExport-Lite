@@ -19,7 +19,7 @@ class NestedFormField extends SeparableField implements RowsInterface {
 
 			// Map all entries to filter out the unwanted values.
 			yield from array_map( function ( array $entry ): array {
-				return $this->wrap( array_values( $this->sortNestedKeys( $entry ) ) );
+				return $this->wrap( $this->sortNestedKeys( $entry ) );
 			}, \GP_Nested_Forms::get_instance()->get_entries( $value ) );
 		}
 	}
@@ -36,7 +36,7 @@ class NestedFormField extends SeparableField implements RowsInterface {
 		$result = [];
 
 		foreach ( $this->field->gpnfFields as $key ) {
-			$result[ $key ] = $entry[ $key ] ?? null;
+			$result[] = $entry[ $key ] ?? null;
 		}
 
 		return $result;
