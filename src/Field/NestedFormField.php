@@ -79,22 +79,24 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 			return [];
 		}
 
-		if ( $this->fields === false ) {
-			$nested_form = \GFAPI::get_form( $this->field->gpnfForm );
+		if ( $this->fields !== false ) {
+			return $this->fields;
+		}
 
-			if ( ! $nested_form ) {
-				return $this->fields = [];
+		$nested_form = \GFAPI::get_form( $this->field->gpnfForm );
+
+		if ( ! $nested_form ) {
+			return $this->fields = [];
+		}
+
+		// Cache the results.
+		$this->fields = array_reduce( $nested_form['fields'], function ( array $fields, \GF_Field $field ) {
+			if ( in_array( $field->id, $this->field->gpnfFields ?? [], false ) ) {
+				$fields[ $field->id ] = $this->transformer->transform( $field );
 			}
 
-			// Cache the results.
-			$this->fields = array_reduce( $nested_form['fields'], function ( array $fields, \GF_Field $field ) {
-				if ( in_array( $field->id, $this->field->gpnfFields ?? [], false ) ) {
-					$fields[ $field->id ] = $this->transformer->transform( $field );
-				}
-
-				return $fields;
-			}, [] );
-		}
+			return $fields;
+		}, [] );
 
 		return $this->fields;
 	}
