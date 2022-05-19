@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+* Enhancement: Nested form field values are formatted properly through transformers.
+* Bugfix: Sort order of nested form fields could be swapped on some entries.
+
 = 1.11 on January 31, 2022 =
 
 * Feature: Survey Likert fields can return the score instead of the value by applying the `gfexcel_field_likert_use_score` hook.
