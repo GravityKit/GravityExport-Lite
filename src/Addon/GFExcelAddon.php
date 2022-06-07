@@ -4,6 +4,7 @@ namespace GFExcel\Addon;
 
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
+use GFExcel\Action\CountDownloads;
 use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
@@ -110,6 +111,9 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		add_action( 'admin_enqueue_scripts', \Closure::fromCallable( [ $this, 'register_sortable_js' ] ) );
 		add_action( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
 		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
+		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
+		add_filter( 'gform_post_form_duplicated', \Closure::fromCallable( [ $this, 'refresh_download_data' ] ), 10, 2 );
+		add_filter( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
 	}
 
 	/**
@@ -142,14 +146,14 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		}
 
 		$settings_sections[] = [
-            'id' => 'gk-gravity-export-download',
-			'title'  => __( 'Download settings', GFExcel::$slug ),
-            'collapsible' => true,
-			'fields' => [
+			'id'          => 'gk-gravity-export-download',
+			'title'       => __( 'Download settings', GFExcel::$slug ),
+			'collapsible' => true,
+			'fields'      => [
 				[
-					'label' => esc_html__( 'Download URL', GFExcel::$slug ),
-					'name'  => 'hash',
-					'type'  => 'download_url',
+					'label'      => esc_html__( 'Download URL', GFExcel::$slug ),
+					'name'       => 'hash',
+					'type'       => 'download_url',
 					'assets_dir' => $this->assets_dir,
 				],
 				[
@@ -912,5 +916,82 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		}
 
 		return empty( $action ) || $action === '-1' ? null : $action;
+	}
+
+	/**
+	 * Adds a quick download link if the form download is enabled.
+	 *
+	 * @param array $form_actions The form action.
+	 * @param string $form_id the form id.
+	 *
+	 * @return array The new form actions.
+	 */
+	private function gform_form_actions( array $form_actions, string $form_id ): array {
+		if ( $url = GFExcel::url( $form_id ) ) {
+
+			$form_actions['download'] = [
+				'label'      => __( 'Download', GFExcel::$slug ),
+				'title'      => __( 'Download an Export', GFExcel::$slug ),
+				'url'        => $url,
+				'menu_class' => 'download',
+			];
+		}
+
+		return $form_actions;
+	}
+
+	/**
+	 * Adds the export links to the admin bar.
+	 * @since 1.7.0
+	 */
+	private static function admin_bar(): void {
+		// Only show links if the user has the rights for exporting.
+		if ( ! \GFCommon::current_user_can_any( 'gravityforms_export_entries' ) ) {
+			return;
+		}
+
+		/**
+		 * @var  \WP_Admin_Bar $wp_admin_bar
+		 */
+		global $wp_admin_bar;
+
+		// Get all recent form id's.
+		$form_ids = array_reduce( array_keys( $wp_admin_bar->get_nodes() ), static function ( array $output, $key ) {
+			if ( preg_match( '/gform-form-(\d)$/i', $key, $matches ) ) {
+				$output[] = (int) $matches[1];
+			}
+
+			return $output;
+		}, [] );
+
+		// add download URL to every form that has a hash.
+		foreach ( $form_ids as $id ) {
+			if ( $url = GFExcel::url( $id ) ) {
+				$wp_admin_bar->add_node( [
+					'id'     => 'gfexcel-form-' . $id . '-download',
+					'parent' => 'gform-form-' . $id,
+					'title'  => esc_html__( 'Download', GFExcel::$slug ),
+					'href'   => trailingslashit( esc_url( $url ) ),
+				] );
+			}
+		}
+	}
+
+	/**
+	 * Updates download data for a duplicated form.
+	 * @since 1.7.0
+	 *
+	 * @param int $form_id the ID of the duplicated form
+	 * @param int $new_id the ID of the new form.
+	 */
+	private function refresh_download_data( int $form_id, int $new_id ): void {
+		// new hash to prevent doubles.
+		$feed_old = $this->get_feed_by_form_id($form_id);
+
+        // todo: duplicate feed for this add-on. ANy other add-on should not be dupicated.
+
+
+		// reset the download counter
+		//do_action( 'gfexcel_action_' . CountDownloads::ACTION_RESET, $new_id );
 	}
 }

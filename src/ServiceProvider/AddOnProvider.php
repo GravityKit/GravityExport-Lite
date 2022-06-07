@@ -9,6 +9,8 @@ use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationAttachmentAction;
 use GFExcel\Action\NotificationsAction;
+use GFExcel\Component\MetaBoxes;
+use GFExcel\Component\Plugin;
 use GFExcel\Generator\HashGeneratorInterface;
 use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Notification\Manager\NotificationManager;
@@ -60,9 +62,11 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
         $this->addAutoStart(CountDownloads::class);
         $this->addAutoStart(DownloadUrl::class);
         $this->addAutoStart(FilterRequest::class);
+        $this->addAutoStart(MetaBoxes::class);
         $this->addAutoStart(MigrationManager::class)->addArgument(NotificationManager::class);
         $this->addAutoStart(NotificationsAction::class)->addArgument(NotificationManager::class);
         $this->addAutoStart(NotificationAttachmentAction::class);
+        $this->addAutoStart(Plugin::class);
     }
 
     /**
