@@ -12,19 +12,19 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for {@see Transformer}.
- * @since $ver$
+ * @since 1.1.11
  */
 final class TransformerTest extends TestCase {
 	/**
 	 * The mocked field object.
-	 * @since $ver$
+	 * @since 1.1.11
 	 * @var MockObject
 	 */
 	private $field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 1.1.11
 	 */
 	public function __construct( $name = null, array $data = [], $dataName = '' ) {
 		parent::__construct( $name, $data, $dataName );
@@ -85,7 +85,7 @@ final class TransformerTest extends TestCase {
 
 /**
  * Helper test field.
- * @since $ver$
+ * @since 1.1.11
  */
 final class TestField implements FieldInterface, TransformerAwareInterface {
 	public $transformer;
@@ -106,7 +106,7 @@ final class TestField implements FieldInterface, TransformerAwareInterface {
 
 /**
  * Test transformer that overwrites the default fields list.
- * @since $ver$
+ * @since 1.1.11
  */
 final class TestTransformer extends Transformer {
 	protected $fields = [
