@@ -116,17 +116,18 @@ class SeparableField extends BaseField
         });
     }
 
-    /**
-     * Get the label for a subfield.
-     * @param array|\ArrayAccess $field The field object.
-     * @return string The sub label.
-     */
-    protected function getSubLabel($field)
-    {
-        if (!array_key_exists('customLabel', $field) || empty(trim($field['customLabel']))) {
-            return $field['label'];
-        }
+	/**
+	 * Get the label for a subfield.
+	 *
+	 * @param array|\ArrayAccess $field The field object.
+	 *
+	 * @return string The sub label.
+	 */
+	protected function getSubLabel( $field ) {
+		if ( empty( trim( $field['customLabel'] ?? '' ) ) ) {
+			return $field['label'];
+		}
 
-        return $field['customLabel'];
-    }
+		return $field['customLabel'];
+	}
 }
