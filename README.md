@@ -1,5 +1,5 @@
 # Gravity Forms Entries in Excel
-![by Matt Benson](https://raw.githubusercontent.com/squidmedia/gfexcel/master/assets/banner-772x250.jpg)
+![by Matt Benson](https://gfexcel.github.io/gf-entries-in-excel/assets/banner-772x250.png)
 
 Get realtime entries from your forms using a unique and secure URL. No need to login, or create a user account for
 that one person who needs the results. Just copy the URL, and give it to the person who needs it. It's that simple.
