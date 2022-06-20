@@ -262,6 +262,7 @@ You can hide a row by adding a hook. Checkout this example:
 * Enhancement: Nested form field values are formatted properly through transformers.
 * Bugfix: Sort order of nested form fields could be swapped on some entries.
 * Bugfix: Transposed PDFs could have extra empty columns.
+* Bugfix: Download of nested forms could fail on PHP 8
 
 = 1.11 on January 31, 2022 =
 

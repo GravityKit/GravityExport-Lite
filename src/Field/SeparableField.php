@@ -121,12 +121,11 @@ class SeparableField extends BaseField
      * @param array|\ArrayAccess $field The field object.
      * @return string The sub label.
      */
-    protected function getSubLabel($field)
-    {
-        if (!array_key_exists('customLabel', $field) || empty(trim($field['customLabel']))) {
-            return $field['label'];
-        }
+	protected function getSubLabel( $field ) {
+		if ( empty( trim( $field['customLabel'] ?? '' ) ) ) {
+			return $field['label'];
+		}
 
-        return $field['customLabel'];
-    }
+		return $field['customLabel'];
+	}
 }
