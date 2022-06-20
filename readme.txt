@@ -1,11 +1,11 @@
 === GravityExport Lite (Gravity Forms Entries in Excel) ===
-Contributors: gravityview, doekenorg
-Donate link: https://gravityview.co/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
+Contributors: gravitykit, doekenorg
+Donate link: https://www.gravitykit.com/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 5.8
-Stable tag: 1.11
+Tested up to: 6.0
+Stable tag: 1.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,7 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 > ### GravityExport is the ultimate no-hassle solution for exporting data from Gravity Forms.
 > Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
 >
-> [Learn more about GravityExport](https://gravityview.co/extensions/gf-excel-pro/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
+> [Learn more about GravityExport](https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
 
 ### Export entries using a secure URL
 
@@ -50,7 +50,7 @@ Save time generating exports in Gravity Forms: Configure the fields that are inc
 
 ### Documentation & support
 
-If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravityview.co/category/783-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
+If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravitykit.com/category/791-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
 
 If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
 
@@ -64,7 +64,7 @@ If you need further assistance, [read this first](https://wordpress.org/support/
 
 ### Gain additional powerful functionality
 
-The [full version of GravityExport](https://gravityview.co/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-full-version) unlocks these game-changing features:
+The [full version of GravityExport](https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-full-version) unlocks these game-changing features:
 
 * 📄 **PDF Export**
 GravityExport supports exporting entries as PDF! You can choose to have a PDF generated for each entry or one PDF that includes all entries. You can also customize the PDF output by adjusting the size, orientation, and more.
@@ -77,7 +77,7 @@ Create multiple export URLs that output to different formats and include differe
 * 📊 **Export data ready for analysis**
 Make it easier to process your Gravity Forms data by splitting fields with multiple values into different rows.
 
-We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://gravityview.co/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
+We've written an article that contains all you need to know about [exporting data from Gravity Forms](https://www.gravitykit.com/exporting-gravity-forms-to-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-all-need-to-know).
 
 #### Credits
 
@@ -258,6 +258,13 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= 1.11.1 on June 20, 2022 =
+
+* Enhancement: Nested form field values are formatted properly through transformers.
+* Bugfix: Sort order of nested form fields could be swapped on some entries.
+* Bugfix: PDFs displaying field names as a vertical column could contain extra empty columns.
+* Bugfix: Download of nested forms could fail on PHP 8.
+
 = 1.11 on January 31, 2022 =
 
 * Feature: Survey Likert fields can return the score instead of the value by applying the `gfexcel_field_likert_use_score` hook.
@@ -296,7 +303,7 @@ You can hide a row by adding a hook. Checkout this example:
 * **Gravity Forms Entries in Excel is now known as GravityExport Lite**
 	- Same plugin and functionality you love!
 	- Internal code restructuring ensures better extensibility and facilitates new feature development (coming in future versions!)
-	- Ready to be used with [GravityExport](https://gravityview.co/extensions/gravityexport/) that brings additional functionality to an already full-featured plugin.
+	- Ready to be used with [GravityExport](https://www.gravitykit.com/extensions/gravityexport/) that brings additional functionality to an already full-featured plugin.
 * Enhancement: Improved Gravity Forms 2.5 compatibility.
 
 __Developer Updates:__
