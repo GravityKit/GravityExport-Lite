@@ -1388,7 +1388,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	/**
 	 * Adds any extra fields to the export.
 	 *
-	 * @since $ver$
+	 * @since 1.11.2
 	 *
 	 * @param array $form The form object.
 	 *

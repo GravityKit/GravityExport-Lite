@@ -257,7 +257,7 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased =
+= Unreleased [1.11.12] =
 
 * Enhancement: Added `date_updated` as a default exported meta-field.
 
