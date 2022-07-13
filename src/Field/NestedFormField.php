@@ -2,11 +2,29 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\GFExcel;
+use GFExcel\Transformer\Transformer;
+use GFExcel\Transformer\TransformerAwareInterface;
+
 /**
  * A field transformer for {@see \GP_Nested_Form_Field}.
  * @since 1.10
  */
-class NestedFormField extends SeparableField implements RowsInterface {
+class NestedFormField extends SeparableField implements RowsInterface, TransformerAwareInterface {
+	/**
+	 * The transformer instance.
+	 * @since 1.11.1
+	 * @var Transformer
+	 */
+	private $transformer;
+
+	/**
+	 * Micro cache for fields.
+	 * @since 1.11.1
+	 * @var FieldInterface[]|false
+	 */
+	private $fields = false;
+
 	/**
 	 * @inheritdoc
 	 * @since 1.10
@@ -15,14 +33,16 @@ class NestedFormField extends SeparableField implements RowsInterface {
 		if ( ! class_exists( 'GP_Nested_Forms' ) ) {
 			yield [];
 		} else {
-			$value = $entry[ $this->field->id ] ?? null;
-			$keys  = array_flip( $this->field->gpnfFields ?? [] );
+			$value          = $entry[ $this->field->id ] ?? null;
+			$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $value );
 
-			// Map all entries to filter out the unwanted values.
-			yield from array_map( function ( array $entry ) use ( $keys ): array {
-				// Retrieve only the fields that are set on the form field.
-				return $this->wrap( array_values( array_intersect_key( $entry, $keys ) ) );
-			}, \GP_Nested_Forms::get_instance()->get_entries( $value ) );
+			$combiner = GFExcel::getCombiner($this->field->formId);
+
+			foreach ( $nested_entries as $nested_entry ) {
+				$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
+			}
+
+			yield from $combiner->getRows();
 		}
 	}
 
@@ -34,25 +54,50 @@ class NestedFormField extends SeparableField implements RowsInterface {
 	 * @since 1.10
 	 */
 	protected function getSeparatedColumns(): array {
-		if ( ! class_exists( 'GP_Nested_Forms' ) || ! $nested_form = \GFAPI::get_form( $this->field->gpnfForm ) ) {
+		$fields = array_map( function ( FieldInterface $field ): array {
+			return $field->getColumns();
+		}, array_values( $this->getNestedFields() ) );
+
+		return array_merge( [], ...$fields );
+	}
+
+	/**
+	 * @inerhitDoc
+	 * @since 1.11.1
+	 */
+	public function setTransformer( Transformer $transformer ): void {
+		$this->transformer = $transformer;
+	}
+
+	/**
+	 * Helper method to return the transformed fields from the nested form.
+	 * @since 1.11.1
+	 * @return FieldInterface[] The fields.
+	 */
+	private function getNestedFields(): array {
+		if ( ! class_exists( 'GP_Nested_Forms' ) ) {
 			return [];
 		}
 
-		$fields = array_filter( $nested_form['fields'], function ( \GF_Field $field ) {
-			return in_array( $field->id, $this->field->gpnfFields ?? [], false );
-		} );
+		if ( $this->fields !== false ) {
+			return $this->fields;
+		}
 
-		return array_map( function ( \GF_Field $field ) {
-			return gf_apply_filters( [
-				'gfexcel_field_label',
-				$field->get_input_type(),
-				$field->formId,
-				$field->id,
-			], sprintf(
-				'%s (%s)', // Nested field label (Wrapper label)
-				$this->getSubLabel( $field ),
-				$this->getSubLabel( $this->field )
-			), $field );
-		}, $fields );
+		$nested_form = \GFAPI::get_form( $this->field->gpnfForm );
+
+		if ( ! $nested_form ) {
+			return $this->fields = [];
+		}
+
+		// Cache the results.
+		$this->fields = array_reduce( $nested_form['fields'], function ( array $fields, \GF_Field $field ) {
+			if ( in_array( $field->id, $this->field->gpnfFields ?? [], false ) ) {
+				$fields[ $field->id ] = $this->transformer->transform( $field );
+			}
+
+			return $fields;
+		}, [] );
+
+		return $this->fields;
 	}
 }
