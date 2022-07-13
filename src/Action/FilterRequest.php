@@ -168,7 +168,7 @@ class FilterRequest
 		    $value    = (string) $filter[2];
 
 		    if ( in_array( trim( strtoupper( $operator ) ), [ 'IN', 'NOTIN', 'NOT IN' ], true ) ) {
-			    $value = explode( ',', $value );
+			    $value = preg_split( '/\s*,\s*/', $value );
 		    }
 	    }
 
