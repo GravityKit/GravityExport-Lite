@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= Unreleased [1.11.2] =
 
 * Bugfix: Filtering with `in` and `not in` did not work.
 
