@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Filtering with `in` and `not in` did not work.
+
 = 1.11.1 on June 20, 2022 =
 
 * Enhancement: Nested form field values are formatted properly through transformers.
