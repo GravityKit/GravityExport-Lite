@@ -273,6 +273,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
         add_filter('gform_post_form_duplicated', [$this, 'refresh_download_data'], 10, 2);
         add_filter('gform_entry_detail_meta_boxes', [__CLASS__, 'gform_entry_detail_meta_boxes'], 10, 3);
         add_filter('wp_before_admin_bar_render', [__CLASS__, 'admin_bar'], 20);
+	    add_filter( 'gform_export_fields', [ __CLASS__, 'gform_export_fields' ] );
     }
 
     public function get_rating_message()
@@ -1383,4 +1384,19 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
 		return $this->form_repositories[ $form_id ];
 	}
+
+	/**
+	 * Adds any extra fields to the export.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $form The form object.
+	 *
+	 * @return array The updated form object.
+	 */
+	public static function gform_export_fields( array $form ): array {
+		$form['fields'][] = [ 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gravityforms' ) ];
+
+        return $form;
+    }
 }
