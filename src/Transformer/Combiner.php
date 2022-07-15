@@ -51,7 +51,6 @@ class Combiner implements CombinerInterface
                 continue;
             }
 
-
             // Multiple rows, so we need to combine, and we MUST have a StringValue object.
             $combined = array_reduce($values, static function (string $output, BaseValue $value): string {
                 if ($output !== '') {
