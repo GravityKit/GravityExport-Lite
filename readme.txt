@@ -260,10 +260,8 @@ You can hide a row by adding a hook. Checkout this example:
 = Unreleased [1.11.2] =
 
 * Enhancement: Added `date_updated` as a default exported meta-field.
-
-= Unreleased [1.11.2] =
-
 * Bugfix: Filtering using `in` and `not in` operators in the URL query string did not work.
+* Bugfix: The value `0` was not combined properly with other values on fields with multiple values.
 
 = 1.11.1 on June 20, 2022 =
 
