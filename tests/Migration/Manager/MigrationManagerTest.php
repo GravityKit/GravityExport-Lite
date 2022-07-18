@@ -16,7 +16,7 @@ class MigrationManagerTest extends TestCase
 {
     /**
      * A mocked notification manager instance.
-     * @since $ver$
+     * @since 1.9.0
      * @var MockObject|NotificationManager
      */
     private $notification_manager;
@@ -80,7 +80,7 @@ class MigrationManagerTest extends TestCase
 
     /**
      * Test case for {@see MigrationManager::getNotificationManager()}.v
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testGetNotificationManager(): void
     {
