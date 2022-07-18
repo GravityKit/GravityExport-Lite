@@ -13,7 +13,7 @@ abstract class Migration
 {
     /**
      * The migration manager.
-     * @since $ver$
+     * @since 1.9.0
      * @var null|MigrationManager $manager
      */
     protected $manager;
@@ -44,7 +44,7 @@ abstract class Migration
 
     /**
      * Sets the migration manager on the migration.
-     * @since $ver$
+     * @since 1.9.0
      * @param MigrationManager $manager The migration manager.
      */
     public function setManager(MigrationManager $manager): void

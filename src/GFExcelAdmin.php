@@ -37,7 +37,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
     /**
      * Microcache for form repositories.
-     * @since $ver$
+     * @since 1.10.0
      * @var array<int, FormsRepository>
      */
     private $form_repositories = [];
@@ -1154,7 +1154,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
     /**
      * Returns the notification options list.
-     * @since $ver$
+     * @since 1.9.0
      * @return mixed[] The notification options.
      */
     private function getNotifications(): array

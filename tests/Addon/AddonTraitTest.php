@@ -8,7 +8,7 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see AddonTrait}.
- * @since $ver$
+ * @since 1.9.0
  */
 class AddonTraitTest extends TestCase
 {
@@ -17,7 +17,7 @@ class AddonTraitTest extends TestCase
      *
      * Must be the first test to avoid setting the instance.
      *
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testGetInstanceINoInstance(): void
     {
@@ -29,7 +29,7 @@ class AddonTraitTest extends TestCase
 
     /**
      * Test case for {@see AddonTrait::set_instance()} and {@see AddonTrait::get_instance()}.
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testSetInstance(): void
     {
@@ -40,7 +40,7 @@ class AddonTraitTest extends TestCase
 
     /**
      * Test case for {@see AddonTrait::set_instance()} with an invalid type.
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testSetInstanceInvalidType(): void
     {
@@ -53,7 +53,7 @@ class AddonTraitTest extends TestCase
 
 /**
  * Concrete class that implements the trait.
- * @since $ver$
+ * @since 1.9.0
  */
 class ConcreteAddon implements AddonInterface
 {

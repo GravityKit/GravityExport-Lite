@@ -8,13 +8,13 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see Migration}.
- * @since $ver$
+ * @since 1.9.0
  */
 class MigrationTest extends TestCase
 {
     /**
      * Test case for {@see Migration::setManager()}.
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testSetManager(): void
     {
@@ -28,7 +28,7 @@ class MigrationTest extends TestCase
 
     /**
      * Test case for {@see Migration::getVersion()}.
-     * @since $ver$
+     * @since 1.9.0
      */
     public function testGetVersion(): void
     {
