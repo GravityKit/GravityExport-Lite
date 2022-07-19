@@ -262,7 +262,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Enhancement: Added `date_updated` as a default exported meta field.
 * Bugfix: Filtering using `in` and `not in` operators in the URL query string did not work.
-* Bugfix: The value `0` was not combined properly with other values on fields with multiple values.
+* Bugfix: Exported multiselect fields (e.g., checkboxes and nested forms) could be missing a separator between values if one value is a `0`.
 
 = 1.11.1 on June 20, 2022 =
 
