@@ -53,7 +53,7 @@ class Combiner implements CombinerInterface
 
             // Multiple rows, so we need to combine, and we MUST have a StringValue object.
             $combined = array_reduce($values, static function (string $output, BaseValue $value): string {
-                if (!empty($output)) {
+                if ($output !== '') {
                     $output .= gf_apply_filters([
                         'gfexcel_combiner_glue',
                         $value->getFieldType(),

@@ -28,14 +28,14 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 
     /**
      * The writer instances.
-     * @since $ver$
+     * @since 1.9.0
      * @var IWriter[]
      */
     protected $writer = [];
 
 	/**
 	 * The current form object.
-	 * @since $ver$
+	 * @since 1.10.2
 	 * @var array
 	 */
     protected $form = [];
@@ -51,7 +51,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 
     /**
      * Returns the spreadsheet.
-     * @since $ver$
+     * @since 1.9.0
      * @return Spreadsheet The spreadsheet.
      */
     public function getSpreadsheet(): Spreadsheet
@@ -61,7 +61,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 
     /**
      * Returns the writer instance.
-     * @since $ver$
+     * @since 1.9.0
      * @param string $extension The file extension.
      * @return \PhpOffice\PhpSpreadsheet\Writer\IWriter The writer.
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception When the writer could not be found.

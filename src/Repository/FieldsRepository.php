@@ -234,7 +234,7 @@ class FieldsRepository
 
     /**
      * Returns the sort field options for a form.
-     * @since $ver$
+     * @since 1.9.0
      * @param mixed[]|null $form The form object.
      * @return string[][] The sort field options.
      */
