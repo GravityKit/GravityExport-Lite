@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.0
-Stable tag: 1.11.1
+Stable tag: 1.11.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -257,9 +257,10 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
-= Unreleased [1.11.2] =
 
-* Enhancement: Added `date_updated` as a default exported meta-field.
+= 1.11.2 on July 19, 2022 =
+
+* Enhancement: Added `date_updated` as a default exported meta field.
 * Bugfix: Filtering using `in` and `not in` operators in the URL query string did not work.
 * Bugfix: The value `0` was not combined properly with other values on fields with multiple values.
 
