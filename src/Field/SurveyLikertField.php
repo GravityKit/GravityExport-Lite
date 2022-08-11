@@ -20,10 +20,8 @@ class SurveyLikertField extends SeparableField {
 	 */
 	public function getFieldValue( $entry, $input_id = '' ) {
 		if ( ! $this->useScoreOutput() ) {
-			$value = parent::getFieldValue( $entry, $input_id );
-
 			if ( $this->isSeparationEnabled() ) {
-				return $value;
+				return parent::getFieldValue( $entry, $input_id );
 			}
 
 			return $this->field->get_column_text( false, $entry, $input_id, true );
