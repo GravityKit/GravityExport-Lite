@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Labels of likert fields would not be shown when multi-column splitting was turned off.
+
 = 1.11.2 on July 19, 2022 =
 
 * Enhancement: Added `date_updated` as a default exported meta field.
