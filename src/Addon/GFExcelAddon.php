@@ -769,9 +769,11 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		if ( ! isset( $this->feed[ $form_id ] ) ) {
 			$feed_id = $this->get_default_feed_id( $form_id );
 			// update meta settings to include any posted values.
-			$this->feed[ $form_id ] = ( $feed = $this->get_feed( $feed_id ) )
-				? array_merge( $feed, [ 'meta' => $this->get_current_settings() ] )
-				: null;
+			if ( $feed = $this->get_feed( $feed_id ) ) {
+				$feed['meta'] = array_merge( $feed['meta'] ?? [], $this->get_current_settings() );
+			}
+
+			$this->feed[ $form_id ] = $feed;
 		}
 
 		return $this->feed[ $form_id ] ?? null;
@@ -790,7 +792,6 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	 */
 	public function get_feed_meta_field( string $field, int $form_id = 0, $default = null ) {
 		$feed = $this->get_feed_by_form_id( $form_id );
-
 		return rgars( $feed, sprintf( 'meta/%s', $field ), $default );
 	}
 

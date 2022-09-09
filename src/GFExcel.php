@@ -109,19 +109,23 @@ class GFExcel
      * @param int $form_id the form id to get the hash for.
      * @return string|null the hash
      */
-    private static function getHash($form_id)
-    {
-        if (!\GFAPI::form_id_exists($form_id)) {
-            return null;
-        }
+	private static function getHash( $form_id ): ?string {
+		if ( ! \GFAPI::form_id_exists( $form_id ) ) {
+			return null;
+		}
 
-        $meta = \GFFormsModel::get_form_meta($form_id);
-        if (!isset($meta[static::KEY_HASH]) || empty($meta[static::KEY_HASH])) {
-            return null;
-        }
+		$addon = GFExcelAddon::get_instance();
+		if ( $hash = $addon->get_feed_meta_field( 'hash', $form_id ) ) {
+			return $hash;
+		}
 
-        return $meta[static::KEY_HASH];
-    }
+		$meta = \GFFormsModel::get_form_meta( $form_id );
+		if ( ! isset( $meta[ static::KEY_HASH ] ) || empty( $meta[ static::KEY_HASH ] ) ) {
+			return null;
+		}
+
+		return $meta[ static::KEY_HASH ];
+	}
 
     /**
      * Save new hash to the form
