@@ -2,7 +2,7 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 
 /**
@@ -42,6 +42,6 @@ class SectionField extends BaseField {
 		return gf_apply_filters( [
 			'gfexcel_field_section_enabled',
 			$this->field->formId,
-		], (bool) GFExcelAddon::get_instance()->get_plugin_setting( 'sections_enabled' ) );
+		], (bool) GravityExportAddon::get_instance()->get_plugin_setting( 'sections_enabled' ) );
 	}
 }

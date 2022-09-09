@@ -21,7 +21,7 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields;
  * GravityExport Lite add-on.
  * @since $ver$
  */
-final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
+final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
 	use ActionAware;
 	use AddonTrait;
 	use AddonHelperTrait;

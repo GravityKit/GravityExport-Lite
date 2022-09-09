@@ -2,11 +2,11 @@
 
 namespace GFExcel\Migration;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
 
 /**
- * Migration to upgrade the old form settings to the new {@see GFExcelAddon} single feed settings.
+ * Migration to upgrade the old form settings to the new {@see GravityExportAddon} single feed settings.
  * @since $ver$
  */
 class SingleFeedMigration extends Migration {
@@ -98,7 +98,7 @@ class SingleFeedMigration extends Migration {
 			self::setValue( $new_settings, self::$feed_mapping[ $key ] ?? $key, $value );
 		}
 
-		$addon = GFExcelAddon::get_instance();
+		$addon = GravityExportAddon::get_instance();
 		$feed  = $addon->get_feed_by_form_id( $form_id = rgar( $form, 'id', 0 ) );
 		if ( $feed ) {
 			$result = \GFAPI::update_feed( rgar( $feed, 'id', 0 ), array_merge( $feed['meta'], $new_settings ),
@@ -130,7 +130,7 @@ class SingleFeedMigration extends Migration {
 			unset( $settings[ $old ] );
 		}
 
-		GFExcelAddon::get_instance()->update_plugin_settings( $settings );
+		GravityExportAddon::get_instance()->update_plugin_settings( $settings );
 	}
 
 	/**

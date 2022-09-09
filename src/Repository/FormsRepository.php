@@ -3,7 +3,7 @@
 namespace GFExcel\Repository;
 
 use GFAPI;
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 
 /**
  * Forms repository for Gravity Forms' forms.
@@ -15,7 +15,7 @@ class FormsRepository {
 	/**
 	 * The Gravity Export addon.
 	 * @since $ver$
-	 * @var GFExcelAddon
+	 * @var GravityExportAddon
 	 */
 	private $addon;
 
@@ -26,7 +26,7 @@ class FormsRepository {
 	 */
 	public function __construct( $form_id ) {
 		$this->form  = $form_id ? GFAPI::get_form( $form_id ) : [];
-		$this->addon = GFExcelAddon::get_instance();
+		$this->addon = GravityExportAddon::get_instance();
 	}
 
 	/**

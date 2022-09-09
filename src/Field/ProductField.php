@@ -2,7 +2,7 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 use GFExcel\Values\CurrencyValue;
 use GFExcel\Values\NumericValue;
@@ -101,7 +101,7 @@ class ProductField extends SeparableField
 	 * @return bool.
 	 */
 	protected function hasNumericPrice(): bool {
-		$plugin = GFExcelAddon::get_instance();
+		$plugin = GravityExportAddon::get_instance();
 
 		return gf_apply_filters( [
 			'gfexcel_numeric_price',

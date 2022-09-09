@@ -2,7 +2,7 @@
 
 namespace GFExcel\Values;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 
 /**
  * Value object that represents a string.
@@ -49,6 +49,6 @@ class StringValue extends BaseValue
      * @return bool Whether the hyperlinks are enabled.
      */
 	private function hasHyperlinksEnabled(): bool {
-		return (bool) ( GFExcelAddon::get_instance()->get_plugin_setting( 'hyperlinks_enabled' ) ?? true );
+		return (bool) ( GravityExportAddon::get_instance()->get_plugin_setting( 'hyperlinks_enabled' ) ?? true );
 	}
 }

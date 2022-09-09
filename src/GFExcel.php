@@ -2,7 +2,7 @@
 
 namespace GFExcel;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Renderer\PHPExcelRenderer;
 use GFExcel\Renderer\RendererInterface;
 use GFExcel\Transformer\Combiner;
@@ -114,7 +114,7 @@ class GFExcel
 			return null;
 		}
 
-		$addon = GFExcelAddon::get_instance();
+		$addon = GravityExportAddon::get_instance();
 		if ( $hash = $addon->get_feed_meta_field( 'hash', $form_id ) ) {
 			return $hash;
 		}
@@ -163,7 +163,7 @@ class GFExcel
      */
 	public static function getFilename( $form ) {
 		$form_id  = rgar( $form, 'id', 0 );
-		$filename = GFExcelAddon::get_instance()->get_feed_meta_field( 'custom_filename', $form_id );
+		$filename = GravityExportAddon::get_instance()->get_feed_meta_field( 'custom_filename', $form_id );
 
 		return $filename ?: sprintf(
 			'gfexcel-%d-%s-%s',
@@ -186,7 +186,7 @@ class GFExcel
 					static::KEY_FILE_EXTENSION,
 					$form_id,
 				],
-				GFExcelAddon::get_instance()->get_feed_meta_field( 'file_extension', $form_id, 'xlsx' ),
+				GravityExportAddon::get_instance()->get_feed_meta_field( 'file_extension', $form_id, 'xlsx' ),
 				$form
 			);
 
@@ -436,7 +436,7 @@ class GFExcel
 			return true;
 		}
 
-		$feed   = GFExcelAddon::get_instance()->get_feed_by_form_id($form_id);
+		$feed   = GravityExportAddon::get_instance()->get_feed_by_form_id($form_id);
 
 		return (bool) rgars( $feed, 'meta/is_secured', false );
 	}

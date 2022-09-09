@@ -17,7 +17,7 @@
 defined('ABSPATH') or die('No direct access!');
 
 use GFExcel\Action\ActionAwareInterface;
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
@@ -70,7 +70,7 @@ add_action('gform_loaded', static function (): void {
 	 * Making sure old version of plugins still work.
 	 * @deprecated Can be removed in next major release.
 	 */
-    class_alias(GFExcelAddon::class, '\GFExcel\GFExcelAdmin');
+    class_alias(GravityExportAddon::class, '\GFExcel\GFExcelAdmin');
 
     // Start DI container.
     $container = (new Container())
@@ -82,11 +82,11 @@ add_action('gform_loaded', static function (): void {
         ->delegate(new ReflectionContainer());
 
     // Instantiate add on from container.
-    $addon = $container->get(GFExcelAddon::class);
+    $addon = $container->get(GravityExportAddon::class);
 
     // Set instance for Gravity Forms and register the add-on.
-    GFExcelAddon::set_instance($addon);
-    GFAddOn::register(GFExcelAddon::class);
+    GravityExportAddon::set_instance($addon);
+    GFAddOn::register(GravityExportAddon::class);
 
     $addon->setAssetsDir(plugin_dir_url(GFEXCEL_PLUGIN_FILE) . 'public/');
 

@@ -2,7 +2,7 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\Addon\GFExcelAddon;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 
 /**
@@ -71,7 +71,7 @@ class SeparableField extends BaseField
      */
     protected function isSeparationEnabled()
     {
-	    $plugin = GFExcelAddon::get_instance();
+	    $plugin = GravityExportAddon::get_instance();
 
 	    return gf_apply_filters( [
 		    'gfexcel_field_separated',
