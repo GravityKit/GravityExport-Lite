@@ -1,4 +1,4 @@
-#gform_setting_sortfields .gform-settings-nested-fields {
+#gform_setting_export-fields .gfexcel_field-sort-fields {
     border: 0;
     margin: 0 -10px;
     padding: 0;
@@ -6,13 +6,13 @@
     justify-content: space-between;
 }
 
-#gform_setting_sortfields .gform-settings-field__sortable {
+#gform_setting_export-fields .gfexcel_field-sort-fields > div {
     flex: 0 1 50%;
     margin: 0 10px;
 }
 
-.fields-select#enabled_fields .move i.fa-arrow-right,
-.fields-select#disabled_fields .move i.fa-close {
+.fields-select#export-fields-enabled .move i.fa-arrow-right,
+.fields-select#export-fields-disabled .move i.fa-close {
     display: none;
 }
 

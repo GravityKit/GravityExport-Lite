@@ -4,7 +4,6 @@ namespace GFExcel\Addon;
 
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
-use GFExcel\Action\CountDownloads;
 use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
@@ -12,7 +11,7 @@ use GFExcel\GFExcel;
 use GFExcel\GFExcelOutput;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
-use GFExcel\GravityForms\Field\Sortable;
+use GFExcel\GravityForms\Field\SortFields;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormRepositoryInterface;
@@ -108,7 +107,6 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	public function init_admin(): void {
 		parent::init_admin();
 
-		add_action( 'admin_enqueue_scripts', \Closure::fromCallable( [ $this, 'register_sortable_js' ] ) );
 		add_action( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
 		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
@@ -124,7 +122,7 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		// Register custom fields first.
 		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
-		Fields::register( 'sortable', Sortable::class );
+		Fields::register( 'sort_fields', SortFields::class );
 
 		$form = $this->get_current_form();
 
@@ -332,61 +330,18 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 			]
 		) );
 
-		$form            = $this->get_current_form();
-		$feed_id         = $this->get_default_feed_id( rgar( $form, 'id', 0 ) );
-		$repository      = new FieldsRepository( $form, $this->get_feed( $feed_id ) ?: [] );
-		$disabled_fields = $repository->getDisabledFields();
-		$all_fields      = $repository->getFields( true );
-
-		$active_fields = $inactive_fields = [];
-		foreach ( $all_fields as $field ) {
-			$array_name      = in_array( $field->id, $disabled_fields, false ) ? 'inactive_fields' : 'active_fields';
-			${$array_name}[] = $field;
-		}
-
-		$active_fields = $repository->sortFields( $active_fields );
-
 		$settings_sections[] = [
 			'id'          => 'gk-section-fields',
 			'collapsible' => true,
 			'title'       => esc_html__( 'Field settings', GFExcel::$slug ),
 			'fields'      => [
 				[
-					'name'   => 'sortfields',
-					'type'   => 'html',
-					'html'   => sprintf(
-						'<p>%s</p>',
-						esc_html__( 'Drag & drop fields to re-order them in the exported file.', GFExcel::$slug )
-					),
-					'fields' => [
-						[
-							'label'   => esc_html__( 'Disabled fields', GFExcel::$slug ),
-							'name'    => 'disabled_fields',
-							'move_to' => 'enabled_fields',
-							'type'    => 'sortable',
-							'class'   => 'fields-select',
-							'side'    => 'left',
-							'choices' => array_map( function ( \GF_Field $field ) {
-								return [
-									'value' => $field->id,
-									'label' => $this->get_field_label( $field ),
-								];
-							}, $inactive_fields ),
-						],
-						[
-							'label'   => esc_html__( 'Enable & sort the fields', GFExcel::$slug ),
-							'name'    => 'enabled_fields',
-							'move_to' => 'disabled_fields',
-							'type'    => 'sortable',
-							'class'   => 'fields-select',
-							'side'    => 'right',
-							'choices' => array_map( function ( \GF_Field $field ) {
-								return [
-									'value' => $field->id,
-									'label' => $this->get_field_label( $field ),
-								];
-							}, $active_fields ),
-						],
+					'name'     => 'export-fields',
+					'type'     => 'sort_fields',
+					'choices'  => $this->getFields(),
+					'sections' => [
+						'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport' ), 'enabled' ],
+						'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport' ), 'disabled' ],
 					],
 				],
 			],
@@ -756,6 +711,9 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	 * @since $ver$
 	 */
 	public function settings_select( $field, $echo = true ): string {
+		/**
+		 * This overwrites {@see AddonHelperTrait::settings_select()} method to the original.
+		 */
 		return parent::settings_select( $field, $echo );
 	}
 
@@ -777,25 +735,6 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 			],
 			$field->get_field_label( true, '' ),
 			$field
-		);
-	}
-
-	/**
-	 * Add sortable javascript to the page.
-	 * @since $ver$
-	 */
-	private function register_sortable_js(): void {
-		if ( 'gf_edit_forms' !== rgget( 'page' ) || $this->get_slug() !== rgget( 'subview' ) ) {
-			return;
-		}
-
-		wp_add_inline_script(
-			'gfexcel-js',
-			sprintf(
-				'(function($) { $(document).ready(function() { gfexcel_sortable(\'%s\', \'%s\'); }); })(jQuery);',
-				'#enabled_fields, #disabled_fields',
-				'fields-select'
-			)
 		);
 	}
 
@@ -828,8 +767,11 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 		}
 
 		if ( ! isset( $this->feed[ $form_id ] ) ) {
-			$feed_id                = $this->get_default_feed_id( $form_id );
-			$this->feed[ $form_id ] = $this->get_feed( $feed_id ) ?: null;
+			$feed_id = $this->get_default_feed_id( $form_id );
+			// update meta settings to include any posted values.
+			$this->feed[ $form_id ] = ( $feed = $this->get_feed( $feed_id ) )
+				? array_merge( $feed, [ 'meta' => $this->get_current_settings() ] )
+				: null;
 		}
 
 		return $this->feed[ $form_id ] ?? null;
@@ -986,12 +928,36 @@ final class GFExcelAddon extends \GFFeedAddon implements AddonInterface, ActionA
 	 */
 	private function refresh_download_data( int $form_id, int $new_id ): void {
 		// new hash to prevent doubles.
-		$feed_old = $this->get_feed_by_form_id($form_id);
+		$feed_old = $this->get_feed_by_form_id( $form_id );
 
-        // todo: duplicate feed for this add-on. ANy other add-on should not be dupicated.
+		// todo: duplicate feed for this add-on. ANy other add-on should not be duplicated.
 
 
 		// reset the download counter
 		//do_action( 'gfexcel_action_' . CountDownloads::ACTION_RESET, $new_id );
+	}
+
+	/**
+	 * Returns disabled/enabled form fields as configured by the feed.
+	 * @since $ver$
+	 * @return array The fields.
+	 */
+	private function getFields(): array {
+		$form            = $this->get_current_form();
+		$feed            = $this->get_feed_by_form_id();
+		$repository      = new FieldsRepository( $form, $feed ?: [] );
+		$disabled_fields = $repository->getDisabledFields();
+		$all_fields      = $repository->getFields( true );
+
+		$active_fields = $inactive_fields = [];
+		foreach ( $all_fields as $field ) {
+			$array_name      = in_array( $field->id, $disabled_fields, false ) ? 'inactive_fields' : 'active_fields';
+			${$array_name}[] = $field;
+		}
+
+		return [
+			'disabled' => $inactive_fields,
+			'enabled'  => $repository->sortFields( $active_fields ),
+		];
 	}
 }

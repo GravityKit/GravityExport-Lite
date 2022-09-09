@@ -20,6 +20,13 @@ class DownloadUrl extends Base {
 	public $type = 'download_url';
 
 	/**
+	 * The asset's directory.
+	 * @since $ver$
+	 * @var string
+	 */
+	public $assets_dir = '';
+
+	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */

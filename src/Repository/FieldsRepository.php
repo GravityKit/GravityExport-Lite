@@ -6,19 +6,18 @@ use GFExcel\GFExcel;
 use GFExport;
 use GF_Field;
 
-class FieldsRepository
-{
-    private $fields = [];
+class FieldsRepository {
+	private $fields = [];
 
-    private $form;
+	private $form;
 
 	/**
 	 * @since 1.9
 	 * @var array GF Feed object.
 	 */
-    private $feed;
+	private $feed;
 
-    private $meta_fields = [];
+	private $meta_fields = [];
 
 	public function __construct( array $form, array $feed = [] ) {
 		$this->form = $form;
@@ -109,7 +108,7 @@ class FieldsRepository
 	 * @return array
 	 */
 	private function addNotesField() {
-		$form_id = rgar($this->form, 'id', 0);
+		$form_id    = rgar( $this->form, 'id', 0 );
 		$repository = new FormsRepository( $form_id );
 		if ( $repository->showNotes() ) {
 			$this->fields = array_merge( $this->fields, [
@@ -148,8 +147,7 @@ class FieldsRepository
 	 * @return array
 	 */
 	public function getDisabledFields() {
-		$result = explode( ',', rgars( $this->feed, 'meta/disabled_fields', '' ) );
-
+		$result  = explode( ',', rgars( $this->feed, 'meta/export-fields/disabled', '' ) );
 		$form_id = rgar( $this->form, 'id' );
 		$feed_id = rgar( $this->feed, 'id' );
 
@@ -165,7 +163,7 @@ class FieldsRepository
 	 * @return string[] The enabled fields.
 	 */
 	public function getEnabledFields() {
-		$result  = explode( ',', rgars( $this->feed, 'meta/enabled_fields', '' ) );
+		$result  = explode( ',', rgars( $this->feed, 'meta/export-fields/enabled', '' ) );
 		$form_id = rgar( $this->form, 'id' );
 		$feed_id = rgar( $this->feed, 'id' );
 
@@ -183,22 +181,19 @@ class FieldsRepository
 	 *
 	 * @return GF_Field[] The sorted fields.
 	 */
-	public function sortFields( $fields = [] ) {
+	public function sortFields( array $fields = [] ): array {
 		if ( empty( $fields ) ) {
 			$fields = $this->fields;
 		}
 
+		$fields = array_column($fields, null, 'id');
 		$sorted_keys = $this->getEnabledFields();
-		$fields      = array_reduce( $fields, static function ( array $carry, GF_Field $field ): array {
-			$carry[ $field->id ] = $field;
 
-			return $carry;
-		}, [] );
+		// sort fields
+		$fields = array_replace( array_flip( $sorted_keys ), $fields );
 
-		// sort fields, and remove any values that aren't field (objects).
-		$fields = @array_values( array_filter( array_replace( array_flip( $sorted_keys ), $fields ), 'is_object' ) );
-
-		return $fields;
+		// remove any values that aren't field objects.
+		return @array_values( array_filter( $fields, 'is_object' ) );
 	}
 
 	/**
