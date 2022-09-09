@@ -40,8 +40,8 @@ class SingleFeedMigration extends Migration {
 		'gfexcel_file_extension'          => 'file_extension',
 		'gfexcel_attachment_notification' => 'attachment_notification',
 		'gfexcel_disabled_fields'         => 'disabled_fields',
-		'gfexcel_enabled_fields'          => 'enabled_fields',
-		'gfexcel_download_count'          => 'download_count',
+		'gfexcel_enabled_fields'          => 'export-fields/enabled',
+		'gfexcel_download_count'          => 'export-fields/disabled',
 		'gfexcel_download_secured'        => 'is_secured',
 	];
 
@@ -95,7 +95,7 @@ class SingleFeedMigration extends Migration {
 
 		// Predefined settings.
 		foreach ( $old_settings as $key => $value ) {
-			$new_settings[ self::$feed_mapping[ $key ] ?? $key ] = $value;
+			self::setValue( $new_settings, self::$feed_mapping[ $key ] ?? $key, $value );
 		}
 
 		$addon = GFExcelAddon::get_instance();
@@ -131,5 +131,36 @@ class SingleFeedMigration extends Migration {
 		}
 
 		GFExcelAddon::get_instance()->update_plugin_settings( $settings );
+	}
+
+	/**
+	 * Helper method to set a value with nested keys.
+	 *
+	 * Gratefully borrowed from Laravel Arr::set().
+	 *
+	 * @param array $array The array to update.
+	 * @param string $key The (possibly nested) key.
+	 * @param mixed $value The value to set.
+	 */
+	private static function setValue( array &$array, string $key, $value ): void {
+		$keys = explode( '/', $key );
+
+		foreach ( $keys as $i => $key ) {
+			if ( count( $keys ) === 1 ) {
+				break;
+			}
+
+			unset( $keys[ $i ] );
+
+			// If the key doesn't exist at this depth, we will just create an empty array
+			// to hold the next value, allowing us to create the arrays to hold final
+			// values at the correct depth. Then we'll keep digging into the array.
+			if ( ! isset( $array[ $key ] ) || ! is_array( $array[ $key ] ) ) {
+				$array[ $key ] = [];
+			}
+
+			$array = &$array[ $key ];
+		}
+		$array[ array_shift( $keys ) ] = $value;
 	}
 }
