@@ -97,7 +97,9 @@ class DownloadUrl extends Text {
 	 * @since $ver$
 	 */
 	public function get_value() {
-		$hash = parent::get_value();
+		if (!$hash = parent::get_value()) {
+			return '';
+		}
 
 		$blog_url = get_bloginfo( 'url' );
 		if ( strpos( $hash, $blog_url ) !== false ) {
