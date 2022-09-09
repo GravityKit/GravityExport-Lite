@@ -159,14 +159,18 @@ class FilterRequest
             throw new \InvalidArgumentException('Invalid filter provided.');
         }
 
-        if ($parts === 1) {
-            $operator = '!=';
-        } elseif ($parts === 2) {
-            $value = (string) $filter[1];
-        } elseif ($parts === 3) {
-            $operator = (string) $filter[1];
-            $value = (string) $filter[2];
-        }
+	    if ( $parts === 1 ) {
+		    $operator = '!=';
+	    } elseif ( $parts === 2 ) {
+		    $value = (string) $filter[1];
+	    } elseif ( $parts === 3 ) {
+		    $operator = (string) $filter[1];
+		    $value    = (string) $filter[2];
+
+		    if ( in_array( trim( strtoupper( $operator ) ), [ 'IN', 'NOTIN', 'NOT IN' ], true ) ) {
+			    $value = preg_split( '/\s*,\s*/', $value );
+		    }
+	    }
 
         $this->field_filters[] = $operator ? compact('key', 'operator', 'value') : compact('key', 'value');
     }

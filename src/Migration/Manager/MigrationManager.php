@@ -35,7 +35,7 @@ class MigrationManager
 
     /**
      * The notification manager.
-     * @since $ver$
+     * @since 1.9.0
      * @var NotificationManager
      */
     private $notification_manager;
@@ -54,7 +54,7 @@ class MigrationManager
 
     /**
      * Returns the notification manager.
-     * @since $ver$
+     * @since 1.9.0
      * @return NotificationManager The notification manager.
      */
     public function getNotificationManager(): NotificationManager

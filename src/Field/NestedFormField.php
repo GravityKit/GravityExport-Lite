@@ -13,14 +13,14 @@ use GFExcel\Transformer\TransformerAwareInterface;
 class NestedFormField extends SeparableField implements RowsInterface, TransformerAwareInterface {
 	/**
 	 * The transformer instance.
-	 * @since $ver$
+	 * @since 1.11.1
 	 * @var Transformer
 	 */
 	private $transformer;
 
 	/**
 	 * Micro cache for fields.
-	 * @since $ver$
+	 * @since 1.11.1
 	 * @var FieldInterface[]|false
 	 */
 	private $fields = false;
@@ -63,7 +63,7 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 
 	/**
 	 * @inerhitDoc
-	 * @since $ver$
+	 * @since 1.11.1
 	 */
 	public function setTransformer( Transformer $transformer ): void {
 		$this->transformer = $transformer;
@@ -71,8 +71,8 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 
 	/**
 	 * Helper method to return the transformed fields from the nested form.
+	 * @since 1.11.1
 	 * @return FieldInterface[] The fields.
-	 * @since $ver$
 	 */
 	private function getNestedFields(): array {
 		if ( ! class_exists( 'GP_Nested_Forms' ) ) {

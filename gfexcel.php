@@ -4,8 +4,8 @@
  * Version:         2.0.0
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
- * Author:          GravityView
- * Author URI:      https://gravityview.co/extensions/gravityexport/
+ * Author:          GravityKit
+ * Author URI:      https://www.gravitykit.com/extensions/gravityexport/
  * License:         GPL2
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gf-entries-in-excel

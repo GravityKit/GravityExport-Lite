@@ -6,15 +6,19 @@ use GFExcel\GFExcel;
 use GFExport;
 use GF_Field;
 
-class FieldsRepository {
-	private $fields = [];
-	private $form;
+class FieldsRepository
+{
+    private $fields = [];
+
+    private $form;
+
 	/**
 	 * @since 1.9
 	 * @var array GF Feed object.
 	 */
-	private $feed;
-	private $meta_fields = [];
+    private $feed;
+
+    private $meta_fields = [];
 
 	public function __construct( array $form, array $feed = [] ) {
 		$this->form = $form;
@@ -67,7 +71,7 @@ class FieldsRepository {
 	private function useMetaData(): bool {
 		$use_metadata = (bool) gf_apply_filters(
 			[
-				"gfexcel_output_meta_info",
+				'gfexcel_output_meta_info',
 				$this->form['id'],
 			],
 			true
@@ -199,7 +203,7 @@ class FieldsRepository {
 
 	/**
 	 * Returns the sort field options for a form.
-	 * @since $ver$
+	 * @since 1.9.0
 	 *
 	 * @param mixed[]|null $form The form object.
 	 *

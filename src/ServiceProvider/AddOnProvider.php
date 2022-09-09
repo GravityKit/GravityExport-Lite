@@ -22,20 +22,20 @@ use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
- * @since $ver$
+ * @since 1.9.0
  */
 class AddOnProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     /**
      * The string an automatically started service must be tagged with.
-     * @since $ver$
+     * @since 1.9.0
      * @var string
      */
     public const AUTOSTART_TAG = 'gfexcel.autostart';
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.9.0
      */
     protected $provides = [
         self::AUTOSTART_TAG,
@@ -50,7 +50,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 1.9.0
      */
     public function register(): void
     {
@@ -71,7 +71,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 
     /**
      * Helper method to quickly add an auto started service.
-     * @since $ver$
+     * @since 1.9.0
      * @param string $id The id of the definition.
      * @param mixed $concrete The concrete implementation.
      * @param bool|null $shared Whether this is a shared instance.

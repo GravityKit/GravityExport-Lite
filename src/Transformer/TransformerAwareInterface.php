@@ -4,7 +4,7 @@ namespace GFExcel\Transformer;
 
 /**
  * Interface that makes a class {@see Transformer} aware.
- * @since $ver$
+ * @since 1.11.1
  */
 interface TransformerAwareInterface {
 	/**
