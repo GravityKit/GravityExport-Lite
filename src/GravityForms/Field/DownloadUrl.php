@@ -5,14 +5,14 @@ namespace GFExcel\GravityForms\Field;
 use GFExcel\Action\DownloadUrlDisableAction;
 use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
-use Gravity_Forms\Gravity_Forms\Settings\Fields\Base;
+use GFExcel\GFExcel;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Text;
 
 /**
  * A field that represents the download url from Gravity Export.
  * @since $ver$
  */
-class DownloadUrl extends Base {
+class DownloadUrl extends Text {
 	/**
 	 * @inheritdoc
 	 * @since $ver$
@@ -25,6 +25,13 @@ class DownloadUrl extends Base {
 	 * @var string
 	 */
 	public $assets_dir = '';
+
+	/**
+	 * This is a readonly field.
+	 * @since $ver$
+	 * @var bool
+	 */
+	public $readonly = true;
 
 	/**
 	 * @inheritdoc
@@ -43,7 +50,7 @@ class DownloadUrl extends Base {
 			return implode( "\n", $html );
 		}
 
-		$html[] = $this->get_read_only_url_input();
+		$html[] = parent::markup();
 
 		$html[] = '<div class="copy-to-clipboard-container" style="justify-content: space-between">';
 		$html[] = '<div>';
@@ -75,27 +82,6 @@ class DownloadUrl extends Base {
 	}
 
 	/**
-	 * Helper method that returns the readonly input field that contains the download url.
-	 * @return string
-	 */
-	private function get_read_only_url_input(): string {
-		ob_start();
-
-		$this->settings->render_field(
-			new Text(
-				[
-					'name'     => $this->name,
-					'readonly' => true,
-					'value'    => $this->get_value(),
-				],
-				$this->settings
-			)
-		);
-
-		return ob_get_clean();
-	}
-
-	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
@@ -106,29 +92,50 @@ class DownloadUrl extends Base {
 	}
 
 	/**
+	 * @inheritDoc
+	 * Added the full url to the value.
+	 * @since $ver$
+	 */
+	public function get_value() {
+		$hash = parent::get_value();
+
+		$blog_url = get_bloginfo( 'url' );
+		if ( strpos( $hash, $blog_url ) !== false ) {
+			return $hash;
+		}
+
+		$permalink = '/index.php?' . GFExcel::KEY_ACTION . '=%s&' . GFExcel::KEY_HASH . '=%s';
+		$action    = GFExcel::$slug;
+
+		if ( get_option( 'permalink_structure' ) ) {
+			$permalink = '/%s/%s';
+		} else {
+			$hash = urlencode( $hash );
+		}
+
+		return $blog_url . sprintf( $permalink, $action, $hash );
+	}
+
+	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
 	public function scripts(): array {
+		$script = "(function($) { $(document).ready(function() { addClipboard('%s','%s'); });})(jQuery);";
+
 		return [
 			[
 				'handle'   => 'gk-gravityexport-clipboard-js',
 				'src'      => $this->assets_dir . 'js/clipboard.js',
-				'callback' => function () {
-					$script = <<<JS
-(function($) {
-    $(document).ready(function() {
-        addClipboard('%s','%s');
-    });
-})(jQuery);
-JS;
-					$script = sprintf(
-						$script,
-						esc_attr( '.copy-attachment-url' ),
-						esc_attr__( 'The file URL has been copied to your clipboard', 'gk-gravityexport' )
+				'callback' => function () use ( $script ) {
+					wp_add_inline_script(
+						'gk-gravityexport-clipboard-js',
+						sprintf(
+							$script,
+							esc_attr( '.copy-attachment-url' ),
+							esc_attr__( 'The file URL has been copied to your clipboard', 'gk-gravityexport' )
+						)
 					);
-
-					wp_add_inline_script( 'gk-gravityexport-clipboard-js', $script );
 				},
 				'deps'     => [ 'jquery', 'wp-a11y', 'wp-i18n', 'clipboard' ],
 			],
