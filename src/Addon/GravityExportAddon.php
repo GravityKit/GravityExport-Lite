@@ -771,9 +771,9 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			// update meta settings to include any posted values.
 			if ( $feed = $this->get_feed( $feed_id ) ) {
 				$feed['meta'] = array_merge( $feed['meta'] ?? [], $this->get_current_settings() );
-			}
 
-			$this->feed[ $form_id ] = $feed;
+				$this->feed[ $form_id ] = $feed;
+			}
 		}
 
 		return $this->feed[ $form_id ] ?? null;
@@ -792,6 +792,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 */
 	public function get_feed_meta_field( string $field, int $form_id = 0, $default = null ) {
 		$feed = $this->get_feed_by_form_id( $form_id );
+
 		return rgars( $feed, sprintf( 'meta/%s', $field ), $default );
 	}
 
