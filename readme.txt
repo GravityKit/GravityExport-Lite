@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Enhancement: List fields column labels can now be manipulated by the `gfexcel_field_label` filter.
+
 = 1.11.2 on July 19, 2022 =
 
 * Enhancement: Added `date_updated` as a default exported meta field.
