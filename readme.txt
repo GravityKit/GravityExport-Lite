@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.0
-Stable tag: 1.11.2
+Stable tag: 1.11.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= 1.11.3 on September 29, 2022 =
 
 * Enhancement: List fields column labels can now be manipulated by the `gfexcel_field_label` filter.
 
