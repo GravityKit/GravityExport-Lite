@@ -14,7 +14,7 @@
  * @package         GFExcel
  */
 
-defined('ABSPATH') or die('No direct access!');
+defined( 'ABSPATH' ) or die( 'No direct access!' );
 
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GravityExportAddon;
@@ -47,62 +47,62 @@ if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
 	return;
 }
 
-add_action('gform_loaded', static function (): void {
-    if (!class_exists('GFForms') || !method_exists('GFForms', 'include_addon_framework')) {
-        return;
-    }
+add_action( 'gform_loaded', static function (): void {
+	if ( ! class_exists( 'GFForms' ) || ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
+		return;
+	}
 
-    load_plugin_textdomain('gf-entries-in-excel', false, basename(__DIR__) . '/languages');
+	load_plugin_textdomain( 'gf-entries-in-excel', false, basename( __DIR__ ) . '/languages' );
 
-    GFForms::include_addon_framework();
+	GFForms::include_addon_framework();
 	GFForms::include_feed_addon_framework();
 
-    if (!class_exists('GFExport')) {
-        require_once(GFCommon::get_base_path() . '/export.php');
-    }
+	if ( ! class_exists( 'GFExport' ) ) {
+		require_once( GFCommon::get_base_path() . '/export.php' );
+	}
 
-    $autoload = __DIR__ . '/vendor/autoload.php';
-    if (file_exists($autoload)) {
-        require_once($autoload);
-    }
+	$autoload = __DIR__ . '/vendor/autoload.php';
+	if ( file_exists( $autoload ) ) {
+		require_once( $autoload );
+	}
 
 	/**
 	 * Making sure old version of plugins still work.
 	 * @deprecated Can be removed in next major release.
 	 */
-    class_alias(GravityExportAddon::class, '\GFExcel\GFExcelAdmin');
+	class_alias( GravityExportAddon::class, '\GFExcel\GFExcelAdmin' );
 
-    // Start DI container.
-    $container = (new Container())
-        ->defaultToShared()
-        // add internal service provider
-        ->addServiceProvider(new BaseServiceProvider())
-        ->addServiceProvider(new AddOnProvider())
-        // auto wire it up
-        ->delegate(new ReflectionContainer());
+	// Start DI container.
+	$container = ( new Container() )
+		->defaultToShared()
+		// add internal service provider
+		->addServiceProvider( new BaseServiceProvider() )
+		->addServiceProvider( new AddOnProvider() )
+		// auto wire it up
+		->delegate( new ReflectionContainer() );
 
-    // Instantiate add on from container.
-    $addon = $container->get(GravityExportAddon::class);
+	// Instantiate add on from container.
+	$addon = $container->get( GravityExportAddon::class );
 
-    // Set instance for Gravity Forms and register the add-on.
-    GravityExportAddon::set_instance($addon);
-    GFAddOn::register(GravityExportAddon::class);
+	// Set instance for Gravity Forms and register the add-on.
+	GravityExportAddon::set_instance( $addon );
+	GFAddOn::register( GravityExportAddon::class );
 
-    $addon->setAssetsDir(plugin_dir_url(GFEXCEL_PLUGIN_FILE) . 'public/');
+	$addon->setAssetsDir( plugin_dir_url( GFEXCEL_PLUGIN_FILE ) . 'public/' );
 
-    // Dispatch event including the container.
-    do_action('gfexcel_loaded', $container);
+	// Dispatch event including the container.
+	do_action( 'gfexcel_loaded', $container );
 
-    // Start actions
-    if ($container->has(ActionAwareInterface::ACTION_TAG)) {
-        $container->get(ActionAwareInterface::ACTION_TAG);
-    }
+	// Start actions
+	if ( $container->has( ActionAwareInterface::ACTION_TAG ) ) {
+		$container->get( ActionAwareInterface::ACTION_TAG );
+	}
 
-    if ($container->has(AddOnProvider::AUTOSTART_TAG)) {
-        $container->get(AddOnProvider::AUTOSTART_TAG);
-    }
+	if ( $container->has( AddOnProvider::AUTOSTART_TAG ) ) {
+		$container->get( AddOnProvider::AUTOSTART_TAG );
+	}
 
-    if (!is_admin()) {
-        $container->get(GFExcel::class);
-    }
-});
+	if ( ! is_admin() ) {
+		$container->get( GFExcel::class );
+	}
+} );
