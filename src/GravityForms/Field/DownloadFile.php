@@ -42,12 +42,12 @@ class DownloadFile extends Base {
 	public function markup() {
 		$html = '<div class="download-block">
                 <div class="date-field">
-                    <input form="%1$s" type="text" id="start_date" name="start_date" />
+                    <input placeholder="YYYY-MM-DD" form="%1$s" type="text" id="start_date" name="start_date" />
                     <label for="start_date">' . esc_html__( 'Start', 'gravityforms' ) . '</label>
                 </div>
 
                 <div class="date-field">
-                    <input form="%1$s" type="text" id="end_date" name="end_date" />
+                    <input placeholder="YYYY-MM-DD" form="%1$s" type="text" id="end_date" name="end_date" />
                     <label for="end_date">' . esc_html__( 'End', 'gravityforms' ) . '</label>
                 </div>
 

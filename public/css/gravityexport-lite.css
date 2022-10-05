@@ -11,17 +11,22 @@
     margin: 0 10px;
 }
 
-.fields-select#export-fields-enabled .move i.fa-arrow-right,
-.fields-select#export-fields-disabled .move i.fa-close {
-    display: none;
-}
 
 ul.fields-select {
     background-color: #FFF;
-    padding: 1px 5px;
+    padding: 2px 5px;
     border: 1px solid #E1E1E1;
     min-height: 30px;
     border-radius: 4px;
+}
+
+ul.fields-select#export-fields-enabled .move i.fa-arrow-right,
+ul.fields-select#export-fields-disabled .move i.fa-close {
+    display: none;
+}
+
+ul.fields-select#export-fields-enabled {
+    border: 1px solid #1e8cbe;
 }
 
 ul.fields-select .fa-bars {
@@ -54,8 +59,8 @@ ul.fields-select li div.move:hover {
 ul.fields-select li {
     display: flex;
     background-color: #f7f7f7;
-    margin: 2px 0;
-    padding: 3px;
+    margin: 3px 0;
+    padding: 6px;
     -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
     -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
     transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
@@ -74,9 +79,6 @@ ul.fields-select li:last-child {
 ul.fields-select .ui-sortable-handle {
     cursor: pointer;
     cursor: -webkit-grab;
-    padding: 7px;
-    margin: 5px 0;
-    border-radius: 3px;
 }
 
 ul.fields-select .ui-sortable-handle:hover {
@@ -107,7 +109,23 @@ ul.fields-select li.light-up i {
     margin-right: 10px;
     width: 200px;
 }
+
 .download-block .download-button {
     margin-top: 10px;
     flex-basis: 100%;
+}
+
+fieldset.gk-gravityexport-download-file {
+    border: 1px solid #006899;
+}
+
+fieldset.gk-gravityexport-download-file .gform-settings-panel__title--header {
+    background-color: #006899;
+    color: #FFF;
+}
+
+fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
+    border-top: 0;
+    border-radius: 2px;
+    background-color: #ebf2fa;
 }

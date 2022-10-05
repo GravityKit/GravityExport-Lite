@@ -144,7 +144,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		}
 
 		$settings_sections[] = [
-			'id'          => 'gk-gravity-export-download',
+			'id'          => 'gk-gravityexport-download',
 			'title'       => __( 'Download settings', GFExcel::$slug ),
 			'collapsible' => true,
 			'fields'      => [
@@ -196,8 +196,9 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		];
 
 		$settings_sections[] = [
-			'id'     => 'gk-section-download-file',
-			'title'  => __( 'Download File', GFExcel::$slug ),
+			'id'     => 'gk-gravityexport-download-file',
+			'class'     => 'gk-gravityexport-download-file',
+			'title'  => __( 'Instant Download ⚡️', GFExcel::$slug ),
 			'fields' => [
 				[
 					'name'    => 'download_file',
@@ -673,8 +674,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 			],
 			[
-				'handle'  => 'gfexcel-js',
-				'src'     => $this->assets_dir . 'js/gfexcel.js',
+				'handle'  => 'gravityexport-lite',
+				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
 				'enqueue' => [
 					[
 						'admin_page' => 'form_settings',
