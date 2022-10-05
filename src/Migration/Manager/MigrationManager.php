@@ -120,6 +120,7 @@ class MigrationManager
      * Returns the migrations to run based on the current version.
      * @since 1.8.0
      * @return Migration[] The migrations.
+     * @todo this should be on a MigrationRepository.
      */
     public function getMigrations(): array
     {
