@@ -43,13 +43,13 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected $_title = 'GravityExport Lite (V2)';
+	protected $_title = 'GravityExport Lite';
 
 	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected $_short_title = 'GravityExport Lite (V2)';
+	protected $_short_title = 'GravityExport Lite';
 
 	/**
 	 * @inheritdoc
