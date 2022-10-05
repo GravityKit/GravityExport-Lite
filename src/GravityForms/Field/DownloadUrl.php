@@ -97,7 +97,7 @@ class DownloadUrl extends Text {
 	 * @since $ver$
 	 */
 	public function get_value() {
-		if (!$hash = parent::get_value()) {
+		if ( ! $hash = parent::get_value() ) {
 			return '';
 		}
 
@@ -116,6 +116,15 @@ class DownloadUrl extends Text {
 		}
 
 		return $blog_url . sprintf( $permalink, $action, $hash );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function do_validation( $value ): void {
+		// Pass empty value as string to circumvent error.
+		parent::do_validation( (string) $value );
 	}
 
 	/**
