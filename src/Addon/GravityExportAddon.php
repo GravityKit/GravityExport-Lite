@@ -4,6 +4,7 @@ namespace GFExcel\Addon;
 
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
+use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
@@ -110,7 +111,6 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		add_action( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
 		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
-		add_filter( 'gform_post_form_duplicated', \Closure::fromCallable( [ $this, 'refresh_download_data' ] ), 10, 2 );
 		add_filter( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
 	}
 
@@ -922,21 +922,29 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	}
 
 	/**
-	 * Updates download data for a duplicated form.
-	 * @since 1.7.0
-	 *
-	 * @param int $form_id the ID of the duplicated form
-	 * @param int $new_id the ID of the new form.
+	 * @inheritDoc
+	 * @since $ver$
 	 */
-	private function refresh_download_data( int $form_id, int $new_id ): void {
-		// new hash to prevent doubles.
-		$feed_old = $this->get_feed_by_form_id( $form_id );
+	public function can_duplicate_feed( $id ): bool {
+		return true;
+	}
 
-		// todo: duplicate feed for this add-on. ANy other add-on should not be duplicated.
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function duplicate_feed( $id, $new_form_id = false ): ?int {
+		$new_feed_id = parent::duplicate_feed( $id, $new_form_id );
+		$new_feed    = \GFAPI::get_feed( $new_feed_id );
 
+		if ( is_array( $new_feed ) && $this->hasAction( DownloadUrlResetAction::$name ) ) {
+			$form_id  = $new_feed['form_id'] ?? 0;
+			$settings = $new_feed['meta'] ?? [];
 
-		// reset the download counter
-		//do_action( 'gfexcel_action_' . CountDownloads::ACTION_RESET, $new_id );
+			$this->getAction( DownloadUrlResetAction::$name )->fire( $this, [ $new_feed_id, $form_id, $settings ] );
+		}
+
+		return $new_feed_id;
 	}
 
 	/**
