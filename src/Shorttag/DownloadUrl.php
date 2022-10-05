@@ -13,10 +13,11 @@ use GFExcel\GFExcel;
 class DownloadUrl
 {
     /** @var string */
-    const SHORTTAG = 'gfexcel_download_url';
+   public const SHORTTAG = 'gravityexport_download_url';
 
     public function __construct()
     {
+        add_shortcode('gfexcel_download_url', [$this, 'handle']); // Backward compatible
         add_shortcode(self::SHORTTAG, [$this, 'handle']);
         add_filter('gform_replace_merge_tags', [$this, 'handleNotification'], 10, 2);
     }
