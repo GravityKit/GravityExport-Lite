@@ -700,10 +700,29 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 			$this->getAction( $action )->fire( $this, [ $feed_id, $form_id, $settings ] );
 
+			self::refresh();
+
 			return $feed_id;
 		}
 
 		return parent::save_feed_settings( $feed_id, $form_id, $settings );
+	}
+
+	/**
+	 * Helper method to refresh the page, to an optional url.
+	 * @since $ver$
+	 */
+	protected static function refresh( ?string $url = null ): void {
+		if ( $url === null ) {
+			$url = add_query_arg( [
+				'page'    => rgget( 'page' ),
+				'view'    => rgget( 'view' ),
+				'subview' => rgget( 'subview' ),
+				'id'      => rgget( 'id' ),
+			], get_admin_url() );
+		}
+
+		wp_safe_redirect( $url );
 	}
 
 	/**

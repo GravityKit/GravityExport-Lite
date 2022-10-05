@@ -72,6 +72,5 @@ class DownloadUrlResetAction extends AbstractAction {
 
 		// Set notification of success.
 		$addon->add_message( esc_html__( static::$success_message, 'gk-gravityexport' ) );
-		static::refresh();
 	}
 }

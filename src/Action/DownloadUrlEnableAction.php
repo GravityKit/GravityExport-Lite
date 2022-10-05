@@ -38,7 +38,5 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 		}
 
 		parent::fire( $addon, $form );
-
-		static::refresh();
 	}
 }
