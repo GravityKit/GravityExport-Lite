@@ -1418,9 +1418,9 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	public function getSelectAllHtml(): string {
 		return sprintf(
 			'<div class="%s %2$s">
-                <input type="checkbox" id="%2$s" value="" />
-                <label for="%2$s" data-deselect="%3$s" data-select="%4$s">%4$s</label>
-            </div>',
+				<input type="checkbox" id="%2$s" value="" />
+				<label for="%2$s" data-deselect="%3$s" data-select="%4$s">%4$s</label>
+			</div>',
 			esc_attr( 'gform-settings-choice' ),
 			esc_attr( 'gk-gravityexport-meta-all' ),
 			esc_attr( 'Deselect All', GFExcel::$slug ),
