@@ -218,7 +218,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     'description' => esc_html__(
                         'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
                         GFExcel::$slug
-                    ),
+                    ) . $this->getSelectAllHtml(),
                     'type' => 'checkbox',
                     'choices' => $this->meta_fields(),
                 ]
@@ -1098,6 +1098,17 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 ],
                 'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
             ],
+	        [
+		        'handle' => 'gfexcel-settings',
+		        'src' => self::assets() . 'public/js/gfexcel-settings.js',
+		        'enqueue' => [
+			        [
+				        'admin_page' => 'plugin_settings',
+				        'tab' => GFExcel::$slug,
+			        ]
+		        ],
+		        'deps' => ['jquery'],
+	        ],
         ]);
     }
 
@@ -1399,4 +1410,21 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 
         return $form;
     }
+
+	/**
+	 * @since $ver$
+	 * @return string The HTML for select only.
+	 */
+	public function getSelectAllHtml(): string {
+		return sprintf(
+			'<div class="%s %2$s">
+                <input type="checkbox" id="%2$s" value="" />
+                <label for="%2$s" data-deselect="%3$s" data-select="%4$s">%4$s</label>
+            </div>',
+			esc_attr( 'gform-settings-choice' ),
+			esc_attr( 'gk-gravityexport-meta-all' ),
+			esc_attr( 'Deselect All', GFExcel::$slug ),
+			esc_attr( 'Select All', GFExcel::$slug )
+		);
+	}
 }

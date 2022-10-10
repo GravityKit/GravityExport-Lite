@@ -3,6 +3,7 @@
     body .gform-settings__wrapper {
         grid-template-columns: none;
     }
+
     body .gform-settings__navigation {
         margin-bottom: 1em;
     }
@@ -11,6 +12,7 @@
 #tab_gf-entries-in-excel {
     font-size: 14px;
 }
+
 body .gform-settings-description {
     font-size: 14px;
 }
@@ -22,6 +24,7 @@ body .gaddon-section {
 body .gform-settings-field__header {
     margin-top: 1.25rem;
 }
+
 .gform-settings-field__header .gform-settings-label {
     font-size: 15px;
 }
@@ -73,6 +76,7 @@ ul.fields-select li div.move:hover {
     margin: 5px 0;
     border-radius: 3px;
 }
+
 .ui-sortable-handle:hover {
     background-color: #F0F0F0;
 }
@@ -97,6 +101,7 @@ ul.fields-select li:first-child {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
+
 ul.fields-select li:last-child {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
@@ -124,6 +129,7 @@ ul.fields-select li:last-child {
     margin-right: 5px;
     margin-left: 0;
 }
+
 .rtl .sortfields .fa-bars {
     margin-left: 5px;
     margin-right: 0;
@@ -203,6 +209,7 @@ ul.fields-select li:last-child {
     padding-top: 0;
     border-radius: 3px;
 }
+
 #gravityexport-lite-rating-fieldset legend {
     display: none;
 }
@@ -263,6 +270,7 @@ body .button.button-danger {
     color: #fff;
     transition: all .1s;
 }
+
 body .button.button-danger.button-small {
     font-size: 13px;
 }
@@ -279,7 +287,7 @@ body .button.button-danger:active {
 
 .download-block {
     overflow: hidden;
-    padding:3px 0;
+    padding: 3px 0;
 }
 
 .download-block .date-field {
@@ -299,6 +307,7 @@ body .button.button-danger:active {
     border: 1px solid #ccc;
     margin-top: 40px;
 }
+
 .gaddon-section__download_file h4 {
     margin-top: 0;
 }
@@ -306,6 +315,13 @@ body .button.button-danger:active {
 .gaddon-section__download_count {
     font-size: 16px;
 }
+
 .gaddon-section__download_count a {
     padding: 0 10px;
+}
+
+.gform-settings-choice.gk-gravityexport-meta-all {
+    margin-top: 5px;
+    border-bottom: 1px solid #ebebf2;
+    padding-bottom: 10px;
 }
