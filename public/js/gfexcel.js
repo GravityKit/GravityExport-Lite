@@ -18,19 +18,30 @@ var gfexcel_sortable;
             }
         }).disableSelection();
 
-        $elements.on('click', '.move', function () {
-            var element = $(this).closest('li');
-            var send_to = '#' + element.closest('ul').data('send-to');
-            element.appendTo($(send_to));
-            setTimeout(function () {
-                element.addClass('light-up');
+        $elements.closest('td')
+            .find('button.move-all')
+            .on('click', function () {
+                var $list = $(this).closest('td').find('ul');
+                var send_to = '#' + $list.data('send-to');
+                $list.find('li').appendTo($(send_to));
+                $elements.sortable('refresh');
+                updateLists($elements);
+            });
+        $elements
+
+            .on('click', '.move', function () {
+                var element = $(this).closest('li');
+                var send_to = '#' + element.closest('ul').data('send-to');
+                element.appendTo($(send_to));
                 setTimeout(function () {
-                    element.removeClass('light-up');
-                }, 200);
-            }, 10);
-            $elements.sortable('refresh');
-            updateLists($elements);
-        });
+                    element.addClass('light-up');
+                    setTimeout(function () {
+                        element.removeClass('light-up');
+                    }, 200);
+                }, 10);
+                $elements.sortable('refresh');
+                updateLists($elements);
+            });
     };
 
     $(document).ready(function () {

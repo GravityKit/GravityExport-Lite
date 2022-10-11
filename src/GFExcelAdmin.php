@@ -892,6 +892,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     'label' => esc_html__('Disabled Fields', GFExcel::$slug),
                     'name' => 'gfexcel_disabled_fields',
                     'move_to' => 'gfexcel_enabled_fields',
+                    'move_all_text' => esc_html__('Enable all', GFExcel::$slug),
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'left',
@@ -915,6 +916,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     'name' => 'gfexcel_enabled_fields',
                     'value' => \rgar( $form, 'gfexcel_enabled_fields', '' ),
                     'move_to' => 'gfexcel_disabled_fields',
+                    'move_all_text' => esc_html__('Disable all', GFExcel::$slug),
                     'type' => 'sortable',
                     'class' => 'fields-select',
                     'side' => 'right',
@@ -963,7 +965,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                 $value
             );
             $html .= sprintf(
-                '<ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
+                '<button type="button" class="move-all">%5$s</button><ul id="%1$s" %2$s data-send-to="%4$s">%3$s</ul>',
                 $name, implode(' ', $attributes), implode("\n", array_map(static function ($choice): string {
                 return sprintf(
                     '<li data-value="%s">
@@ -975,7 +977,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     </li>',
                     $choice['value'], $choice['label']
                 );
-            }, $field['choices'])), $field['move_to']);
+            }, $field['choices'])), $field['move_to'], $field['move_all_text']);
 
             $html .= \rgar($field, 'after_select');
         }
