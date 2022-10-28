@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9d20d3baa7a65c03a0090a70ac79c6d",
+    "content-hash": "b320c5d090f5426d63e430f79766c9a4",
     "packages": [
         {
             "name": "composer/installers",
@@ -213,12 +213,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/GFExcel/base.git",
-                "reference": "8d1966b9e5c4c9071777de7140696163da317dc5"
+                "reference": "de5066342bd0ed63d47fbdaf8643d00cf2638dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GFExcel/base/zipball/8d1966b9e5c4c9071777de7140696163da317dc5",
-                "reference": "8d1966b9e5c4c9071777de7140696163da317dc5",
+                "url": "https://api.github.com/repos/GFExcel/base/zipball/de5066342bd0ed63d47fbdaf8643d00cf2638dd7",
+                "reference": "de5066342bd0ed63d47fbdaf8643d00cf2638dd7",
                 "shasum": ""
             },
             "require": {
@@ -236,34 +236,22 @@
                     "GFExcel\\": "./src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "GFExcel\\Tests\\": "./tests"
-                }
-            },
-            "scripts": {
-                "linter": [
-                    "vendor/bin/phplint --no-cache"
-                ],
-                "test": [
-                    "vendor/bin/phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
                     "name": "Doeke Norg",
-                    "email": "info@gfexcel.com"
+                    "email": "doeke@gravitykit.com"
                 }
             ],
             "description": "Base for GravityExport",
             "support": {
-                "source": "https://github.com/GFExcel/base/tree/master",
-                "issues": "https://github.com/GFExcel/base/issues"
+                "issues": "https://github.com/GFExcel/base/issues",
+                "source": "https://github.com/GFExcel/base/tree/master"
             },
-            "time": "2021-09-08T02:34:27+00:00"
+            "time": "2022-10-28T09:32:10+00:00"
         },
         {
             "name": "league/container",
@@ -3913,5 +3901,5 @@
     "platform-overrides": {
         "php": "7.2.34"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }

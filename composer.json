@@ -23,12 +23,6 @@
         }
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:GFExcel/base.git"
-        }
-    ],
     "require": {
         "ext-json": "*",
         "php": "^7.2",
