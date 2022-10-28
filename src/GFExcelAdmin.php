@@ -1097,6 +1097,13 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
                     ]
                 ],
                 'deps' => ['jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker'],
+                'callback' => function() {
+                    // Can't use `scripts` because `gfexcel-js` will break JS, and can't be renamed at this point for the add-ons.
+                    wp_localize_script('gfexcel-js', 'gfexcel_strings', [
+                        'enable' => esc_html__('Enable all', GFExcel::$slug),
+                        'disable' => esc_html__('Disable all', GFExcel::$slug),
+                    ]);
+                },
             ],
 	        [
 		        'handle' => 'gfexcel-settings',

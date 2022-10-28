@@ -10,11 +10,14 @@ var gfexcel_sortable;
 
     gfexcel_sortable = function (elements, connector_class) {
         var $elements = $(elements);
+        var labels_i10n = typeof gfexcel_strings !== 'undefined'
+            ? gfexcel_strings
+            : {'enable': 'Enable all', 'disable': 'Disable all'}; // Fallback to English
 
         $elements.each(function () {
             var $list = $(this);
             var send_to = '#' + $list.data('send-to');
-            var label = send_to.indexOf('enabled') > 0 ? 'Enable all' : 'Disable all';
+            var label = send_to.indexOf('enabled') > 0 ? labels_i10n.enable : labels_i10n.disable;
             var $move_all_button = $('<button type="button" class="move-all">' + label + '</button>');
 
             // Move all items to the `send-to` list when clicked.
