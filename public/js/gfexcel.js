@@ -18,14 +18,24 @@ var gfexcel_sortable;
             var $list = $(this);
             var send_to = '#' + $list.data('send-to');
             var label = send_to.indexOf('enabled') > 0 ? labels_i10n.enable : labels_i10n.disable;
-            var $move_all_button = $('<button type="button" class="move-all">' + label + '</button>');
+            var $move_all_button = $('<button type="button">' + label + '</button>');
 
-            // Move all items to the `send-to` list when clicked.
-            $move_all_button.on('click', function () {
-                $list.find('li').appendTo($(send_to));
-                $elements.sortable('refresh');
-                updateLists($elements);
-            });
+            $move_all_button
+                // Add css via JS to hit add-ons.
+                .css({
+                    background: 'none',
+                    border: 0,
+                    float: 'right',
+                    marginTop: '-30px',
+                    color: '#3e7da6',
+                    cursor: 'pointer'
+                })
+                // Move all items to the `send-to` list when clicked.
+                .on('click', function () {
+                    $list.find('li').appendTo($(send_to));
+                    $elements.sortable('refresh');
+                    updateLists($elements);
+                });
 
             // Add the button before the list.
             $(this).before($move_all_button);

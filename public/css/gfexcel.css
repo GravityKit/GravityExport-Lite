@@ -325,16 +325,3 @@ body .button.button-danger:active {
     border-bottom: 1px solid #ebebf2;
     padding-bottom: 10px;
 }
-
-button.move-all {
-    background: none;
-    border: 0;
-    float: right;
-    margin-top: -30px;
-    color: #3e7da6;
-    cursor: pointer;
-}
-
-button.move-all:hover {
-    text-decoration: underline;
-}
