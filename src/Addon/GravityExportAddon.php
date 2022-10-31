@@ -112,6 +112,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
 		add_filter( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
+		add_filter( 'gform_export_fields', \Closure::fromCallable( [ $this, 'gform_export_fields' ] ) );
 	}
 
 	/**
@@ -939,6 +940,21 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				] );
 			}
 		}
+	}
+
+	/**
+	 * Adds any extra fields to the export.
+	 *
+	 * @since 1.11.2
+	 *
+	 * @param array $form The form object.
+	 *
+	 * @return array The updated form object.
+	 */
+	private function gform_export_fields( array $form ): array {
+		$form['fields'][] = [ 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gravityforms' ) ];
+
+		return $form;
 	}
 
 	/**
