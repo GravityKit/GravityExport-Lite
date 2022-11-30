@@ -258,6 +258,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: on PHP 8 an array value threw an error instead of silently failing.
+
 = 1.11.3 on September 29, 2022 =
 
 * Enhancement: List fields column labels can now be manipulated by the `gfexcel_field_label` filter.
