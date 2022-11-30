@@ -260,6 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 = Unreleased =
 
+* Enhancement: Added `Entry ID` as a sorting option. Useful when duplicate entry dates exist.
 * Bugfix: on PHP 8 an array value threw an error instead of silently failing.
 
 = 1.11.3 on September 29, 2022 =

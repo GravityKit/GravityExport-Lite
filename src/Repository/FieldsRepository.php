@@ -268,11 +268,15 @@ class FieldsRepository
 
             return $fields;
         }, [
-            // Add `date of entry` as first item.
-            [
-                'value' => 'date_created',
-                'label' => __('Date of entry', GFExcel::$slug),
-            ]
+	        // Add `date of entry` and `entry id` as first items.
+	        [
+		        'value' => 'date_created',
+		        'label' => __( 'Date of entry', GFExcel::$slug ),
+	        ],
+	        [
+		        'value' => 'id',
+		        'label' => __( 'Entry Id', 'gravityforms' ),
+	        ],
         ]);
     }
 }
