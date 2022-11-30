@@ -236,17 +236,57 @@ class FieldsRepository {
 				];
 			}
 
-			return $fields;
-		}, [
-			// Add `date of entry` and `entry id` as first items.
-			[
-				'value' => 'date_created',
-				'label' => __( 'Date of entry', 'gk-gravityexport-lite' ),
-			],
-			[
-				'value' => 'id',
-				'label' => __( 'Entry Id', 'gravityforms' ),
-			],
-		] );
-	}
+        // sort fields, and remove any values that aren't field (objects).
+        $fields = @array_values(array_filter(array_replace(array_flip($sorted_keys), $fields), 'is_object'));
+
+        return $fields;
+    }
+
+    /**
+     * Returns the sort field options for a form.
+     * @since 1.9.0
+     * @param mixed[]|null $form The form object.
+     * @return string[][] The sort field options.
+     */
+    public function getSortFieldOptions(?array $form = null): array
+    {
+        $form = $form ?? $this->form;
+
+        return array_reduce($form['fields'] ?? [], static function (array $fields, \GF_Field $field): array {
+            // Fields that have no subfields can be added as they are.
+            if (!$field->get_entry_inputs()) {
+                $fields[] = [
+                    'value' => $field->id,
+                    'label' => $field->label,
+                ];
+
+                return $fields;
+            }
+
+            // Field has subfields. Lets try to add those.
+            foreach ($field->get_entry_inputs() as $sub_field) {
+                // Hidden fields are probably not filled out, so don't show them.
+                if ($sub_field['isHidden'] ?? false) {
+                    continue;
+                }
+
+                $fields[] = [
+                    'value' => $sub_field['id'],
+                    'label' => sprintf('%s (%s)', $sub_field['label'], $field->label),
+                ];
+            }
+
+            return $fields;
+        }, [
+	        // Add `date of entry` and `entry id` as first items.
+	        [
+		        'value' => 'date_created',
+		        'label' => __( 'Date of entry', GFExcel::$slug ),
+	        ],
+	        [
+		        'value' => 'id',
+		        'label' => __( 'Entry Id', 'gravityforms' ),
+	        ],
+        ]);
+    }
 }
