@@ -257,7 +257,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= 1.11.4 on November 30, 2022 =
 
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
