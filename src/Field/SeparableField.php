@@ -2,11 +2,11 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\GFExcelAdmin;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 
 /**
- * A field transformer that serves as the base for every field that has sub fields.
+ * A field transformer that serves as the base for every field that has subfields.
  * @since 1.6.0
  */
 class SeparableField extends BaseField
@@ -66,25 +66,19 @@ class SeparableField extends BaseField
     }
 
     /**
-     * Should we use separated fields.
-     * @return bool
+     * Whether we should use separated fields.
+     * @return bool Whether we should use separated fields.
      */
     protected function isSeparationEnabled()
     {
-        $plugin = GFExcelAdmin::get_instance();
+	    $plugin = GravityExportAddon::get_instance();
 
-        $bool = $plugin->get_plugin_setting(self::SETTING_KEY);
-        if ($bool === null) {
-            // backwards compatible with earlier setting
-            $bool = $plugin->get_plugin_setting('field_address_split_enabled');
-        }
-
-        return gf_apply_filters([
-            'gfexcel_field_separated',
-            $this->field->get_input_type(),
-            $this->field->formId,
-            $this->field->id
-        ], !!$bool, $this->field);
+	    return gf_apply_filters( [
+		    'gfexcel_field_separated',
+		    $this->field->get_input_type(),
+		    $this->field->formId,
+		    $this->field->id,
+	    ], (bool) $plugin->get_plugin_setting( self::SETTING_KEY ), $this->field );
     }
 
     /**

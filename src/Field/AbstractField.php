@@ -64,14 +64,12 @@ abstract class AbstractField implements FieldInterface
     /**
      * Wrap a value within a value Object to get more info when rendering it.
      * @since 1.3.0
-     * @param mixed[] $values The values.
+     * @param array $values The values.
      * @param bool $is_label Whether this is a label cell.
      * @return BaseValue[] The value Object.
      */
-    protected function wrap($values, $is_label = false)
+    protected function wrap(array $values, bool $is_label = false): array
     {
-        $values = $this->validateWrapValues($values);
-
         return array_map(function ($value) use ($is_label) {
             return BaseValue::getValueObject($this, $value, $this->field, $is_label);
         }, $values);
@@ -95,25 +93,6 @@ abstract class AbstractField implements FieldInterface
 			$this->field->id,
 		], $value, $entry, $this->field, $context );
 	}
-
-    /**
-     * Validates the values provided to the `wrap` method.
-     * @since 1.8.4
-     * @param mixed $values The values to validate.
-     * @return mixed[] The values as array.
-     */
-    protected function validateWrapValues($values): array
-    {
-        if (!is_array($values)) {
-            trigger_error(
-                '`wrap()` should only receive an array. Behavior will change in next major.',
-                E_USER_DEPRECATED
-            );
-            $values = (array) $values;
-        }
-
-        return $values;
-    }
 
     /**
      * Internal function to get the Field Value for an entry, and maybe override it.

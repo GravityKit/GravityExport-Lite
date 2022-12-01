@@ -73,7 +73,7 @@ class MigrationManager
         if (!get_transient(self::TRANSIENT_MIGRATION_RUNNING)) {
             set_transient(self::TRANSIENT_MIGRATION_RUNNING, true, 300);
 
-            // Change directory for glob. We do this here so we can better test `getMigrations`.
+            // Change directory for glob. We do this here, so we can better test `getMigrations()`.
             chdir(dirname(GFEXCEL_PLUGIN_FILE) . '/src/Migration/');
 
             // Run migrations.
@@ -120,6 +120,7 @@ class MigrationManager
      * Returns the migrations to run based on the current version.
      * @since 1.8.0
      * @return Migration[] The migrations.
+     * @todo this should be on a MigrationRepository.
      */
     public function getMigrations(): array
     {
