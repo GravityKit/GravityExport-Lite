@@ -26,8 +26,7 @@ Check out our [full documentation site](https://gfexcel.com) for you developers 
 
 ### Credits
 
-- Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
-- Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 - The Gravity Forms Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
+- Logo by [Karlo Norg](https://www.karlon.org)
 
 <img src="https://raw.githubusercontent.com/GFExcel/gf-entries-in-excel/master/assets/icon-256x256.png" width="128">

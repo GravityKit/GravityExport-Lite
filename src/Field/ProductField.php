@@ -2,7 +2,7 @@
 
 namespace GFExcel\Field;
 
-use GFExcel\GFExcelAdmin;
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 use GFExcel\Values\CurrencyValue;
 use GFExcel\Values\NumericValue;
@@ -96,21 +96,20 @@ class ProductField extends SeparableField
         return \GFCommon::to_number($value, \rgar($entry, 'currency'));
     }
 
-    /**
-     * @return bool
-     */
-    protected function hasNumericPrice()
-    {
-        $plugin = GFExcelAdmin::get_instance();
-        $bool = $plugin->get_plugin_setting(self::SETTING_KEY);
+	/**
+	 * Whether the product field has a numeric value / price.
+	 * @return bool.
+	 */
+	protected function hasNumericPrice(): bool {
+		$plugin = GravityExportAddon::get_instance();
 
-        return gf_apply_filters([
-            'gfexcel_numeric_price',
-            $this->field->get_input_type(),
-            $this->field->formId,
-            $this->field->id
-        ], (bool) $bool, $this->field);
-    }
+		return gf_apply_filters( [
+			'gfexcel_numeric_price',
+			$this->field->get_input_type(),
+			$this->field->formId,
+			$this->field->id,
+		], (bool) $plugin->get_plugin_setting( self::SETTING_KEY ), $this->field );
+	}
 
     /**
      * @inheritdoc
@@ -119,27 +118,24 @@ class ProductField extends SeparableField
      *
      * @since 1.8.2
      */
-    protected function wrap($values, $is_label = false)
-    {
-        $values = $this->validateWrapValues($values);
+	protected function wrap( array $values, bool $is_label = false ): array {
+		$wrapping = [
+			StringValue::class,
+			CurrencyValue::class,
+			NumericValue::class,
+		];
 
-        $wrapping = [
-            StringValue::class,
-            CurrencyValue::class,
-            NumericValue::class,
-        ];
+		if ( ! $is_label ) {
+			$wrapped = [];
 
-        if (!$is_label) {
-            $wrapped = [];
+			// make sure the type is correct.
+			foreach ( $values as $key => $value ) {
+				$wrapped[] = new $wrapping[ $key ]( $value, $this->field );
+			}
 
-            // make sure the type is correct.
-            foreach ($values as $key => $value) {
-                $wrapped[] = new $wrapping[$key]($value, $this->field);
-            }
+			return $wrapped;
+		}
 
-            return $wrapped;
-        }
-
-        return parent::wrap($values, $is_label);
-    }
+		return parent::wrap( $values, $is_label );
+	}
 }

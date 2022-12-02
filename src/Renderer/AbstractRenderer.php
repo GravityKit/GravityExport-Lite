@@ -2,7 +2,7 @@
 
 namespace GFExcel\Renderer;
 
-use GFExcel\GFExcelConfigConstants;
+use GFExcel\Repository\FormsRepository;
 use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 
 /**
@@ -27,23 +27,19 @@ abstract class AbstractRenderer
         ], $this->transpose($form, $rows));
     }
 
-    /**
-     * Transpose the matrix to flip rows and columns.
-     * @param mixed[] $form The form object.
-     * @param mixed[] $matrix The matrix containing all rows and columns.
-     * @return mixed[] The transposed matrix.
-     */
-    protected function transpose(array $form, $matrix)
-    {
-        $transpose = false;
-        if (array_key_exists(GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE, $form)) {
-            $transpose = (bool) $form[GFExcelConfigConstants::GFEXCEL_RENDERER_TRANSPOSE];
-        }
+	/**
+	 * Transpose the matrix to flip rows and columns.
+	 *
+	 * @param mixed[] $form The form object.
+	 * @param mixed[] $matrix The matrix containing all rows and columns.
+	 *
+	 * @return mixed[] The transposed matrix.
+	 */
+	protected function transpose( array $form, $matrix ) {
+		if ( ( new FormsRepository( $form['id'] ) )->isTransposed() ) {
+			return LookupRef::TRANSPOSE( $matrix );
+		}
 
-        if (!gf_apply_filters(['gfexcel_renderer_transpose', $form['id']], $transpose)) {
-            return $matrix;
-        }
-
-        return LookupRef::TRANSPOSE($matrix);
-    }
+		return $matrix;
+	}
 }

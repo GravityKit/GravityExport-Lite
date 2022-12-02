@@ -3,20 +3,28 @@
 namespace GFExcel\ServiceProvider;
 
 use GFExcel\Action\CountDownloads;
+use GFExcel\Action\DownloadUrlDisableAction;
+use GFExcel\Action\DownloadUrlEnableAction;
+use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Action\FilterRequest;
+use GFExcel\Action\NotificationAttachmentAction;
 use GFExcel\Action\NotificationsAction;
+use GFExcel\Component\MetaBoxes;
+use GFExcel\Component\Plugin;
+use GFExcel\Generator\HashGeneratorInterface;
 use GFExcel\Migration\Manager\MigrationManager;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
 use League\Container\Definition\DefinitionInterface;
+use League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
  * @since 1.9.0
  */
-class AddOnProvider extends AbstractServiceProvider
+class AddOnProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
 {
     /**
      * The string an automatically started service must be tagged with.
@@ -37,6 +45,7 @@ class AddOnProvider extends AbstractServiceProvider
         FilterRequest::class,
         NotificationsAction::class,
         MigrationManager::class,
+	    NotificationAttachmentAction::class,
     ];
 
     /**
@@ -53,8 +62,11 @@ class AddOnProvider extends AbstractServiceProvider
         $this->addAutoStart(CountDownloads::class);
         $this->addAutoStart(DownloadUrl::class);
         $this->addAutoStart(FilterRequest::class);
+        $this->addAutoStart(MetaBoxes::class);
         $this->addAutoStart(MigrationManager::class)->addArgument(NotificationManager::class);
         $this->addAutoStart(NotificationsAction::class)->addArgument(NotificationManager::class);
+        $this->addAutoStart(NotificationAttachmentAction::class);
+        $this->addAutoStart(Plugin::class);
     }
 
     /**
@@ -70,5 +82,16 @@ class AddOnProvider extends AbstractServiceProvider
         return $this->getLeagueContainer()
             ->add($id, $concrete, $shared)
             ->addTag(self::AUTOSTART_TAG);
+    }
+
+    /**
+     * @inheritdoc
+     * @since $ver$
+     */
+    public function boot(): void
+    {
+        $this->addAction(DownloadUrlEnableAction::class)->addArgument(HashGeneratorInterface::class);
+        $this->addAction(DownloadUrlResetAction::class)->addArgument(HashGeneratorInterface::class);
+        $this->addAction(DownloadUrlDisableAction::class);
     }
 }

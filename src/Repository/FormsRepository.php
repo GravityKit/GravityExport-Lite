@@ -3,104 +3,112 @@
 namespace GFExcel\Repository;
 
 use GFAPI;
-use GFExcel\GFExcel;
-use GFExcel\GFExcelAdmin;
+use GFExcel\Addon\GravityExportAddon;
 
-class FormsRepository
-{
-    /** @var array|false */
-    private $form;
-    /**
-     * @var GFExcelAdmin
-     */
-    private $admin;
+/**
+ * Forms repository for Gravity Forms' forms.
+ */
+class FormsRepository {
+	/** @var array|false */
+	private $form;
 
-    public function __construct($form_id)
-    {
-        $this->form = $form_id ? GFAPI::get_form($form_id) : [];
-        $this->admin = GFExcelAdmin::get_instance();
-    }
+	/**
+	 * The Gravity Export addon.
+	 * @since $ver$
+	 * @var GravityExportAddon
+	 */
+	private $addon;
 
-    /**
-     * Whether or not to show notes based on setting or filter
-     * @return bool
-     */
-    public function showNotes()
-    {
-        $value = false; //default
-        if ($setting = $this->admin->get_plugin_setting('notes_enabled')) {
-            $value = (bool) $setting;
-        }
+	/**
+	 * Creates the Forms Repository.
+	 *
+	 * @param string|int $form_id The form id.
+	 */
+	public function __construct( $form_id ) {
+		$this->form  = $form_id ? GFAPI::get_form( $form_id ) : [];
+		$this->addon = GravityExportAddon::get_instance();
+	}
 
-        $form = $this->getForm();
+	/**
+	 * Whether to show notes based on setting or filter.
+	 * @return bool
+	 */
+	public function showNotes(): bool {
+		// Plugin has global setting.
+		$plugin_setting = (bool) $this->addon->get_plugin_setting( 'notes_enabled' );
 
-        if (array_key_exists(GFExcel::KEY_ENABLED_NOTES, $form)) {
-            $value = $form[GFExcel::KEY_ENABLED_NOTES];
-        }
+		// Form can overwrite that setting.
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
+		$setting = $this->addon->get_feed_meta_field( 'enable_notes', $form_id, $plugin_setting );
 
-        return (bool) gf_apply_filters([
-            'gfexcel_field_notes_enabled',
-            $form['id'],
-        ], $value);
-    }
+		// Hook can overwrite the setting too.
+		return (bool) gf_apply_filters( [ 'gfexcel_field_notes_enabled', $form_id ], $setting, $form_id );
+	}
 
-    /**
-     * Get field to sort the data by
-     * @return mixed
-     */
-    public function getSortField()
-    {
-        $value = 'date_created';
+	/**
+	 * Get field to sort the data by
+	 * @return mixed
+	 */
+	public function getSortField() {
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
 
-        $form = $this->getForm();
-        if (array_key_exists('gfexcel_output_sort_field', $form)) {
-            $value = $form['gfexcel_output_sort_field'];
-        }
+		$value = $this->addon->get_feed_meta_field( 'sort_field', $form_id, 'date_created' );
 
-        return gf_apply_filters(array('gfexcel_output_sort_field', $form['id']), $value);
-    }
+		return gf_apply_filters( [ 'gfexcel_output_sort_field', $form_id ], $value );
+	}
 
-    /**
-     * In what order should the data be sorted
-     * @return string
-     */
-    public function getSortOrder()
-    {
-        $value = 'ASC'; //default
-        $form = $this->getForm();
+	/**
+	 * In what order should the data be sorted.
+	 * @return string The sort order.
+	 */
+	public function getSortOrder(): string {
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
 
-        if (array_key_exists("gfexcel_output_sort_order", $form)) {
-            $value = $form["gfexcel_output_sort_order"];
-        }
+		$value = $this->addon->get_feed_meta_field( 'sort_order', $form_id, 'ASC' );
 
-        $value = gf_apply_filters(array('gfexcel_output_sort_order', $form['id']), $value);
-        //force either ASC or DESC
-        return $value === "ASC" ? "ASC" : "DESC";
-    }
+		$value = gf_apply_filters( [ 'gfexcel_output_sort_order', $form_id ], $value );
 
-    /**
-     * Return the notifications for this form
-     * @return array
-     */
-    public function getNotifications()
-    {
-        return \rgar($this->form, 'notifications', []);
-    }
+		//force either ASC or DESC
+		return $value === 'ASC' ? 'ASC' : 'DESC';
+	}
 
-    /**
-     * @return string
-     */
-    public function getSelectedNotification()
-    {
-        return \rgar($this->form, GFExcel::KEY_ATTACHMENT_NOTIFICATION, '');
-    }
+	/**
+	 * Return the notifications for this form
+	 * @return array
+	 */
+	public function getNotifications(): array {
+		return \rgar( $this->getForm(), 'notifications', [] );
+	}
 
-    /**
-     * Get the form instance
-     * @return array|false
-     */
-    public function getForm()
-    {
-        return $this->form;
-    }
+	/**
+	 * Returns the selected notification.
+	 * @return string
+	 */
+	public function getSelectedNotification(): string {
+		return (string) $this->addon->get_feed_meta_field(
+			'attachment_notification',
+			\rgar( $this->form, 'id', 0 ),
+			''
+		);
+	}
+
+	/**
+	 *
+	 * @since $ver$
+	 * @return bool Whether the form should be transposed.
+	 */
+	public function isTransposed(): bool {
+		$form_id = \rgar( $this->getForm(), 'id', 0 );
+		$value   = $this->addon->get_feed_meta_field( 'is_transposed', $form_id, false );
+
+		return gf_apply_filters( [ 'gfexcel_renderer_transpose', $form_id ], $value );
+	}
+
+	/**
+	 * Get the form instance
+	 * @return array|false
+	 */
+	public function getForm() {
+		return $this->form;
+	}
 }

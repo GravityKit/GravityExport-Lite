@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.0
-Stable tag: 1.11.3
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,8 +82,7 @@ We've written an article that contains all you need to know about [exporting dat
 #### Credits
 
 - The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
-- Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
+- Logo by [Karlo Norg](https://www.karlon.org)
 
 == Installation ==
 

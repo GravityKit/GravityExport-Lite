@@ -10,8 +10,8 @@ var gfexcel_sortable;
 
     gfexcel_sortable = function (elements, connector_class) {
         var $elements = $(elements);
-        var labels_i10n = typeof gfexcel_strings !== 'undefined'
-            ? gfexcel_strings
+        var labels_i10n = typeof gravityexport_lite_strings !== 'undefined'
+            ? gravityexport_lite_strings
             : {'enable': 'Enable all', 'disable': 'Disable all'}; // Fallback to English
 
         $elements.each(function () {
