@@ -55,7 +55,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected $_slug = 'gf-entries-in-excel';
+	protected $_slug = 'gravityexport-lite';
 
 	/**
 	 * @inheritdoc
@@ -210,7 +210,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 		$settings_sections[] = [
 			'id'     => 'gk-gravityexport-download-file',
-			'class'     => 'gk-gravityexport-download-file',
+			'class'  => 'gk-gravityexport-download-file',
 			'title'  => __( 'Instant Download ⚡️', GFExcel::$slug ),
 			'fields' => [
 				[
@@ -1017,5 +1017,21 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'disabled' => $inactive_fields,
 			'enabled'  => $repository->sortFields( $active_fields ),
 		];
+	}
+
+	/**
+	 * Returns the slug for the add-on.
+	 *
+	 * @since $ver$
+	 */
+	public function get_slug(): string {
+		// Fallback for old plugins
+		$trace    = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 2 );
+		$function = rgar( $trace[1] ?? [], 'function' );
+		if ( $function === 'meets_minimum_requirements' ) {
+			return 'gf-entries-in-excel';
+		}
+
+		return parent::get_slug();
 	}
 }

@@ -40,7 +40,7 @@ class GFExcel
      * @since 1.0.0
      * @var string
      */
-    public static $slug = 'gf-entries-in-excel';
+    public static $slug = 'gravityexport-lite';
 
 	/**
 	 * The endpoint slug of the plugin.
