@@ -70,6 +70,18 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
 	/**
+	 * @since $ver$
+	 * @var string Relative path to file from plugins directory.
+	 */
+	protected $_path = 'gf-entries-in-excel/src/Addon/GravityExportAddon.php';
+
+	/**
+	 * @since $ver$
+	 * @var string Full path to this file.
+	 */
+	protected $_full_path = __FILE__;
+
+	/**
 	 * A micro cache for the feed object.
 	 * @since $ver$
 	 * @var array|null GF feed object.
