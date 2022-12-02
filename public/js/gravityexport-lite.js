@@ -3,7 +3,7 @@ var gfexcel_sortable;
 (function ($) {
     var updateLists = function ($elements) {
         $elements.each(function (i, el) {
-            var $input = $(el).prev();
+            var $input = $(el).prevAll('input[type=hidden]');
             $input.val($(el).sortable('toArray', {attribute: 'data-value'}).join(','));
         })
     };
