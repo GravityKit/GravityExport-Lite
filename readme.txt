@@ -257,6 +257,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= 1.11.4 on November 30, 2022 =
+
+* Enhancement: Added `Entry ID` as a sorting option. Useful when duplicate entry dates exist.
+* Bugfix: on PHP 8 an array value threw an error instead of silently failing.
+
 = 1.11.3 on September 29, 2022 =
 
 * Enhancement: List fields column labels can now be manipulated by the `gfexcel_field_label` filter.
