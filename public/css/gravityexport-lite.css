@@ -1,4 +1,4 @@
-#gform_setting_export-fields .gfexcel_field-sort-fields {
+#gform_setting_export-fields .gk-gravityexport-sort-fields {
     border: 0;
     margin: 0 -10px;
     padding: 0;
@@ -6,8 +6,8 @@
     justify-content: space-between;
 }
 
-#gform_setting_export-fields .gfexcel_field-sort-fields > div {
-    flex: 0 1 50%;
+#gform_setting_export-fields .gk-gravityexport-sort-fields > div {
+    flex: 0 0 50%;
     margin: 0 10px;
 }
 
@@ -18,6 +18,7 @@ ul.fields-select {
     border: 1px solid #E1E1E1;
     min-height: 30px;
     border-radius: 4px;
+    max-width: 100%;
 }
 
 ul.fields-select#export-fields-enabled .move i.fa-arrow-right,
@@ -35,8 +36,16 @@ ul.fields-select .fa-bars {
     margin-left: 0;
 }
 
-ul.fields-select li div:not(.move) {
-    flex: 1;
+ul.fields-select li > div.field {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+ul.fields-select li > div.field span {
+
 }
 
 .rtl ul.fields-select .fa-bars {
@@ -44,12 +53,12 @@ ul.fields-select li div:not(.move) {
     margin-right: 0;
 }
 
-ul.fields-select li div.move {
+ul.fields-select li > div.move {
     font-weight: bold;
     padding: 0 5px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
+    width: 10px;
+    flex-shrink: 0;
 }
 
 ul.fields-select li div.move:hover {
@@ -128,4 +137,36 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     border-top: 0;
     border-radius: 2px;
     background-color: #ebf2fa;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by .gform-settings-nested-fields {
+    display: flex;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order {
+    margin-left: 5px;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order select {
+    width: auto;
+    max-width: 100%;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by {
+    width: 50%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.small {
+    max-width: 25%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.medium {
+    max-width: 50%;
 }

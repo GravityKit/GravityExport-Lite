@@ -175,7 +175,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 						esc_html__( 'Default: %s', GFExcel::$slug ),
 						GFExcel::getFilename( $form )
 					),
-					'class'         => 'medium code',
+					'class'         => 'code',
 					'description'   => esc_html__(
 						'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default.',
 						GFExcel::$slug
@@ -188,7 +188,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'label'       => esc_html__( 'File Extension', GFExcel::$slug ),
 					'type'        => 'select',
 					'name'        => 'file_extension',
-					'class'       => 'small-text',
+					'class'       => 'small',
 					'description' => sprintf(
 						esc_html__(
 							'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
@@ -237,6 +237,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'name'          => 'is_secured',
 					'label'         => esc_html__( 'Download Permissions', GFExcel::$slug ),
 					'type'          => 'select',
+					'class'         => 'medium',
 					'description'   => sprintf(
 						esc_html__(
 							'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
@@ -289,6 +290,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 						[
 							'label'   => esc_html__( 'Attach Single Entry to Notification', GFExcel::$slug ),
 							'type'    => 'select',
+							'class'   => 'medium',
 							'name'    => 'attachment_notification',
 							'choices' => $this->getNotifications(),
 						],
@@ -311,16 +313,16 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 							],
 						],
 						[
-							'name'     => 'order_by',
-							'label'    => esc_html__( 'Order By', GFExcel::$slug ),
-							'type'     => 'callback',
-							'callback' => function () {
-								$sort_field = [
+							'name'   => 'order_by',
+							'label'  => esc_html__( 'Order By', GFExcel::$slug ),
+							'type'   => 'html',
+							'fields' => [
+								[
+									'type'    => 'select',
 									'name'    => 'sort_field',
 									'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
-								];
-
-								$sort_order = [
+								],
+								[
 									'name'    => 'sort_order',
 									'type'    => 'select',
 									'choices' => [
@@ -333,11 +335,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 											'label' => esc_html__( 'Descending', GFExcel::$slug ),
 										],
 									],
-								];
-
-								$this->settings_select( $sort_field );
-								$this->settings_select( $sort_order );
-							},
+								],
+							],
 						],
 					],
 				],
@@ -663,6 +662,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			[
 				'handle'  => 'gravityexport-lite',
 				'src'     => $this->assets_dir . 'css/gravityexport-lite.css',
+				'version' => GFEXCEL_PLUGIN_VERSION,
 				'enqueue' => [
 					[ 'admin_page' => 'form_settings', 'tab' => $this->get_slug() ],
 					[ 'admin_page' => 'plugin_settings', 'tab' => $this->get_slug() ],
@@ -689,6 +689,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			[
 				'handle'  => 'gravityexport-lite',
 				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
+				'version' => GFEXCEL_PLUGIN_VERSION,
 				'enqueue' => [
 					[
 						'admin_page' => 'form_settings',
