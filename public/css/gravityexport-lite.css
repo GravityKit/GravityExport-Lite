@@ -16,6 +16,7 @@ ul.fields-select {
 }
 
 ul.fields-select#export-fields-enabled .move i.fa-arrow-right,
+ul.fields-select#export-fields-disabled .fa-bars,
 ul.fields-select#export-fields-disabled .move i.fa-close {
     display: none;
 }
@@ -26,8 +27,11 @@ ul.fields-select#export-fields-enabled {
 
 ul.fields-select .fa-bars {
     color: #ccd0d4;
-    margin-right: 5px;
-    margin-left: 0;
+    margin: 0;
+}
+
+ul.fields-select .fa {
+    padding: 5px;
 }
 
 ul.fields-select li > div.field {
@@ -38,21 +42,21 @@ ul.fields-select li > div.field {
 }
 
 ul.fields-select li > div.field span {
+    margin-left: 5px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .rtl ul.fields-select .fa-bars {
-    margin-left: 5px;
+    margin-left: 8px;
     margin-right: 0;
 }
 
 ul.fields-select li > div.move {
     font-weight: bold;
-    padding: 0 5px;
+    padding: 0;
     cursor: pointer;
-    width: 10px;
     flex-shrink: 0;
 }
 
@@ -63,7 +67,7 @@ ul.fields-select li div.move:hover {
 ul.fields-select li {
     display: flex;
     background-color: #f7f7f7;
-    margin: 3px 0;
+    margin: 4px 0;
     padding: 6px;
     -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
     -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;

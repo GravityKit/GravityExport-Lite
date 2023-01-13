@@ -698,6 +698,15 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 				'deps'    => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
 			],
+			[
+				'handle'  => 'gfexcel-js',
+				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
+				'version' => GFEXCEL_PLUGIN_VERSION,
+				'enqueue' => [
+					'__return_false', // prevents loading, but will register the file under the old handle
+				],
+				'deps'    => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
+			],
 		] );
 	}
 
