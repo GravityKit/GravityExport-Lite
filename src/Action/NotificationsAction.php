@@ -63,7 +63,7 @@ class NotificationsAction
             return [
                 new Notification(
                     'manager-error',
-                    esc_html__('The notifications could not be retrieved.', GFExcel::$slug),
+                    esc_html__('The notifications could not be retrieved.', 'gk-gravityexport-lite'),
                     Notification::TYPE_ERROR,
                     false
                 )

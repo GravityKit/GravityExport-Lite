@@ -1,5 +1,5 @@
 {
-    "name": "doekenorg/gf-entries-in-excel",
+    "name": "gravitykit/gravityexport-lite",
     "description": "The fastest way to export from Gravity Forms.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",

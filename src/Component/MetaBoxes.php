@@ -36,7 +36,7 @@ final class MetaBoxes {
 	public function gform_entry_detail_meta_boxes( array $meta_boxes, array $lead, array $form ): array {
 		if ( GFExcel::url( $form['id'] ) ) {
 			$meta_boxes[] = [
-				'title'    => esc_html__( 'GravityExport Lite', GFExcel::$slug ),
+				'title'    => esc_html__( 'GravityExport Lite', 'gk-gravityexport-lite' ),
 				'callback' => \Closure::fromCallable( [ $this, 'single_entry_download' ] ),
 				'context'  => 'side',
 				'priority' => 'high',
@@ -76,7 +76,7 @@ final class MetaBoxes {
 
 		printf(
 			$html,
-			esc_html__( 'Download this single entry as a file.', GFExcel::$slug ),
+			esc_html__( 'Download this single entry as a file.', 'gk-gravityexport-lite' ),
 			implode(' ', $links)
 		);
 	}

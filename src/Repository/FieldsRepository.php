@@ -236,7 +236,7 @@ class FieldsRepository {
 			// Add `date of entry` and `entry id` as first items.
 			[
 				'value' => 'date_created',
-				'label' => __( 'Date of entry', GFExcel::$slug ),
+				'label' => __( 'Date of entry', 'gk-gravityexport-lite' ),
 			],
 			[
 				'value' => 'id',

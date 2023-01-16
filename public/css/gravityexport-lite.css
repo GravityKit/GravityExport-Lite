@@ -169,3 +169,12 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
 .gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.medium {
     max-width: 50%;
 }
+
+.gform-settings-field__download_url span.success {
+    margin: 10px 5px 0 0;
+    display: inline-block;
+}
+
+.gform-settings-field__download_url span.success.hidden {
+    display: none;
+}

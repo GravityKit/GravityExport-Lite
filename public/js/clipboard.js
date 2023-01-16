@@ -22,13 +22,13 @@ var addClipboard;
             successTimeout = setTimeout(function () {
                 $successElement.addClass('hidden');
                 // Remove the visually hidden textarea so that it isn't perceived by assistive technologies.
-                if (clipboard.clipboardAction.fakeElem && clipboard.clipboardAction.removeFake) {
+                if (clipboard.clipboardAction && clipboard.clipboardAction.fakeElem && clipboard.clipboardAction.removeFake) {
                     clipboard.clipboardAction.removeFake();
                 }
             }, 3000);
 
             // Handle success audible feedback.
-            wp.a11y.speak(__(feedback));
+            wp.a11y.speak(feedback);
         });
     };
 })(jQuery);

@@ -57,24 +57,24 @@ class DownloadUrl extends Text {
 
 		$html[] = sprintf(
 			'<button type="submit" onclick="%s" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
-			'return confirm(&quot;You are about to reset the URL for this form. This can\'t be undone.&quot;);',
+			sprintf( 'return confirm(&quot;%s&quot;);', esc_attr__( 'You are about to reset the URL for this form. This can\'t be undone.', 'gk-gravityexport-lite' ) ),
 			DownloadUrlResetAction::$name,
-			'Regenerate URL'
+			esc_attr__('Regenerate URL', 'gk-gravityexport-lite')
 		);
 		$html[] = sprintf(
 			'<button type="submit" onclick="%s" name="gform-settings-save" value="%s" form="gform-settings" class="button button-danger">%s</button>',
-			'return confirm(&quot;You are about to disable the URL for this form. This can\'t be undone.&quot;);',
+			sprintf( 'return confirm(&quot;%s.&quot;);', esc_attr__( 'You are about to disable the URL for this form. This will invalidate the URL, and can\'t be undone.', 'gk-gravityexport-lite' ) ),
 			DownloadUrlDisableAction::$name,
-			'Disable download URL'
+			esc_attr__( 'Disable download URL', 'gk-gravityexport-lite' )
 		);
 		$html[] = '</div>';
 		$html[] = '<div>';
 		$html[] = '<span class="success hidden" aria-hidden="true">' . esc_html__(
 				'Copied!',
-				'gk-gravityexport'
+				'gk-gravityexport-lite'
 			) . '</span>';
 		$html[] = '<button type="button" class="button copy-attachment-url" data-clipboard-target="[name=_gform_setting_hash]"><span class="dashicons dashicons-clipboard"></span>';
-		$html[] = esc_html__( 'Copy URL to Clipboard', 'gk-gravityexport' ) . '</button>';
+		$html[] = esc_html__( 'Copy URL to Clipboard', 'gk-gravityexport-lite' ) . '</button>';
 		$html[] = '</div>';
 		$html[] = '</div>';
 
@@ -144,7 +144,7 @@ class DownloadUrl extends Text {
 						sprintf(
 							$script,
 							esc_attr( '.copy-attachment-url' ),
-							esc_attr__( 'The file URL has been copied to your clipboard', 'gk-gravityexport' )
+							esc_attr__( 'The file URL has been copied to your clipboard.', 'gk-gravityexport-lite' )
 						)
 					);
 				},

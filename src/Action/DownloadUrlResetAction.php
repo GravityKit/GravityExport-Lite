@@ -21,7 +21,7 @@ class DownloadUrlResetAction extends AbstractAction {
 	 * @since $ver$
 	 * @var string
 	 */
-	protected static $success_message = 'The download URL has been reset.';
+	protected static $success_message = '';
 
 	/**
 	 * The hash generator.
@@ -37,6 +37,8 @@ class DownloadUrlResetAction extends AbstractAction {
 	 */
 	public function __construct( HashGeneratorInterface $generator ) {
 		$this->generator = $generator;
+
+		static::$success_message = esc_html__( 'The download URL has been reset.', 'gk-gravityexport-lite' );
 	}
 
 	/**
@@ -53,7 +55,7 @@ class DownloadUrlResetAction extends AbstractAction {
 		} catch ( \Exception $exception ) {
 			$addon->add_error_message(
 				sprintf(
-					esc_html__( 'There was an error generating the URL: %s', 'gk-gravityexport' ),
+					esc_html__( 'There was an error generating the URL: %s', 'gk-gravityexport-lite' ),
 					$exception->getMessage()
 				)
 			);
@@ -71,6 +73,6 @@ class DownloadUrlResetAction extends AbstractAction {
 		$addon->set_previous_settings( $settings );
 
 		// Set notification of success.
-		$addon->add_message( esc_html__( static::$success_message, 'gk-gravityexport' ) );
+		$addon->add_message( static::$success_message );
 	}
 }

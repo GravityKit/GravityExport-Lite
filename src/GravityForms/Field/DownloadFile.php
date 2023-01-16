@@ -53,7 +53,7 @@ class DownloadFile extends Base {
 
                 <div class="download-button">
                     <button type="submit" form="%1$s" class="button primary button-primary">' . esc_html__( 'Download',
-				GFExcel::$slug ) . '</button>
+				'gk-gravityexport-lite' ) . '</button>
                 </div>
             </div>';
 

@@ -25,12 +25,12 @@ final class Usage {
 
 			/** @var \stdClass $data */
 			$data = plugins_api( 'plugin_information', [
-				'slug'   => GFExcel::$slug,
+				'slug'   => 'gf-entries-in-excel',
 				'fields' => [ 'active_installs' => true ],
 			] );
 
 			if ( $data instanceof \WP_Error || ! is_object( $data ) || ! isset( $data->active_installs ) ) {
-				return __( 'countless', GFExcel::$slug );
+				return __( 'countless', 'gk-gravityexport-lite' );
 			}
 			$active_installs = $data->active_installs;
 			set_transient( GFExcel::$slug . '-active_installs', $active_installs, WEEK_IN_SECONDS );
@@ -49,8 +49,8 @@ final class Usage {
 	 */
 	public function getTarget( bool $number_format = true ): string {
 		$current_count = $this->getCount( false );
-		if ( $current_count === __( 'countless', GFExcel::$slug ) ) {
-			return __( 'even more', GFExcel::$slug );
+		if ( $current_count === __( 'countless', 'gk-gravityexport-lite' ) ) {
+			return __( 'even more', 'gk-gravityexport-lite' );
 		}
 
 		// What step should we reach for?
