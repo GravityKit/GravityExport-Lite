@@ -314,6 +314,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 							'name'     => 'order_by',
 							'label'    => esc_html__( 'Order By', GFExcel::$slug ),
 							'type'     => 'callback',
+							'class'    => 'gform-settings-field--multiple-inputs',
 							'callback' => function () {
 								$sort_field = [
 									'name'    => 'sort_field',
