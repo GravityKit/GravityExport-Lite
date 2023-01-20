@@ -88,7 +88,7 @@ We've written an article that contains all you need to know about [exporting dat
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `gravitykit-lite` to the `/wp-content/plugins/` directory
+1. Upload `gravityexport-lite` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to Forms > Select a form > Settings > Results in Excel to obtain your URL
 1. Download that Excel file!
