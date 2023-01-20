@@ -131,7 +131,7 @@ class SortFields extends Base {
 
 		// Register sortable script.
 		wp_add_inline_script(
-			'gravityexport-lite',
+			'gravityexport_lite',
 			sprintf(
 				'(function($) { $(document).ready(function() { gfexcel_sortable(\'%s\', \'%s\'); }); })(jQuery);',
 				implode( ', ', $ids ),

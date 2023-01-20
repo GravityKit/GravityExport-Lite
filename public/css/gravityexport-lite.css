@@ -129,3 +129,9 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     border-radius: 2px;
     background-color: #ebf2fa;
 }
+
+.gform-settings-choice.gk-gravityexport-meta-all {
+    margin-top: 5px;
+    border-bottom: 1px solid #ebebf2;
+    padding-bottom: 10px;
+}
