@@ -257,6 +257,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
+* Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
+
 = 1.11.4 on November 30, 2022 =
 
 * Enhancement: Added `Entry ID` as a sorting option. Useful when duplicate entry dates exist.

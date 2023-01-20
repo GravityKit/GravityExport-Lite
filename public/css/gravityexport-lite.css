@@ -178,3 +178,9 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
 .gform-settings-field__download_url span.success.hidden {
     display: none;
 }
+
+.gform-settings-choice.gk-gravityexport-meta-all {
+    margin-top: 5px;
+    border-bottom: 1px solid #ebebf2;
+    padding-bottom: 10px;
+}

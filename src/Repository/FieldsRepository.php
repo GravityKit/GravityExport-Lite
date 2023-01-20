@@ -71,7 +71,7 @@ class FieldsRepository {
 		$use_metadata = (bool) gf_apply_filters(
 			[
 				'gfexcel_output_meta_info',
-				$this->form['id'],
+				$this->form['id'] ?? 0,
 			],
 			true
 		);
@@ -81,11 +81,16 @@ class FieldsRepository {
 		}
 
 		if ( empty( $this->meta_fields ) ) {
-			$form              = GFExport::add_default_export_fields( [ 'id' => $this->form['id'], 'fields' => [] ] );
+
+			add_filter( 'gform_export_fields', function ( $form ) {
+				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport' ) ) );
+				return $form;
+			} );
+
+			$form              = GFExport::add_default_export_fields( [ 'id' => $this->form['id'] ?? 0, 'fields' => [] ] );
 			$this->meta_fields = array_reduce( $form['fields'], function ( $carry, GF_Field $field ) {
 				$field->type         = 'meta';
 				$carry[ $field->id ] = $field;
-
 				return $carry;
 			} );
 		}
@@ -98,7 +103,7 @@ class FieldsRepository {
 	 * @return string[] The meta field id's.
 	 */
 	private function getFirstMetaFields(): array {
-		return [ 'id', 'date_created', 'ip' ];
+		return [ 'id', 'date_created', 'date_updated', 'ip' ];
 	}
 
 	/**
