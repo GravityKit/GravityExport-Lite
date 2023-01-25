@@ -516,7 +516,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			],
 		];
 
-		if ( ! class_exists( 'GravityKit\GravityExport\GravityExport' ) ) {
+		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
 			$settings_sections[] = [
 				'title'       => '',
 				'description' => $this->get_gravityexport_message(),
