@@ -593,7 +593,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		ob_start();
 		?>
         <div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
-            <p><?php
+            <p style="font-size: 1.2rem; margin-bottom: 0;"><?php
 				printf( ' ' . esc_html__(
 						'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
 						'gk-gravityexport-lite'
