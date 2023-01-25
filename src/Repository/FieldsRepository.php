@@ -83,7 +83,7 @@ class FieldsRepository {
 		if ( empty( $this->meta_fields ) ) {
 
 			add_filter( 'gform_export_fields', function ( $form ) {
-				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport' ) ) );
+				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport-lite' ) ) );
 				return $form;
 			} );
 

@@ -38,7 +38,7 @@ if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
 
 if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
 	$show_minimum_php_version_message = function () {
-		$message = wpautop( sprintf( esc_html__( 'GravityExport Lite requires PHP %s or newer.', 'gk-gravityexport' ), GFEXCEL_MIN_PHP_VERSION ) );
+		$message = wpautop( sprintf( esc_html__( 'GravityExport Lite requires PHP %s or newer.', 'gk-gravityexport-lite' ), GFEXCEL_MIN_PHP_VERSION ) );
 		echo "<div class='error'>$message</div>";
 	};
 
