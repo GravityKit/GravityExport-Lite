@@ -142,7 +142,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		// Only show
 		if ( ! $this->get_setting( 'hash' ) ) {
 			$settings_sections[] = [
-				'title'  => __( 'Activate GravityExport', 'gf-entries-in-excel' ),
+				'title'  => __( 'Activate GravityExport', 'gk-gravityexport-lite' ),
 				'fields' => [
 					[
 						'name' => 'hash',
@@ -158,41 +158,41 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 		$settings_sections[] = [
 			'id'          => 'gk-gravityexport-download',
-			'title'       => __( 'Download settings', 'gf-entries-in-excel' ),
+			'title'       => __( 'Download settings', 'gk-gravityexport-lite' ),
 			'collapsible' => true,
 			'fields'      => [
 				[
-					'label'      => esc_html__( 'Download URL', 'gf-entries-in-excel' ),
+					'label'      => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
 					'name'       => 'hash',
 					'type'       => 'download_url',
 					'assets_dir' => $this->assets_dir,
 				],
 				[
-					'label'         => esc_html__( 'Custom Filename', 'gf-entries-in-excel' ),
+					'label'         => esc_html__( 'Custom Filename', 'gk-gravityexport-lite' ),
 					'type'          => 'text',
 					'name'          => 'custom_filename',
 					'placeholder'   => sprintf(
-						esc_html__( 'Default: %s', 'gf-entries-in-excel' ),
+						esc_html__( 'Default: %s', 'gk-gravityexport-lite' ),
 						GFExcel::getFilename( $form )
 					),
 					'class'         => 'medium code',
 					'description'   => esc_html__(
 						'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default.',
-						'gf-entries-in-excel'
+						'gk-gravityexport-lite'
 					),
 					'save_callback' => function ( $field, $value ) {
 						return sanitize_file_name( $value );
 					},
 				],
 				[
-					'label'       => esc_html__( 'File Extension', 'gf-entries-in-excel' ),
+					'label'       => esc_html__( 'File Extension', 'gk-gravityexport-lite' ),
 					'type'        => 'select',
 					'name'        => 'file_extension',
 					'class'       => 'small-text',
 					'description' => sprintf(
 						esc_html__(
 							'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
-							'gf-entries-in-excel'
+							'gk-gravityexport-lite'
 						),
 						'<code>.' . implode( '</code>, <code>.', GFExcel::getPluginFileExtensions() ) . '</code>'
 					),
@@ -211,18 +211,18 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		$settings_sections[] = [
 			'id'     => 'gk-gravityexport-download-file',
 			'class'     => 'gk-gravityexport-download-file',
-			'title'  => __( 'Instant Download ⚡️', 'gf-entries-in-excel' ),
+			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
 			'fields' => [
 				[
 					'name'    => 'download_file',
-					'label'   => esc_html__( 'Select Date Range (optional)', 'gf-entries-in-excel' ),
+					'label'   => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
 					'tooltip' => 'export_date_range',
 					'type'    => 'download_file',
 					'url'     => $this->form_repository->getDownloadUrl( $this->get_current_settings() ),
 				],
 				[
 					'name'  => 'download_count',
-					'label' => esc_html__( 'Download Count', 'gf-entries-in-excel' ),
+					'label' => esc_html__( 'Download Count', 'gk-gravityexport-lite' ),
 					'type'  => 'download_count',
 				],
 			],
@@ -231,16 +231,16 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		$settings_sections[] = [
 			'id'          => 'gk-section-security',
 			'collapsible' => true,
-			'title'       => __( 'Security Settings', 'gf-entries-in-excel' ),
+			'title'       => __( 'Security Settings', 'gk-gravityexport-lite' ),
 			'fields'      => [
 				[
 					'name'          => 'is_secured',
-					'label'         => esc_html__( 'Download Permissions', 'gf-entries-in-excel' ),
+					'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
 					'type'          => 'select',
 					'description'   => sprintf(
 						esc_html__(
 							'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
-							'gf-entries-in-excel'
+							'gk-gravityexport-lite'
 						),
 						'<code>gravityforms_export_entries</code>'
 					),
@@ -250,13 +250,13 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 						if ( ! GFExcel::isAllSecured() ) {
 							$options[] = [
 								'name'  => 'is_secured',
-								'label' => __( 'Everyone can download', 'gf-entries-in-excel' ),
+								'label' => __( 'Everyone can download', 'gk-gravityexport-lite' ),
 								'value' => 0,
 							];
 						}
 						$options[] = [
 							'name'  => 'is_secured',
-							'label' => __( 'Logged-in users who have "Export Entries" access', 'gf-entries-in-excel' ),
+							'label' => __( 'Logged-in users who have "Export Entries" access', 'gk-gravityexport-lite' ),
 							'value' => 1,
 						];
 
@@ -272,22 +272,22 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				[
 					'id'          => 'gk-general-security',
 					'collapsible' => true,
-					'title'       => __( 'General Settings', 'gf-entries-in-excel' ),
+					'title'       => __( 'General Settings', 'gk-gravityexport-lite' ),
 					'fields'      => [
 						[
 							'name'    => 'enable_notes',
-							'label'   => esc_html__( 'Include Entry Notes', 'gf-entries-in-excel' ),
+							'label'   => esc_html__( 'Include Entry Notes', 'gk-gravityexport-lite' ),
 							'type'    => 'checkbox',
 							'choices' => [
 								[
 									'name'  => 'enable_notes',
-									'label' => esc_html__( 'Yes, enable the notes for every entry', 'gf-entries-in-excel' ),
+									'label' => esc_html__( 'Yes, enable the notes for every entry', 'gk-gravityexport-lite' ),
 									'value' => '1',
 								],
 							],
 						],
 						[
-							'label'   => esc_html__( 'Attach Single Entry to Notification', 'gf-entries-in-excel' ),
+							'label'   => esc_html__( 'Attach Single Entry to Notification', 'gk-gravityexport-lite' ),
 							'type'    => 'select',
 							'name'    => 'attachment_notification',
 							'choices' => $this->getNotifications(),
@@ -295,24 +295,24 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 						[
 							'name'          => 'is_transposed',
 							'type'          => 'radio',
-							'label'         => esc_html__( 'Column Position', 'gf-entries-in-excel' ),
+							'label'         => esc_html__( 'Column Position', 'gk-gravityexport-lite' ),
 							'default_value' => 0,
 							'choices'       => [
 								[
 									'name'  => 'is_transposed',
-									'label' => esc_html__( 'At the top (normal)', 'gf-entries-in-excel' ),
+									'label' => esc_html__( 'At the top (normal)', 'gk-gravityexport-lite' ),
 									'value' => 0,
 								],
 								[
 									'name'  => 'is_transposed',
-									'label' => esc_html__( 'At the left (transposed)', 'gf-entries-in-excel' ),
+									'label' => esc_html__( 'At the left (transposed)', 'gk-gravityexport-lite' ),
 									'value' => 1,
 								],
 							],
 						],
 						[
 							'name'     => 'order_by',
-							'label'    => esc_html__( 'Order By', 'gf-entries-in-excel' ),
+							'label'    => esc_html__( 'Order By', 'gk-gravityexport-lite' ),
 							'type'     => 'callback',
 							'class'    => 'gform-settings-field--multiple-inputs',
 							'callback' => function () {
@@ -327,11 +327,11 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 									'choices' => [
 										[
 											'value' => 'ASC',
-											'label' => esc_html__( 'Ascending', 'gf-entries-in-excel' ),
+											'label' => esc_html__( 'Ascending', 'gk-gravityexport-lite' ),
 										],
 										[
 											'value' => 'DESC',
-											'label' => esc_html__( 'Descending', 'gf-entries-in-excel' ),
+											'label' => esc_html__( 'Descending', 'gk-gravityexport-lite' ),
 										],
 									],
 								];
@@ -348,7 +348,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		$settings_sections[] = [
 			'id'          => 'gk-section-fields',
 			'collapsible' => true,
-			'title'       => esc_html__( 'Field settings', 'gf-entries-in-excel' ),
+			'title'       => esc_html__( 'Field settings', 'gk-gravityexport-lite' ),
 			'fields'      => [
 				[
 					'name'     => 'export-fields',
@@ -415,18 +415,18 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		];
 
 		$settings_sections[] = [
-			'title'       => esc_html__( 'Default Settings', 'gf-entries-in-excel' ),
+			'title'       => esc_html__( 'Default Settings', 'gk-gravityexport-lite' ),
 			'description' => $this->plugin_settings_description(),
 			'fields'      => [
 				[
 					'name'    => 'field_separate',
-					'label'   => esc_html__( 'Multiple Columns', 'gf-entries-in-excel' ),
+					'label'   => esc_html__( 'Multiple Columns', 'gk-gravityexport-lite' ),
 					'type'    => 'checkbox',
 					'choices' => [
 						[
 							'label' => esc_html__(
 								'Split multi-fields (name, address) into multiple columns',
-								'gf-entries-in-excel'
+								'gk-gravityexport-lite'
 							),
 							'name'  => SeparableField::SETTING_KEY,
 						],
@@ -438,7 +438,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'type'    => 'checkbox',
 					'choices' => [
 						[
-							'label'         => esc_html__( 'Enable notes by default', 'gf-entries-in-excel' ),
+							'label'         => esc_html__( 'Enable notes by default', 'gk-gravityexport-lite' ),
 							'name'          => 'notes_enabled',
 							'default_value' => false,
 						],
@@ -446,11 +446,11 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 				[
 					'name'    => 'sections',
-					'label'   => esc_html__( 'Sections', 'gf-entries-in-excel' ),
+					'label'   => esc_html__( 'Sections', 'gk-gravityexport-lite' ),
 					'type'    => 'checkbox',
 					'choices' => [
 						[
-							'label'         => esc_html__( 'Enable (empty) section column', 'gf-entries-in-excel' ),
+							'label'         => esc_html__( 'Enable (empty) section column', 'gk-gravityexport-lite' ),
 							'name'          => 'sections_enabled',
 							'default_value' => false,
 						],
@@ -458,12 +458,12 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 				[
 					'name'  => 'fileuploads',
-					'label' => esc_html__( 'File Uploads', 'gf-entries-in-excel' ),
+					'label' => esc_html__( 'File Uploads', 'gk-gravityexport-lite' ),
 					'type'  => 'checkbox',
 
 					'choices' => [
 						[
-							'label'         => esc_html__( 'Enable file upload columns', 'gf-entries-in-excel' ),
+							'label'         => esc_html__( 'Enable file upload columns', 'gk-gravityexport-lite' ),
 							'name'          => 'fileuploads_enabled',
 							'default_value' => true,
 						],
@@ -471,12 +471,12 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 				[
 					'name'  => 'hyperlinks',
-					'label' => esc_html__( 'Hyperlinks', 'gf-entries-in-excel' ),
+					'label' => esc_html__( 'Hyperlinks', 'gk-gravityexport-lite' ),
 					'type'  => 'checkbox',
 
 					'choices' => [
 						[
-							'label'         => esc_html__( 'Enable hyperlinks on URL-only columns', 'gf-entries-in-excel' ),
+							'label'         => esc_html__( 'Enable hyperlinks on URL-only columns', 'gk-gravityexport-lite' ),
 							'name'          => 'hyperlinks_enabled',
 							'default_value' => true,
 						],
@@ -484,14 +484,14 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				],
 				[
 					'name'  => 'products_price',
-					'label' => esc_html__( 'Product Fields', 'gf-entries-in-excel' ),
+					'label' => esc_html__( 'Product Fields', 'gk-gravityexport-lite' ),
 					'type'  => 'checkbox',
 
 					'choices' => [
 						[
 							'label'         => esc_html__(
 								'Export prices as numeric fields, without currency symbol ($)',
-								'gf-entries-in-excel'
+								'gk-gravityexport-lite'
 							),
 							'name'          => ProductField::SETTING_KEY,
 							'default_value' => false,
@@ -502,13 +502,13 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		];
 
 		$settings_sections[] = [
-			'title'  => esc_html__( 'Default Enabled Meta Fields', 'gf-entries-in-excel' ),
+			'title'  => esc_html__( 'Default Enabled Meta Fields', 'gk-gravityexport-lite' ),
 			'fields' => [
 				[
 					'name'        => 'enabled_metafields',
 					'description' => esc_html__(
 						'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
-						'gf-entries-in-excel'
+						'gk-gravityexport-lite'
 					) . $this->getSelectAllHtml(),
 					'type'        => 'checkbox',
 					'choices'     => $this->meta_fields(),
@@ -559,7 +559,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * @return array The notification options.
 	 */
 	private function getNotifications(): array {
-		$options       = [ [ 'label' => __( 'Select a Notification', 'gf-entries-in-excel' ), 'value' => '' ] ];
+		$options       = [ [ 'label' => __( 'Select a Notification', 'gk-gravityexport-lite' ), 'value' => '' ] ];
 		$notifications = $this->get_current_form()['notifications'] ?? [];
 		foreach ( $notifications as $key => $notification ) {
 			$options[] = [ 'label' => \rgar( $notification, 'name', __( 'Unknown' ) ), 'value' => $key ];
@@ -580,10 +580,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
             <p><?php
 				printf( ' ' . esc_html__(
 						'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
-						'gf-entries-in-excel'
+						'gk-gravityexport-lite'
 					),
 					'<strong><a href="https://wordpress.org/support/plugin/gf-entries-in-excel/reviews/?filter=5#new-post" target="_blank" title="' . esc_attr__( 'This link opens in a new window',
-						'gf-entries-in-excel' ) . '">',
+						'gk-gravityexport-lite' ) . '">',
 					'</a></strong>', esc_html( $this->component_usage->getCount() ),
 					esc_html( $this->component_usage->getTarget() )
 				);
@@ -604,7 +604,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'<p>%s</p>',
 			esc_html__(
 				'These are global settings for new forms. You can overwrite them per form using the available hooks.',
-				'gf-entries-in-excel'
+				'gk-gravityexport-lite'
 			) );
 	}
 
@@ -618,37 +618,36 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		?>
         <div id="gravityexport-additional-features" class="wrap gravityexport-lite-callout">
             <h2><?php
-				esc_html_e( 'Upgrade to GravityExport for these useful features:', 'gf-entries-in-excel' ); ?></h2>
+				esc_html_e( 'Upgrade to GravityExport for these useful features:', 'gk-gravityexport-lite' ); ?></h2>
 
             <div>
                 <h3><?php
-					esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', 'gf-entries-in-excel' ); ?> 💾</h3>
+					esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', 'gk-gravityexport-lite' ); ?> 💾</h3>
                 <p><?php
 					esc_html_e( 'Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally.',
-						'gf-entries-in-excel' ); ?></p>
+						'gk-gravityexport-lite' ); ?></p>
             </div>
 
             <div>
                 <h3><?php
-					esc_html_e( 'Filter exports with Conditional Logic', 'gf-entries-in-excel' ); ?> 😎</h3>
+					esc_html_e( 'Filter exports with Conditional Logic', 'gk-gravityexport-lite' ); ?> 😎</h3>
                 <p><?php
 					esc_html_e( 'Create advanced filters, including exporting entries created by only the currently logged-in user.',
-						'gf-entries-in-excel' ); ?></p>
+						'gk-gravityexport-lite' ); ?></p>
             </div>
 
             <div>
                 <h3><?php
-					esc_html_e( 'Exports are ready for data analysis', 'gf-entries-in-excel' ); ?> 📊</h3>
+					esc_html_e( 'Exports are ready for data analysis', 'gk-gravityexport-lite' ); ?> 📊</h3>
                 <p><?php
 					esc_html_e( 'When analyzing data, you want fields with multiple values broken into multiple rows each with one value. If you work with data, you&rsquo;ll love this feature!',
-						'gf-entries-in-excel' ); ?></p>
+						'gk-gravityexport-lite' ); ?></p>
             </div>
 
             <p>
-                <a class="button button-hero button-cta" href="https://gravityview.co/extensions/gravityexport/"
-                   target="_blank" title="<?php
-				esc_attr_e( 'This link opens in a new window', 'gf-entries-in-excel' ); ?>"><?php
-					esc_html_e( 'Gain Powerful Features with GravityExport', 'gf-entries-in-excel' ); ?>️</a>
+                <a class="button button-primary primary large button-hero button-cta" href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
+                   target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
+					esc_html_e( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ); ?>️</a>
             </p>
         </div>
 		<?php
@@ -691,8 +690,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				'handle'  => 'gravityexport_lite',
 				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
                 'strings' => [
-	                'enable' => esc_html__('Enable all', 'gf-entries-in-excel'),
-	                'disable' => esc_html__('Disable all', 'gf-entries-in-excel'),
+	                'enable' => esc_html__('Enable all', 'gk-gravityexport-lite'),
+	                'disable' => esc_html__('Disable all', 'gk-gravityexport-lite'),
                 ],
 				'enqueue' => [
 					[
@@ -854,7 +853,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 */
 	private function bulk_actions( array $actions ): array {
 		if ( 'form_list' === \GFForms::get_page() ) {
-			$actions[ self::BULK_DOWNLOAD ] = esc_html__( 'Download as one file', 'gf-entries-in-excel' );
+			$actions[ self::BULK_DOWNLOAD ] = esc_html__( 'Download as one file', 'gk-gravityexport-lite' );
 		}
 
 		return $actions;
@@ -923,8 +922,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		if ( $url = GFExcel::url( $form_id ) ) {
 
 			$form_actions['download'] = [
-				'label'      => __( 'Download', 'gf-entries-in-excel' ),
-				'title'      => __( 'Download an Export', 'gf-entries-in-excel' ),
+				'label'      => __( 'Download', 'gk-gravityexport-lite' ),
+				'title'      => __( 'Download an Export', 'gk-gravityexport-lite' ),
 				'url'        => $url,
 				'menu_class' => 'download',
 			];
@@ -963,7 +962,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				$wp_admin_bar->add_node( [
 					'id'     => 'gfexcel-form-' . $id . '-download',
 					'parent' => 'gform-form-' . $id,
-					'title'  => esc_html__( 'Download', 'gf-entries-in-excel' ),
+					'title'  => esc_html__( 'Download', 'gk-gravityexport-lite' ),
 					'href'   => trailingslashit( esc_url( $url ) ),
 				] );
 			}
@@ -1047,8 +1046,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			</div>',
 			esc_attr( 'gform-settings-choice' ),
 			esc_attr( 'gk-gravityexport-meta-all' ),
-			esc_attr__( 'Deselect All', 'gf-entries-in-excel' ),
-			esc_attr__( 'Select All', 'gf-entries-in-excel' )
+			esc_attr__( 'Deselect All', 'gk-gravityexport-lite' ),
+			esc_attr__( 'Select All', 'gk-gravityexport-lite' )
 		);
 	}
 }
