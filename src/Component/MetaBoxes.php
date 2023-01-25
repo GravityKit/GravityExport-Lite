@@ -66,11 +66,10 @@ final class MetaBoxes {
 		$links = [];
 		foreach ( $extensions as $i => $extension ) {
 			$links[]= sprintf(
-				'<a href="%s.%s?entry=%s" class="button %s">.%2$s</a>',
-				$url,
-				$extension,
-				$entry['id'],
-				$i ? 'secondary' : 'primary'
+				'<a href="%1$s" class="button %2$s">.%3$s</a>',
+				esc_url( add_query_arg( [ 'entry' => (int) $entry['id'] ], $url . '.' . $extension ) ),
+				$i ? 'secondary' : 'primary',
+				$extension
 			);
 		}
 
