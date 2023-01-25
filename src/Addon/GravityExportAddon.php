@@ -109,6 +109,11 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function __construct( FormRepositoryInterface $form_repository ) {
 		parent::__construct();
 
+        $title = defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite';
+
+        $this->_title = $title;
+        $this->_short_title = $title;
+
 		$this->form_repository = $form_repository;
 		$this->component_usage = new Usage();
 	}
