@@ -1,6 +1,6 @@
 === GravityExport Lite (Gravity Forms Entries in Excel) ===
 Contributors: gravitykit, doekenorg
-Donate link: https://www.gravitykit.com/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
+Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
