@@ -402,17 +402,19 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function plugin_settings_fields(): array {
 		$settings_sections = [];
 
-		$settings_sections[] = [
-			'id'          => 'gravityexport-lite-rating-fieldset',
-			'description' => $this->get_rating_message(),
-			'fields'      => [
-				[
-					'name'  => 'gravityexport-rocks',
-					'type'  => 'hidden',
-					'value' => 'You should try it!',
+		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
+			$settings_sections[] = [
+				'id'          => 'gravityexport-lite-rating-fieldset',
+				'description' => $this->get_rating_message(),
+				'fields'      => [
+					[
+						'name'  => 'gravityexport-rocks',
+						'type'  => 'hidden',
+						'value' => 'You should try it!',
+					],
 				],
-			],
-		];
+			];
+		}
 
 		$settings_sections[] = [
 			'title'       => esc_html__( 'Default Settings', 'gk-gravityexport-lite' ),
