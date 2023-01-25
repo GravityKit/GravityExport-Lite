@@ -211,7 +211,21 @@ class FieldsRepository {
 	public function getSortFieldOptions( ?array $form = null ): array {
 		$form = $form ?? $this->form;
 
-		return array_reduce( $form['fields'] ?? [], static function ( array $fields, \GF_Field $field ): array {
+		// These fields will be added as the first items in the sorting options.
+		$default_fields = [
+			[
+				'value' => 'date_created',
+				'label' => __( 'Date of entry', 'gk-gravityexport-lite' ),
+			],
+			[
+				'value' => 'id',
+				'label' => __( 'Entry Id', 'gk-gravityexport-lite' ),
+			],
+		];
+
+		$form_fields = rgar( $form, 'fields', [] );
+
+		$sorting_function = static function ( array $fields, \GF_Field $field ): array {
 			// Fields that have no subfields can be added as they are.
 			if ( ! $field->get_entry_inputs() ) {
 				$fields[] = [
@@ -236,16 +250,8 @@ class FieldsRepository {
 			}
 
 			return $fields;
-		}, [
-			// Add `date of entry` and `entry id` as first items.
-			[
-				'value' => 'date_created',
-				'label' => __( 'Date of entry', 'gk-gravityexport-lite' ),
-			],
-			[
-				'value' => 'id',
-				'label' => __( 'Entry Id', 'gk-gravityexport-lite' ),
-			],
-		] );
+		};
+
+		return array_reduce( $form_fields, $sorting_function, $default_fields );
 	}
 }
