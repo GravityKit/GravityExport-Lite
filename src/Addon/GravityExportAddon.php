@@ -522,10 +522,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'fields' => [
 				[
 					'name'        => 'enabled_metafields',
-					'description' => esc_html__(
+					'description' => wpautop( esc_html__(
 						'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
 						'gk-gravityexport-lite'
-					) . $this->getSelectAllHtml(),
+					) ) . $this->getSelectAllHtml(),
 					'type'        => 'checkbox',
 					'choices'     => $this->meta_fields(),
 				],
