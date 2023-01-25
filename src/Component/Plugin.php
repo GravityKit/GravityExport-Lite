@@ -30,17 +30,23 @@ final class Plugin {
 			return $links;
 		}
 
-		return array_merge( $links, [
-			'docs'   => sprintf( '<a href="%s" aria-label="%s" target="_blank">%s</a>',
-				esc_url( 'https://gfexcel.com/docs/getting-started/' ),
+		$add_links = [
+			'docs' => sprintf( '<a href="%s" title="%s" target="_blank" rel="noreferrer noopener">%s</a>',
+				'https://gfexcel.com/docs/getting-started/',
 				esc_attr__( 'Documentation', 'gk-gravityexport-lite' ),
 				esc_html__( 'Documentation', 'gk-gravityexport-lite' )
 			),
-			'donate' => sprintf( '<a href="%s" aria-label="%s" target="_blank">%s</a>',
-				esc_url( 'https://www.paypal.me/GravityView' ),
-				esc_attr__( 'Make a donation', 'gk-gravityexport-lite' ),
-				esc_html__( 'Make a donation', 'gk-gravityexport-lite' )
-			),
-		] );
+		];
+
+		// Not running GravityExport
+		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
+			$add_links['upgrade'] = sprintf( '<a href="%s" title="%s" target="_blank" rel="noreferrer noopener">%s</a>',
+				'https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=plugin-meta-upgrade',
+				esc_attr__( 'This link opens in a new window', 'gk-gravityexport-lite' ),
+				'<strong>⚡&nbsp;' . esc_html__( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ) . '</strong>'
+			);
+		}
+
+		return array_merge( $links, $add_links );
 	}
 }
