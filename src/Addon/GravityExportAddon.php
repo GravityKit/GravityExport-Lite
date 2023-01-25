@@ -156,6 +156,20 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			return $settings_sections;
 		}
 
+		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
+			$settings_sections[] = [
+				'title'       => '',
+				'description' => $this->get_gravityexport_message(),
+				'fields'      => [
+					[
+						'name'  => 'gravityexport-rocks',
+						'type'  => 'hidden',
+						'value' => 'You should try it!',
+					],
+				],
+			];
+		}
+
 		$settings_sections[] = [
 			'id'          => 'gk-gravityexport-download',
 			'title'       => __( 'Download settings', 'gk-gravityexport-lite' ),
