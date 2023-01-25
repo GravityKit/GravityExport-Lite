@@ -194,11 +194,10 @@ class FieldsRepository {
 		$fields      = array_column( $fields, null, 'id' );
 		$sorted_keys = $this->getEnabledFields();
 
-		// sort fields
-		$fields = array_replace( array_flip( $sorted_keys ), $fields );
+		// sort fields, and remove any values that aren't field (objects).
+		$fields = @array_values( array_filter( array_replace( array_flip( $sorted_keys ), $fields ), 'is_object' ) );
 
-		// remove any values that aren't field objects.
-		return @array_values( array_filter( $fields, 'is_object' ) );
+		return $fields;
 	}
 
 	/**
