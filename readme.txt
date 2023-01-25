@@ -257,10 +257,16 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= 1.11.4 on November 30, 2022 =
+= 2.0 on January 25, 2023 =
 
+* **This is a major update!** Enjoy the much nicer feed configuration interface!
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
+
+__Developer Updates:__
+
+* This is a major release behind the scenes; we have rewritten much of the plugin to better integrate with Gravity Forms feed add-on framework.
+* Modified: Changed the textdomain of the plugin to `gk-gravitykit-lite`.
 
 = 1.11.4 on November 30, 2022 =
 
