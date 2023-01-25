@@ -223,7 +223,7 @@ class FieldsRepository {
 			],
 		];
 
-		$form_fields = rgar( $form, 'fields', [] );
+		$form_fields = \rgar( $form, 'fields', [] );
 
 		$sorting_function = static function ( array $fields, \GF_Field $field ): array {
 			// Fields that have no subfields can be added as they are.
