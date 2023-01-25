@@ -244,7 +244,7 @@ class FieldsRepository {
 			],
 			[
 				'value' => 'id',
-				'label' => __( 'Entry Id', 'gravityforms' ),
+				'label' => __( 'Entry Id', 'gk-gravityexport-lite' ),
 			],
 		] );
 	}
