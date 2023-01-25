@@ -35,6 +35,6 @@ class DownloadUrlDisableAction extends AbstractAction
         $addon->set_previous_settings($settings);
 
         // Set notification of success.
-        $addon->add_message(esc_html__('The download URL has been disabled.', 'gk-gravityexport'));
+        $addon->add_message(esc_html__('The download URL has been disabled.', 'gk-gravityexport-lite'));
     }
 }

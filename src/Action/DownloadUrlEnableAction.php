@@ -3,6 +3,7 @@
 namespace GFExcel\Action;
 
 use GFExcel\Addon\GravityExportAddon;
+use GFExcel\Generator\HashGeneratorInterface;
 
 /**
  * Action to reset the download URL for a form.
@@ -16,10 +17,14 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 	public static $name = 'download_url_enable';
 
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected static $success_message = 'The download URL has been enabled.';
+	public function __construct( HashGeneratorInterface $generator ) {
+		parent::__construct( $generator );
+
+		static::$success_message = esc_html__( 'The download URL has been enabled.', 'gk-gravityexport-lite' );
+	}
 
 	/**
 	 * @inheritdoc

@@ -330,27 +330,27 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 
 	    $output = [];
 
-	    $output[] = '<h3>' . esc_html__( 'GravityExport Lite: Something is broken', GFExcel::$slug ) . '</h3>';
-	    $output[] = '<strong>' . esc_html__( 'Error message:', GFExcel::$slug ) . '</strong>' . esc_html( nl2br( $exception->getMessage() ) );
+	    $output[] = '<h3>' . esc_html__( 'GravityExport Lite: Something is broken', 'gk-gravityexport-lite' ) . '</h3>';
+	    $output[] = '<strong>' . esc_html__( 'Error message:', 'gk-gravityexport-lite' ) . '</strong>' . esc_html( nl2br( $exception->getMessage() ) );
 	    $output[] = "\n\n"; // Insert paragraph
-	    $output[] = sprintf( esc_html__( 'If you need support, please contact us via <a target="_blank" href="%s">WordPress.org support forum</a>.', GFExcel::$slug ), 'https://wordpress.org/support/plugin/gf-entries-in-excel' );
+	    $output[] = sprintf( esc_html__( 'If you need support, please contact us via <a target="_blank" href="%s">WordPress.org support forum</a>.', 'gk-gravityexport-lite' ), 'https://wordpress.org/support/plugin/gf-entries-in-excel' );
 	    $output[] = "\n\n"; // Insert paragraph
-	    $output[] = esc_html__( 'Check if someone else had the same error before posting a new support question.', GFExcel::$slug );
+	    $output[] = esc_html__( 'Check if someone else had the same error before posting a new support question.', 'gk-gravityexport-lite' );
 	    $output[] = "\n\n"; // Insert paragraph
-	    $output[] = esc_html__( 'And when opening a new question, <strong>please use the error message as the title</strong>.', GFExcel::$slug );
+	    $output[] = esc_html__( 'And when opening a new question, <strong>please use the error message as the title</strong>.', 'gk-gravityexport-lite' );
 	    $output[] = "\n\n"; // Insert paragraph
-	    $output[] = '<strong>' . esc_html__( 'Include the following details in your message:', GFExcel::$slug ) . '</strong>';
+	    $output[] = '<strong>' . esc_html__( 'Include the following details in your message:', 'gk-gravityexport-lite' ) . '</strong>';
 	    $output[] = '<ul>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'Plugin Version: %s', GFExcel::$slug ), GFExcel::$version ) . '</li>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'Gravity Forms Version: %s', GFExcel::$slug ), GFForms::$version ) . '</li>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'PHP Version: %s', GFExcel::$slug ), PHP_VERSION );
+	    $output[] = '<li>' . sprintf( esc_html__( 'Plugin Version: %s', 'gk-gravityexport-lite' ), GFExcel::$version ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Gravity Forms Version: %s', 'gk-gravityexport-lite' ), GFForms::$version ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'PHP Version: %s', 'gk-gravityexport-lite' ), PHP_VERSION );
 	    if ( PHP_VERSION_ID < 50601 ) {
-		    $output[] = esc_html__( ' (this version is too low, please update to at least PHP 5.6)', GFExcel::$slug );
+		    $output[] = esc_html__( ' (this version is too low, please update to at least PHP 5.6)', 'gk-gravityexport-lite' );
 	    }
 	    $output[] = '</li>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'WordPress Version: %s', GFExcel::$slug ), esc_html( $wp_version ) ) . '</li>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'Error message: %s', GFExcel::$slug ), nl2br( $exception->getMessage() ) ) . '</li>';
-	    $output[] = '<li>' . sprintf( esc_html__( 'Error stack trace: %s', GFExcel::$slug ), '<br/><br/>' . nl2br( $exception->getTraceAsString() ) ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'WordPress Version: %s', 'gk-gravityexport-lite' ), esc_html( $wp_version ) ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Error message: %s', 'gk-gravityexport-lite' ), nl2br( $exception->getMessage() ) ) . '</li>';
+	    $output[] = '<li>' . sprintf( esc_html__( 'Error stack trace: %s', 'gk-gravityexport-lite' ), '<br/><br/>' . nl2br( $exception->getTraceAsString() ) ) . '</li>';
 	    $output[] = '</ul>';
 
 	    $output_string = implode( '', $output );

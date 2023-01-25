@@ -1,16 +1,10 @@
-#gform_setting_export-fields .gfexcel_field-sort-fields {
+#gform_setting_export-fields .gk-gravityexport-sort-fields {
     border: 0;
-    margin: 0 -10px;
     padding: 0;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1em;
 }
-
-#gform_setting_export-fields .gfexcel_field-sort-fields > div {
-    flex: 0 1 50%;
-    margin: 0 10px;
-}
-
 
 ul.fields-select {
     background-color: #FFF;
@@ -18,9 +12,11 @@ ul.fields-select {
     border: 1px solid #E1E1E1;
     min-height: 30px;
     border-radius: 4px;
+    max-width: 100%;
 }
 
 ul.fields-select#export-fields-enabled .move i.fa-arrow-right,
+ul.fields-select#export-fields-disabled .fa-bars,
 ul.fields-select#export-fields-disabled .move i.fa-close {
     display: none;
 }
@@ -31,25 +27,37 @@ ul.fields-select#export-fields-enabled {
 
 ul.fields-select .fa-bars {
     color: #ccd0d4;
-    margin-right: 5px;
-    margin-left: 0;
+    margin: 0;
 }
 
-ul.fields-select li div:not(.move) {
-    flex: 1;
+ul.fields-select .fa {
+    padding: 5px;
+}
+
+ul.fields-select li > div.field {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    overflow: hidden;
+}
+
+ul.fields-select li > div.field span {
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rtl ul.fields-select .fa-bars {
-    margin-left: 5px;
+    margin-left: 8px;
     margin-right: 0;
 }
 
-ul.fields-select li div.move {
+ul.fields-select li > div.move {
     font-weight: bold;
-    padding: 0 5px;
+    padding: 0;
     cursor: pointer;
-    display: flex;
-    align-items: center;
+    flex-shrink: 0;
 }
 
 ul.fields-select li div.move:hover {
@@ -59,7 +67,7 @@ ul.fields-select li div.move:hover {
 ul.fields-select li {
     display: flex;
     background-color: #f7f7f7;
-    margin: 3px 0;
+    margin: 4px 0;
     padding: 6px;
     -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
     -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
@@ -94,8 +102,8 @@ ul.fields-select li.light-up i {
     color: #fff;
 }
 
-.ui-sortable-handle:active,
-.ui-sortable-helper {
+ul.fields-select .ui-sortable-handle:active,
+ul.fields-select .ui-sortable-helper {
     cursor: -webkit-grabbing;
 }
 
@@ -128,6 +136,47 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     border-top: 0;
     border-radius: 2px;
     background-color: #ebf2fa;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by .gform-settings-nested-fields {
+    display: flex;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order {
+    margin-left: 5px;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order select {
+    width: auto;
+    max-width: 100%;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by {
+    width: 50%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.small {
+    max-width: 25%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.medium {
+    max-width: 50%;
+}
+
+.gform-settings-field__download_url span.success {
+    margin: 10px 5px 0 0;
+    display: inline-block;
+}
+
+.gform-settings-field__download_url span.success.hidden {
+    display: none;
 }
 
 .gform-settings-choice.gk-gravityexport-meta-all {

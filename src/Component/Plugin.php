@@ -41,7 +41,7 @@ final class Plugin {
 		if ( array_key_exists( 'deactivate', $actions ) ) {
 			$actions[] = implode( '', [
 				'<a target="_blank" rel="nofollow noopener" href="https://gravityview.co/extensions/gravityexport/"><b>⚡️ ',
-				esc_html__( 'Gain Access to More Features', 'gk-gravityexport' ),
+				esc_html__( 'Gain Access to More Features', 'gk-gravityexport-lite' ),
 				'</b></a>',
 			] );
 		}
@@ -65,13 +65,13 @@ final class Plugin {
 		return array_merge( $links, [
 			'docs'   => sprintf( '<a href="%s" aria-label="%s" target="_blank">%s</a>',
 				esc_url( 'https://gfexcel.com/docs/getting-started/' ),
-				esc_attr__( 'Documentation', GFExcel::$slug ),
-				esc_html__( 'Documentation', GFExcel::$slug )
+				esc_attr__( 'Documentation', 'gk-gravityexport-lite' ),
+				esc_html__( 'Documentation', 'gk-gravityexport-lite' )
 			),
 			'donate' => sprintf( '<a href="%s" aria-label="%s" target="_blank">%s</a>',
 				esc_url( 'https://www.paypal.me/GravityView' ),
-				esc_attr__( 'Make a donation', GFExcel::$slug ),
-				esc_html__( 'Make a donation', GFExcel::$slug )
+				esc_attr__( 'Make a donation', 'gk-gravityexport-lite' ),
+				esc_html__( 'Make a donation', 'gk-gravityexport-lite' )
 			),
 		] );
 	}

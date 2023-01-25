@@ -355,8 +355,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'type'     => 'sort_fields',
 					'choices'  => $this->getFields(),
 					'sections' => [
-						'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport' ), 'enabled' ],
-						'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport' ), 'disabled' ],
+						'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport-lite' ), 'enabled' ],
+						'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport-lite' ), 'disabled' ],
 					],
 				],
 			],

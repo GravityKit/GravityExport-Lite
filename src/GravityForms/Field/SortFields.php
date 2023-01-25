@@ -65,7 +65,7 @@ class SortFields extends Base {
 	 * @since $ver$
 	 */
 	public function markup(): string {
-		$html = [ '<div class="gfexcel_field-sort-fields">' ];
+		$html = [ '<div class="gk-gravityexport-sort-fields">' ];
 
 		foreach ( $this->sections as $section => [$heading, $target] ) {
 			$html[] = sprintf( '<div><p><strong>%s</strong></p>', $heading );
@@ -108,7 +108,7 @@ class SortFields extends Base {
 	protected function choiceHtml( \GF_Field $choice ): string {
 		return sprintf(
 			'<li data-value="%s">
-                <div class="field"><i class="fa fa-bars"></i> %s</div>
+                <div class="field"><i class="fa fa-bars"></i> <span>%s</span></div>
                 <div class="move">
                     <i class="fa fa-arrow-right"></i>
                     <i class="fa fa-close"></i>

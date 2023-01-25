@@ -83,7 +83,7 @@ class FieldsRepository {
 		if ( empty( $this->meta_fields ) ) {
 
 			add_filter( 'gform_export_fields', function ( $form ) {
-				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport' ) ) );
+				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport-lite' ) ) );
 				return $form;
 			} );
 
@@ -241,7 +241,7 @@ class FieldsRepository {
 			// Add `date of entry` and `entry id` as first items.
 			[
 				'value' => 'date_created',
-				'label' => __( 'Date of entry', GFExcel::$slug ),
+				'label' => __( 'Date of entry', 'gk-gravityexport-lite' ),
 			],
 			[
 				'value' => 'id',
