@@ -98,6 +98,10 @@ class SingleFeedMigration extends Migration {
 			self::setValue( $new_settings, self::$feed_mapping[ $key ] ?? $key, $value );
 		}
 
+		if ( empty( $new_settings ) ) {
+			return;
+		}
+
 		$addon = GravityExportAddon::get_instance();
 		$feed  = $addon->get_feed_by_form_id( $form_id = rgar( $form, 'id', 0 ) );
 		if ( $feed ) {
