@@ -56,14 +56,12 @@ class DownloadUrl extends Text {
 		$html[] = '<div>';
 
 		$html[] = sprintf(
-			'<button type="submit" onclick="%s" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
-			sprintf( 'return confirm(&quot;%s&quot;);', esc_attr__( 'You are about to reset the URL for this form. This can\'t be undone.', 'gk-gravityexport-lite' ) ),
+			'<button id="download-url-reset" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
 			DownloadUrlResetAction::$name,
 			esc_attr__('Regenerate URL', 'gk-gravityexport-lite')
 		);
 		$html[] = sprintf(
-			'<button type="submit" onclick="%s" name="gform-settings-save" value="%s" form="gform-settings" class="button button-danger">%s</button>',
-			sprintf( 'return confirm(&quot;%s.&quot;);', esc_attr__( 'You are about to disable the URL for this form. This will invalidate the URL, and can\'t be undone.', 'gk-gravityexport-lite' ) ),
+			'<button id="download-url-disable" name="gform-settings-save" value="%s" form="gform-settings" class="button button-danger">%s</button>',
 			DownloadUrlDisableAction::$name,
 			esc_attr__( 'Disable download URL', 'gk-gravityexport-lite' )
 		);
@@ -132,7 +130,24 @@ class DownloadUrl extends Text {
 	 * @since $ver$
 	 */
 	public function scripts(): array {
-		$script = "(function($) { $(document).ready(function() { addClipboard('%s','%s'); });})(jQuery);";
+
+$script = <<<JS
+(function($) {
+	$( document ).ready(function() {
+		
+		$( '#download-url-reset' ).on( 'click', function( e ) {
+			return confirm("%s");
+		});
+		
+		$( '#download-url-disable' ).on( 'click', function( e ) {
+			return confirm("%s");
+		});
+		
+		addClipboard('%s','%s');
+	});
+	
+})(jQuery);
+JS;
 
 		return [
 			[
@@ -143,6 +158,8 @@ class DownloadUrl extends Text {
 						'gk-gravityexport-clipboard-js',
 						sprintf(
 							$script,
+							esc_attr__( 'You are about to reset the URL for this form. This can’t be undone.', 'gk-gravityexport-lite' ),
+							esc_attr__( 'You are about to disable the URL for this form. This will invalidate the URL, and can’t be undone.', 'gk-gravityexport-lite' ),
 							esc_attr( '.copy-attachment-url' ),
 							esc_attr__( 'The file URL has been copied to your clipboard.', 'gk-gravityexport-lite' )
 						)
