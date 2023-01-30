@@ -154,10 +154,6 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     max-width: 100%;
 }
 
-.gfexcel-addon-gravityexport-lite #gform_setting_order_by {
-    width: 50%;
-}
-
 .gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.small,
 .gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.small,
 .gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.small {

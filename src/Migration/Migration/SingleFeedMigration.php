@@ -1,6 +1,6 @@
 <?php
 
-namespace GFExcel\Migration;
+namespace GFExcel\Migration\Migration;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
@@ -9,7 +9,7 @@ use GFExcel\Migration\Exception\MigrationException;
  * Migration to upgrade the old form settings to the new {@see GravityExportAddon} single feed settings.
  * @since $ver$
  */
-class SingleFeedMigration extends Migration {
+final class SingleFeedMigration extends Migration {
 	/**
 	 * @inheritdoc
 	 * @since $ver$
@@ -103,10 +103,13 @@ class SingleFeedMigration extends Migration {
 		}
 
 		$addon = GravityExportAddon::get_instance();
-		$feed  = $addon->get_feed_by_form_id( $form_id = rgar( $form, 'id', 0 ) );
+		$feed  = $addon->get_feed_by_form_id( $form_id = \rgar( $form, 'id', 0 ) );
 		if ( $feed ) {
-			$result = \GFAPI::update_feed( rgar( $feed, 'id', 0 ), array_merge( $feed['meta'], $new_settings ),
-				$form_id );
+			$result = \GFAPI::update_feed(
+				\rgar( $feed, 'id', 0 ),
+				array_merge( $feed['meta'], $new_settings ),
+				$form_id
+			);
 		} else {
 			$result = \GFAPI::add_feed( $form_id, $new_settings, $addon->get_slug() );
 		}
@@ -122,7 +125,7 @@ class SingleFeedMigration extends Migration {
 	 */
 	private function migrateAddonSettings(): void {
 		// Get all the old settings.
-		$settings = get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
+		$settings = \get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
 
 		foreach ( self::$addon_mapping as $old => $new ) {
 			// Update old to new setting name, if the new setting name isn't already present.

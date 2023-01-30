@@ -1,6 +1,6 @@
 <?php
 
-namespace GFExcel\Migration;
+namespace GFExcel\Migration\Migration;
 
 use GFExcel\Migration\Exception\MigrationException;
 use GFExcel\Migration\Manager\MigrationManager;
