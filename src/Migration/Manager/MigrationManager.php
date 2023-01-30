@@ -78,7 +78,7 @@ class MigrationManager {
 	 * @since 1.8.0
 	 * @throws MigrationException When something went wrong in a migration.
 	 */
-	private function migrate(): void {
+	public function migrate(): void {
 		// Prevent concurrent running of migrations.
 		if ( ! $this->repository->isRunning() ) {
 			$this->repository->setRunning( true );
