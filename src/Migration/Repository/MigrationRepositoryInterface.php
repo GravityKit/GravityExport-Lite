@@ -10,6 +10,12 @@ use GFExcel\Migration\Migration\Migration;
  */
 interface MigrationRepositoryInterface {
 	/**
+	 * Whether potential migrations should run.
+	 * @since $ver$
+	 */
+	public function shouldMigrate(): bool;
+
+	/**
 	 * Returns the classnames of the migrations to run.
 	 *
 	 * Classes should extend {@see Migration}

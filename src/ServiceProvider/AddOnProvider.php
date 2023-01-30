@@ -56,7 +56,8 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 	public function register(): void {
 		$container = $this->getLeagueContainer();
 
-		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class );
+		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class )
+		          ->addArgument( dirname( GFEXCEL_PLUGIN_FILE ) . '/src/Migration/Migration/' );
 		$container->add( NotificationRepositoryInterface::class, NotificationRepository::class );
 		$container->add( NotificationManager::class )->addArgument( NotificationRepositoryInterface::class );
 

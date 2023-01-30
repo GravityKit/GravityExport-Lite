@@ -14,14 +14,37 @@ final class FileSystemMigrationRepository implements MigrationRepositoryInterfac
 	 * @since $ver$
 	 * @var string
 	 */
-	public const OPTION_MIGRATION_VERSION = 'gfexcel_migration_version';
+	public const OPTION_MIGRATION_VERSION = 'gravityexport_migration_version';
 
 	/**
 	 * The transient key holding the migration running status.
 	 * @since $ver$
 	 * @var string
 	 */
-	public const TRANSIENT_MIGRATION_RUNNING = 'gfexcel_migration_running';
+	public const TRANSIENT_MIGRATION_RUNNING = 'gravityexport_migration_running';
+
+	/**
+	 * The absolute path that contains the migrations.
+	 * @since $ver$
+	 * @var string
+	 */
+	private $migration_path;
+
+	/**
+	 * Creates the Repository.
+	 * @since $ver$
+	 */
+	public function __construct( string $migration_path ) {
+		$this->migration_path = $migration_path;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function shouldMigrate(): bool {
+		return version_compare( GFEXCEL_PLUGIN_VERSION, $this->getLatestVersion(), '>' );
+	}
 
 	/**
 	 * @inheritDoc
@@ -29,7 +52,7 @@ final class FileSystemMigrationRepository implements MigrationRepositoryInterfac
 	 */
 	public function getMigrations(): array {
 		// Change directory for glob. We do this here, so we can better test `getMigrations()`.
-		chdir( dirname( GFEXCEL_PLUGIN_FILE ) . '/src/Migration/Migration/' );
+		chdir( $this->migration_path );
 
 		// Retrieve migrations from folder.
 		return array_reduce(

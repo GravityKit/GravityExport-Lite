@@ -2,6 +2,7 @@
 
 namespace GFExcel\Migration\Manager;
 
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
 use GFExcel\Migration\Migration\Migration;
 use GFExcel\Migration\Repository\MigrationRepositoryInterface;
@@ -44,8 +45,7 @@ class MigrationManager {
 		$this->notification_manager = $notification_manager;
 		$this->repository           = $repository;
 
-		// todo: Change to proper check on every (admin) request.
-		add_action( 'upgrader_process_complete', [ $this, 'migrate' ] );
+		add_action( 'admin_init', \Closure::fromCallable( [ $this, 'maybe_migrate' ] ) );
 	}
 
 	/**
@@ -57,12 +57,28 @@ class MigrationManager {
 		return $this->notification_manager;
 	}
 
+
 	/**
-	 *
+	 * Entry point for possibly starting migrations.
+	 * @since $ver$
+	 */
+	private function maybe_migrate(): void {
+		if ( ! $this->repository->shouldMigrate() ) {
+			return;
+		}
+
+		try {
+			$this->migrate();
+		} catch ( MigrationException $e ) {
+			GravityExportAddon::get_instance()->log_error( sprintf( 'Migration error: %s', $e->getMessage() ) );
+		}
+	}
+
+	/**
 	 * @since 1.8.0
 	 * @throws MigrationException When something went wrong in a migration.
 	 */
-	public function migrate(): void {
+	private function migrate(): void {
 		// Prevent concurrent running of migrations.
 		if ( ! $this->repository->isRunning() ) {
 			$this->repository->setRunning( true );
@@ -70,10 +86,10 @@ class MigrationManager {
 			// Run migrations.
 			foreach ( $this->getMigrations() as $migration ) {
 				$migration->run();
-
-				// Update version.
-				$this->repository->setLatestVersion( $migration::getVersion() );
 			}
+
+			// Update version.
+			$this->repository->setLatestVersion( GFEXCEL_PLUGIN_VERSION );
 		}
 
 		// Clear running status.
