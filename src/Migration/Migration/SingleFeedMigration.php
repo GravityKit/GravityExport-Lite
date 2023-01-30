@@ -39,9 +39,9 @@ final class SingleFeedMigration extends Migration {
 		'gfexcel_custom_filename'         => 'custom_filename',
 		'gfexcel_file_extension'          => 'file_extension',
 		'gfexcel_attachment_notification' => 'attachment_notification',
-		'gfexcel_disabled_fields'         => 'disabled_fields',
+		'gfexcel_disabled_fields'         => 'export-fields/disabled',
 		'gfexcel_enabled_fields'          => 'export-fields/enabled',
-		'gfexcel_download_count'          => 'export-fields/disabled',
+		'gfexcel_download_count'          => 'download_count',
 		'gfexcel_download_secured'        => 'is_secured',
 	];
 
