@@ -9,6 +9,7 @@ use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Action\FilterRequest;
 use GFExcel\Action\NotificationAttachmentAction;
 use GFExcel\Action\NotificationsAction;
+use GFExcel\Action\DownloadCountResetAction;
 use GFExcel\Component\MetaBoxes;
 use GFExcel\Component\Plugin;
 use GFExcel\Generator\HashGeneratorInterface;
@@ -93,5 +94,6 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
         $this->addAction(DownloadUrlEnableAction::class)->addArgument(HashGeneratorInterface::class);
         $this->addAction(DownloadUrlResetAction::class)->addArgument(HashGeneratorInterface::class);
         $this->addAction(DownloadUrlDisableAction::class);
+        $this->addAction(DownloadCountResetAction::class);
     }
 }

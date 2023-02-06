@@ -2,7 +2,6 @@
 
 namespace GFExcel\Action;
 
-use GFExcel\GFExcel;
 use GFExcel\Notification\Exception\NotificationException;
 use GFExcel\Notification\Exception\NotificationManagerException;
 use GFExcel\Notification\Manager\NotificationManager;
