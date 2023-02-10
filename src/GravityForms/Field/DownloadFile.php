@@ -54,24 +54,22 @@ class DownloadFile extends Base {
                 </div>
 
                 <div class="download-button">
-                    <button type="submit" form="%1$s" class="button primary button-primary">' . esc_html__( 'Download',
-				'gk-gravityexport-lite' ) . '</button>
+                    <button type="submit" form="%1$s" class="button primary button-primary">' . esc_html__( 'Download', 'gk-gravityexport-lite' ) . '</button>
+                    <button id="download-count-reset" name="gform-settings-save" value="%2$s" form="gform-settings" class="button button-secondary">%3$s</button>
                 </div>
-            </div>', $this->get_parsed_name() );
+            </div>',
+			$this->get_parsed_name(),
+			DownloadCountResetAction::$name,
+			esc_attr__( 'Reset count', 'gk-gravityexport-lite' )
+		);
 
 		$count_html = sprintf(
 			'<div class="download-count"><span>%s: %d</span></div>',
 			esc_html__( 'Download count', 'gk-gravityexport-lite' ),
 			$this->settings->get_value( CountDownloads::KEY_COUNT ) ?: 0 );
 
-		$reset_button_html = sprintf(
-			'<button id="download-count-reset" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
-			DownloadCountResetAction::$name,
-			esc_attr__( 'Reset count', 'gk-gravityexport-lite' )
-		);
 
-
-		return $form_html . $count_html . $reset_button_html;
+		return $form_html . $count_html;
 	}
 
 	/**
@@ -99,7 +97,7 @@ JS;
 						esc_attr__( 'You are about to reset the download count for this form. This can’t be undone.', 'gk-gravityexport-lite' )
 					) );
 				},
-				'deps' => ['jquery']
+				'deps'     => [ 'jquery' ]
 			]
 		];
 	}
