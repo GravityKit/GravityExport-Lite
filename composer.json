@@ -1,5 +1,5 @@
 {
-    "name": "doekenorg/gf-entries-in-excel",
+    "name": "gravitykit/gravityexport-lite",
     "description": "The fastest way to export from Gravity Forms.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",
@@ -23,16 +23,10 @@
         }
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:GFExcel/base.git"
-        }
-    ],
     "require": {
         "ext-json": "*",
         "php": "^7.2",
-        "gfexcel/base": "dev-master",
+        "gravitykit/gravityexport-base": "dev-master",
         "phpoffice/phpspreadsheet": "1.12",
         "composer/installers": "~1.0",
         "frontpack/composer-assets-plugin": "^0.11.0"
