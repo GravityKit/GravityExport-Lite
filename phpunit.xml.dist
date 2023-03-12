@@ -5,7 +5,7 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Entries in Excel Test Suite">
+        <testsuite name="GravityExport Lite Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.0
-Stable tag: 1.11.2
+Stable tag: 1.11.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,7 +81,7 @@ We've written an article that contains all you need to know about [exporting dat
 
 #### Credits
 
-- The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
+- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
@@ -153,7 +153,7 @@ Also you can update title, subject and description metadata of the document by u
 = Can I change the sort order of the rows? =
 
 Sure, why not. By default, we sort on date of entry in ascending order. You can change this, per form,
-on the Form settings page (Entries in Excel) under "General settings".
+on the Form settings page (GravityExport Lite) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
 
@@ -252,11 +252,20 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Screenshots ==
 
-1. A 'Entries in Excel' link is added to the form settings
+1. A 'GravityExport' link is added to the form settings
 2. There is your URL! Just copy and paste to the browser (or click the download button)
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 1.11.4 on November 30, 2022 =
+
+* Enhancement: Added `Entry ID` as a sorting option. Useful when duplicate entry dates exist.
+* Bugfix: on PHP 8 an array value threw an error instead of silently failing.
+
+= 1.11.3 on September 29, 2022 =
+
+* Enhancement: List fields column labels can now be manipulated by the `gfexcel_field_label` filter.
 
 = 1.11.2 on July 19, 2022 =
 
