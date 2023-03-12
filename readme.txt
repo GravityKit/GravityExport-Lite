@@ -81,7 +81,7 @@ We've written an article that contains all you need to know about [exporting dat
 
 #### Credits
 
-- The GF Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
+- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
 - Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
 - Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
 
@@ -153,7 +153,7 @@ Also you can update title, subject and description metadata of the document by u
 = Can I change the sort order of the rows? =
 
 Sure, why not. By default, we sort on date of entry in ascending order. You can change this, per form,
-on the Form settings page (Entries in Excel) under "General settings".
+on the Form settings page (GravityExport Lite) under "General settings".
 
 = I want to download directly from the forms table without the URL! =
 
@@ -252,7 +252,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Screenshots ==
 
-1. A 'Entries in Excel' link is added to the form settings
+1. A 'GravityExport' link is added to the form settings
 2. There is your URL! Just copy and paste to the browser (or click the download button)
 3. Or download it from the list via the bulk selector
 
