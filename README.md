@@ -1,5 +1,5 @@
-# Gravity Forms Entries in Excel
-![by Matt Benson](https://gfexcel.github.io/gf-entries-in-excel/assets/banner-772x250.png)
+# GravityExport Lite
+![by GravityKit](https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/master/assets/banner-772x250.png)
 
 Get realtime entries from your forms using a unique and secure URL. No need to login, or create a user account for
 that one person who needs the results. Just copy the URL, and give it to the person who needs it. It's that simple.
@@ -26,7 +26,7 @@ Check out our [full documentation site](https://gfexcel.com) for you developers 
 
 ### Credits
 
-- The Gravity Forms Entries in Excel plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by [Karlo Norg](https://www.karlon.org)
+- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
+- Original Logo by [Karlo Norg](https://www.karlon.org)
 
-<img src="https://raw.githubusercontent.com/GFExcel/gf-entries-in-excel/master/assets/icon-256x256.png" width="128">
+<img src="https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/master/assets/icon-256x256.png" width="128">
