@@ -22,6 +22,11 @@
             "frontpack/composer-assets-plugin": true
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "dev-main"
+        }
+    },
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
