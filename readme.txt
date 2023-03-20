@@ -262,6 +262,8 @@ You can hide a row by adding a hook. Checkout this example:
 * **This is a major update!** Enjoy the much nicer feed configuration interface!
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
+* Enhancement: Upload fields can now split into multiple rows (GravityExport).
+* Security: Upload fields now show the private download URL to avoid enumeration on public files.
 
 __Developer Updates:__
 
