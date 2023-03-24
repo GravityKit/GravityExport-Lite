@@ -21,6 +21,7 @@ jobs:
       - run:
           name: Building and packaging
           command: |
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
             else
