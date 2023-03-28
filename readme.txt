@@ -263,7 +263,7 @@ You can hide a row by adding a hook. Checkout this example:
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
 * Enhancement: Meta fields with array values are now properly deconstructed on export.
-* Enhancement: Added support for GravityPerks Media Library ID fields.
+* Enhancement: Added support for GravityPerks Media Library ID fields. 
 
 __Developer Updates:__
 
