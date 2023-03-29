@@ -213,6 +213,9 @@ msgstr "Aantal keer gedownload"
 msgid "Reset count"
 msgstr "Reset teller"
 
+msgid "You are about to reset the download count for this form. This can’t be undone."
+msgstr "Je gaat de download teller resetten. Dit kan niet ongedaan gemaakt worden."
+
 #: src/GFExcelAdmin.php:468
 msgid "Save settings"
 msgstr "Instellingen opslaan"
