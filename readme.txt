@@ -264,6 +264,8 @@ You can hide a row by adding a hook. Checkout this example:
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
 * Enhancement: Meta fields with array values are now properly deconstructed on export.
 * Enhancement: Added support for GravityPerks Media Library ID fields. 
+* Enhancement: Upload fields can now split into multiple rows (GravityExport).
+* Security: Upload fields now show the private download URL to avoid enumeration on public files.
 
 __Developer Updates:__
 
