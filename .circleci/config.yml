@@ -21,11 +21,16 @@ jobs:
       - run:
           name: Building and packaging
           command: |
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+            rm -rf vendor/phpoffice/phpspreadsheet/{bin,docs,samples}
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
             else
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
+            mkdir -p gf-entries-in-excel
+            mv vendor gf-entries-in-excel
+            zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
             mkdir .release
             cp gf-entries-in-excel-*.zip .release
       - run:
