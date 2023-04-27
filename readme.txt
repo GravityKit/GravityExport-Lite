@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.0
+Tested up to: 6.2
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -262,6 +262,10 @@ You can hide a row by adding a hook. Checkout this example:
 * **This is a major update!** Enjoy the much nicer feed configuration interface!
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
+* Enhancement: Meta fields with array values are now properly deconstructed on export.
+* Enhancement: Added support for GravityPerks Media Library ID fields. 
+* Enhancement: Upload fields can now split into multiple rows (GravityExport).
+* Security: Upload fields now show the private download URL to avoid enumeration on public files.
 
 __Developer Updates:__
 
