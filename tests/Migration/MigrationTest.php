@@ -3,7 +3,7 @@
 namespace GFExcel\Tests\Migration;
 
 use GFExcel\Migration\Manager\MigrationManager;
-use GFExcel\Migration\Migration;
+use GFExcel\Migration\Migration\Migration;
 use GFExcel\Tests\TestCase;
 
 /**
