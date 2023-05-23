@@ -1138,7 +1138,7 @@ class GFExcelAdmin extends \GFAddOn implements AddonInterface
 	    }
 
         // create a file based on the settings in the form, with only this entry.
-        $output = new GFExcelOutput($form['id'], new PHPExcelRenderer());
+        $output = new GFExcelOutput($form['id'], GFExcel::getRenderer($form['id']));
         $output->setEntries([$entry]);
 
         // save the file to a temporary file
