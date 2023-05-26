@@ -1,4 +1,4 @@
-=== GravityExport Lite (Gravity Forms Entries in Excel) ===
+=== GravityExport Lite ===
 Contributors: gravitykit, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
@@ -13,7 +13,7 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
-> ### GravityExport is the ultimate no-hassle solution for exporting data from Gravity Forms.
+> ### GravityExport (Gravity Form Entries in Excel) is the ultimate no-hassle solution for exporting data from Gravity Forms.
 > Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
 >
 > [Learn more about GravityExport](https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
@@ -82,7 +82,6 @@ We've written an article that contains all you need to know about [exporting dat
 #### Credits
 
 - The GravityExport Lite plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by [Karlo Norg](https://www.karlon.org)
 
 == Installation ==
 
