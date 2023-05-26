@@ -70,7 +70,7 @@ class NotificationManager
         }
 
         try {
-            $this->repository->markAsDismissed($id);
+            $this->repository->markAsDismissed($notification);
         } catch (NotificationRepositoryException $e) {
             throw new NotificationManagerException($e->getMessage(), $e->getCode(), $e);
         }

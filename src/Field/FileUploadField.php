@@ -11,7 +11,7 @@ use GFExcel\Values\BaseValue;
  */
 class FileUploadField extends BaseField implements RowsInterface {
 	/**
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var \GF_Field_FileUpload $field
 	 */
 	protected $field;
@@ -64,7 +64,7 @@ class FileUploadField extends BaseField implements RowsInterface {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function getRows( ?array $entry = null ): iterable {
 		if ( ! $this->showFileUploadsAsColumn() ) {
@@ -90,7 +90,7 @@ class FileUploadField extends BaseField implements RowsInterface {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected function getFieldValue( $entry, $input_id = '' ) {
 		$value = parent::getFieldValue( $entry, $input_id );

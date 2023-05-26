@@ -3,16 +3,15 @@
 namespace GFExcel\Component;
 
 use GFExcel\GFExcel;
-use GravityKit\GravityExport\Addon\GravityExportAddon;
 
 /**
  * MetaBoxes component that registers any meta boxes.
- * @since $ver$
+ * @since 2.0.0
  */
 final class MetaBoxes {
 	/**
 	 * Registers the hooks.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct() {
 		add_filter(

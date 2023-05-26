@@ -20,11 +20,11 @@ interface NotificationRepositoryInterface
 
     /**
      * Should mark the notification as dismissed.
-     * @since 1.8.0
-     * @param string $id The unique identifier of the notification.
+     * @since 2.0.0
+     * @param Notification $notification The notification.
      * @throws NotificationRepositoryException When something went wrong during dismissing.
      */
-    public function markAsDismissed(string $id): void;
+    public function markAsDismissed(Notification $notification): void;
 
     /**
      * Should store the notification.

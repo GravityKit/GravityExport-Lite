@@ -6,32 +6,25 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields\Base;
 
 /**
  * A Sortable settings field.
- * @since $ver$
+ * @since 2.0.0
  */
 class SortFields extends Base {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public $type = 'sortable';
 
 	/**
-	 * Wrapper to move the selected field to.
-	 * @since $ver$
-	 * @var string
-	 */
-	public $move_to;
-
-	/**
 	 * The side.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string
 	 */
 	public $side;
 
 	/**
 	 * The provided choices for the field.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var mixed[]
 	 */
 	public $choices;
@@ -42,14 +35,14 @@ class SortFields extends Base {
 	 * The keys are the section ids, the values are an array / tuple of heading + target section.
 	 * Example: [ 'left' => [ 'Left title', 'right'] ], ['right' => [ 'Right title', 'left'] ]
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var array<string, array<string>>
 	 */
 	public $sections = [];
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct( $props, $settings ) {
 		add_filter(
@@ -62,7 +55,7 @@ class SortFields extends Base {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function markup(): string {
 		$html = [ '<div class="gk-gravityexport-sort-fields">' ];
@@ -99,7 +92,7 @@ class SortFields extends Base {
 
 	/**
 	 * Returns the html for a choice.
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param \GF_Field $choice The choice field.
 	 *
@@ -122,7 +115,7 @@ class SortFields extends Base {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function scripts(): array {
 		$ids = array_map( function ( string $section ) {
@@ -144,7 +137,7 @@ class SortFields extends Base {
 
 	/**
 	 * Exclude {@see SortFields::$sections} from the attributes list.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private function no_output_field_properties( array $properties ): array {
 		if ( ! in_array( 'sections', $properties ) ) {

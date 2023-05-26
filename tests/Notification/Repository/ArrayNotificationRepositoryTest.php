@@ -64,7 +64,7 @@ class ArrayNotificationRepositoryTest extends TestCase
     public function testMarkAsDismissed(): void
     {
         $this->repository->storeNotification(...array_values($this->notifications));
-        $this->repository->markAsDismissed('note-1');
+        $this->repository->markAsDismissed($this->notifications['note-1']);
         $this->assertSame([
             'note-2' => $this->notifications['note-2'],
         ], $this->repository->getNotifications());
