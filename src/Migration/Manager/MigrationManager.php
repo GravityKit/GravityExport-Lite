@@ -7,7 +7,6 @@ use GFExcel\Migration\Exception\MigrationException;
 use GFExcel\Migration\Migration\Migration;
 use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
-use GFExcel\Notification\Notification;
 
 /**
  * The migration manager.
