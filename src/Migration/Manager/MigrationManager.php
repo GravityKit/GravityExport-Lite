@@ -7,6 +7,7 @@ use GFExcel\Migration\Exception\MigrationException;
 use GFExcel\Migration\Migration\Migration;
 use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
+use GFExcel\Notification\Notification;
 
 /**
  * The migration manager.
@@ -29,7 +30,7 @@ class MigrationManager {
 
 	/**
 	 * The migration repository.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var MigrationRepositoryInterface
 	 */
 	private $repository;
@@ -60,7 +61,7 @@ class MigrationManager {
 
 	/**
 	 * Entry point for possibly starting migrations.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private function maybe_migrate(): void {
 		if ( ! $this->repository->shouldMigrate() ) {

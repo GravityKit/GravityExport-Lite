@@ -17,7 +17,7 @@ class CountDownloads {
 
 	/**
 	 * The add on.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var GravityExportAddon
 	 */
 	private $addon;

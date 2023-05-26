@@ -6,18 +6,18 @@ use GFExcel\Addon\GravityExportAddon;
 
 /**
  * Action that resets the count for this feed.
- * @since $ver$
+ * @since 2.0.0
  */
 final class DownloadCountResetAction extends AbstractAction {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public static $name = 'download_count_reset';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function fire( \GFAddOn $addon, array $form ): void {
 		if ( ! $addon instanceof GravityExportAddon ) {

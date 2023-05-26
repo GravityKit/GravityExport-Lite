@@ -96,7 +96,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function boot(): void {
 		$this->addAction( DownloadUrlEnableAction::class )->addArgument( HashGeneratorInterface::class );

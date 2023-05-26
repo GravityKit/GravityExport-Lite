@@ -10,32 +10,32 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields\Text;
 
 /**
  * A field that represents the download url from Gravity Export.
- * @since $ver$
+ * @since 2.0.0
  */
 class DownloadUrl extends Text {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public $type = 'download_url';
 
 	/**
 	 * The asset's directory.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string
 	 */
 	public $assets_dir = '';
 
 	/**
 	 * This is a readonly field.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var bool
 	 */
 	public $readonly = true;
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function markup(): string {
 		$html = [];
@@ -81,7 +81,7 @@ class DownloadUrl extends Text {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function save( $value ): string {
 		$previous_values = $this->settings->get_previous_values();
@@ -92,7 +92,7 @@ class DownloadUrl extends Text {
 	/**
 	 * @inheritDoc
 	 * Added the full url to the value.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function get_value() {
 		if ( ! $hash = parent::get_value() ) {
@@ -118,7 +118,7 @@ class DownloadUrl extends Text {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function do_validation( $value ): void {
 		// Pass empty value as string to circumvent error.
@@ -127,7 +127,7 @@ class DownloadUrl extends Text {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function scripts(): array {
 

@@ -14,7 +14,7 @@ class FormsRepository {
 
 	/**
 	 * The Gravity Export addon.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var GravityExportAddon
 	 */
 	private $addon;
@@ -94,7 +94,7 @@ class FormsRepository {
 
 	/**
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return bool Whether the form should be transposed.
 	 */
 	public function isTransposed(): bool {

@@ -7,18 +7,18 @@ use GFExcel\Generator\HashGeneratorInterface;
 
 /**
  * Action to reset the download URL for a form.
- * @since $ver$
+ * @since 2.0.0
  */
 class DownloadUrlEnableAction extends DownloadUrlResetAction {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public static $name = 'download_url_enable';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct( HashGeneratorInterface $generator ) {
 		parent::__construct( $generator );
@@ -28,7 +28,7 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function fire( \GFAddOn $addon, array $form ): void {
 		if ( ! $addon instanceof GravityExportAddon ) {

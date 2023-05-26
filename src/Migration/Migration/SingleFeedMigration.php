@@ -4,21 +4,22 @@ namespace GFExcel\Migration\Migration;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
+use GFExcel\Notification\Notification;
 
 /**
  * Migration to upgrade the old form settings to the new {@see GravityExportAddon} single feed settings.
- * @since $ver$
+ * @since 2.0.0
  */
 final class SingleFeedMigration extends Migration {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected static $version = '2.0.0';
 
 	/**
 	 * Mapping from the old addon settings names to the new names.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string[]
 	 */
 	private static $addon_mapping = [
@@ -27,7 +28,7 @@ final class SingleFeedMigration extends Migration {
 
 	/**
 	 * Mapping from the old form settings names to the new names.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string[]
 	 */
 	private static $feed_mapping = [
@@ -47,7 +48,7 @@ final class SingleFeedMigration extends Migration {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function run(): void {
 		$this->migrateAddonSettings();
@@ -56,12 +57,24 @@ final class SingleFeedMigration extends Migration {
 		foreach ( array_chunk( $forms, 50 ) as $form_ids ) {
 			$this->updateForms( $form_ids );
 		}
+
+		if ($this->manager) {
+			$notifications = $this->manager->getNotificationManager();
+			$notifications->storeNotification(new Notification(
+				'gk/gravity-export-migration/2.0.0',
+				sprintf(
+					esc_html__('The settings for %s 2.0 were migrated successfully.', 'gk-gravityexport-lite'),
+					defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite'
+				),
+				Notification::TYPE_SUCCESS
+			));
+		}
 	}
 
 	/**
 	 * Helper method to update multiple forms by ID.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param array $form_ids The form ID's to update.
 	 *
@@ -81,7 +94,7 @@ final class SingleFeedMigration extends Migration {
 	/**
 	 * Updates a single form from the old to new settings style.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param array $form The form object.
 	 *
@@ -121,7 +134,7 @@ final class SingleFeedMigration extends Migration {
 
 	/**
 	 * Migrates the old add-on settings to the new add-on.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private function migrateAddonSettings(): void {
 		// Get all the old settings.

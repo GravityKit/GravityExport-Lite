@@ -8,19 +8,19 @@ use GFExcel\Repository\FormsRepository;
 
 /**
  * Handles the attachment for a notification.
- * @since $ver$
+ * @since 2.0.0
  */
 final class NotificationAttachmentAction {
 	/**
 	 * Holds the file name.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string
 	 */
 	private $file;
 
 	/**
 	 * Registers the event hooks.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct() {
 		add_action( 'gform_notification', \Closure::fromCallable( [ $this, 'handle_notification' ] ), 10, 3 );
@@ -30,7 +30,7 @@ final class NotificationAttachmentAction {
 	/**
 	 * Adds the attachment to the notification.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param array $form The form object.
 	 * @param array $entry The entry object.
@@ -64,7 +64,7 @@ final class NotificationAttachmentAction {
 
 	/**
 	 * Removes the attachment after the notification was sent.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private function remove_temporary_file(): void {
 		$attachments = func_get_arg( 5 );

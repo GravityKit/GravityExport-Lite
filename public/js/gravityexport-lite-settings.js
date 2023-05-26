@@ -1,6 +1,6 @@
 /**
  * Javascript that handles the selecting of all meta fields.
- * @since $ver$
+ * @since 2.0.0
  */
 (function ($) {
     $(function () {

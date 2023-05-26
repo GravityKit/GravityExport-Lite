@@ -2,16 +2,14 @@
 
 namespace GFExcel\Component;
 
-use GFExcel\GFExcel;
-
 /**
  * Plugin component that handles all plugin specific hooks.
- * @since $ver$
+ * @since 2.0.0
  */
 final class Plugin {
 	/**
 	 * Registers the plugin hooks.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct() {
 		add_filter( 'plugin_row_meta', \Closure::fromCallable( [ $this, 'plugin_row_meta' ] ), 10, 2 );

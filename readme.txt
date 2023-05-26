@@ -58,7 +58,7 @@ If you need further assistance, [read this first](https://wordpress.org/support/
 
 * PHP 7.2
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
-* Gravity Forms 2.0 or higher
+* Gravity Forms 2.5 or higher
 
 <hr>
 
@@ -257,13 +257,14 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= 2.0 on January 25, 2023 =
+= 2.0 on May 29, 2023 =
 
 * **This is a major update!** Enjoy the much nicer feed configuration interface!
+* Changed: The minimum version of Gravity Forms is now 2.5
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
 * Enhancement: Meta fields with array values are now properly deconstructed on export.
-* Enhancement: Added support for GravityPerks Media Library ID fields. 
+* Enhancement: Added support for GravityPerks Media Library ID fields.
 * Enhancement: Upload fields can now split into multiple rows (GravityExport).
 * Security: Upload fields now show the private download URL to avoid enumeration on public files.
 

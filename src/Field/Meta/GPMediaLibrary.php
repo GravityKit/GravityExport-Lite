@@ -7,12 +7,12 @@ use GFExcel\Field\RowsInterface;
 
 /**
  * Meta field transformer for GP Media Library ID field.
- * @since $ver$
+ * @since 2.0.0
  */
 final class GPMediaLibrary extends MetaField implements RowsInterface {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected function getFieldValue( $entry, $input_id = '' ) {
 		$field_id = $this->field->id;
@@ -36,7 +36,7 @@ final class GPMediaLibrary extends MetaField implements RowsInterface {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function getRows( ?array $entry = null ): iterable {
 		$value = parent::getFieldValue( $entry );

@@ -6,7 +6,7 @@ use GFExcel\GFExcel;
 
 /**
  * Usage component that handles all the plugin usage statistics and notifications.
- * @since $ver$
+ * @since 2.0.0
  */
 final class Usage {
 	/**

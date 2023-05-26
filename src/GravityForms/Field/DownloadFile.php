@@ -4,31 +4,30 @@ namespace GFExcel\GravityForms\Field;
 
 use GFExcel\Action\CountDownloads;
 use GFExcel\Action\DownloadCountResetAction;
-use GFExcel\Action\DownloadUrlDisableAction;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Base;
 
 /**
  * A field that represents a form to download the file.
- * @since $ver$
+ * @since 2.0.0
  */
 class DownloadFile extends Base {
 	/**
 	 * Whether the form was already rendered.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var bool
 	 */
 	private $is_rendered = false;
 
 	/**
 	 * The url for the download form.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string
 	 */
 	public $url = '';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct( $props, $settings ) {
 		parent::__construct( $props, $settings );
@@ -39,7 +38,7 @@ class DownloadFile extends Base {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function markup() {
 		$form_html = sprintf( '<div class="download-block">
@@ -74,7 +73,7 @@ class DownloadFile extends Base {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function scripts(): array {
 		$script = <<<JS
@@ -104,7 +103,7 @@ JS;
 
 	/**
 	 * Helper method to render the download form.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private function render_form() {
 		if ( $this->is_rendered ) {
