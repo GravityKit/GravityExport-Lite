@@ -264,12 +264,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'tooltip' => 'export_date_range',
 					'type'    => 'download_file',
 					'url'     => $this->form_repository->getDownloadUrl( $this->get_current_settings() ),
-				],
-				[
-					'name'  => 'download_count',
-					'label' => esc_html__( 'Download Count', 'gk-gravityexport-lite' ),
-					'type'  => 'download_count',
-				],
+				]
 			],
 		];
 
@@ -769,6 +764,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function save_feed_settings( $feed_id, $form_id, $settings ) {
 		// In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
 		$action = rgpost( 'gform-settings-save' );
+        // Keep old settings that were not provided (used for download_count).
+		$settings = array_merge($this->get_previous_settings(), $settings);
 
 		if ( $this->hasAction( $action ) ) {
 			// Prevent indefinite loop in case action's fire() method calls save_feed_settings().
