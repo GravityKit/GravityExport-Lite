@@ -105,7 +105,7 @@ class MetaField extends BaseField implements RowsInterface
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function getRows( ?array $entry = null ): iterable {
 		$subfield = $this->getSubField();

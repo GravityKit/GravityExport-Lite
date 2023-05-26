@@ -84,7 +84,7 @@ class NotificationRepositoryTest extends TestCase
             'return' => true,
         ]);
 
-        $this->assertNull($this->repository->markAsDismissed('first'));
+        $this->assertNull($this->repository->markAsDismissed($notifications[0]));
     }
 
     /**
@@ -99,7 +99,7 @@ class NotificationRepositoryTest extends TestCase
         $this->expectExceptionObject(
             new NotificationRepositoryException('Notifications could not be stored.')
         );
-        $this->repository->markAsDismissed('wrong');
+        $this->repository->markAsDismissed(new Notification('wrong','wrong'));
     }
 
     /**

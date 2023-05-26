@@ -30,9 +30,9 @@ class ArrayNotificationRepository implements NotificationRepositoryInterface
      * @inheritdoc
      * @since 1.8.0
      */
-    public function markAsDismissed(string $id): void
+    public function markAsDismissed(Notification $notification): void
     {
-        if (array_key_exists($id, $this->notifications)) {
+        if (array_key_exists($id = $notification->getId(), $this->notifications)) {
             unset($this->notifications[$id]);
         }
     }

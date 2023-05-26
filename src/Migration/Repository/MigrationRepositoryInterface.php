@@ -6,12 +6,12 @@ use GFExcel\Migration\Migration\Migration;
 
 /**
  * Interface a migration repository needs to adhere to.
- * @since $ver$
+ * @since 2.0.0
  */
 interface MigrationRepositoryInterface {
 	/**
 	 * Whether potential migrations should run.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function shouldMigrate(): bool;
 
@@ -20,21 +20,21 @@ interface MigrationRepositoryInterface {
 	 *
 	 * Classes should extend {@see Migration}
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string[]
 	 */
 	public function getMigrations(): array;
 
 	/**
 	 * Returns whether the migrations are currently running.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return bool
 	 */
 	public function isRunning(): bool;
 
 	/**
 	 * Updates the running state.
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param bool $is_running Whether the migrations are running.
 	 */
@@ -42,11 +42,10 @@ interface MigrationRepositoryInterface {
 
 	/**
 	 * The latest version for which migrations were run.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string
 	 */
 	public function getLatestVersion(): string;
-
 
 	/**
 	 * Sets the latest version, if it is later than the current latest version.

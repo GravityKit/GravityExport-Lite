@@ -30,7 +30,7 @@ class MigrationManagerTest extends TestCase {
 
 	/**
 	 * Mocked repository instance.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var MigrationRepositoryInterface|MockObject
 	 */
 	private $repository;

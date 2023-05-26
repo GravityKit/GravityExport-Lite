@@ -6,19 +6,19 @@ use GFExcel\Addon\GravityExportAddon;
 
 /**
  * Action to enable / disable the download url for a form.
- * @since $ver$
+ * @since 2.0.0
  */
 class DownloadUrlDisableAction extends AbstractAction
 {
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.0.0
      */
     public static $name = 'download_url_disable';
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.0.0
      */
     public function fire(\GFAddOn $addon, array $form): void
     {

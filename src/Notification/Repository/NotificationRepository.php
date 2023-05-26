@@ -38,14 +38,14 @@ class NotificationRepository implements NotificationRepositoryInterface
      * @inheritdoc
      * @since 1.8.0
      */
-    public function markAsDismissed(string $id): void
+    public function markAsDismissed(Notification $notification): void
     {
         // Remove the notification from the transient and update it.
         $notifications = array_values(array_filter(
             $this->getNotifications(),
-            static function (Notification $notification) use ($id): bool {
+            static function (Notification $other) use ($notification): bool {
                 // Keep all notifications that are not $id.
-                return $notification->getId() !== $id;
+                return $other->getId() !== $notification->getId();
             }
         ));
 

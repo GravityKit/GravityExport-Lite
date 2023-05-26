@@ -2,7 +2,6 @@
 
 namespace GFExcel\Repository;
 
-use GFExcel\GFExcel;
 use GFExport;
 use GF_Field;
 

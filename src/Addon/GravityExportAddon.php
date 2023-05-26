@@ -20,7 +20,7 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields;
 
 /**
  * GravityExport Lite add-on.
- * @since $ver$
+ * @since 2.0.0
  */
 final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
 	use ActionAware;
@@ -29,82 +29,108 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Slug for bulk action download.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	private const BULK_DOWNLOAD = 'gk-download';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+     * @since 2.0.0
+	 */
+	protected $_min_gravityforms_version = '2.5';
+
+	/**
+	 * @inheritdoc
+	 * @since 2.0.0
 	 */
 	protected $_multiple_feeds = false;
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected $_title = 'GravityExport Lite';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected $_short_title = 'GravityExport Lite';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected $_slug = 'gravityexport-lite';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected $_version = GFEXCEL_PLUGIN_VERSION;
 
 	/**
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string Feed settings permissions.
 	 */
 	protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
 	/**
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string Relative path to file from plugins directory.
 	 */
 	protected $_path = 'gf-entries-in-excel/src/Addon/GravityExportAddon.php';
 
 	/**
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var string Full path to this file.
 	 */
 	protected $_full_path = __FILE__;
 
 	/**
 	 * A micro cache for the feed object.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var array|null GF feed object.
 	 */
 	private $feed = [];
 
 	/**
 	 * The form repository.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var FormRepositoryInterface
 	 */
 	private $form_repository;
 
 	/**
 	 * The usage component.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @var Usage
 	 */
 	private $component_usage;
 
 	/**
+	 * Set minimum requirements to prevent bugs when using older versions, or missing dependencies
+     * @since 1.0.0
+	 * @return array
+	 */
+	public function minimum_requirements(): array {
+		return [
+			'php' => [
+				'version'    => '7.2',
+				'extensions' => [
+					'zip',
+					'ctype',
+					'dom',
+					'zlib',
+					'xml',
+				],
+			]
+		];
+	}
+
+	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function __construct( FormRepositoryInterface $form_repository ) {
 		parent::__construct();
@@ -120,7 +146,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function init_admin(): void {
 		parent::init_admin();
@@ -134,7 +160,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function feed_settings_fields(): array {
 		// Register custom fields first.
@@ -238,12 +264,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'tooltip' => 'export_date_range',
 					'type'    => 'download_file',
 					'url'     => $this->form_repository->getDownloadUrl( $this->get_current_settings() ),
-				],
-				[
-					'name'  => 'download_count',
-					'label' => esc_html__( 'Download Count', 'gk-gravityexport-lite' ),
-					'type'  => 'download_count',
-				],
+				]
 			],
 		];
 
@@ -386,7 +407,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function get_menu_icon(): string {
 		return '<svg style="height: 24px; width: 37px;" enable-background="new 0 0 226 148" height="148" viewBox="0 0 226 148" width="226" xmlns="http://www.w3.org/2000/svg"><path d="m176.8 118.8c-1.6 1.6-4.1 1.6-5.7 0l-5.7-5.7c-1.6-1.6-1.6-4.1 0-5.7l27.6-27.4h-49.2c-4.3 39.6-40 68.2-79.6 63.9s-68.2-40-63.9-79.6 40.1-68.2 79.7-63.9c25.9 2.8 48.3 19.5 58.5 43.5.6 1.5-.1 3.3-1.7 3.9-.4.1-.7.2-1.1.2h-9.9c-1.9 0-3.6-1.1-4.4-2.7-14.7-27.1-48.7-37.1-75.8-22.4s-37.2 48.8-22.4 75.9 48.8 37.2 75.9 22.4c15.5-8.4 26.1-23.7 28.6-41.2h-59.4c-2.2 0-4-1.8-4-4v-8c0-2.2 1.8-4 4-4h124.7l-27.5-27.5c-1.6-1.6-1.6-4.1 0-5.7l5.7-5.7c1.6-1.6 4.1-1.6 5.7 0l41.1 41.2c3.1 3.1 3.1 8.2 0 11.3z"/></svg>';
@@ -394,7 +415,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function plugin_settings_icon(): string {
 		return $this->get_menu_icon();
@@ -402,7 +423,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns the feed settings for this form for backwards compatibility.
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param array $form The form object.
 	 *
@@ -416,7 +437,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function plugin_settings_fields(): array {
 		$settings_sections = [];
@@ -556,7 +577,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns the available metadata fields.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return array[] The metadata fields.
 	 */
 	private function meta_fields(): array {
@@ -576,7 +597,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns the notification options list.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return array The notification options.
 	 */
 	private function getNotifications(): array {
@@ -591,7 +612,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns the rating message.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string The message.
 	 */
 	public function get_rating_message(): string {
@@ -617,7 +638,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns the description for the plugin settings.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string The settings description.
 	 */
 	private function plugin_settings_description(): string {
@@ -631,7 +652,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns a nice upgrade message to the Pro version.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string The upgrade message.
 	 */
 	private function get_gravityexport_message(): string {
@@ -677,7 +698,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function styles(): array {
 		return array_merge( parent::styles(), [
@@ -694,7 +715,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function scripts(): array {
 		return array_merge( parent::scripts(), [
@@ -738,11 +759,13 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function save_feed_settings( $feed_id, $form_id, $settings ) {
 		// In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
 		$action = rgpost( 'gform-settings-save' );
+        // Keep old settings that were not provided (used for download_count).
+		$settings = array_merge($this->get_previous_settings(), $settings);
 
 		if ( $this->hasAction( $action ) ) {
 			// Prevent indefinite loop in case action's fire() method calls save_feed_settings().
@@ -760,7 +783,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Helper method to refresh the page, to an optional url.
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	protected static function refresh( ?string $url = null ): void {
 		if ( $url === null ) {
@@ -777,7 +800,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function settings_select( $field, $echo = true ): string {
 		/**
@@ -788,7 +811,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Retrieves the formatted label for a field.
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param \GF_Field $field The field.
 	 *
@@ -812,7 +835,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 *
 	 * Overwritten to add custom after-render hook.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function feed_edit_page( $form, $feed_id ) {
 		parent::feed_edit_page( $form, $feed_id );
@@ -823,7 +846,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	/**
 	 * Helper method to get the only available feed for this add-on.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param int $form_id The form id.
 	 *
@@ -851,7 +874,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	/**
 	 * Helper method to return the value of a feed meta field.
 	 *
-	 * @since $ver$
+	 * @since 2.0.0
 	 *
 	 * @param string $field The name of the meta field.
 	 * @param int $form_id The form id.
@@ -919,7 +942,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * {@see \GFFeedAddOn::get_bulk_action()}.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return null|string The current action.
 	 */
 	private function get_bulk_action(): ?string {
@@ -1007,7 +1030,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function can_duplicate_feed( $id ): bool {
 		return true;
@@ -1015,7 +1038,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.0.0
 	 */
 	public function duplicate_feed( $id, $new_form_id = false ): ?int {
 		$new_feed_id = parent::duplicate_feed( $id, $new_form_id );
@@ -1033,7 +1056,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Returns disabled/enabled form fields as configured by the feed.
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return array The fields.
 	 */
 	private function getFields(): array {
@@ -1056,7 +1079,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	}
 
 	/**
-	 * @since $ver$
+	 * @since 2.0.0
 	 * @return string The HTML for select only.
 	 */
 	private function getSelectAllHtml(): string {
