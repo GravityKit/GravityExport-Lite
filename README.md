@@ -1,4 +1,4 @@
-# GravityExport Lite
+# GravityExport
 ![by GravityKit](https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/master/assets/banner-772x250.png)
 
 Get realtime entries from your forms using a unique and secure URL. No need to login, or create a user account for

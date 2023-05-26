@@ -81,8 +81,8 @@ We've written an article that contains all you need to know about [exporting dat
 
 #### Credits
 
-- The GravityExport Lite plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by [Karlo Norg](https://www.karlon.org)
+- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
+- Original logo by [Karlo Norg](https://www.karlon.org)
 
 == Installation ==
 
@@ -251,19 +251,20 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Screenshots ==
 
-1. A 'GravityExport Lite' link is added to the form settings
+1. A 'GravityExport' link is added to the form settings
 2. There is your URL! Just copy and paste to the browser (or click the download button)
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
 
-= 2.0 on January 25, 2023 =
+= 2.0 on May 29, 2023 =
 
 * **This is a major update!** Enjoy the much nicer feed configuration interface!
+* Changed: The minimum version of Gravity Forms is now 2.5
 * Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
 * Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
 * Enhancement: Meta fields with array values are now properly deconstructed on export.
-* Enhancement: Added support for GravityPerks Media Library ID fields. 
+* Enhancement: Added support for GravityPerks Media Library ID fields.
 * Enhancement: Upload fields can now split into multiple rows (GravityExport).
 * Security: Upload fields now show the private download URL to avoid enumeration on public files.
 
