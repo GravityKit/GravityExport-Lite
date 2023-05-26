@@ -1,5 +1,5 @@
 # GravityExport
-![by GravityKit](https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/master/assets/banner-772x250.png)
+![by GravityKit](https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/main/assets/banner-772x250.png)
 
 Get realtime entries from your forms using a unique and secure URL. No need to login, or create a user account for
 that one person who needs the results. Just copy the URL, and give it to the person who needs it. It's that simple.
@@ -29,4 +29,4 @@ Check out our [full documentation site](https://gfexcel.com) for you developers 
 - The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
 - Original Logo by [Karlo Norg](https://www.karlon.org)
 
-<img src="https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/master/assets/icon-256x256.png" width="128">
+<img src="https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/main/assets/icon-256x256.png" width="128">
