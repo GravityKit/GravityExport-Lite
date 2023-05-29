@@ -13,10 +13,11 @@ use GFExcel\GFExcel;
 class DownloadUrl
 {
     /** @var string */
-    const SHORTTAG = 'gfexcel_download_url';
+   public const SHORTTAG = 'gravityexport_download_url';
 
     public function __construct()
     {
+        add_shortcode('gfexcel_download_url', [$this, 'handle']); // Backward compatible
         add_shortcode(self::SHORTTAG, [$this, 'handle']);
         add_filter('gform_replace_merge_tags', [$this, 'handleNotification'], 10, 2);
     }
@@ -51,20 +52,23 @@ class DownloadUrl
      * @param array|false $form
      * @return string The url or an error message
      */
-    public function handleNotification($text, $form)
-    {
-        if (!is_array($form)) {
-            return $text;
-        }
+	public function handleNotification( $text, $form ) {
+		if ( ! is_array( $form ) || ! isset( $form['id'] ) ) {
+			return $text;
+		}
 
-        $custom_merge_tag = '{' . self::SHORTTAG . '}';
+		foreach ( [ self::SHORTTAG, 'gfexcel_download_url' ] as $short_tag ) {
+			$custom_merge_tag = '{' . $short_tag . '}';
 
-        if (!isset($form['id']) || strpos($text, $custom_merge_tag) === false) {
-            return $text;
-        }
+			if ( strpos( $text, $custom_merge_tag ) === false ) {
+				continue;
+			}
 
-        return str_replace($custom_merge_tag, $this->getUrl($form['id']), $text);
-    }
+			$text = str_replace( $custom_merge_tag, $this->getUrl( $form['id'] ), $text );
+		}
+
+		return $text;
+	}
 
     /**
      * Get the actual url by providing a array with an id, and a type.

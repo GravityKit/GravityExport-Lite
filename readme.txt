@@ -1,11 +1,11 @@
-=== GravityExport Lite (Gravity Forms Entries in Excel) ===
+=== GravityExport Lite ===
 Contributors: gravitykit, doekenorg
-Donate link: https://www.gravitykit.com/gravity-forms-entries-in-excel/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
+Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.0
-Stable tag: 1.11.4
+Tested up to: 6.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Export all Gravity Forms entries to Excel (.xlsx) or CSV via a download button o
 
 == Description ==
 
-> ### GravityExport is the ultimate no-hassle solution for exporting data from Gravity Forms.
+> ### GravityExport (Gravity Form Entries in Excel) is the ultimate no-hassle solution for exporting data from Gravity Forms.
 > Powerful new functionality is available with GravityExport! Save exports to FTP & Dropbox, export as PDF, and format exports for data analysis.
 >
 > [Learn more about GravityExport](https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-learn-more)
@@ -58,7 +58,7 @@ If you need further assistance, [read this first](https://wordpress.org/support/
 
 * PHP 7.2
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
-* Gravity Forms 2.0 or higher
+* Gravity Forms 2.5 or higher
 
 <hr>
 
@@ -81,15 +81,13 @@ We've written an article that contains all you need to know about [exporting dat
 
 #### Credits
 
-- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
-- Logo by Karlo Norg | [SQUID Media](https://www.squidmedia.nl)
-- Banner Photo by [Matt Benson](https://unsplash.com/@mattgyver) on [Unsplash](https://unsplash.com/photos/rHbob_bEsSs)
+- The GravityExport Lite plugin was created by [Doeke Norg](https://doeken.org)
 
 == Installation ==
 
 This section describes how to install the plugin and get it working.
 
-1. Upload `gf-entries-in-excel` to the `/wp-content/plugins/` directory
+1. Upload `gravityexport-lite` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Go to Forms > Select a form > Settings > Results in Excel to obtain your URL
 1. Download that Excel file!
@@ -257,6 +255,22 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.0 on May 29, 2023 =
+
+* **This is a major update!** Enjoy the much nicer feed configuration interface!
+* Changed: The minimum version of Gravity Forms is now 2.5
+* Enhancement: Fields can now be enabled or disabled all at once on the form settings page.
+* Enhancement: Meta fields can now be (de)selected all at once on the plugin settings page.
+* Enhancement: Meta fields with array values are now properly deconstructed on export.
+* Enhancement: Added support for GravityPerks Media Library ID fields.
+* Enhancement: Upload fields can now split into multiple rows (GravityExport).
+* Security: Upload fields now show the private download URL to avoid enumeration on public files.
+
+__Developer Updates:__
+
+* This is a major release behind the scenes; we have rewritten much of the plugin to better integrate with Gravity Forms feed add-on framework.
+* Modified: Changed the textdomain of the plugin to `gk-gravitykit-lite`.
 
 = 1.11.4 on November 30, 2022 =
 

@@ -27,9 +27,7 @@
         "ext-json": "*",
         "php": "^7.2",
         "gravitykit/gravityexport-base": "dev-master",
-        "phpoffice/phpspreadsheet": "1.12",
-        "composer/installers": "~1.0",
-        "frontpack/composer-assets-plugin": "^0.11.0"
+        "phpoffice/phpspreadsheet": "1.12"
     },
     "autoload": {
         "psr-4": {

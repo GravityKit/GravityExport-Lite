@@ -4,16 +4,17 @@ namespace GFExcel\Field;
 
 use GFExcel\Values\BaseValue;
 
-class MetaField extends BaseField
+class MetaField extends BaseField implements RowsInterface
 {
     /**
      * List of internal subfields.
      * @var string[]
      */
-    protected $subfields = array(
+    protected $subfields = [
         'created_by' => 'GFExcel\Field\Meta\CreatedBy',
         'date_created' => 'GFExcel\Field\Meta\DateCreated',
-    );
+	    '/gpml_ids_\d+/is' => 'GFExcel\Field\Meta\GPMediaLibrary',
+    ];
 
     /**
      * {@inheritdoc}
@@ -79,20 +80,39 @@ class MetaField extends BaseField
 
     /**
      * Get a subfield instance if available.
-     * @return FieldInterface|false
+     * @return FieldInterface|null
      */
-    private function getSubField()
-    {
-        // prevent endless loop, and be able to extend MetaField.
-        if (get_class($this) !== self::class) {
-            return false;
-        }
+	private function getSubField() {
+		// prevent endless loop, and be able to extend MetaField.
+		if ( get_class( $this ) !== self::class ) {
+			return null;
+		}
 
-        $fields = $this->getSubFieldsClasses();
-        if (!array_key_exists($this->field->id, $fields)) {
-            return false;
-        }
+		$fields = $this->getSubFieldsClasses();
+		if ( array_key_exists( $this->field->id, $fields ) ) {
+			return new $fields[ $this->field->id ]( $this->field );
+		}
 
-        return new $fields[$this->field->id]($this->field);
-    }
+		foreach ( $fields as $name => $field ) {
+			// Check if one of the fields is actually a regex.
+			if ( @ preg_match( $name, $this->field->id ) ) {
+				return new $field( $this->field );
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since 2.0.0
+	 */
+	public function getRows( ?array $entry = null ): iterable {
+		$subfield = $this->getSubField();
+		if ($subfield instanceof RowsInterface) {
+			yield from $subfield->getRows($entry);
+		} else {
+			yield $this->getCells($entry);
+		}
+	}
 }

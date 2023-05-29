@@ -1,0 +1,182 @@
+#gform_setting_export-fields .gk-gravityexport-sort-fields {
+    border: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1em;
+}
+
+ul.fields-select {
+    background-color: #FFF;
+    padding: 2px 5px;
+    border: 1px solid #E1E1E1;
+    min-height: 30px;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+ul.fields-select#export-fields-enabled .move i.fa-arrow-right,
+ul.fields-select#export-fields-disabled .fa-bars,
+ul.fields-select#export-fields-disabled .move i.fa-close {
+    display: none;
+}
+
+ul.fields-select#export-fields-enabled {
+    border: 1px solid #1e8cbe;
+}
+
+ul.fields-select .fa-bars {
+    color: #ccd0d4;
+    margin: 0;
+}
+
+ul.fields-select .fa {
+    padding: 5px;
+}
+
+ul.fields-select li > div.field {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    overflow: hidden;
+}
+
+ul.fields-select li > div.field span {
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rtl ul.fields-select .fa-bars {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+ul.fields-select li > div.move {
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+ul.fields-select li div.move:hover {
+    color: #006899;
+}
+
+ul.fields-select li {
+    display: flex;
+    background-color: #f7f7f7;
+    margin: 4px 0;
+    padding: 6px;
+    -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
+    -ms-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+    transition: background-color 100ms ease-in-out, color 100ms ease-in-out;;
+}
+
+ul.fields-select li:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+ul.fields-select li:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+ul.fields-select .ui-sortable-handle {
+    cursor: pointer;
+    cursor: -webkit-grab;
+}
+
+ul.fields-select .ui-sortable-handle:hover {
+    background-color: #F0F0F0;
+}
+
+ul.fields-select li.light-up {
+    background-color: #006799;
+    color: #FFF;
+}
+
+ul.fields-select li.light-up i {
+    color: #fff;
+}
+
+ul.fields-select .ui-sortable-handle:active,
+ul.fields-select .ui-sortable-helper {
+    cursor: -webkit-grabbing;
+}
+
+.download-block {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 3px 0;
+}
+
+.download-block .date-field {
+    margin-right: 10px;
+    width: 200px;
+}
+
+.download-block .download-button {
+    margin-top: 10px;
+    flex-basis: 100%;
+}
+
+fieldset.gk-gravityexport-download-file {
+    border: 1px solid #006899;
+}
+
+fieldset.gk-gravityexport-download-file .gform-settings-panel__title--header {
+    background-color: #006899;
+    color: #FFF;
+}
+
+fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
+    border-top: 0;
+    border-radius: 2px;
+    background-color: #ebf2fa;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by .gform-settings-nested-fields {
+    display: flex;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order {
+    margin-left: 5px;
+}
+
+.gfexcel-addon-gravityexport-lite #gform_setting_order_by #gform_setting_sort_order select {
+    width: auto;
+    max-width: 100%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.small,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.small {
+    max-width: 25%;
+}
+
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content input.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content select.medium,
+.gfexcel-addon-gravityexport-lite .gform-settings-panel__content textarea.medium {
+    max-width: 50%;
+}
+
+.gform-settings-field__download_url span.success {
+    margin: 10px 5px 0 0;
+    display: inline-block;
+}
+
+.gform-settings-field__download_url span.success.hidden {
+    display: none;
+}
+
+.gform-settings-choice.gk-gravityexport-meta-all {
+    margin-top: 5px;
+    border-bottom: 1px solid #ebebf2;
+    padding-bottom: 10px;
+}

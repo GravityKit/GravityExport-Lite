@@ -3,7 +3,6 @@
 namespace GFExcel\Field\Meta;
 
 use GFExcel\Field\MetaField;
-use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 
 class DateCreated extends MetaField
@@ -16,8 +15,8 @@ class DateCreated extends MetaField
     {
         if ($this->useSeparatedFields()) {
             return $this->wrap([
-                __('Date', GFExcel::$slug),
-                __('Time', GFExcel::$slug),
+                __('Date', 'gk-gravityexport-lite'),
+                __('Time', 'gk-gravityexport-lite'),
             ], true);
         }
 

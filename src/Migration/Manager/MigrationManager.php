@@ -2,158 +2,142 @@
 
 namespace GFExcel\Migration\Manager;
 
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
-use GFExcel\Migration\Migration;
+use GFExcel\Migration\Migration\Migration;
+use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
 
 /**
  * The migration manager.
  * @since 1.8.0
  */
-class MigrationManager
-{
-    /**
-     * The option key of the migration version.
-     * @since 1.8.0
-     * @var string
-     */
-    public const OPTION_MIGRATION_VERSION = 'gfexcel_migration_version';
+class MigrationManager {
+	/**
+	 * The migrations to run.
+	 * @since 1.8.0
+	 * @var Migration[]|null
+	 */
+	private $migrations;
 
-    /**
-     * The transient key holding the migration running status.
-     * @since 1.8.0
-     * @var string
-     */
-    public const TRANSIENT_MIGRATION_RUNNING = 'gfexcel_migration_running';
+	/**
+	 * The notification manager.
+	 * @since 1.9.0
+	 * @var NotificationManager
+	 */
+	private $notification_manager;
 
-    /**
-     * The migrations to run.
-     * @since 1.8.0
-     * @var Migration[]|null
-     */
-    private $migrations;
+	/**
+	 * The migration repository.
+	 * @since 2.0.0
+	 * @var MigrationRepositoryInterface
+	 */
+	private $repository;
 
-    /**
-     * The notification manager.
-     * @since 1.9.0
-     * @var NotificationManager
-     */
-    private $notification_manager;
+	/**
+	 * Creates the manager.
+	 * @since 1.8.0
+	 *
+	 * @param NotificationManager $notification_manager The notification manager.
+	 * @param MigrationRepositoryInterface $repository The migration repository.
+	 */
+	public function __construct( NotificationManager $notification_manager, MigrationRepositoryInterface $repository ) {
+		$this->notification_manager = $notification_manager;
+		$this->repository           = $repository;
 
-    /**
-     * Creates the manager.
-     * @since 1.8.0
-     * @param NotificationManager $notification_manager The notification manager.
-     */
-    public function __construct(NotificationManager $notification_manager)
-    {
-        $this->notification_manager = $notification_manager;
+		add_action( 'admin_init', \Closure::fromCallable( [ $this, 'maybe_migrate' ] ) );
+	}
 
-        add_action('upgrader_process_complete', [$this, 'migrate']);
-    }
+	/**
+	 * Returns the notification manager.
+	 * @since 1.9.0
+	 * @return NotificationManager The notification manager.
+	 */
+	public function getNotificationManager(): NotificationManager {
+		return $this->notification_manager;
+	}
 
-    /**
-     * Returns the notification manager.
-     * @since 1.9.0
-     * @return NotificationManager The notification manager.
-     */
-    public function getNotificationManager(): NotificationManager
-    {
-        return $this->notification_manager;
-    }
 
-    /**
-     *
-     * @since 1.8.0
-     * @throws MigrationException When something went wrong in a migration.
-     */
-    public function migrate(): void
-    {
-        // Prevent concurrent running of migrations.
-        if (!get_transient(self::TRANSIENT_MIGRATION_RUNNING)) {
-            set_transient(self::TRANSIENT_MIGRATION_RUNNING, true, 300);
+	/**
+	 * Entry point for possibly starting migrations.
+	 * @since 2.0.0
+	 */
+	private function maybe_migrate(): void {
+		if ( ! $this->repository->shouldMigrate() ) {
+			return;
+		}
 
-            // Change directory for glob. We do this here so we can better test `getMigrations`.
-            chdir(dirname(GFEXCEL_PLUGIN_FILE) . '/src/Migration/');
+		try {
+			$this->migrate();
+		} catch ( MigrationException $e ) {
+			GravityExportAddon::get_instance()->log_error( sprintf( 'Migration error: %s', $e->getMessage() ) );
+		}
+	}
 
-            // Run migrations.
-            foreach ($this->getMigrations() as $migration) {
-                $migration->run();
+	/**
+	 * @since 1.8.0
+	 * @throws MigrationException When something went wrong in a migration.
+	 */
+	public function migrate(): void {
+		// Prevent concurrent running of migrations.
+		if ( ! $this->repository->isRunning() ) {
+			$this->repository->setRunning( true );
 
-                // Update version.
-                update_option(self::OPTION_MIGRATION_VERSION, $migration::getVersion());
-            }
-        }
+			// Run migrations.
+			foreach ( $this->getMigrations() as $migration ) {
+				$migration->run();
+			}
 
-        // Clear running status.
-        delete_transient(self::TRANSIENT_MIGRATION_RUNNING);
-    }
+			// Update version.
+			$this->repository->setLatestVersion( GFEXCEL_PLUGIN_VERSION );
+		}
 
-    /**
-     * Sets the migrations on the manager.
-     * @since 1.8.0
-     * @param Migration[] $migrations Migrations.
-     */
-    public function setMigrations(array $migrations): void
-    {
-        $this->migrations = array_filter($migrations, function ($migration) {
-            return $migration instanceof Migration &&
-                version_compare($migration::getVersion(), $this->getLatestVersion(), '>');
-        });
+		// Clear running status.
+		$this->repository->setRunning( false );
+	}
 
-        // Inject manager.
-        foreach ($this->migrations as $migration) {
-            $migration->setManager($this);
-        }
+	/**
+	 * Sets the migrations on the manager.
+	 * @since 1.8.0
+	 *
+	 * @param string[] $migrations Migration classes.
+	 */
+	public function setMigrations( array $migrations ): void {
+		$this->migrations = [];
+		$latest_version   = $this->repository->getLatestVersion();
 
-        // sort migrations based on the version.
-        usort($this->migrations, static function (Migration $migration_a, Migration $migration_b): int {
-            if ($migration_a::getVersion() === $migration_b::getVersion()) {
-                return 0;
-            }
+		foreach ( $migrations as $migration ) {
+			if (
+				! is_subclass_of( $migration, Migration::class, true )
+				|| ! version_compare( $migration::getVersion(), $latest_version, '>' )
+			) {
+				// Skip any migrations that already ran, based on their version number.
+				continue;
+			}
 
-            return version_compare($migration_a::getVersion(), $migration_b::getVersion(), '<') ? -1 : 1;
-        });
-    }
+			$this->migrations[] = $instance = new $migration;
+			// Inject manager.
+			$instance->setManager( $this );
+		}
 
-    /**
-     * Returns the migrations to run based on the current version.
-     * @since 1.8.0
-     * @return Migration[] The migrations.
-     */
-    public function getMigrations(): array
-    {
-        if ($this->migrations === null) {
-            // Retrieve migrations from folder.
-            $migrations = array_reduce(
-                glob('*.php') ?: [],
-                static function (array $migrations, string $filename): array {
-                    $filename = str_replace(['../', '.php'], '', $filename);
-                    $classname = sprintf('GFExcel\\Migration\\%s', $filename);
-                    if ($classname === Migration::class || !class_exists($classname)) {
-                        return $migrations;
-                    }
+		// sort migrations based on the version.
+		usort( $this->migrations, static function ( Migration $migration_a, Migration $migration_b ): int {
+			return version_compare( $migration_a::getVersion(), $migration_b::getVersion() );
+		} );
+	}
 
-                    $migrations[] = new $classname();
+	/**
+	 * Returns the migrations to run based on the current version.
+	 * @since 1.8.0
+	 * @return Migration[] The migrations.
+	 */
+	public function getMigrations(): array {
+		if ( $this->migrations === null ) {
+			$migrations = $this->repository->getMigrations();
 
-                    return $migrations;
-                },
-                []
-            );
+			$this->setMigrations( $migrations );
+		}
 
-            $this->setMigrations($migrations);
-        }
-
-        return $this->migrations;
-    }
-
-    /**
-     * Retrieve the latest version.
-     * @since 1.8.0
-     * @return string
-     */
-    private function getLatestVersion(): string
-    {
-        return get_option(self::OPTION_MIGRATION_VERSION, '0.0.0') ?: '0.0.0';
-    }
+		return $this->migrations;
+	}
 }

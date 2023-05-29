@@ -138,7 +138,7 @@ class NotificationManagerTest extends TestCase
     {
         $notification = new Notification('1', 'Test message');
         $this->manager->add($notification);
-        $this->repository->expects($this->once())->method('markAsDismissed')->with('1');
+        $this->repository->expects($this->once())->method('markAsDismissed')->with($notification);
         $this->manager->dismiss('1');
     }
 
@@ -166,9 +166,13 @@ class NotificationManagerTest extends TestCase
     {
         $notification = new Notification('1', 'Test message');
         $this->manager->add($notification);
-        $this->repository->expects($this->once())->method('markAsDismissed')->with('1')->willThrowException(
-            $e = new NotificationRepositoryException('Something went wrong')
-        );
+        $this->repository
+	        ->expects(self::once())
+	        ->method('markAsDismissed')
+	        ->with($notification)
+	        ->willThrowException(
+                $e = new NotificationRepositoryException('Something went wrong')
+            );
 
         $this->expectExceptionObject(new NotificationManagerException($e->getMessage(), $e->getCode(), $e));
         $this->manager->dismiss('1');

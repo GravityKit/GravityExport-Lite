@@ -52,7 +52,7 @@ msgid "Entries in Excel"
 msgstr "Inzendingen in Excel"
 
 #: src/GFExcelAdmin.php:102
-msgid "Multiple columns"
+msgid "Multiple Columns"
 msgstr "Meerdere kolommen"
 
 #: src/GFExcelAdmin.php:107
@@ -76,7 +76,7 @@ msgid "Enable (empty) section column"
 msgstr "Toon (lege) sectie-kolommen"
 
 #: src/GFExcelAdmin.php:142
-msgid "File uploads"
+msgid "File Uploads"
 msgstr "Bestandsuploads"
 
 #: src/GFExcelAdmin.php:147
@@ -88,11 +88,11 @@ msgid "Hyperlinks"
 msgstr "Links"
 
 #: src/GFExcelAdmin.php:160
-msgid "Enable hyperlinks on url-only columns"
+msgid "Enable hyperlinks on URL-only columns"
 msgstr "Maak cellen met een URL klikbaar"
 
 #: src/GFExcelAdmin.php:168
-msgid "Product fields"
+msgid "Product Fields"
 msgstr "Product-velden"
 
 #: src/GFExcelAdmin.php:174
@@ -100,61 +100,25 @@ msgid "Export prices as numeric fields, without currency symbol ($)"
 msgstr "Exporteer prijzen als numerieke waarden zonder valuta-symbool (€)"
 
 #: src/GFExcelAdmin.php:188
-msgid "Enabled meta fields"
-msgstr "Toon meta-velden"
+msgid "Default Enabled Meta Fields"
+msgstr "Standaard geactiveerde meta-velden"
 
 #: src/GFExcelAdmin.php:190
 msgid ""
 "Select all meta fields that are enabled by default. Once you've saved your "
 "form, these settings will not do anything any more."
 msgstr ""
-"Selecteer alle meta-velden die standaard getoond moeten worden. Een bestaand "
-"formulier doet niets met deze instellingen."
-
-#: src/GFExcelAdmin.php:247
-msgid "Help me out!"
-msgstr "Ik heb je hulp nodig!"
-
-#: src/GFExcelAdmin.php:252
-msgid ""
-"I honestly ❤️ developing this plugin. It's fun, I get some practice, and I "
-"want to give back to the open-source community. But a good plugin, is a "
-"plugin that is constantly being updated and getting better. And I need your "
-"help to achieve this!"
-msgstr ""
-"Ik vind het heerlijk ❤️ om aan deze plugin te sleutelen. Het is leuk, ik "
-"krijg wat oefening en ik wil graag wat teruggeven aan de open-source "
-"community. Maar een goede plugin, is er één die constant wordt bijgewerkt en "
-"beter wordt. Hier heb ik jullie hulp voor nodig!"
-
-#: src/GFExcelAdmin.php:259
-#, php-format
-msgid ""
-"If you find a bug 🐞 or need a feature 💡, %slet me know%s! I'm very open to "
-"suggestions and ways to make the plugin more accessible."
-msgstr ""
-"Als je een bug 🐞 vindt, of een feature 💡 nodig hebt; %sLaat het me weten%s! "
-"Ik sta zeer open voor suggesties om de plugin gebruiksvriendelijker te maken."
+"Selecteer alle meta-velden die standaard getoond moeten worden. Een al bestaand "
+"formulier neemt deze instellingen niet meer over."
 
 #: src/GFExcelAdmin.php:270
 #, php-format
 msgid ""
-"If you like the plugin, let me know, and maybe more important; 📣 %slet "
-"others know%s! We already have %s active users. Let's get to %s by spreading "
-"the news! Be the first to know about updates by %sfollowing me on twitter%s."
+"If you like the plugin, 📣 %slet others know%s! We already have %s "
+"active users. Let's get to %s by spreading the news!"
 msgstr ""
-"Als je de plugin leuk vindt, laat het me weten! En misschien nog wel "
-"belangrijker; 📣 %slaat anderen het weten%s! We hebben op dit moment al %s "
-"actieve gebruikers. Laten we daar %s van maken! %sVolg me op twitter%s om "
-"direct op de hoogte te zijn van de laatste updates."
-
-#: src/GFExcelAdmin.php:280
-msgid ""
-"Also, If you ❤️ the plugin, and it helps you a lot, please consider making a "
-"small donation 💰 and buy me a beer 🍺."
-msgstr ""
-"En; als je ❤️ hebt voor de plugin, en je kunt niet meer zonder; overweeg dan "
-"om een kleine donatie 💰 te doen en koop een drankje voor me 🍺."
+"Als je de plugin leuk vindt, 📣 %slaat anderen het weten%s! We hebben op dit moment al %s "
+"actieve gebruikers. Laten we daar %s van maken!"
 
 #: src/GFExcelAdmin.php:286 src/GFExcelAdmin.php:310 src/GFExcelAdmin.php:312
 msgid "Make a donation"
@@ -172,24 +136,20 @@ msgstr "Instellingen"
 msgid "Download"
 msgstr "Downloaden"
 
-#: src/GFExcelAdmin.php:349
-msgid "Download entries in Excel"
-msgstr "Download inzendingen in Excel"
-
 #: src/GFExcelAdmin.php:371
 msgid "The download url has been regenerated."
 msgstr "De download-link is opnieuw ingesteld."
 
 #: src/GFExcelAdmin.php:374
-msgid "The download url has been enabled."
+msgid "The download URL has been enabled."
 msgstr "De download-link is ingeschakeld."
 
 #: src/GFExcelAdmin.php:377
-msgid "The download url has been disabled."
+msgid "The download URL has been disabled."
 msgstr "De download-link is uitgeschakeld."
 
 #: src/GFExcelAdmin.php:389
-msgid "Download url"
+msgid "Download URL"
 msgstr "Download-link"
 
 #: src/GFExcelAdmin.php:397
@@ -205,20 +165,29 @@ msgid "Enable download"
 msgstr "Downloaden inschakelen"
 
 #: src/GFExcelAdmin.php:417
-msgid "Regenerate url"
+msgid "Regenerate URL"
 msgstr "Stel download-link opnieuw in"
 
 #: src/GFExcelAdmin.php:421
-msgid "Disable download"
-msgstr "Download uitschakelen"
+msgid "Disable download URL"
+msgstr "Download-link uitschakelen"
+
+msgid "Copy URL to Clipboard"
+msgstr "Kopieer de download-link"
+
+msgid "Copied!"
+msgstr "Gekopieerd!"
+
+msgid "The file URL has been copied to your clipboard."
+msgstr "De download-link is gekopieerd naar je klembord."
 
 #: src/GFExcelAdmin.php:424
-msgid "This changes the download url permanently!"
-msgstr "Hiermee verandert u de download-link permanent!"
+msgid "You are about to reset the URL for this form. This can't be undone."
+msgstr "Je gaat de download-link vernieuwen. Dit kan niet ongedaan gemaakt worden."
 
 #: src/GFExcelAdmin.php:425
-msgid "This disables and removes the download url!"
-msgstr "Hiermee wordt de download-link verwijderd en gedeactiveerd!"
+msgid "You are about to disable the URL for this form. This will invalidate the URL, and can't be undone."
+msgstr "Je gaat de download-link uitschakelen. Hiermee vervalt de huidige link; dit kan niet ongedaan gemaakt worden."
 
 #: src/GFExcelAdmin.php:431
 msgid "Download file"
@@ -243,6 +212,9 @@ msgstr "Aantal keer gedownload"
 #: src/GFExcelAdmin.php:454
 msgid "Reset count"
 msgstr "Reset teller"
+
+msgid "You are about to reset the download count for this form. This can’t be undone."
+msgstr "Je gaat de download teller resetten. Dit kan niet ongedaan gemaakt worden."
 
 #: src/GFExcelAdmin.php:468
 msgid "Save settings"
@@ -272,24 +244,30 @@ msgstr "De instellingen zijn opgeslagen."
 msgid "Security settings"
 msgstr "Beveiligingsinstellingen"
 
+msgid "Default Settings"
+msgstr "Algemene instellingen"
+
 #: src/GFExcelAdmin.php:657
-msgid "Download permissions"
+msgid "Download Permissions"
 msgstr "Downloadrechten"
 
 #: src/GFExcelAdmin.php:664
 msgid "Everyone can download"
-msgstr "Iedereen mag downloaden (Openbaar)"
+msgstr "Iedereen mag downloaden"
 
 #: src/GFExcelAdmin.php:669
-msgid "Only verified users can download"
-msgstr "Alleen ingelogde gebruikers kunnen downloaden"
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr "Alleen ingelogde gebruikers met \"Inzendingen exporteren\" rechten"
+
+msgid "If set to %s, anyone with the link can download. If %s is selected, users must be logged-in and have the %s capability."
+msgstr "Wanneer %s is geselecteerd, kan iedereen met de URL het bestand downloaden. Bij %s mogen alleen ingelogde gebruikers met de %s rechten het bestand downloaden."
 
 #: src/GFExcelAdmin.php:688
-msgid "General settings"
+msgid "General Settings"
 msgstr "Algemene instellingen"
 
 #: src/GFExcelAdmin.php:692
-msgid "Enable notes"
+msgid "Include Entry Notes"
 msgstr "Notities toevoegen"
 
 #: src/GFExcelAdmin.php:697
@@ -297,11 +275,11 @@ msgid "Yes, enable the notes for every entry"
 msgstr "Ja, voeg de notities toe aan elke inzending"
 
 #: src/GFExcelAdmin.php:706
-msgid "Order by"
+msgid "Order By"
 msgstr "Sorteren op"
 
 #: src/GFExcelAdmin.php:716
-msgid "Columns position"
+msgid "Column Position"
 msgstr "Kolommen"
 
 #: src/GFExcelAdmin.php:721
@@ -313,9 +291,14 @@ msgid "At the left (transposed)"
 msgstr "Aan de linkerkant (getransponeerd)"
 
 #: src/GFExcelAdmin.php:732
-msgid "Custom filename"
+msgid "Custom Filename"
 msgstr "Aangepaste bestandsnaam"
 
+msgid "Default: %s"
+msgstr "Standaard: %s"
+
+msgid "Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default."
+msgstr "De meeste tekens anders dan cijfers en letters worden vervangen door een koppelteken. Laat leeg voor de standaard bestandsnaam."
 #: src/GFExcelAdmin.php:737
 msgid ""
 "Only letters, numbers and dashes are allowed. The rest will be stripped. "
@@ -325,27 +308,29 @@ msgstr ""
 "standaard waarde gebruikt."
 
 #: src/GFExcelAdmin.php:742
-msgid "File extension"
+msgid "File Extension"
 msgstr "Bestandsextensie"
 
+msgid "Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL."
+msgstr "Tip: Je kunt een ander bestandstype forceren door de gewenste bestandsextensie (%s) achter de download URL te plaatsen."
+
 #: src/GFExcelAdmin.php:756
-msgid "Attach single entry to notification"
+msgid "Attach Single Entry to Notification"
 msgstr "Voeg bestand toe als bijlage aan melding"
 
 #: src/GFExcelAdmin.php:785
-msgid "Field settings"
+msgid "Field Settings"
 msgstr "Veld-instellingen"
 
 #: src/GFExcelAdmin.php:789
-msgid "Disabled fields"
+msgid "Disabled Fields"
 msgstr "Uitgeschakelde velden"
 
-#: src/GFExcelAdmin.php:810
-msgid "Enable & sort the fields"
-msgstr "Activeer & sorteer de velden"
+msgid "Enabled Fields"
+msgstr "Actieve velden"
 
 #: src/GFExcelAdmin.php:1052
-msgid "Select a notification"
+msgid "Select a Notification"
 msgstr "Selecteer een melding"
 
 #: src/GFExcelAdmin.php:1054
@@ -411,6 +396,18 @@ msgstr "Doeke Norg"
 #. Author URI of the plugin/theme
 msgid "https://paypal.me/doekenorg"
 msgstr "https://paypal.me/doekenorg"
+
+msgid "Instant Download ⚡️"
+msgstr "Direct downloaden ⚡️"
+
+msgid "Select Date Range (optional)"
+msgstr "Selecteer een periode (optioneel)"
+
+msgid "Download Settings"
+msgstr "Download instellingen"
+
+msgid "Security Settings"
+msgstr "Beveiligingsinstellingen"
 
 #~ msgid "Download Excel"
 #~ msgstr "Excel downloaden"

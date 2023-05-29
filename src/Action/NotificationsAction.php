@@ -2,7 +2,6 @@
 
 namespace GFExcel\Action;
 
-use GFExcel\GFExcel;
 use GFExcel\Notification\Exception\NotificationException;
 use GFExcel\Notification\Exception\NotificationManagerException;
 use GFExcel\Notification\Manager\NotificationManager;
@@ -63,7 +62,7 @@ class NotificationsAction
             return [
                 new Notification(
                     'manager-error',
-                    esc_html__('The notifications could not be retrieved.', GFExcel::$slug),
+                    esc_html__('The notifications could not be retrieved.', 'gk-gravityexport-lite'),
                     Notification::TYPE_ERROR,
                     false
                 )
