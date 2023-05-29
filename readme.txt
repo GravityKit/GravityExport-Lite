@@ -270,7 +270,7 @@ You can hide a row by adding a hook. Checkout this example:
 __Developer Updates:__
 
 * This is a major release behind the scenes; we have rewritten much of the plugin to better integrate with Gravity Forms feed add-on framework.
-* Modified: Changed the textdomain of the plugin to `gk-gravitykit-lite`.
+* Modified: Changed the textdomain of the plugin to `gk-gravityexport-lite`.
 
 = 1.11.4 on November 30, 2022 =
 
