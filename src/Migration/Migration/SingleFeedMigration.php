@@ -4,6 +4,9 @@ namespace GFExcel\Migration\Migration;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
+use GFExcel\Migration\Exception\NonBreakingMigrationException;
+use GFExcel\Notification\Exception\NotificationException;
+use GFExcel\Notification\Exception\NotificationManagerException;
 use GFExcel\Notification\Notification;
 
 /**
@@ -60,14 +63,18 @@ final class SingleFeedMigration extends Migration {
 
 		if ($this->manager) {
 			$notifications = $this->manager->getNotificationManager();
-			$notifications->storeNotification(new Notification(
-				'gk/gravity-export-migration/2.0.0',
-				sprintf(
-					esc_html__('The settings for %s 2.0 were migrated successfully.', 'gk-gravityexport-lite'),
-					defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite'
-				),
-				Notification::TYPE_SUCCESS
-			));
+			try {
+				$notifications->storeNotification( new Notification(
+					'gk/gravity-export-migration/2.0.0',
+					sprintf(
+						esc_html__( 'The settings for %s 2.0 were migrated successfully.', 'gk-gravityexport-lite' ),
+						defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite'
+					),
+					Notification::TYPE_SUCCESS
+				) );
+			} catch ( NotificationException|NotificationManagerException $e ) {
+				throw new NonBreakingMigrationException( $e->getMessage(), $e->getCode(), $e );
+			}
 		}
 	}
 
