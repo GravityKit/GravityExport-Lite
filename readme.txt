@@ -1,4 +1,4 @@
-=== GravityExport Lite ===
+=== GravityExport Lite for Gravity Forms ===
 Contributors: gravitykit, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
