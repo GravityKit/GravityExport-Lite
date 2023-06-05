@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Attachments could have the wrong fields.
+
 = 2.0.1 on Jun 2, 2023 =
 
 * Bugfix: The notification for the migration could throw an exception in some instances.
