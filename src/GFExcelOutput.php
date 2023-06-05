@@ -54,7 +54,7 @@ class GFExcelOutput
 	 * The feed object.
 	 * @var mixed[]
 	 */
-	private $feed;
+	private $feed = [];
 
     /**
      * The form entries.
@@ -199,7 +199,7 @@ class GFExcelOutput
 	 */
 	private function getFeed()
 	{
-		if ( ! $this->feed ) {
+		if ( ! $this->feed && $this->feed_id > 0 ) {
 			// TODO: Use \GFAPI::get_feed when GF minimum version requirement is bumped to ≥2.4.24
 			$feeds = \GFAPI::get_feeds( $this->feed_id, null, null, null );
 
