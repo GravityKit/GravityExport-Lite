@@ -87,6 +87,7 @@ class GFExcelOutput
      * @param int $form_id The form id.
      * @param RendererInterface $renderer The renderer.
      * @param CombinerInterface|null $combiner The combiner. {@since 1.8.0}
+     * @param int|null $feed_id The feed id.
      */
     public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null, $feed_id = null)
     {
