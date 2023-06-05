@@ -2,6 +2,7 @@
 
 namespace GFExcel\Action;
 
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelOutput;
 use GFExcel\Repository\FormsRepository;
@@ -46,8 +47,11 @@ final class NotificationAttachmentAction {
 			return $notification;
 		}
 
+		$feed    = GravityExportAddon::get_instance()->get_feed_by_form_id( $form['id'] );
+		$feed_id = $feed['id'] ?? null;
+
 		// create a file based on the settings in the form, with only this entry.
-		$output = new GFExcelOutput( $form['id'], GFExcel::getRenderer( $form['id'] ) );
+		$output = new GFExcelOutput( $form['id'], GFExcel::getRenderer( $form['id'] ), null, $feed_id );
 		$output->setEntries( [ $entry ] );
 
 		// save the file to a temporary file

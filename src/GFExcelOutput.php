@@ -54,7 +54,7 @@ class GFExcelOutput
 	 * The feed object.
 	 * @var mixed[]
 	 */
-	private $feed;
+	private $feed = [];
 
     /**
      * The form entries.
@@ -87,6 +87,7 @@ class GFExcelOutput
      * @param int $form_id The form id.
      * @param RendererInterface $renderer The renderer.
      * @param CombinerInterface|null $combiner The combiner. {@since 1.8.0}
+     * @param int|null $feed_id The feed id.
      */
     public function __construct($form_id, RendererInterface $renderer, ?CombinerInterface $combiner = null, $feed_id = null)
     {
@@ -199,7 +200,7 @@ class GFExcelOutput
 	 */
 	private function getFeed()
 	{
-		if ( ! $this->feed ) {
+		if ( ! $this->feed && $this->feed_id > 0 ) {
 			// TODO: Use \GFAPI::get_feed when GF minimum version requirement is bumped to ≥2.4.24
 			$feeds = \GFAPI::get_feeds( $this->feed_id, null, null, null );
 

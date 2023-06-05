@@ -4,6 +4,7 @@ namespace GFExcel\Migration\Manager;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Migration\Exception\MigrationException;
+use GFExcel\Migration\Exception\NonBreakingMigrationException;
 use GFExcel\Migration\Migration\Migration;
 use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
@@ -85,7 +86,12 @@ class MigrationManager {
 
 			// Run migrations.
 			foreach ( $this->getMigrations() as $migration ) {
-				$migration->run();
+				try {
+					$migration->run();
+				} catch ( NonBreakingMigrationException $e ) {
+					// Log the exception, but keep migrating.
+					GravityExportAddon::get_instance()->log_error( sprintf( 'Non breaking migration error: %s', $e->getMessage() ) );
+				}
 			}
 
 			// Update version.

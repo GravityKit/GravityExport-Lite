@@ -1,11 +1,11 @@
-=== GravityExport Lite ===
+=== GravityExport Lite for Gravity Forms ===
 Contributors: gravitykit, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.2
-Stable tag: 2.0.0
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,14 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.0.2 on June 5,2023  =
+
+* Bugfix: Attachments could have the wrong fields.
+
+= 2.0.1 on June 2, 2023 =
+
+* Bugfix: The notification for the migration could throw an exception in some instances.
 
 = 2.0 on May 29, 2023 =
 
