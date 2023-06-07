@@ -47,11 +47,11 @@ class GFExcel
 	 * @since 1.0.0
 	 * @var string
 	 */
-	private $endpoints = array(
+	public static $endpoints = [
 		'gf-entries-in-excel',
 		'gravityexport-lite',
 		'gravityexport',
-	);
+	];
 
     public const KEY_HASH = 'gfexcel_hash';
 
@@ -246,7 +246,7 @@ class GFExcel
 	    $rewrite_rules = get_option( 'rewrite_rules' );
 	    $flush_rules   = false;
 
-	    foreach ( $this->endpoints as $endpoint ) {
+	    foreach ( self::$endpoints as $endpoint ) {
 
 		    $endpoint_regex = '^' . $endpoint . '/(.+)/?$';
 
@@ -281,7 +281,7 @@ class GFExcel
 		    return $query_vars;
 	    }
 
-	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], $this->endpoints, true ) ) {
+	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], self::$endpoints, true ) ) {
 		    return $query_vars;
 	    }
 
@@ -403,7 +403,7 @@ class GFExcel
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
 
         $lines = '';
-        foreach( $this->endpoints as $endpoint ) {
+        foreach( self::$endpoints as $endpoint ) {
 	        $lines .= sprintf( 'Disallow: %s/%s/', esc_attr( $path ), $endpoint ) . "\n";
         }
 
