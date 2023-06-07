@@ -85,19 +85,18 @@ class FilterRequest
      * @param array $query_vars the query vars.
      * @return array the query vars.
      */
-    public function request($query_vars)
-    {
-        // only respond to a GFexcel URL.
-        if (!isset($query_vars[GFExcel::KEY_ACTION]) || $query_vars[GFExcel::KEY_ACTION] !== GFExcel::$slug) {
-            return $query_vars;
-        }
+	public function request( $query_vars ) {
+		// only respond to a GFexcel URL.
+		if ( ! in_array( $query_vars[ GFExcel::KEY_ACTION ] ?? null, GFExcel::$endpoints, true ) ) {
+			return $query_vars;
+		}
 
-        $this->parseDates($query_vars);
-        $this->parseFilters(\rgar($query_vars, self::FILTER, ''));
-        $this->parseEntry(\rgar($query_vars, self::ENTRY));
+		$this->parseDates( $query_vars );
+		$this->parseFilters( \rgar( $query_vars, self::FILTER, '' ) );
+		$this->parseEntry( \rgar( $query_vars, self::ENTRY ) );
 
-        return $query_vars;
-    }
+		return $query_vars;
+	}
 
     /**
      * Sets the search criteria on the hook for filtering.

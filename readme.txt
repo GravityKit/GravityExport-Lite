@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugifx: Filtering on URL's didn't work on the old download URL structure anymore.
+
 = 2.0.2 on June 5,2023  =
 
 * Bugfix: Attachments could have the wrong fields.
