@@ -24,7 +24,9 @@ class SurveyLikertField extends SeparableField {
 				return parent::getFieldValue( $entry, $input_id );
 			}
 
-			return $this->field->get_column_text( false, $entry, $input_id, true );
+			return $this->field->gsurveyLikertEnableMultipleRows
+				? $this->field->get_column_text( false, $entry, $input_id, true )
+				: $this->field->get_value_export( $entry, $input_id );
 		}
 
 		if ( $input_id ) {

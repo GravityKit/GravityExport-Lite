@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Single option survey fields were no longer exported.
+
 = 2.0.4 on July 7, 2023 =
 
 * Bugfix: Prevents throwing errors on a malformed notification.
