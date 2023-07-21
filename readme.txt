@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Checkbox lists without values in the entry could cause problems on transposed exports.
+
 = 2.0.5 on July 13, 2023 =
 
 * Bugfix: Single option survey fields were no longer exported.
