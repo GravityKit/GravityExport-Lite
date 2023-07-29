@@ -36,7 +36,7 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 			$value          = $entry[ $this->field->id ] ?? null;
 			$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $value );
 
-			$combiner = GFExcel::getCombiner($this->field->formId);
+			$combiner = GFExcel::getCombiner( $this->field->formId );
 
 			foreach ( $nested_entries as $nested_entry ) {
 				$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
@@ -90,14 +90,40 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 		}
 
 		// Cache the results.
-		$this->fields = array_reduce( $nested_form['fields'], function ( array $fields, \GF_Field $field ) {
-			if ( in_array( $field->id, $this->field->gpnfFields ?? [], false ) ) {
-				$fields[ $field->id ] = $this->transformer->transform( $field );
-			}
+		$this->fields = array_reduce(
+			$nested_form['fields'],
+			function ( array $fields, \GF_Field $field ) use ( $nested_form ) {
+				if ( in_array( $field->id, $this->getExportFields( $nested_form ), false ) ) {
+					$fields[ $field->id ] = $this->transformer->transform( $field );
+				}
 
-			return $fields;
-		}, [] );
+				return $fields;
+			},
+			[]
+		);
 
 		return $this->fields;
+	}
+
+	/**
+	 * Returns the field keys to export from the nested form. Defaults to the visible fields.
+	 * @since $ver$
+	 *
+	 * @param array $form The nested form.
+	 *
+	 * @return array The field keys.
+	 */
+	private function getExportFields( array $form ): array {
+		$fields = $this->field->gpnfFields ?? [];
+
+		return gf_apply_filters( [
+			'gk/gravityexport/field/nested-form/export-field',
+			$this->field->formId,
+			$this->field->id,
+		],
+			$fields,
+			$this->field,
+			$form
+		);
 	}
 }
