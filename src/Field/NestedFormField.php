@@ -9,6 +9,8 @@ use GFExcel\Transformer\TransformerAwareInterface;
 /**
  * A field transformer for {@see \GP_Nested_Form_Field}.
  * @since 1.10
+ * @todo: Checkout weird values from the export. Are values being mixed?
+ * @todo: Output for nested forms is not working properly on non-separable setting.
  */
 class NestedFormField extends SeparableField implements RowsInterface, TransformerAwareInterface {
 	/**
