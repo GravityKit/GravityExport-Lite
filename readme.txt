@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Added: added `gk/gravityexport/field/nested-form/export-field` hook to dynamically add other nested form fields to the export.
+
 = 2.0.6 on July 29, 2023 =
 
 * Bugfix: Checkbox lists without values in the entry could cause problems on transposed exports.
