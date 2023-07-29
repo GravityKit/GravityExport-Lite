@@ -35,11 +35,16 @@ final class NotificationAttachmentAction {
 	 *
 	 * @param array $form The form object.
 	 * @param array $entry The entry object.
-	 * @param array $notification The notification object.
+	 * @param mixed $notification The notification object.
 	 *
-	 * @return array The notification with attachment.
+	 * @return mixed The notification with attachment.
 	 */
-	private function handle_notification( array $notification, array $form, array $entry ): array {
+	private function handle_notification( $notification, array $form, array $entry ) {
+		// in some cases an notification can be something else than an array.
+		if ( ! is_array( $notification ) ) {
+			return $notification;
+		}
+
 		// get notification to add to by form setting
 		$repository = new FormsRepository( $form['id'] );
 		if ( $repository->getSelectedNotification() !== \rgar( $notification, 'id' ) ) {
