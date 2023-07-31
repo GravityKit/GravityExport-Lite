@@ -31,8 +31,8 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 	 * @since 1.10
 	 */
 	public function getRows( ?array $entry = null ): iterable {
-		if ( ! class_exists( 'GP_Nested_Forms' ) ) {
-			yield [];
+		if ( ! class_exists( 'GP_Nested_Forms' ) || ! ( $this->field->gpnfForm ?? false ) ) {
+			yield [ '' ];
 		} else {
 			$value = $entry[ $this->field->id ] ?? '';
 			// Validate if the entries are from the connected form.
@@ -47,13 +47,18 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 			] );
 
 			$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $ids );
-			$combiner = GFExcel::getCombiner( $this->field->formId );
 
-			foreach ( $nested_entries as $nested_entry ) {
-				$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
+			if ( ! $nested_entries ) {
+				yield [ '' ];
+			} else {
+				$combiner = GFExcel::getCombiner( $this->field->formId );
+
+				foreach ( $nested_entries as $nested_entry ) {
+					$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
+				}
+
+				yield from $combiner->getRows();
 			}
-
-			yield from $combiner->getRows();
 		}
 	}
 
