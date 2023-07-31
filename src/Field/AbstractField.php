@@ -2,6 +2,7 @@
 
 namespace GFExcel\Field;
 
+use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
 
 /**
@@ -23,6 +24,9 @@ abstract class AbstractField implements FieldInterface {
 	 */
 	public function __construct( \GF_Field $field ) {
 		$this->field = $field;
+
+		// Make sure the field can export the admin label.
+		$field->set_context_property( 'use_admin_label', $this->useAdminLabels() );
 	}
 
 	/**
@@ -36,7 +40,7 @@ abstract class AbstractField implements FieldInterface {
 			$this->field->get_input_type(),
 			$this->field->formId,
 			$this->field->id
-		], $this->field->get_field_label( true, '' ), $this->field );
+		], $this->field->get_field_label( ! $this->useAdminLabels(), '' ), $this->field );
 
 		return $this->wrap( [ $label ], true );
 	}
@@ -139,5 +143,21 @@ abstract class AbstractField implements FieldInterface {
 
 		// add gform export filters to get the same results as a normal export
 		return apply_filters( 'gform_export_field_value', $value, $this->field->formId, $input_id, $entry );
+	}
+
+	/**
+	 * Whether the use of the admin label is allowed.
+	 * @since $ver$
+	 * @return bool
+	 */
+	protected function useAdminLabels(): bool {
+		return gf_apply_filters( [
+			'gk/gravityexport/field/use-admin-label',
+			$this->field->formId,
+			$this->field->id,
+		],
+			GravityExportAddon::get_instance()->useAdminLabels(),
+			$this->field,
+		);
 	}
 }
