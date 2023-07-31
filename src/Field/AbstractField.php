@@ -26,7 +26,9 @@ abstract class AbstractField implements FieldInterface {
 		$this->field = $field;
 
 		// Make sure the field can export the admin label.
-		$field->set_context_property( 'use_admin_label', $this->useAdminLabels() );
+		if ( $this->useAdminLabels() ) {
+			$field->set_context_property( 'use_admin_label', true );
+		}
 	}
 
 	/**
@@ -157,7 +159,7 @@ abstract class AbstractField implements FieldInterface {
 			$this->field->id,
 		],
 			GravityExportAddon::get_instance()->useAdminLabels(),
-			$this->field,
+			$this->field
 		);
 	}
 }
