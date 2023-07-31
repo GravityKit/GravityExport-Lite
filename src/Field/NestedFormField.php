@@ -9,7 +9,6 @@ use GFExcel\Transformer\TransformerAwareInterface;
 /**
  * A field transformer for {@see \GP_Nested_Form_Field}.
  * @since 1.10
- * @todo: Output for nested forms is not working properly on non-separable setting.
  */
 class NestedFormField extends SeparableField implements RowsInterface, TransformerAwareInterface {
 	/**
@@ -32,34 +31,33 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 	 */
 	public function getRows( ?array $entry = null ): iterable {
 		if ( ! class_exists( 'GP_Nested_Forms' ) || ! ( $this->field->gpnfForm ?? false ) ) {
-			yield [ '' ];
-		} else {
-			$value = $entry[ $this->field->id ] ?? '';
-			// Validate if the entries are from the connected form.
-			$ids = \GFAPI::get_entry_ids( $this->field->gpnfForm ?? 0, [
-				'field_filters' => [
-					[
-						'key'      => 'id',
-						'operator' => 'IN',
-						'value'    => array_map( 'trim', explode( ',', $value ) ),
-					]
-				]
-			] );
-
-			$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $ids );
-
-			if ( ! $nested_entries ) {
-				yield [ '' ];
-			} else {
-				$combiner = GFExcel::getCombiner( $this->field->formId );
-
-				foreach ( $nested_entries as $nested_entry ) {
-					$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
-				}
-
-				yield from $combiner->getRows();
-			}
+			return;
 		}
+
+		$value = $entry[ $this->field->id ] ?? '';
+		// Validate if the entries are from the connected form.
+		$ids = \GFAPI::get_entry_ids( $this->field->gpnfForm ?? 0, [
+			'field_filters' => [
+				[
+					'key'      => 'id',
+					'operator' => 'IN',
+					'value'    => array_map( 'trim', explode( ',', $value ) ),
+				]
+			]
+		] );
+
+		$nested_entries = \GP_Nested_Forms::get_instance()->get_entries( $ids );
+
+		if ( ! $nested_entries ) {
+			return;
+		}
+
+		$combiner = GFExcel::getCombiner( $this->field->formId );
+		foreach ( $nested_entries as $nested_entry ) {
+			$combiner->parseEntry( $this->getNestedFields(), $nested_entry );
+		}
+
+		yield from $combiner->getRows();
 	}
 
 	/**
@@ -141,5 +139,13 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 			$this->field,
 			$form
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function isSeparationEnabled(): bool {
+		return true;
 	}
 }
