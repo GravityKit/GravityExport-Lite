@@ -5,8 +5,8 @@
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "GravityView",
-            "email": "support@gravityview.co"
+            "name": "GravityKit",
+            "email": "support@gravitykit.com"
         },
         {
             "name": "Doeke Norg",
@@ -30,6 +30,9 @@
         "phpoffice/phpspreadsheet": "1.12"
     },
     "autoload": {
+        "classmap": [
+            "vendor_prefixed/"
+        ],
         "psr-4": {
             "GFExcel\\": "src/"
         }
@@ -49,10 +52,28 @@
     "scripts": {
         "linter": "vendor/bin/phplint --no-cache",
         "test": "vendor/bin/phpunit",
-        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g' && find ./vendor -name \"*_gfe\" -delete",
-        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g' && find ./vendor -name \"*_gfe\" -delete",
-        "post-install-cmd": "composer run markbaker-fix-namespace",
-        "post-update-cmd": "composer run markbaker-fix-namespace",
-        "post-autoload-dump": "composer run markbaker-fix-autoload"
+        "prefix_vendor": "@php strauss.phar",
+        "post-install-cmd": [
+            "@prefix_vendor",
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "@prefix_vendor",
+            "composer dump-autoload -o"
+        ]
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor_prefixed",
+            "namespace_prefix": "GFExcel\\Vendor",
+            "classmap_prefix": "GFExcel_Vendor",
+            "delete_vendor_files": true,
+            "delete_vendor_packages": true,
+            "exclude_from_prefix": {
+                "namespaces": [
+                    "GFExcel\\"
+                ]
+            }
+        }
     }
 }

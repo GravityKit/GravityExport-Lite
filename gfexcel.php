@@ -21,8 +21,8 @@ use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
+use GFExcel\Vendor\League\Container\Container;
+use GFExcel\Vendor\League\Container\ReflectionContainer;
 
 if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 	define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
@@ -61,10 +61,7 @@ add_action( 'gform_loaded', static function (): void {
 		require_once( GFCommon::get_base_path() . '/export.php' );
 	}
 
-	$autoload = __DIR__ . '/vendor/autoload.php';
-	if ( file_exists( $autoload ) ) {
-		require_once( $autoload );
-	}
+	require_once __DIR__ . '/vendor/autoload.php';
 
 	/**
 	 * Making sure old version of plugins still work.

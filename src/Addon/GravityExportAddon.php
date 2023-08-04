@@ -907,7 +907,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * /**
 	 * Handles the download of multiple forms as a bulk action.
 	 * @since 1.2.0
-	 * @throws \PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
+	 * @throws \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
 	 */
 	private function handle_bulk_actions(): void {
 		if (

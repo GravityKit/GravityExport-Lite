@@ -317,7 +317,7 @@ class GFExcel
      * @since 1.7.0
      * @param \WP $wp WordPress request instance.
      * @return mixed|void The output will be the file.
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Exception
      */
     public function downloadFile(\WP $wp)
     {

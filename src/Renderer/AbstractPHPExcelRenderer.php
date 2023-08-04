@@ -7,16 +7,16 @@ use GFExcel\GFExcel;
 use GFExcel\Values\BaseValue;
 use GFExcel\Values\NumericValue;
 use GFForms;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use PhpOffice\PhpSpreadsheet\Writer\IWriter;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Cell\Cell;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Spreadsheet;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Style\Border;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Style\Fill;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\IOFactory;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Cell\DataType;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Writer\Csv;
+use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 /**
  * The base for a {@see PhpSpreadsheet} renderer.
@@ -63,8 +63,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
      * Returns the writer instance.
      * @since 1.9.0
      * @param string $extension The file extension.
-     * @return \PhpOffice\PhpSpreadsheet\Writer\IWriter The writer.
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception When the writer could not be found.
+     * @return \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Writer\IWriter The writer.
+     * @throws \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Writer\Exception When the writer could not be found.
      */
     public function getWriter(string $extension): IWriter
     {
