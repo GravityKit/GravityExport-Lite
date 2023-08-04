@@ -63,6 +63,26 @@ add_action( 'gform_loaded', static function (): void {
 
 	require_once __DIR__ . '/vendor/autoload.php';
 
+	$class_aliasses = [
+		'League\Container\Container',
+		'League\Container\ServiceProvider\ServiceProviderInterface',
+		'League\Container\ServiceProvider\BootableServiceProviderInterface',
+		'PhpOffice\PhpSpreadsheet\Document\Properties',
+		'PhpOffice\PhpSpreadsheet\IOFactory',
+		'PhpOffice\PhpSpreadsheet\Worksheet\PageSetup',
+		'PhpOffice\PhpSpreadsheet\Writer\Exception',
+		'PhpOffice\PhpSpreadsheet\Spreadsheet',
+		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
+	];
+
+	foreach ( $class_aliasses as $alias ) {
+		if ( class_exists( $alias, false ) ) {
+			continue;
+		}
+
+		class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
+	}
+
 	/**
 	 * Making sure old version of plugins still work.
 	 * @deprecated Can be removed in next major release.
