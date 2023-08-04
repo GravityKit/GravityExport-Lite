@@ -20,8 +20,8 @@ use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
-use League\Container\Definition\DefinitionInterface;
-use League\Container\ServiceProvider\BootableServiceProviderInterface;
+use GFExcel\Vendor\League\Container\Definition\DefinitionInterface;
+use GFExcel\Vendor\League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
