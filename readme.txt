@@ -256,6 +256,12 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= Unreleased =
+
+* Bugfix: Moved dependencies to a custom namespace to avoid collision with other plugins.
+
+__Developers__: This might be a breaking change to some plugins, if they directly reference any of the dependencies.
+
 = 2.0.6 on July 29, 2023 =
 
 * Bugfix: Checkbox lists without values in the entry could cause problems on transposed exports.
