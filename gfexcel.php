@@ -67,6 +67,7 @@ add_action( 'gform_loaded', static function (): void {
 	$class_aliases = [
 		'League\Container\Container',
 		'League\Container\ServiceProvider\ServiceProviderInterface',
+		'League\Container\ServiceProvider\AbstractServiceProvider',
 		'League\Container\ServiceProvider\BootableServiceProviderInterface',
 		'PhpOffice\PhpSpreadsheet\Document\Properties',
 		'PhpOffice\PhpSpreadsheet\IOFactory',
