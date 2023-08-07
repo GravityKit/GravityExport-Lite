@@ -21,13 +21,12 @@ use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
 use GFExcel\Shorttag\DownloadUrl;
 use GFExcel\Vendor\League\Container\Definition\DefinitionInterface;
-use GFExcel\Vendor\League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * Service provider for the gravity forms add-on.
  * @since 1.9.0
  */
-class AddOnProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
+class AddOnProvider extends AbstractServiceProvider {
 	/**
 	 * The string an automatically started service must be tagged with.
 	 * @since 1.9.0
@@ -55,7 +54,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 	 * @since 1.9.0
 	 */
 	public function register(): void {
-		$container = $this->getLeagueContainer();
+		$container = $this->getContainer();
 
 		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class )
 		          ->addArgument( dirname( GFEXCEL_PLUGIN_FILE ) . '/src/Migration/Migration/' );
@@ -89,7 +88,7 @@ class AddOnProvider extends AbstractServiceProvider implements BootableServicePr
 	 * @return DefinitionInterface The definition.
 	 */
 	private function addAutoStart( string $id, $concrete = null, ?bool $shared = null ): DefinitionInterface {
-		return $this->getLeagueContainer()
+		return $this->getContainer()
 		            ->add( $id, $concrete, $shared )
 		            ->addTag( self::AUTOSTART_TAG );
 	}

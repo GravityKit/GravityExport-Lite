@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3942802e8eccc08b41842fc93463c034",
+    "content-hash": "c2a6504e8a50cf2c9b9f1fac32ea0f9f",
     "packages": [
         {
             "name": "gravitykit/gravityexport-base",
-            "version": "dev-master",
+            "version": "dev-prepare-league-upgrade",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GravityKit/GravityExport-Base.git",
-                "reference": "2e816a176167f872574940f440fe71a8e7febc7a"
+                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/GravityExport-Base/zipball/2e816a176167f872574940f440fe71a8e7febc7a",
-                "reference": "2e816a176167f872574940f440fe71a8e7febc7a",
+                "url": "https://api.github.com/repos/GravityKit/GravityExport-Base/zipball/7167f9a9db52376dced4d41dc2c74ca41760c936",
+                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936",
                 "shasum": ""
             },
             "require": {
@@ -28,7 +28,6 @@
                 "php-mock/php-mock-phpunit": "^2.5",
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -48,9 +47,9 @@
             "description": "Base for GravityExport",
             "support": {
                 "issues": "https://github.com/GravityKit/GravityExport-Base/issues",
-                "source": "https://github.com/GravityKit/GravityExport-Base/tree/master"
+                "source": "https://github.com/GravityKit/GravityExport-Base/tree/prepare-league-upgrade"
             },
-            "time": "2023-03-10T14:03:07+00:00"
+            "time": "2023-08-07T09:55:38+00:00"
         },
         {
             "name": "league/container",
