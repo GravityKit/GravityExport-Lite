@@ -63,7 +63,8 @@ add_action( 'gform_loaded', static function (): void {
 
 	require_once __DIR__ . '/vendor/autoload.php';
 
-	$class_aliasses = [
+	// Make old class names available as aliases if possible.
+	$class_aliases = [
 		'League\Container\Container',
 		'League\Container\ServiceProvider\ServiceProviderInterface',
 		'League\Container\ServiceProvider\BootableServiceProviderInterface',
@@ -75,8 +76,11 @@ add_action( 'gform_loaded', static function (): void {
 		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
 	];
 
-	foreach ( $class_aliasses as $alias ) {
-		if ( class_exists( $alias, false ) ) {
+	foreach ( $class_aliases as $alias ) {
+		if (
+			class_exists( $alias )
+			|| interface_exists( $alias )
+		) {
 			continue;
 		}
 
