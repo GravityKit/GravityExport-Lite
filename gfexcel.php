@@ -75,6 +75,7 @@ add_action( 'gform_loaded', static function (): void {
 		'PhpOffice\PhpSpreadsheet\Writer\Exception',
 		'PhpOffice\PhpSpreadsheet\Spreadsheet',
 		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
+		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf',
 	];
 
 	foreach ( $class_aliases as $alias ) {
