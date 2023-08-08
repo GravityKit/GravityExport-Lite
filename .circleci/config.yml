@@ -34,6 +34,14 @@ jobs:
             mkdir .release
             cp gf-entries-in-excel-*.zip .release
       - run:
+          name: Creating a GitHub release
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              git config user.email "support@gravitykit.com"
+              git config user.name "GravityKit - CI"
+              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gfexcel.php $(ls gf-entries-in-excel-*.zip)"
+            fi
+      - run:
           name: Notifying GravityKit Release Manager
           command: |
             if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
