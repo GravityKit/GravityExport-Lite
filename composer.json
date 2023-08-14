@@ -19,7 +19,8 @@
     },
     "allow-plugins": {
       "composer/installers": true,
-      "frontpack/composer-assets-plugin": true
+      "frontpack/composer-assets-plugin": true,
+      "wikimedia/composer-merge-plugin": true
     }
   },
   "minimum-stability": "stable",
@@ -27,7 +28,8 @@
     "ext-json": "*",
     "php": "^7.2",
     "gravitykit/gravityexport-base": "dev-prepare-league-upgrade",
-    "phpoffice/phpspreadsheet": "1.12"
+    "phpoffice/phpspreadsheet": "1.12",
+    "wikimedia/composer-merge-plugin": "^2.1"
   },
   "autoload": {
     "classmap": [
