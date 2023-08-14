@@ -1,0 +1,37 @@
+{
+    "name": "moi/t",
+    "autoload": {
+        "psr-4": {
+            "Moi\\T\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vlad",
+            "email": "moi@mrcasual.com"
+        }
+    ],
+    "require": {
+        "wikimedia/composer-merge-plugin": "v2.x-dev",
+        "gravitykit/gravityexport-lite": "dev-strauss-test"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "wikimedia/composer-merge-plugin": true
+        }
+    },
+  "minimum-stability": "dev",
+  "extra": {
+    "merge-plugin": {
+      "include": [
+        "vendor/gravitykit/gravityexport-lite/test/_c.json"
+      ],
+      "recurse": true,
+      "replace": false,
+      "merge-dev": true,
+      "merge-extra": true,
+      "merge-scripts": true
+    }
+  }
+}
