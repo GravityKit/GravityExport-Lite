@@ -1,45 +1,10 @@
 {
-  "name": "gravitykit/gravityexport-lite",
-  "description": "The fastest way to export from Gravity Forms.",
-  "type": "wordpress-plugin",
-  "license": "GPL-2.0-only",
-  "authors": [
-    {
-      "name": "GravityKit",
-      "email": "support@gravitykit.com"
-    },
-    {
-      "name": "Doeke Norg",
-      "email": "doekenorg@gmail.com"
-    }
-  ],
-  "config": {
-    "platform": {
-      "php": "7.2.34"
-    },
-    "allow-plugins": {
-      "composer/installers": true,
-      "frontpack/composer-assets-plugin": true
-    }
-  },
-  "minimum-stability": "stable",
-  "require": {
-    "ext-json": "*",
-    "php": "^7.2",
-    "gravitykit/gravityexport-base": "dev-prepare-league-upgrade",
-    "phpoffice/phpspreadsheet": "1.12"
-  },
   "autoload": {
     "classmap": [
       "vendor_prefixed/"
     ],
     "psr-4": {
       "GFExcel\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "GFExcel\\Tests\\": "tests/"
     }
   },
   "require-dev": {
@@ -52,7 +17,7 @@
   "scripts": {
     "linter": "vendor/bin/phplint --no-cache",
     "test": "vendor/bin/phpunit",
-    "prefix_vendor": "@php strauss.phar",
+    "prefix_vendor": "@php vendor/gravitykit/gravityexport-lite/strauss.phar",
     "post-install-cmd": [
       "@prefix_vendor",
       "composer dump-autoload -o"
@@ -84,10 +49,5 @@
         }
       }
     }
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "ping -c 1 google.com"
-    ]
   }
 }
