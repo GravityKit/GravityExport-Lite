@@ -1,0 +1,93 @@
+{
+  "name": "gravitykit/gravityexport-lite",
+  "description": "The fastest way to export from Gravity Forms.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-only",
+  "authors": [
+    {
+      "name": "GravityKit",
+      "email": "support@gravitykit.com"
+    },
+    {
+      "name": "Doeke Norg",
+      "email": "doekenorg@gmail.com"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.2.34"
+    },
+    "allow-plugins": {
+      "composer/installers": true,
+      "frontpack/composer-assets-plugin": true
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "ext-json": "*",
+    "php": "^7.2",
+    "gravitykit/gravityexport-base": "dev-prepare-league-upgrade",
+    "phpoffice/phpspreadsheet": "1.12"
+  },
+  "autoload": {
+    "classmap": [
+      "vendor_prefixed/"
+    ],
+    "psr-4": {
+      "GFExcel\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GFExcel\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.5.*",
+    "10up/wp_mock": "0.4.*",
+    "szepeviktor/phpstan-wordpress": "^0.6.2",
+    "phpstan/phpstan-mockery": "^0.12.5",
+    "overtrue/phplint": "^2.1"
+  },
+  "scripts": {
+    "linter": "vendor/bin/phplint --no-cache",
+    "test": "vendor/bin/phpunit",
+    "prefix_vendor": "@php strauss.phar",
+    "post-install-cmd": [
+      "@prefix_vendor",
+      "composer dump-autoload -o"
+    ],
+    "post-update-cmd": [
+      "@prefix_vendor",
+      "composer dump-autoload -o"
+    ]
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GFExcel\\Vendor",
+      "classmap_prefix": "GFExcel_Vendor",
+      "classmap_output": true,
+      "delete_vendor_packages": true,
+      "exclude_from_prefix": {
+        "namespaces": [
+          "GFExcel\\"
+        ]
+      },
+      "override_autoload": {
+        "gravitykit/gravityexport-base": {
+          "files": [
+            "templates",
+            "public",
+            "src"
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "ping -c 1 google.com"
+    ]
+  }
+}
