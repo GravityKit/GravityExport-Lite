@@ -1,7 +1,7 @@
 {
   "autoload": {
     "classmap": [
-      "vendor_prefixed/"
+      "../vendor_prefixed/"
     ],
     "psr-4": {
       "GFExcel\\": "src/"
