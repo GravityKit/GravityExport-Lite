@@ -17,6 +17,8 @@ use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormRepositoryInterface;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
+use League\Container\Container;
+use League\Container\ReflectionContainer;
 
 /**
  * GravityExport Lite add-on.
@@ -35,7 +37,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritdoc
-     * @since 2.0.0
+	 * @since 2.0.0
 	 */
 	protected $_min_gravityforms_version = '2.5';
 
@@ -110,7 +112,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Set minimum requirements to prevent bugs when using older versions, or missing dependencies
-     * @since 1.0.0
+	 * @since 1.0.0
 	 * @return array
 	 */
 	public function minimum_requirements(): array {
@@ -135,10 +137,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function __construct( FormRepositoryInterface $form_repository ) {
 		parent::__construct();
 
-        $title = defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite';
+		$title = defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite';
 
-        $this->_title = $title;
-        $this->_short_title = $title;
+		$this->_title       = $title;
+		$this->_short_title = $title;
 
 		$this->form_repository = $form_repository;
 		$this->component_usage = new Usage();
@@ -255,7 +257,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 		$settings_sections[] = [
 			'id'     => 'gk-gravityexport-download-file',
-			'class'     => 'gk-gravityexport-download-file',
+			'class'  => 'gk-gravityexport-download-file',
 			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
 			'fields' => [
 				[
@@ -549,9 +551,9 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				[
 					'name'        => 'enabled_metafields',
 					'description' => wpautop( esc_html__(
-						'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
-						'gk-gravityexport-lite'
-					) ) . $this->getSelectAllHtml(),
+							'Select all meta fields that are enabled by default. Once you\'ve saved your form, these settings will not do anything any more.',
+							'gk-gravityexport-lite'
+						) ) . $this->getSelectAllHtml(),
 					'type'        => 'checkbox',
 					'choices'     => $this->meta_fields(),
 				],
@@ -664,7 +666,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
             <div>
                 <h3><?php
-					esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', 'gk-gravityexport-lite' ); ?> 💾</h3>
+					esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', 'gk-gravityexport-lite' ); ?>
+                    💾</h3>
                 <p><?php
 					esc_html_e( 'Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally.',
 						'gk-gravityexport-lite' ); ?></p>
@@ -687,8 +690,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
             </div>
 
             <p>
-                <a class="button button-primary primary large button-hero button-cta" href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
-                   target="_blank" rel="noopener noreferrer" title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
+                <a class="button button-primary primary large button-hero button-cta"
+                   href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
+                   target="_blank" rel="noopener noreferrer"
+                   title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
 					esc_html_e( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ); ?>️</a>
             </p>
         </div>
@@ -731,10 +736,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			[
 				'handle'  => 'gravityexport_lite',
 				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
-                'strings' => [
-	                'enable' => esc_html__('Enable all', 'gk-gravityexport-lite'),
-	                'disable' => esc_html__('Disable all', 'gk-gravityexport-lite'),
-                ],
+				'strings' => [
+					'enable'  => esc_html__( 'Enable all', 'gk-gravityexport-lite' ),
+					'disable' => esc_html__( 'Disable all', 'gk-gravityexport-lite' ),
+				],
 				'enqueue' => [
 					[
 						'admin_page' => 'form_settings',
@@ -744,15 +749,15 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 				'deps'    => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
 			],
 			[
-				'handle' => 'gravityexport_lite_settings',
-				'src' => $this->assets_dir . 'js/gravityexport-lite-settings.js',
+				'handle'  => 'gravityexport_lite_settings',
+				'src'     => $this->assets_dir . 'js/gravityexport-lite-settings.js',
 				'enqueue' => [
 					[
 						'admin_page' => 'plugin_settings',
 						'tab'        => $this->get_slug(),
 					],
 				],
-				'deps' => ['jquery'],
+				'deps'    => [ 'jquery' ],
 			],
 		] );
 	}
@@ -764,8 +769,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function save_feed_settings( $feed_id, $form_id, $settings ) {
 		// In GF 2.5., $_POST must contain 'gform-settings-save' variable no matter what its value is.
 		$action = rgpost( 'gform-settings-save' );
-        // Keep old settings that were not provided (used for download_count).
-		$settings = array_merge($this->get_previous_settings(), $settings);
+		// Keep old settings that were not provided (used for download_count).
+		$settings = array_merge( $this->get_previous_settings(), $settings );
 
 		if ( $this->hasAction( $action ) ) {
 			// Prevent indefinite loop in case action's fire() method calls save_feed_settings().
@@ -907,7 +912,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * /**
 	 * Handles the download of multiple forms as a bulk action.
 	 * @since 1.2.0
-	 * @throws \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
+	 * @throws \PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
 	 */
 	private function handle_bulk_actions(): void {
 		if (
@@ -1093,5 +1098,17 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			esc_attr__( 'Deselect All', 'gk-gravityexport-lite' ),
 			esc_attr__( 'Select All', 'gk-gravityexport-lite' )
 		);
+	}
+
+	/**
+	 * Creates a preconfigured instance of the container.
+	 *
+	 * @since $ver$
+	 * @internal This is used to be able to scope the container classes outside of the plugin entry point.
+	 */
+	public static function createContainer(): Container {
+		return ( new Container() )
+			->defaultToShared()
+			->delegate( new ReflectionContainer() );
 	}
 }

@@ -3,7 +3,7 @@
 namespace GFExcel\Renderer;
 
 use GFExcel\Repository\FormsRepository;
-use GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
+use PhpOffice\PhpSpreadsheet\Calculation\LookupRef;
 
 /**
  * Helper to have handy reusable functions.

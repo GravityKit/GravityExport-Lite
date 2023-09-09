@@ -13,7 +13,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer
 
     /**
      * Renderer constructor.
-     * @throws \GFExcel\Vendor\PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function __construct()
     {

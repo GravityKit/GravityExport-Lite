@@ -2,11 +2,13 @@
 Thumbs.db
 node_modules/
 vendor/
-vendor_prefixed
-!vendor_prefixed/.gitkeep
 *.zip
 *.tar.gz
 deploy.sh
 .idea
 wp-content
 *cache
+build/*
+!build/strauss.phar
+!build/composer.json
+!build/vendor_prefixed/.gitkeep

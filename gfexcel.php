@@ -21,8 +21,6 @@ use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
-use GFExcel\Vendor\League\Container\Container;
-use GFExcel\Vendor\League\Container\ReflectionContainer;
 
 if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 	define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
@@ -61,34 +59,42 @@ add_action( 'gform_loaded', static function (): void {
 		require_once( GFCommon::get_base_path() . '/export.php' );
 	}
 
-	require_once __DIR__ . '/vendor/autoload.php';
-
-	// Make old class names available as aliases if possible.
-	$class_aliases = [
-		'League\Container\Container',
-		'League\Container\ServiceProvider\ServiceProviderInterface',
-		'League\Container\ServiceProvider\AbstractServiceProvider',
-		'League\Container\ServiceProvider\BootableServiceProviderInterface',
-		'PhpOffice\PhpSpreadsheet\Document\Properties',
-		'PhpOffice\PhpSpreadsheet\IOFactory',
-		'PhpOffice\PhpSpreadsheet\Worksheet\PageSetup',
-		'PhpOffice\PhpSpreadsheet\Writer\Exception',
-		'PhpOffice\PhpSpreadsheet\Spreadsheet',
-		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
-		'PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf',
-	];
-
-	foreach ( $class_aliases as $alias ) {
-		if (
-			class_exists( $alias )
-			|| interface_exists( $alias )
-		) {
-			continue;
-		}
-
-		class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
+	$autoload_file = __DIR__ . '/build/vendor/autoload.php';
+	$is_build      = true;
+	if ( ! file_exists( $autoload_file ) ) {
+		$autoload_file = __DIR__ . '/vendor/autoload.php';
+		$is_build      = false;
 	}
 
+	require_once $autoload_file;
+
+	if ( $is_build ) {
+		// Make old class names available as aliases if possible.
+		$class_aliases = [
+			'League\Container\Container',
+			'League\Container\ServiceProvider\ServiceProviderInterface',
+			'League\Container\ServiceProvider\AbstractServiceProvider',
+			'League\Container\ServiceProvider\BootableServiceProviderInterface',
+			'PhpOffice\PhpSpreadsheet\Document\Properties',
+			'PhpOffice\PhpSpreadsheet\IOFactory',
+			'PhpOffice\PhpSpreadsheet\Worksheet\PageSetup',
+			'PhpOffice\PhpSpreadsheet\Writer\Exception',
+			'PhpOffice\PhpSpreadsheet\Spreadsheet',
+			'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
+			'PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf',
+		];
+
+		foreach ( $class_aliases as $alias ) {
+			if (
+				class_exists( $alias )
+				|| interface_exists( $alias )
+			) {
+				continue;
+			}
+
+			class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
+		}
+	}
 	/**
 	 * Making sure old version of plugins still work.
 	 * @deprecated Can be removed in next major release.
@@ -96,13 +102,10 @@ add_action( 'gform_loaded', static function (): void {
 	class_alias( GravityExportAddon::class, '\GFExcel\GFExcelAdmin' );
 
 	// Start DI container.
-	$container = ( new Container() )
-		->defaultToShared()
+	$container = ( GravityExportAddon::createContainer() )
 		// add internal service provider
 		->addServiceProvider( new BaseServiceProvider() )
-		->addServiceProvider( new AddOnProvider() )
-		// auto wire it up
-		->delegate( new ReflectionContainer() );
+		->addServiceProvider( new AddOnProvider() );
 
 	// Instantiate add on from container.
 	$addon = $container->get( GravityExportAddon::class );

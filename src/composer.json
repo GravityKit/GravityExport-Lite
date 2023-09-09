@@ -1,0 +1,10 @@
+{
+    "name": "gravitykit/gravityexport-lite-src",
+    "description": "Internal package for build purposes",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "GFExcel\\": "./"
+        }
+    }
+}
