@@ -22,7 +22,6 @@ jobs:
           name: Building and packaging
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "build"
-            rm -rf vendor/phpoffice/phpspreadsheet/{bin,docs,samples}
             rm -rf src
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
@@ -31,6 +30,7 @@ jobs:
             fi
             mkdir -p gf-entries-in-excel
             cp -R build gf-entries-in-excel
+            rm -rf build/composer.* build/strauss.phar
             zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
             mkdir .release
             cp gf-entries-in-excel-*.zip .release
