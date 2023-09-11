@@ -7,7 +7,7 @@ use GFExcel\Addon\GravityExportAddon;
 trigger_error( sprintf(
 	'Class "%s" is deprecated in favor of "%s".',
 	'GFExcel\GFExcelAdmin',
-	GravityExportAddon::class,
+	GravityExportAddon::class
 ) );
 
 /**
