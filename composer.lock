@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fed8481dd5913388e616072e09592bf2",
+    "content-hash": "a69f0a007c8a56779df75ed6bf20c578",
     "packages": [
         {
             "name": "gravitykit/gravityexport-base",
