@@ -23,6 +23,7 @@ jobs:
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "build"
             rm -rf vendor/phpoffice/phpspreadsheet/{bin,docs,samples}
+            rm -rf src
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
             else
