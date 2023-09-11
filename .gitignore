@@ -9,6 +9,8 @@ deploy.sh
 wp-content
 *cache
 build/*
+vendor_prefixed
+!vendor_prefixed/.gitkeep
 !build/strauss.phar
 !build/composer.json
 !build/vendor_prefixed/.gitkeep

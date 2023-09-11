@@ -95,11 +95,6 @@ add_action( 'gform_loaded', static function (): void {
 			class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
 		}
 	}
-	/**
-	 * Making sure old version of plugins still work.
-	 * @deprecated Can be removed in next major release.
-	 */
-	class_alias( GravityExportAddon::class, '\GFExcel\GFExcelAdmin' );
 
 	// Start DI container.
 	$container = ( GravityExportAddon::createContainer() )
@@ -131,4 +126,6 @@ add_action( 'gform_loaded', static function (): void {
 	if ( ! is_admin() ) {
 		$container->get( GFExcel::class );
 	}
+
+	\GFExcel\GFExcelAdmin::get_instance();
 } );

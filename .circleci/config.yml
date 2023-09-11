@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Building and packaging
           command: |
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "build"
             rm -rf vendor/phpoffice/phpspreadsheet/{bin,docs,samples}
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"

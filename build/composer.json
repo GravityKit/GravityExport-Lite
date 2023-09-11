@@ -1,5 +1,5 @@
 {
-    "name": "gravitykit/gravityexport-lite-build",
+    "name": "gravitykit/gravityexport-lite",
     "description": "The fastest way to export from Gravity Forms.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-only",
@@ -22,26 +22,17 @@
             "frontpack/composer-assets-plugin": true
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../src/",
-            "options": {
-                "symlink": false
-            }
-        }
-    ],
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
         "php": "^7.2",
         "gravitykit/gravityexport-base": "dev-prepare-league-upgrade",
-        "gravitykit/gravityexport-lite-src": "@dev",
-        "phpoffice/phpspreadsheet": "1.12"
+        "phpoffice/phpspreadsheet": "1.12",
+        "gravitykit/gravityexport-lite-src": "@dev"
     },
     "autoload": {
         "classmap": [
-            "vendor_prefixed/"
+            "vendor_prefixed"
         ],
         "psr-4": {
             "GFExcel\\": "src/"
@@ -60,15 +51,22 @@
         "overtrue/phplint": "^2.1"
     },
     "scripts": {
+        "unbuild": "rm -rf build/composer.* build/vendor build/src",
+        "build": [
+            "@unbuild",
+            "cp composer.json build/composer.json",
+            "mkdir build/src && cp src/GFExcelAdmin.php build/src/",
+            "composer config repositories.source '{\"type\":\"path\", \"url\":\"../src\",\"options\": {\"symlink\":false}}' --working-dir=build",
+            "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts",
+            "cd build && ./strauss.phar",
+            "composer dump-autoload -o --working-dir=build"
+        ],
         "linter": "vendor/bin/phplint --no-cache",
         "test": "vendor/bin/phpunit",
-        "prefix_vendor": "@php strauss.phar",
         "post-install-cmd": [
-            "@prefix_vendor",
             "composer dump-autoload -o"
         ],
         "post-update-cmd": [
-            "@prefix_vendor",
             "composer dump-autoload -o"
         ]
     },
@@ -93,6 +91,15 @@
                         "src"
                     ]
                 }
+            }
+        }
+    },
+    "repositories": {
+        "source": {
+            "type": "path",
+            "url": "../src",
+            "options": {
+                "symlink": false
             }
         }
     }
