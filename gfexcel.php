@@ -126,6 +126,4 @@ add_action( 'gform_loaded', static function (): void {
 	if ( ! is_admin() ) {
 		$container->get( GFExcel::class );
 	}
-
-	\GFExcel\GFExcelAdmin::get_instance();
 } );
