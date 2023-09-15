@@ -94,6 +94,19 @@ add_action( 'gform_loaded', static function (): void {
 
 			class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
 		}
+
+		// Also autoload any old class as possible class aliases.
+		spl_autoload_register( function ( string $class ) {
+			if (
+				strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0
+				|| strpos( $class, 'League\\Container\\' ) === 0
+			) {
+				$target = 'GFExcel\\Vendor\\' . $class;
+				if ( class_exists( $target ) || interface_exists( $target ) ) {
+					class_alias( $target, $class );
+				}
+			}
+		} );
 	}
 
 	// Start DI container.
