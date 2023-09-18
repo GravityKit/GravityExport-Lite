@@ -256,9 +256,15 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= Unreleased =
+= develop =
 
-* Bugfix: Moved dependencies to a custom namespace to avoid collision with other plugins.
+* Enhancement: Added global `Use admin label` setting.
+* Enhancement: Moved dependencies to a custom namespace to avoid collision with other plugins.
+
+__Developer Updates:__
+
+* Added: `gk/gravityexport/settings/use-admin-labels` hook.
+* Added: `gk/gravityexport/field/use-admin-labels` hook.
 
 __Developers__: This might be a breaking change to some plugins, if they directly reference any of the dependencies.
 

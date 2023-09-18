@@ -391,10 +391,11 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'title'       => esc_html__( 'Field settings', 'gk-gravityexport-lite' ),
 			'fields'      => [
 				[
-					'name'     => 'export-fields',
-					'type'     => 'sort_fields',
-					'choices'  => $this->getFields(),
-					'sections' => [
+					'name'             => 'export-fields',
+					'type'             => 'sort_fields',
+					'choices'          => $this->getFields(),
+					'use_admin_labels' => $this->useAdminLabels(),
+					'sections'         => [
 						'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport-lite' ), 'enabled' ],
 						'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport-lite' ), 'disabled' ],
 					],
@@ -460,6 +461,20 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'title'       => esc_html__( 'Default Settings', 'gk-gravityexport-lite' ),
 			'description' => $this->plugin_settings_description(),
 			'fields'      => [
+				[
+					'name'    => 'labels',
+					'label'   => esc_html__( 'Labels', 'gk-gravityexport-lite' ),
+					'type'    => 'checkbox',
+					'choices' => [
+						[
+							'label' => esc_html__(
+								'Use admin labels',
+								'gk-gravityexport-lite'
+							),
+							'name'  => 'use_admin_label',
+						],
+					],
+				],
 				[
 					'name'    => 'field_separate',
 					'label'   => esc_html__( 'Multiple Columns', 'gk-gravityexport-lite' ),
@@ -813,27 +828,6 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	}
 
 	/**
-	 * Retrieves the formatted label for a field.
-	 * @since 2.0.0
-	 *
-	 * @param \GF_Field $field The field.
-	 *
-	 * @return string The formatted label.
-	 */
-	private function get_field_label( \GF_Field $field ): string {
-		return gf_apply_filters(
-			[
-				'gfexcel_field_label',
-				$field->get_input_type(),
-				$field->formId,
-				$field->id,
-			],
-			$field->get_field_label( true, '' ),
-			$field
-		);
-	}
-
-	/**
 	 * @inheritdoc
 	 *
 	 * Overwritten to add custom after-render hook.
@@ -1095,6 +1089,18 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			esc_attr( 'gk-gravityexport-meta-all' ),
 			esc_attr__( 'Deselect All', 'gk-gravityexport-lite' ),
 			esc_attr__( 'Select All', 'gk-gravityexport-lite' )
+		);
+	}
+
+	/**
+	 * Whether to use the admin labels as labels for the export.
+	 * @since $ver$
+	 * @return bool
+	 */
+	public function useAdminLabels(): bool {
+		return apply_filters(
+			'gk/gravityexport/settings/use-admin-labels',
+			(bool) $this->get_plugin_setting( 'use_admin_label' )
 		);
 	}
 }
