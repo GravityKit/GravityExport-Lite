@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "863c0289c577e6d673dd9feca3bed314",
+    "content-hash": "a69f0a007c8a56779df75ed6bf20c578",
     "packages": [
         {
             "name": "gravitykit/gravityexport-base",
             "version": "dev-prepare-league-upgrade",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GravityKit/GravityExport-Base.git",
+                "reference": "f5637a7d21e0e53f9960cae9652b8d3c17b8d32e"
+            },
             "dist": {
-                "type": "path",
-                "url": "../gravityexport-base",
-                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936"
+                "type": "zip",
+                "url": "https://api.github.com/repos/GravityKit/GravityExport-Base/zipball/f5637a7d21e0e53f9960cae9652b8d3c17b8d32e",
+                "reference": "f5637a7d21e0e53f9960cae9652b8d3c17b8d32e",
+                "shasum": ""
             },
             "require": {
                 "league/container": "^3.3"
@@ -28,19 +34,7 @@
                     "GFExcel\\": "./src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "GFExcel\\Tests\\": "./tests"
-                }
-            },
-            "scripts": {
-                "linter": [
-                    "vendor/bin/phplint --no-cache"
-                ],
-                "test": [
-                    "vendor/bin/phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -51,9 +45,11 @@
                 }
             ],
             "description": "Base for GravityExport",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/GravityKit/GravityExport-Base/issues",
+                "source": "https://github.com/GravityKit/GravityExport-Base/tree/prepare-league-upgrade"
+            },
+            "time": "2023-09-18T11:12:26+00:00"
         },
         {
             "name": "league/container",
