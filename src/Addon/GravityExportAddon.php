@@ -17,8 +17,6 @@ use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormRepositoryInterface;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
 
 /**
  * GravityExport Lite add-on.
@@ -1098,17 +1096,5 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			esc_attr__( 'Deselect All', 'gk-gravityexport-lite' ),
 			esc_attr__( 'Select All', 'gk-gravityexport-lite' )
 		);
-	}
-
-	/**
-	 * Creates a preconfigured instance of the container.
-	 *
-	 * @since $ver$
-	 * @internal This is used to be able to scope the container classes outside of the plugin entry point.
-	 */
-	public static function createContainer(): Container {
-		return ( new Container() )
-			->defaultToShared()
-			->delegate( new ReflectionContainer() );
 	}
 }

@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a69f0a007c8a56779df75ed6bf20c578",
+    "content-hash": "863c0289c577e6d673dd9feca3bed314",
     "packages": [
         {
             "name": "gravitykit/gravityexport-base",
             "version": "dev-prepare-league-upgrade",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/GravityKit/GravityExport-Base.git",
-                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/GravityExport-Base/zipball/7167f9a9db52376dced4d41dc2c74ca41760c936",
-                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936",
-                "shasum": ""
+                "type": "path",
+                "url": "../gravityexport-base",
+                "reference": "7167f9a9db52376dced4d41dc2c74ca41760c936"
             },
             "require": {
                 "league/container": "^3.3"
@@ -34,7 +28,19 @@
                     "GFExcel\\": "./src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "GFExcel\\Tests\\": "./tests"
+                }
+            },
+            "scripts": {
+                "linter": [
+                    "vendor/bin/phplint --no-cache"
+                ],
+                "test": [
+                    "vendor/bin/phpunit"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -45,11 +51,9 @@
                 }
             ],
             "description": "Base for GravityExport",
-            "support": {
-                "issues": "https://github.com/GravityKit/GravityExport-Base/issues",
-                "source": "https://github.com/GravityKit/GravityExport-Base/tree/prepare-league-upgrade"
-            },
-            "time": "2023-08-07T09:55:38+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "league/container",
@@ -547,16 +551,16 @@
         },
         {
             "name": "antecedent/patchwork",
-            "version": "2.1.25",
+            "version": "2.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antecedent/patchwork.git",
-                "reference": "17314e042d45e0dacb0a494c2d1ef50e7621136a"
+                "reference": "f2dae0851b2eae4c51969af740fdd0356d7f8f55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/17314e042d45e0dacb0a494c2d1ef50e7621136a",
-                "reference": "17314e042d45e0dacb0a494c2d1ef50e7621136a",
+                "url": "https://api.github.com/repos/antecedent/patchwork/zipball/f2dae0851b2eae4c51969af740fdd0356d7f8f55",
+                "reference": "f2dae0851b2eae4c51969af740fdd0356d7f8f55",
                 "shasum": ""
             },
             "require": {
@@ -589,9 +593,9 @@
             ],
             "support": {
                 "issues": "https://github.com/antecedent/patchwork/issues",
-                "source": "https://github.com/antecedent/patchwork/tree/2.1.25"
+                "source": "https://github.com/antecedent/patchwork/tree/2.1.26"
             },
-            "time": "2023-02-19T12:51:24+00:00"
+            "time": "2023-09-18T08:18:37+00:00"
         },
         {
             "name": "doctrine/instantiator",

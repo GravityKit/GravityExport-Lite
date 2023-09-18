@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     GravityExport Lite
- * Version:         2.0.6
+ * Version:         2.1.0
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityKit
@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) or die( 'No direct access!' );
 
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GravityExportAddon;
+use GFExcel\Container\Container;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
@@ -27,7 +28,7 @@ if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '2.0.6' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '2.1.0' );
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
@@ -71,10 +72,6 @@ add_action( 'gform_loaded', static function (): void {
 	if ( $is_build ) {
 		// Make old class names available as aliases if possible.
 		$class_aliases = [
-			'League\Container\Container',
-			'League\Container\ServiceProvider\ServiceProviderInterface',
-			'League\Container\ServiceProvider\AbstractServiceProvider',
-			'League\Container\ServiceProvider\BootableServiceProviderInterface',
 			'PhpOffice\PhpSpreadsheet\Document\Properties',
 			'PhpOffice\PhpSpreadsheet\IOFactory',
 			'PhpOffice\PhpSpreadsheet\Worksheet\PageSetup',
@@ -97,10 +94,7 @@ add_action( 'gform_loaded', static function (): void {
 
 		// Also autoload any old class as possible class aliases.
 		spl_autoload_register( function ( string $class ) {
-			if (
-				strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0
-				|| strpos( $class, 'League\\Container\\' ) === 0
-			) {
+			if (strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0) {
 				$target = 'GFExcel\\Vendor\\' . $class;
 				if ( class_exists( $target ) || interface_exists( $target ) ) {
 					class_alias( $target, $class );
@@ -110,7 +104,7 @@ add_action( 'gform_loaded', static function (): void {
 	}
 
 	// Start DI container.
-	$container = ( GravityExportAddon::createContainer() )
+	$container = (new Container())
 		// add internal service provider
 		->addServiceProvider( new BaseServiceProvider() )
 		->addServiceProvider( new AddOnProvider() );
