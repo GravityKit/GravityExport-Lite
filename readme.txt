@@ -259,8 +259,10 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Bugfix: Data from the old nested form could be exported if the nested form was changed.
+* Bugfix: Nested form fields could end up in different columns.
 * Enhancement: Added global `Use admin label` setting.
 * Enhancement: Moved dependencies to a custom namespace to avoid collision with other plugins.
+* Added: German translation
 
 __Developer Updates:__
 
