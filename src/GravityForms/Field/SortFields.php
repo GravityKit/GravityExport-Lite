@@ -41,6 +41,13 @@ class SortFields extends Base {
 	public $sections = [];
 
 	/**
+	 * Whether the labels can be admin labels.
+	 * @since 2.1.0
+	 * @var bool
+	 */
+	public $use_admin_labels = false;
+
+	/**
 	 * @inheritDoc
 	 * @since 2.0.0
 	 */
@@ -108,7 +115,7 @@ class SortFields extends Base {
                 </div>
             </li>',
 			$choice->id,
-			$choice->label
+			$choice->get_field_label( !$this->use_admin_labels, '' )
 		);
 	}
 

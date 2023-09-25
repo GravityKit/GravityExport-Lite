@@ -32,7 +32,8 @@ jobs:
             ${{ runner.os }}-build-${{ matrix.php-versions }}-
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress
+        # We run `--no-scripts` to avoid using Strauss during unit tests
+        run: composer install --prefer-dist --no-progress --no-scripts
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
 

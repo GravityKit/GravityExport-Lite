@@ -2,7 +2,6 @@
 
 namespace GFExcel\Tests\Transformer;
 
-use GFExcel\Field\BaseField;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\SeparableField;
 use GFExcel\Tests\TestCase;
@@ -58,28 +57,12 @@ final class TransformerTest extends TestCase {
 	public function testTransformWithSeparableField(): void {
 		$transformer = new TestTransformer();
 
-
 		$this->field->method( 'get_input_type' )->willReturn( 'separable' );
 		$this->field->method( 'get_entry_inputs' )->willReturn( [ '1', '2' ] );
 
 		$field = $transformer->transform( $this->field );
 
 		self::assertInstanceOf( SeparableField::class, $field );
-	}
-
-	/**
-	 * Test case for {@see Transformer::getField()} with a base field.
-	 * @return void
-	 */
-	public function testTransformWithBaseField(): void {
-		$transformer = new TestTransformer();
-
-		$this->field->method( 'get_input_type' )->willReturn( 'separable' );
-		$this->field->method( 'get_entry_inputs' )->willReturn( [ '1', '2' ] );
-
-		$field = $transformer->transform( $this->field );
-
-		self::assertInstanceOf( BaseField::class, $field );
 	}
 }
 
@@ -104,12 +87,19 @@ final class TestField implements FieldInterface, TransformerAwareInterface {
 	}
 }
 
+final class TestSeparableField extends SeparableField {
+	protected function useAdminLabels(): bool {
+		return false;
+	}
+}
+
 /**
  * Test transformer that overwrites the default fields list.
  * @since 1.1.11
  */
 final class TestTransformer extends Transformer {
 	protected $fields = [
-		'test' => TestField::class,
+		'test'      => TestField::class,
+		'separable' => TestSeparableField::class,
 	];
 }

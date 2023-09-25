@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     GravityExport Lite
- * Version:         2.0.6
+ * Version:         2.1.0
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityKit
@@ -18,18 +18,17 @@ defined( 'ABSPATH' ) or die( 'No direct access!' );
 
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Addon\GravityExportAddon;
+use GFExcel\Container\Container;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
 
 if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 	define( 'GFEXCEL_PLUGIN_FILE', __FILE__ );
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '2.0.6' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '2.1.0' );
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
@@ -61,25 +60,54 @@ add_action( 'gform_loaded', static function (): void {
 		require_once( GFCommon::get_base_path() . '/export.php' );
 	}
 
-	$autoload = __DIR__ . '/vendor/autoload.php';
-	if ( file_exists( $autoload ) ) {
-		require_once( $autoload );
+	$autoload_file = __DIR__ . '/build/vendor/autoload.php';
+	$is_build      = true;
+	if ( ! file_exists( $autoload_file ) ) {
+		$autoload_file = __DIR__ . '/vendor/autoload.php';
+		$is_build      = false;
 	}
 
-	/**
-	 * Making sure old version of plugins still work.
-	 * @deprecated Can be removed in next major release.
-	 */
-	class_alias( GravityExportAddon::class, '\GFExcel\GFExcelAdmin' );
+	require_once $autoload_file;
+
+	if ( $is_build ) {
+		// Make old class names available as aliases if possible.
+		$class_aliases = [
+			'PhpOffice\PhpSpreadsheet\Document\Properties',
+			'PhpOffice\PhpSpreadsheet\IOFactory',
+			'PhpOffice\PhpSpreadsheet\Worksheet\PageSetup',
+			'PhpOffice\PhpSpreadsheet\Writer\Exception',
+			'PhpOffice\PhpSpreadsheet\Spreadsheet',
+			'PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf',
+			'PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf',
+		];
+
+		foreach ( $class_aliases as $alias ) {
+			if (
+				class_exists( $alias )
+				|| interface_exists( $alias )
+			) {
+				continue;
+			}
+
+			class_alias( 'GFExcel\Vendor\\' . $alias, $alias );
+		}
+
+		// Also autoload any old class as possible class aliases.
+		spl_autoload_register( function ( string $class ) {
+			if (strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0) {
+				$target = 'GFExcel\\Vendor\\' . $class;
+				if ( class_exists( $target ) || interface_exists( $target ) ) {
+					class_alias( $target, $class );
+				}
+			}
+		} );
+	}
 
 	// Start DI container.
-	$container = ( new Container() )
-		->defaultToShared()
+	$container = (new Container())
 		// add internal service provider
 		->addServiceProvider( new BaseServiceProvider() )
-		->addServiceProvider( new AddOnProvider() )
-		// auto wire it up
-		->delegate( new ReflectionContainer() );
+		->addServiceProvider( new AddOnProvider() );
 
 	// Instantiate add on from container.
 	$addon = $container->get( GravityExportAddon::class );

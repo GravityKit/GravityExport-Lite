@@ -256,6 +256,22 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Bugfix: Data from the old nested form could be exported if the nested form was changed.
+* Bugfix: Nested form fields could end up in different columns.
+* Enhancement: Added global `Use admin label` setting.
+* Enhancement: Moved dependencies to a custom namespace to avoid collision with other plugins.
+* Added: German translation
+
+__Developer Updates:__
+
+* Added: `gk/gravityexport/settings/use-admin-labels` hook.
+* Added: `gk/gravityexport/field/use-admin-labels` hook.
+* Added: `gk/gravityexport/field/nested-form/export-field` hook to dynamically add other nested form fields to the export.
+
+__Developers__: This might be a breaking change to some plugins, if they directly reference any of the dependencies.
+
 = 2.0.6 on July 29, 2023 =
 
 * Bugfix: Checkbox lists without values in the entry could cause problems on transposed exports.

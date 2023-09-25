@@ -5,8 +5,8 @@
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "GravityView",
-            "email": "support@gravityview.co"
+            "name": "GravityKit",
+            "email": "support@gravitykit.com"
         },
         {
             "name": "Doeke Norg",
@@ -30,6 +30,9 @@
         "phpoffice/phpspreadsheet": "1.12"
     },
     "autoload": {
+        "classmap": [
+            "vendor_prefixed"
+        ],
         "psr-4": {
             "GFExcel\\": "src/"
         }
@@ -47,12 +50,47 @@
         "overtrue/phplint": "^2.1"
     },
     "scripts": {
+        "unbuild": "rm -rf build/composer.* build/vendor build/src",
+        "build": [
+            "@unbuild",
+            "cp composer.json build/composer.json",
+            "mkdir build/src && cp src/GFExcelAdmin.php build/src/",
+            "composer config repositories.source '{\"type\":\"path\", \"url\":\"../src\",\"options\": {\"symlink\":false}}' --working-dir=build",
+            "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts",
+            "cd build && ./strauss.phar",
+            "composer dump-autoload -o --working-dir=build"
+        ],
         "linter": "vendor/bin/phplint --no-cache",
         "test": "vendor/bin/phpunit",
-        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g' && find ./vendor -name \"*_gfe\" -delete",
-        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i'_gfe' -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g' && find ./vendor -name \"*_gfe\" -delete",
-        "post-install-cmd": "composer run markbaker-fix-namespace",
-        "post-update-cmd": "composer run markbaker-fix-namespace",
-        "post-autoload-dump": "composer run markbaker-fix-autoload"
+        "post-install-cmd": [
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "composer dump-autoload -o"
+        ]
+    },
+    "extra": {
+        "strauss": {
+            "target_directory": "vendor_prefixed",
+            "namespace_prefix": "GFExcel\\Vendor",
+            "classmap_prefix": "GFExcel_Vendor",
+            "classmap_output": false,
+            "delete_vendor_packages": true,
+            "delete_vendor_files": true,
+            "exclude_from_prefix": {
+                "namespaces": [
+                    "GFExcel"
+                ]
+            },
+            "override_autoload": {
+                "gravitykit/gravityexport-base": {
+                    "files": [
+                        "templates",
+                        "public",
+                        "src"
+                    ]
+                }
+            }
+        }
     }
 }
