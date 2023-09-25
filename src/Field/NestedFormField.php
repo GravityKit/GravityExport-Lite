@@ -121,7 +121,7 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 
 	/**
 	 * Returns the field keys to export from the nested form. Defaults to the visible fields.
-	 * @since $ver$
+	 * @since 2.1.0
 	 *
 	 * @param array $form The nested form.
 	 *
@@ -143,7 +143,7 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.1.0
 	 */
 	protected function isSeparationEnabled(): bool {
 		return true;

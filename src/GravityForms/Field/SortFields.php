@@ -42,7 +42,7 @@ class SortFields extends Base {
 
 	/**
 	 * Whether the labels can be admin labels.
-	 * @since $ver$
+	 * @since 2.1.0
 	 * @var bool
 	 */
 	public $use_admin_labels = false;

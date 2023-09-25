@@ -149,7 +149,7 @@ abstract class AbstractField implements FieldInterface {
 
 	/**
 	 * Whether the use of the admin label is allowed.
-	 * @since $ver$
+	 * @since 2.1.0
 	 * @return bool
 	 */
 	protected function useAdminLabels(): bool {

@@ -1094,7 +1094,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * Whether to use the admin labels as labels for the export.
-	 * @since $ver$
+	 * @since 2.1.0
 	 * @return bool
 	 */
 	public function useAdminLabels(): bool {

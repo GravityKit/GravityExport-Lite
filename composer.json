@@ -26,7 +26,7 @@
     "require": {
         "ext-json": "*",
         "php": "^7.2",
-        "gravitykit/gravityexport-base": "dev-prepare-league-upgrade",
+        "gravitykit/gravityexport-base": "dev-master",
         "phpoffice/phpspreadsheet": "1.12"
     },
     "autoload": {
