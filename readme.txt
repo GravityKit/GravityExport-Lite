@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.3
-Stable tag: 2.0.6
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,22 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.1.0 on September 25, 2023 =
+
+* Bugfix: Data from the old nested form could be exported if the nested form was changed.
+* Bugfix: Nested form fields could end up in different columns.
+* Enhancement: Added global `Use admin label` setting.
+* Enhancement: Moved dependencies to a custom namespace to avoid collision with other plugins.
+* Added: German translation
+
+__Developer Updates:__
+
+* Added: `gk/gravityexport/settings/use-admin-labels` hook.
+* Added: `gk/gravityexport/field/use-admin-labels` hook.
+* Added: `gk/gravityexport/field/nested-form/export-field` hook to dynamically add other nested form fields to the export.
+
+__Developers__: This might be a breaking change to some plugins, if they directly reference any of the dependencies.
 
 = 2.0.6 on July 29, 2023 =
 

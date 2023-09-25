@@ -44,21 +44,14 @@ class CheckboxField extends BaseField implements RowsInterface {
 			);
 			yield $this->wrap( [ $value ] );
 		} else {
-			$has_value = false;
 			foreach ( $inputs as $input ) {
 				$index = (string) $input['id'];
 
 				if ( ! rgempty( $index, $entry ) ) {
 					$value = $this->filter_value( $this->getFieldValue( $entry, $index ), $entry );
 
-					$has_value = true;
 					yield $this->wrap( [ $value ] );
 				}
-			}
-
-			// Yield empty value to keep columns correct.
-			if ( ! $has_value ) {
-				yield $this->wrap( [ '' ] );
 			}
 		}
 	}

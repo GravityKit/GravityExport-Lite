@@ -9,6 +9,8 @@ phpstan.neon export-ignore
 phpunit.xml export-ignore
 phpunit.xml.dist export-ignore
 README.md export-ignore
+strauss.phar export-ignore
+build export-ignore
 
 /.circleci export-ignore
 /.github export-ignore
