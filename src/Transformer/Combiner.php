@@ -2,6 +2,7 @@
 
 namespace GFExcel\Transformer;
 
+use GF_Field;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\RowsInterface;
 use GFExcel\Values\BaseValue;
@@ -59,8 +60,11 @@ class Combiner implements CombinerInterface {
 				continue;
 			}
 
-			// Multiple rows, so we need to combine, and we MUST have a StringValue object.
-			$combined = array_reduce( $values, static function ( string $output, BaseValue $value ): string {
+			$combined = array_reduce( $values, static function ( string $output, ?BaseValue $value ): string {
+				if ( ! $value ) {
+					return $output;
+				}
+
 				if ( $output !== '' ) {
 					$output .= gf_apply_filters( [
 						'gfexcel_combiner_glue',
@@ -74,7 +78,9 @@ class Combiner implements CombinerInterface {
 				return $output;
 			}, '' );
 
-			$combined_row[ $column ] = new StringValue( $combined, reset( $values )->getField() );
+			$gf_field = array_filter( $values ) ? reset( $values )->getField() : new GF_Field();
+
+			$combined_row[ $column ] = new StringValue( $combined, $gf_field );
 		}
 
 		$this->rows[] = $combined_row;

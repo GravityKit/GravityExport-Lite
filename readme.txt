@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Bugfix: Nested forms with missing entries could create a critical issue.
+
 = 2.1.0 on September 25, 2023 =
 
 * Bugfix: Data from the old nested form could be exported if the nested form was changed.
