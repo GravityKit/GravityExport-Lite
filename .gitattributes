@@ -11,6 +11,7 @@ phpunit.xml.dist export-ignore
 README.md export-ignore
 strauss.phar export-ignore
 build export-ignore
+tests
 
 /.circleci export-ignore
 /.github export-ignore
