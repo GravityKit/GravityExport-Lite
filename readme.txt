@@ -256,6 +256,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Enhancement: Added security by requiring a secret for embedding the download link shortcode
+* Enhancement: Added embed shortcode copy section
+
 = 2.1.0 on September 25, 2023 =
 
 * Bugfix: Data from the old nested form could be exported if the nested form was changed.

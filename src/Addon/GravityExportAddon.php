@@ -10,6 +10,7 @@ use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelOutput;
+use GFExcel\GravityForms\Field\CopyShortCode;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\SortFields;
@@ -167,6 +168,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
 		Fields::register( 'sort_fields', SortFields::class );
+		Fields::register( 'copy_shortcode', CopyShortCode::class );
 
 		$form = $this->get_current_form();
 
@@ -211,6 +213,12 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'name'       => 'hash',
 					'type'       => 'download_url',
 					'assets_dir' => $this->assets_dir,
+				],
+				[
+					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
+					'name'       => 'copy_shortcode',
+					'type'       => 'copy_shortcode',
+					'embed_type' => $this->get_setting( 'file_extension' ),
 				],
 				[
 					'label'         => esc_html__( 'Custom Filename', 'gk-gravityexport-lite' ),
@@ -273,6 +281,19 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'collapsible' => true,
 			'title'       => __( 'Security Settings', 'gk-gravityexport-lite' ),
 			'fields'      => [
+				[
+					'name'        => 'has_embed_secret',
+					'label'       => esc_html__( 'Secure short tags', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => __( 'A secure shortcode contains a unique <code>secret</code>-attribute which prevents generating the URL for a form without permission.', 'gk-gravityexport-lite' ),
+					'choices'     => [
+						[
+							'name'  => 'has_embed_secret',
+							'label' => esc_html__( 'Enable secure embed shortcode', 'gk-gravityexport-lite' ),
+							'value' => '1',
+						],
+					],
+				],
 				[
 					'name'          => 'is_secured',
 					'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
@@ -1102,5 +1123,23 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'gk/gravityexport/settings/use-admin-labels',
 			(bool) $this->get_plugin_setting( 'use_admin_label' )
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function get_current_settings(): array {
+		$settings = parent::get_current_settings();
+
+		$feed = $this->get_feed( $this->get_default_feed_id( rgget( 'id' ) ) );
+		if ( ! $feed ) {
+			return $settings;
+		}
+
+		// Prevent hash from being overwritten with an input value.
+		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] );
+
+		return $settings;
 	}
 }
