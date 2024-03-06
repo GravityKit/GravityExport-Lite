@@ -65,6 +65,12 @@ var gfexcel_sortable;
     };
 
     $(document).ready(function () {
-        $("#start_date, #end_date").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true});
+		$( '#start_date, #end_date' ).datepicker( { dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true } );
+
+		$( '#file_extension' ).on( 'change', function ( e ) {
+			const shortcode = $( '#embed_code' ).val();
+
+			$( '#embed_code' ).val( shortcode.replace( /type=\"[^\"]*\"/, `type="${ e.target.value }"` ) );
+		} );
     });
 })(jQuery);
