@@ -1138,7 +1138,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		}
 
 		// Prevent hash from being overwritten with an input value.
-		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] );
+		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] ?? '' );
 
 		return $settings;
 	}
