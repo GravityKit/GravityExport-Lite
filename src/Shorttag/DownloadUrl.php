@@ -170,7 +170,7 @@ class DownloadUrl {
 	 *
 	 * @return string The secret.
 	 */
-	private static function get_secret( string $hash ): string {
+	public static function get_secret( string $hash ): string {
 		return strrev( substr( $hash, self::SECRET_LENGTH, self::SECRET_LENGTH ) );
 	}
 
