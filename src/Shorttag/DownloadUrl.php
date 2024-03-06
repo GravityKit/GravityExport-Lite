@@ -163,7 +163,7 @@ class DownloadUrl {
 	}
 
 	/**
-	 * Generate the secret from the hash.
+	 * Generates the secret from the hash.
 	 * @since $ver$
 	 *
 	 * @param string $hash The hash.
@@ -172,6 +172,20 @@ class DownloadUrl {
 	 */
 	private static function get_secret( string $hash ): string {
 		return strrev( substr( $hash, self::SECRET_LENGTH, self::SECRET_LENGTH ) );
+	}
+
+	/**
+	 * Returns the hash for a form.
+	 * @since $ver$
+	 *
+	 * @param int $form_id The form id.
+	 *
+	 * @return string|null
+	 */
+	public static function get_form_hash( $form_id ): ?string {
+		$feed = GravityExportAddon::get_instance()->get_feed_by_form_id( $form_id );
+
+		return rgars( $feed ?? [], 'meta/hash' );
 	}
 
 	/**
@@ -185,11 +199,8 @@ class DownloadUrl {
 	 */
 	public static function generate_embed_short_code( int $form_id, ?string $type = null ): ?string {
 		$feed = GravityExportAddon::get_instance()->get_feed_by_form_id( $form_id );
-		if ( ! $feed ) {
-			return null;
-		}
 
-		$hash = rgars( $feed, 'meta/hash' );
+		$hash = self::get_form_hash( $form_id );
 		if ( ! $hash ) {
 			return null;
 		}
