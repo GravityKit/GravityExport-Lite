@@ -72,5 +72,23 @@ var gfexcel_sortable;
 
 			$( '#embed_code' ).val( shortcode.replace( /type=\"[^\"]*\"/, `type="${ e.target.value }"` ) );
 		} );
+
+		$( '#has_embed_secret' ).on( 'change', function () {
+			const $embedShortcodeEl = $( '#embed_code' );
+			const secret = $embedShortcodeEl.data( 'secret' );
+			let embedShortcode = $embedShortcodeEl.val();
+
+			if ( !embedShortcode ) {
+				return;
+			}
+
+			if ( $( this ).is( ':checked' ) ) {
+				embedShortcode = embedShortcode.replace( /\]$/, ` secret="${ secret }"]` );
+			} else {
+				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
+			}
+
+			$embedShortcodeEl.val( embedShortcode );
+		});
     });
 })(jQuery);
