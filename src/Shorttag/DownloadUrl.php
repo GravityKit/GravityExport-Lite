@@ -94,7 +94,7 @@ class DownloadUrl {
 	}
 
 	/**
-	 * Get the actual url by providing a array with an id, and a type.
+	 * Gets the actual URL by providing the form ID and file extension.
 	 * @since 1.6.1
 	 *
 	 * @param int $id
@@ -145,7 +145,7 @@ class DownloadUrl {
 	}
 
 	/**
-	 * Returns whether shortcode for this feed is protected.
+	 * Returns whether the shortcode for this feed is protected.
 	 * @since $ver$
 	 *
 	 * @param array $feed The feed object.
@@ -178,7 +178,7 @@ class DownloadUrl {
 	 * Returns the hash for a form.
 	 * @since $ver$
 	 *
-	 * @param int $form_id The form id.
+	 * @param int $form_id The form ID.
 	 *
 	 * @return string|null
 	 */
@@ -192,7 +192,7 @@ class DownloadUrl {
 	 * Generates the embed code for a form.
 	 * @since $ver$
 	 *
-	 * @param int $form_id The form id.
+	 * @param int $form_id The form ID.
 	 * @param string|null $type The type of the download.
 	 *
 	 * @return string|null The embed code.
