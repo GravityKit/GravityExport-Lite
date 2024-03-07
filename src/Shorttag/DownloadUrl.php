@@ -60,7 +60,10 @@ class DownloadUrl {
 		$secret = rgar( $arguments, 'secret', '' );
 
 		if ( ! $this->validate_secret( $hash, $secret ) ) {
-			return $this->error( sprintf( 'Please add a valid `%s` argument to the \'%s\' shortcode.', 'secret', self::SHORTCODE ) );
+			return $this->error( strtr(
+				esc_html_x( "Please add a valid 'secret' attribute to the '[shortcode]' shortcode.", 'Placeholders inside [] are not to be translated.', 'gk-gravityexport-lite' ),
+				[ '[shortcode]' => self::SHORTCODE ]
+			) );
 		}
 
 		return $this->getUrl( $arguments['id'], $arguments['type'] ?? null );
