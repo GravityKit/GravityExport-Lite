@@ -143,7 +143,9 @@ $script = <<<JS
 			return confirm("%s");
 		});
 		
-		addClipboard('%s','%s');
+		if ( 'function' === typeof addClipboard ) {
+			addClipboard('%s','%s');
+		}
 	});
 	
 })(jQuery);
