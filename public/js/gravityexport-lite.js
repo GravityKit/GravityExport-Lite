@@ -64,18 +64,27 @@ var gfexcel_sortable;
             });
     };
 
-    $(document).ready(function () {
+    $( document ).ready( function () {
+        const $embedShortcodeEl = $( '#embed_code' );
+        const secret = $embedShortcodeEl.data( 'secret' );
+
 		$( '#start_date, #end_date' ).datepicker( { dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true } );
 
-		$( '#file_extension' ).on( 'change', function ( e ) {
-			const shortcode = $( '#embed_code' ).val();
+		$( '#file_extension' ).on( 'change', function () {
+            const shortcode = $embedShortcodeEl.val();
+            const has_type = shortcode.match( / type=/ );
+            const regex = has_type ? / type="[^"]*"/ : /]$/ ;
 
-			$( '#embed_code' ).val( shortcode.replace( /type=\"[^\"]*\"/, `type="${ e.target.value }"` ) );
+            let type = ` type="${ $( this ).val() }"`;
+
+            if ( ! has_type ) {
+                type += ']';
+            }
+
+            $embedShortcodeEl.val( shortcode.replace(regex , type ) );
 		} );
 
 		$( '#has_embed_secret' ).on( 'change', function () {
-			const $embedShortcodeEl = $( '#embed_code' );
-			const secret = $embedShortcodeEl.data( 'secret' );
 			let embedShortcode = $embedShortcodeEl.val();
 
 			if ( !embedShortcode ) {
@@ -83,12 +92,12 @@ var gfexcel_sortable;
 			}
 
 			if ( $( this ).is( ':checked' ) ) {
-				embedShortcode = embedShortcode.replace( /\]$/, ` secret="${ secret }"]` );
+				embedShortcode = embedShortcode.replace( /]$/, ` secret="${ secret }"]` );
 			} else {
 				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
 			}
 
 			$embedShortcodeEl.val( embedShortcode );
-		});
-    });
+		} );
+    } );
 })(jQuery);
