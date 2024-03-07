@@ -58,9 +58,9 @@ JS;
 	 * @since $ver$
 	 */
 	public function markup(): string {
-		$form_id        = rgget( 'id' );
+		$form_id        = (int) rgget( 'id' );
 		$shortcode      = esc_attr( DownloadUrl::generate_embed_short_code( $form_id, $this->embed_type ) );
-		$secret         = DownloadUrl::get_secret( DownloadUrl::get_form_hash( $form_id ) );
+		$secret         = DownloadUrl::get_secret( $form_id );
 		$copy_shortcode = esc_html__( 'Copy Shortcode', 'gk-gravityexport-lite' );
 
 		return <<<HTML

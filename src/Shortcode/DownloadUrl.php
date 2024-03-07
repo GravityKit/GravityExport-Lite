@@ -145,7 +145,7 @@ class DownloadUrl {
 	 * @return bool
 	 */
 	private function validate_secret( string $hash, string $secret ): bool {
-		$test = self::get_secret( $hash );
+		$test = self::generate_secret_from_hash( $hash );
 		if ( strlen( $test ) !== self::SECRET_LENGTH || strlen( $secret ) !== self::SECRET_LENGTH ) {
 			return false;
 		}
@@ -172,6 +172,23 @@ class DownloadUrl {
 	}
 
 	/**
+	 * Returns the secret for a form.
+	 * @since $ver$
+	 *
+	 * @param int $form_id The form id.
+	 *
+	 * @return string The secret.
+	 */
+	public static function get_secret( int $form_id ): string {
+		$hash = self::get_form_hash( $form_id );
+		if ( ! $hash ) {
+			return '';
+		}
+
+		return self::generate_secret_from_hash($hash);
+	}
+
+	/**
 	 * Generates the secret from the hash.
 	 * @since $ver$
 	 *
@@ -179,7 +196,7 @@ class DownloadUrl {
 	 *
 	 * @return string The secret.
 	 */
-	public static function get_secret( string $hash ): string {
+	private static function generate_secret_from_hash( string $hash ): string {
 		return strrev( substr( $hash, self::SECRET_LENGTH, self::SECRET_LENGTH ) );
 	}
 
@@ -191,7 +208,7 @@ class DownloadUrl {
 	 *
 	 * @return string|null
 	 */
-	public static function get_form_hash( $form_id ): ?string {
+	private static function get_form_hash( int $form_id ): ?string {
 		$feed = GravityExportAddon::get_instance()->get_feed_by_form_id( $form_id );
 
 		return rgars( $feed ?? [], 'meta/hash' );
@@ -220,7 +237,7 @@ class DownloadUrl {
 		}
 
 		if ( self::is_embed_protected( $feed ) ) {
-			$attributes['secret'] = self::get_secret( $hash );
+			$attributes['secret'] = self::generate_secret_from_hash( $hash );
 		}
 
 		foreach ( $attributes as $key => $value ) {
