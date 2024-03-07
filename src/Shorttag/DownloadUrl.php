@@ -9,6 +9,7 @@ use GFExcel\GFExcel;
  * Example usage: [gfexcel_download_url id=1 type=csv]
  * Id is required, type is optional.
  * @since 1.6.1
+ * @final Will become actually final in the next major.
  */
 class DownloadUrl
 {
