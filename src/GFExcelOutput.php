@@ -126,6 +126,7 @@ class GFExcelOutput
         $this->setRows();
 
         $form = $this->getForm();
+        // The order of retrieving rows first is required. Do not change.
         $rows = $this->getRows();
         $columns = $this->getColumns();
 

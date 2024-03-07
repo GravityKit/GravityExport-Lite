@@ -27,7 +27,7 @@ When you configure a new export, the plugin will generate a secure download URL 
 - Limit access to downloads—either make a URL public or require users to be logged-in with correct permissions
 - Download reports from multiple forms at once
 - Export entry notes along with entries
-- Transpose data (instead of one entry per-row, it would be one column per row)
+- Transpose data (instead of one entry per-row, it would be one entry per column)
 - Attach entry exports to notifications
 
 [youtube https://youtu.be/diqNgFCguM4]
@@ -229,7 +229,7 @@ add_filter('gfexcel_value_object', function (BaseValue $value, $field, $is_label
 
 = I don't have enough memory! =
 
-Yes, this can happen. Unfortunately, this isn't something that can be fixed without modifying your
+Yes, this can happen. Unfortunately, this isn't something that can be fixed without modifying your server configuration.
 As a default, WordPress allocates 40 MB of memory. Because the plugin starts the rendering pretty early, it has most of it available.
 But every cell to be rendered (even if it's empty) takes up about 1KB of memory. This means that you have (roughly)
 `40 MB * 1024 KB = 40,960 Cells`. I say roughly, because we also use some memory for calculations and retrieving the data.
