@@ -1,19 +1,19 @@
 <?php
 
-namespace GFExcel\Shorttag;
+namespace GFExcel\Shortcode;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
 
 /**
- * A short tag handler for [gravityexport_download_url].
+ * A shortcode handler for [gravityexport_download_url].
  * Example usage: [gravityexport_download_url id=1 type=csv]
  * Id is required, type is optional.
  * @since 1.6.1
  */
 class DownloadUrl {
 	/** @var string */
-	public const SHORTTAG = 'gravityexport_download_url';
+	public const SHORTCODE = 'gravityexport_download_url';
 
 	/**
 	 * The length of the secret used to protect the embed tag.
@@ -22,13 +22,13 @@ class DownloadUrl {
 	private const SECRET_LENGTH = 6;
 
 	public function __construct() {
-		add_shortcode( 'gfexcel_download_url', [ $this, 'handle' ] ); // Backward compatible
-		add_shortcode( self::SHORTTAG, [ $this, 'handle' ] );
+		add_shortcode( 'gfexcel_download_url', [ $this, 'handle' ] ); // Backward compatibility.
+		add_shortcode( self::SHORTCODE, [ $this, 'handle' ] );
 		add_filter( 'gform_replace_merge_tags', [ $this, 'handleNotification' ], 10, 2 );
 	}
 
 	/**
-	 * Handles the [gfexcel_download_url] shorttag.
+	 * Handles the [gfexcel_download_url] shortcode.
 	 * @since 1.6.1
 	 *
 	 * @param array|string $arguments
@@ -41,7 +41,7 @@ class DownloadUrl {
 		}
 
 		if ( ! array_key_exists( 'id', $arguments ) ) {
-			return $this->error( sprintf( 'Please add an `%s` argument to \'%s\' shorttag.', 'id', self::SHORTTAG ) );
+			return $this->error( sprintf( 'Please add an `%s` argument to \'%s\' shortcode.', 'id', self::SHORTCODE ) );
 		}
 
 		$feed = GravityExportAddon::get_instance()->get_feed_by_form_id( $arguments['id'] );
@@ -60,14 +60,14 @@ class DownloadUrl {
 		$secret = rgar( $arguments, 'secret', '' );
 
 		if ( ! $this->validate_secret( $hash, $secret ) ) {
-			return $this->error( sprintf( 'Please add a valid `%s` argument to the \'%s\' shorttag.', 'secret', self::SHORTTAG ) );
+			return $this->error( sprintf( 'Please add a valid `%s` argument to the \'%s\' shortcode.', 'secret', self::SHORTCODE ) );
 		}
 
 		return $this->getUrl( $arguments['id'], $arguments['type'] ?? null );
 	}
 
 	/**
-	 * Handles the short-tag for gravity forms.
+	 * Handles the shortcode for Gravity Forms.
 	 * @since 1.6.1
 	 *
 	 * @param string $text the text of the notification
@@ -80,8 +80,8 @@ class DownloadUrl {
 			return $text;
 		}
 
-		foreach ( [ self::SHORTTAG, 'gfexcel_download_url' ] as $short_tag ) {
-			$custom_merge_tag = '{' . $short_tag . '}';
+		foreach ( [ self::SHORTCODE, 'gfexcel_download_url' ] as $shortcode ) {
+			$custom_merge_tag = '{' . $shortcode . '}';
 
 			if ( strpos( $text, $custom_merge_tag ) === false ) {
 				continue;
@@ -122,7 +122,7 @@ class DownloadUrl {
 	 */
 	private function error( string $message ): string {
 		return (string) gf_apply_filters( [
-			'gfexcel_shorttag_error',
+			'gfexcel_shortcode_error',
 		], $message );
 	}
 
@@ -151,7 +151,7 @@ class DownloadUrl {
 	 * @param array $feed The feed object.
 	 *
 	 * @return bool Whether the embed is protected.
-	 * @filter gk/gravityexport/embed/is-protected Enabled embed protection for all short tags.
+	 * @filter gk/gravityexport/embed/is-protected Enabled embed protection for all shortcodes.
 	 */
 	private static function is_embed_protected( array $feed ): bool {
 		$is_global_embed_protected = (bool) apply_filters( 'gk/gravityexport/embed/is-protected', false );
@@ -218,6 +218,6 @@ class DownloadUrl {
 			$attributes[ $key ] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
 		}
 
-		return sprintf( '[%s %s]', self::SHORTTAG, implode( ' ', $attributes ) );
+		return sprintf( '[%s %s]', self::SHORTCODE, implode( ' ', $attributes ) );
 	}
 }

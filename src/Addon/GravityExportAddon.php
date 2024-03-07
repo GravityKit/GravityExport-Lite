@@ -10,7 +10,7 @@ use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelOutput;
-use GFExcel\GravityForms\Field\CopyShortCode;
+use GFExcel\GravityForms\Field\CopyShortcode;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\SortFields;
@@ -168,7 +168,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
 		Fields::register( 'sort_fields', SortFields::class );
-		Fields::register( 'copy_shortcode', CopyShortCode::class );
+		Fields::register( 'copy_shortcode', CopyShortcode::class );
 
 		$form = $this->get_current_form();
 
@@ -283,7 +283,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			'fields'      => [
 				[
 					'name'        => 'has_embed_secret',
-					'label'       => esc_html__( 'Secure short tags', 'gk-gravityexport-lite' ),
+					'label'       => esc_html__( 'Secure Shortcodes', 'gk-gravityexport-lite' ),
 					'type'        => 'checkbox',
 					'description' => __( 'A secure shortcode contains a unique <code>secret</code>-attribute which prevents generating the URL for a form without permission.', 'gk-gravityexport-lite' ),
 					'choices'     => [

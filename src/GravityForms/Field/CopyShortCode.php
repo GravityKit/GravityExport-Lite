@@ -3,13 +3,13 @@
 namespace GFExcel\GravityForms\Field;
 
 use Gravity_Forms\Gravity_Forms\Settings\Fields\HTML;
-use GFExcel\Shorttag\DownloadUrl;
+use GFExcel\Shortcode\DownloadUrl;
 
 /**
  * A field that contains the embed shortcode for this feed, with a copy to clipboard button.
  * @since $ver$
  */
-final class CopyShortCode extends HTML {
+final class CopyShortcode extends HTML {
 	/**
 	 * @inheritdoc
 	 * @since $ver$
@@ -61,14 +61,14 @@ JS;
 		$form_id        = rgget( 'id' );
 		$shortcode      = esc_attr( DownloadUrl::generate_embed_short_code( $form_id, $this->embed_type ) );
 		$secret         = DownloadUrl::get_secret( DownloadUrl::get_form_hash( $form_id ) );
-		$copy_shortcode = esc_html__( 'Copy shortcode', 'gk-gravityexport-lite' );
+		$copy_shortcode = esc_html__( 'Copy Shortcode', 'gk-gravityexport-lite' );
 
 		return <<<HTML
 <div class="copy-short-code copy-to-clipboard-container">
     <div class="input"><input type="text" readonly value="{$shortcode}" id="embed_code" data-secret="{$secret}"></div>
     <div class="success hidden" aria-hidden="true">Copied!</div>
     <button id="copy-embed-code" type="button" class="button" data-clipboard-target="[id=embed_code]">
-        <span class="dashicons dashicons-clipboard"></span>{$copy_shortcode}
+        <span class="dashicons dashicons-clipboard"></span> {$copy_shortcode}
     </button>
 </div>
 HTML;
