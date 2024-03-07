@@ -231,10 +231,10 @@ class DownloadUrl {
 			return null;
 		}
 
-		$attributes = [ 'id' => $form_id ];
-		if ( $type ) {
-			$attributes['type'] = $type;
-		}
+		$attributes = [
+			'id'   => $form_id,
+			'type' => $type ?: GFExcel::getFileExtension( [ 'id' => $form_id ] ),
+		];
 
 		if ( self::is_embed_protected( $feed ) ) {
 			$attributes['secret'] = self::generate_secret_from_hash( $hash );
