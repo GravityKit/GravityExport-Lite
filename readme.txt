@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.3
-Stable tag: 2.1.0
+Tested up to: 6.4.3
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,11 +256,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.2.0 on March 8, 2024 =
 
-* Enhancement: Added security by requiring a secret for embedding the download link shortcode
-* Enhancement: Added embed shortcode copy section
-* Bugfix: Nested forms with missing entries could create a critical issue.
+* Added: Option to secure the download link embed shortcode with a secret key.
+* Added: New button to easily copy the download link embed shortcode.
+* Bugfix: Nested forms with missing entries could trigger a critical error.
 
 = 2.1.0 on September 25, 2023 =
 
