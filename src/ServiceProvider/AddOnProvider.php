@@ -19,7 +19,7 @@ use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
-use GFExcel\Shorttag\DownloadUrl;
+use GFExcel\Shortcode\DownloadUrl;
 use League\Container\Definition\DefinitionInterface;
 
 /**
