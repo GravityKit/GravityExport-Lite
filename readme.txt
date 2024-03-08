@@ -260,6 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Enhancement: Added security by requiring a secret for embedding the download link shortcode
 * Enhancement: Added embed shortcode copy section
+* Bugfix: Nested forms with missing entries could create a critical issue.
 
 = 2.1.0 on September 25, 2023 =
 
