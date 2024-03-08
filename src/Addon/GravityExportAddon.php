@@ -1142,34 +1142,4 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 		return $settings;
 	}
-
-	/**
-	 * Whether to use the admin labels as labels for the export.
-	 * @since 2.1.0
-	 * @return bool
-	 */
-	public function useAdminLabels(): bool {
-		return apply_filters(
-			'gk/gravityexport/settings/use-admin-labels',
-			(bool) $this->get_plugin_setting( 'use_admin_label' )
-		);
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since 2.2.0
-	 */
-	public function get_current_settings(): array {
-		$settings = parent::get_current_settings();
-
-		$feed = $this->get_feed( $this->get_default_feed_id( rgget( 'id' ) ) );
-		if ( ! $feed ) {
-			return $settings;
-		}
-
-		// Prevent hash from being overwritten with an input value.
-		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] ?? '' );
-
-		return $settings;
-	}
 }
