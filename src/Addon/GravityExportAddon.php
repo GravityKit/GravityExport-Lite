@@ -654,8 +654,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function get_rating_message(): string {
 		ob_start();
 		?>
-        <div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
-            <p style="font-size: 1.2rem; margin-bottom: 0;"><?php
+		<div id="gravityexport-lite-rating" class="wrap gravityexport-lite-callout">
+			<p style="font-size: 1.2rem; margin-bottom: 0;"><?php
 				printf( ' ' . esc_html__(
 						'If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let\'s get to %s by spreading the news!',
 						'gk-gravityexport-lite'
@@ -666,8 +666,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					esc_html( $this->component_usage->getTarget() )
 				);
 				?>
-            </p>
-        </div>
+			</p>
+		</div>
 		<?php
 		return ob_get_clean();
 	}
@@ -694,43 +694,43 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	private function get_gravityexport_message(): string {
 		ob_start();
 		?>
-        <div id="gravityexport-additional-features" class="wrap gravityexport-lite-callout">
-            <h2><?php
+		<div id="gravityexport-additional-features" class="wrap gravityexport-lite-callout">
+			<h2><?php
 				esc_html_e( 'Upgrade to GravityExport for these useful features:', 'gk-gravityexport-lite' ); ?></h2>
 
-            <div>
-                <h3><?php
+			<div>
+				<h3><?php
 					esc_html_e( 'Save exports to Dropbox, FTP, &amp; local storage', 'gk-gravityexport-lite' ); ?>
-                    💾</h3>
-                <p><?php
+					💾</h3>
+				<p><?php
 					esc_html_e( 'Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally.',
 						'gk-gravityexport-lite' ); ?></p>
-            </div>
+			</div>
 
-            <div>
-                <h3><?php
+			<div>
+				<h3><?php
 					esc_html_e( 'Filter exports with Conditional Logic', 'gk-gravityexport-lite' ); ?> 😎</h3>
-                <p><?php
+				<p><?php
 					esc_html_e( 'Create advanced filters, including exporting entries created by only the currently logged-in user.',
 						'gk-gravityexport-lite' ); ?></p>
-            </div>
+			</div>
 
-            <div>
-                <h3><?php
+			<div>
+				<h3><?php
 					esc_html_e( 'Exports are ready for data analysis', 'gk-gravityexport-lite' ); ?> 📊</h3>
-                <p><?php
+				<p><?php
 					esc_html_e( 'When analyzing data, you want fields with multiple values broken into multiple rows each with one value. If you work with data, you&rsquo;ll love this feature!',
 						'gk-gravityexport-lite' ); ?></p>
-            </div>
+			</div>
 
-            <p>
-                <a class="button button-primary primary large button-hero button-cta"
-                   href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
-                   target="_blank" rel="noopener noreferrer"
-                   title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
+			<p>
+				<a class="button button-primary primary large button-hero button-cta"
+				   href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
+				   target="_blank" rel="noopener noreferrer"
+				   title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
 					esc_html_e( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ); ?>️</a>
-            </p>
-        </div>
+			</p>
+		</div>
 		<?php
 		return ob_get_clean();
 	}
@@ -1111,6 +1111,36 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 			esc_attr__( 'Deselect All', 'gk-gravityexport-lite' ),
 			esc_attr__( 'Select All', 'gk-gravityexport-lite' )
 		);
+	}
+
+	/**
+	 * Whether to use the admin labels as labels for the export.
+	 * @since 2.1.0
+	 * @return bool
+	 */
+	public function useAdminLabels(): bool {
+		return apply_filters(
+			'gk/gravityexport/settings/use-admin-labels',
+			(bool) $this->get_plugin_setting( 'use_admin_label' )
+		);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function get_current_settings(): array {
+		$settings = parent::get_current_settings();
+
+		$feed = $this->get_feed( $this->get_default_feed_id( rgget( 'id' ) ) );
+		if ( ! $feed ) {
+			return $settings;
+		}
+
+		// Prevent hash from being overwritten with an input value.
+		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] ?? '' );
+
+		return $settings;
 	}
 
 	/**
