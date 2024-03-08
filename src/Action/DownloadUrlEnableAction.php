@@ -35,12 +35,15 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 			return;
 		}
 
-		[ , , $settings ] = $form;
+		$settings = $form[2] ?? [];
 
 		if ( ! empty( $settings['hash'] ?? null ) ) {
 			// Feed is already enabled.
 			return;
 		}
+
+		// Enable embed secret by default.
+		$form[2]['has_embed_secret'] = 1;
 
 		parent::fire( $addon, $form );
 	}

@@ -180,3 +180,18 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     border-bottom: 1px solid #ebebf2;
     padding-bottom: 10px;
 }
+
+.gform-settings-panel .copy-short-code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gform-settings-panel .copy-short-code .input {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.gform-settings-panel .copy-short-code .success {
+    margin-right: 1rem;
+}
