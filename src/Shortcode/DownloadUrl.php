@@ -23,7 +23,7 @@ class DownloadUrl {
 
 	/**
 	 * The length of the secret used to protect the embed tag.
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	private const SECRET_LENGTH = 6;
 
@@ -137,7 +137,7 @@ class DownloadUrl {
 
 	/**
 	 * Validates if the secret matches the hash.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param string $hash The hash.
 	 * @param string $secret The secret.
@@ -155,7 +155,7 @@ class DownloadUrl {
 
 	/**
 	 * Returns whether the shortcode for this feed is protected.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param array $feed The feed object.
 	 *
@@ -173,7 +173,7 @@ class DownloadUrl {
 
 	/**
 	 * Returns the secret for a form.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param int $form_id The form id.
 	 *
@@ -190,7 +190,7 @@ class DownloadUrl {
 
 	/**
 	 * Generates the secret from the hash.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param string $hash The hash.
 	 *
@@ -202,7 +202,7 @@ class DownloadUrl {
 
 	/**
 	 * Returns the hash for a form.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param int $form_id The form ID.
 	 *
@@ -216,7 +216,7 @@ class DownloadUrl {
 
 	/**
 	 * Generates the embed code for a form.
-	 * @since $ver$
+	 * @since 2.2.0
 	 *
 	 * @param int $form_id The form ID.
 	 * @param string|null $type The type of the download.

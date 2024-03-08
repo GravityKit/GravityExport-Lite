@@ -7,24 +7,24 @@ use GFExcel\Shortcode\DownloadUrl;
 
 /**
  * A field that contains the embed shortcode for this feed, with a copy to clipboard button.
- * @since $ver$
+ * @since 2.2.0
  */
 final class CopyShortcode extends HTML {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	public $type = 'copy_shortcode';
 
 	/**
-	 * @since $ver$
+	 * @since 2.2.0
 	 * @var null|string
 	 */
 	protected $embed_type;
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	public function scripts(): array {
 		$script = <<<JS
@@ -55,7 +55,7 @@ JS;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	public function markup(): string {
 		$form_id        = (int) rgget( 'id' );

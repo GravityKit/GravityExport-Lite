@@ -1127,7 +1127,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	public function get_current_settings(): array {
 		$settings = parent::get_current_settings();
@@ -1157,7 +1157,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.2.0
 	 */
 	public function get_current_settings(): array {
 		$settings = parent::get_current_settings();
