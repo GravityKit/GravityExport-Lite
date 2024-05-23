@@ -1,10 +1,10 @@
 === GravityExport Lite for Gravity Forms ===
-Contributors: gravitykit, doekenorg
+Contributors: gravityview, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
-Tags: Gravity Forms, GravityForms, Excel, Export, Download, Entries, CSV
+Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.4.3
+Tested up to: 6.5.3
 Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -32,11 +32,11 @@ When you configure a new export, the plugin will generate a secure download URL 
 
 [youtube https://youtu.be/diqNgFCguM4]
 
-### Export directly to Excel (.xlsx)
+### Export Gravity Forms entries directly to Excel (.xlsx)
 
 Export your entries directly to .xlsx format. No more wasting time importing your CSV files into Excel and re-configuring columns.
 
-### Export as CSV
+### Export Gravity Forms submissions as CSV
 
 If you'd prefer to have your reports generated as CSV, GravityExport Lite makes it easy.
 
