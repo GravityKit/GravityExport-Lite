@@ -32,7 +32,7 @@ if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
-	define( 'GFEXCEL_MIN_PHP_VERSION', '7.2' );
+	define( 'GFEXCEL_MIN_PHP_VERSION', '7.3' );
 }
 
 if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
