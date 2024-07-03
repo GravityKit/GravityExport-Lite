@@ -1,49 +1,96 @@
 {
-    "name": "doekenorg/gf-entries-in-excel",
-    "description": "The fastest way to export from Gravity Forms.",
-    "type": "wordpress-plugin",
-    "license": "GPL-2.0-only",
-    "authors": [
-        {
-            "name": "GravityKit",
-            "email": "support@gravitykit.com"
-        },
-        {
-            "name": "Doeke Norg",
-            "email": "doekenorg@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "ext-json": "*",
-        "php": "^7.3",
-        "phpoffice/phpspreadsheet": "1.18.*",
-        "symfony/polyfill-mbstring": "1.20.*",
-        "composer/installers": "~1.0"
+  "name": "gravitykit/gravityexport-lite",
+  "description": "The fastest way to export from Gravity Forms.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-only",
+  "authors": [
+    {
+      "name": "GravityKit",
+      "email": "support@gravitykit.com"
     },
-    "autoload": {
-        "psr-4": {
-            "GFExcel\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "GFExcel\\Tests\\": "tests/"
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "7.5.*",
-        "10up/wp_mock": "0.4.*",
-        "szepeviktor/phpstan-wordpress": "^0.6.2",
-        "wp-premium/gravityforms": "^2.4",
-        "phpstan/phpstan-mockery": "^0.12.5"
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "markbaker-fix-namespace": "find ./vendor -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(use|namespace) (Complex|Matrix)/\\1 GFExcel\\\\Vendor\\\\\\2/g'",
-        "markbaker-fix-autoload": "find ./vendor/composer -name \"*.php\" | xargs -n 1 sed -i -E -e 's/(Matrix|Complex)\\\\\/GFExcel\\\\\\\\Vendor\\\\\\\\\\1\\\\/g'",
-        "post-install-cmd": "composer run markbaker-fix-namespace",
-        "post-update-cmd": "composer run markbaker-fix-namespace",
-        "post-autoload-dump": "composer run markbaker-fix-autoload"
+    {
+      "name": "Doeke Norg",
+      "email": "doekenorg@gmail.com"
     }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.4.0"
+    },
+    "allow-plugins": {
+      "composer/installers": true,
+      "frontpack/composer-assets-plugin": true
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "ext-json": "*",
+    "php": "^7.4",
+    "gravitykit/gravityexport-base": "dev-master",
+    "phpoffice/phpspreadsheet": "1.29.*"
+  },
+  "autoload": {
+    "classmap": [
+      "vendor_prefixed"
+    ],
+    "psr-4": {
+      "GFExcel\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GFExcel\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.5.*",
+    "10up/wp_mock": "0.4.*",
+    "szepeviktor/phpstan-wordpress": "^0.6.2",
+    "phpstan/phpstan-mockery": "^0.12.5",
+    "overtrue/phplint": "^2.1"
+  },
+  "scripts": {
+    "unbuild": "rm -rf build/composer.* build/vendor build/src",
+    "build": [
+      "@unbuild",
+      "cp composer.json build/composer.json",
+      "mkdir build/src && cp src/GFExcelAdmin.php build/src/",
+      "composer config repositories.source '{\"type\":\"path\", \"url\":\"../src\",\"options\": {\"symlink\":false}}' --working-dir=build",
+      "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts",
+      "cd build && ./strauss.phar",
+      "composer dump-autoload -o --working-dir=build"
+    ],
+    "linter": "vendor/bin/phplint --no-cache",
+    "test": "vendor/bin/phpunit",
+    "post-install-cmd": [
+      "composer dump-autoload -o"
+    ],
+    "post-update-cmd": [
+      "composer dump-autoload -o"
+    ]
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GFExcel\\Vendor",
+      "classmap_prefix": "GFExcel_Vendor",
+      "classmap_output": false,
+      "delete_vendor_packages": true,
+      "delete_vendor_files": true,
+      "exclude_from_prefix": {
+        "namespaces": [
+          "GFExcel"
+        ]
+      },
+      "override_autoload": {
+        "gravitykit/gravityexport-base": {
+          "files": [
+            "templates",
+            "public",
+            "src"
+          ]
+        }
+      }
+    }
+  }
 }

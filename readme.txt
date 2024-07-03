@@ -3,7 +3,7 @@ Contributors: gravityview, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
-Requires PHP: 7.2
+Requires PHP: 7.4
 Tested up to: 6.5.3
 Stable tag: 2.2.0
 License: GPLv2 or later
@@ -56,7 +56,7 @@ If you need further assistance, [read this first](https://wordpress.org/support/
 
 #### Requirements
 
-* PHP 7.2
+* PHP 7.4
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.5 or higher
 
@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 = develop =
 
-* Updated: PhpSpreadsheet to [1.19.0](https://github.com/PHPOffice/PhpSpreadsheet/releases/tag/1.19.0)
+* Updated: PhpSpreadsheet to [1.29.0](https://github.com/PHPOffice/PhpSpreadsheet/releases/tag/1.29.0)
 
 = 2.2.0 on March 8, 2024 =
 
