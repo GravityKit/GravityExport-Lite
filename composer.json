@@ -27,7 +27,7 @@
         "ext-json": "*",
         "php": "^7.2",
         "gravitykit/gravityexport-base": "dev-master",
-        "phpoffice/phpspreadsheet": "1.12"
+        "phpoffice/phpspreadsheet": "1.19.*"
     },
     "autoload": {
         "classmap": [

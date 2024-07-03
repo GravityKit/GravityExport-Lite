@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Updated: PhpSpreadsheet to [1.19.0](https://github.com/PHPOffice/PhpSpreadsheet/releases/tag/1.19.0)
+
 = 2.2.0 on March 8, 2024 =
 
 * Added: Option to secure the download link embed shortcode with a secret key.
