@@ -256,7 +256,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.3.0 on July 4, 2024 =
 
 * Updated: PhpSpreadsheet to [1.19.0](https://github.com/PHPOffice/PhpSpreadsheet/releases/tag/1.19.0).
 * Enhancement: Added a `gfexcel_renderer_csv_output_encoding` hook to set the character encoding on the CSV.
