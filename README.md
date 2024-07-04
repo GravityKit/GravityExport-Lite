@@ -16,9 +16,9 @@ out more.
 
 ### Requirements
 
-* PHP 7.1 or higher
-* `php-xml` and `php-zip` libraries.
-* Gravity Forms 2.0 or higher
+* PHP 7.2 or higher
+* `php-xml` and `php-zip` libraries
+* Gravity Forms 2.5 or higher
 
 ### Docs
 
@@ -26,7 +26,7 @@ Check out our [full documentation site](https://gfexcel.com) for you developers 
 
 ### Credits
 
-- The GravityExport plugin was created by [Doeke Norg](https://doeken.org)
-- Original Logo by [Karlo Norg](https://www.karlon.org)
+- The GravityExport Lite plugin was created by [Doeke Norg](https://doeken.org)
+- Original logo by [Karlo Norg](https://www.karlon.org)
 
 <img src="https://raw.githubusercontent.com/GravityKit/GravityExport-Lite/main/assets/icon-256x256.png" width="128">
