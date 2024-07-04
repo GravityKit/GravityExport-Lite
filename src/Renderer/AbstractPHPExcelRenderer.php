@@ -488,5 +488,11 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 			$objWriter->getIncludeSeparatorLine(),
 			$form_id
 		) );
+
+		$objWriter->setOutputEncoding( (string) gf_apply_filters(
+			[ 'gfexcel_renderer_csv_output_encoding', $form_id ],
+			$objWriter->getOutputEncoding(),
+			$form_id
+		) );
 	}
 }

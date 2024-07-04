@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.5.3
+Tested up to: 6.6.0
 Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Updated: PhpSpreadsheet to [1.19.0](https://github.com/PHPOffice/PhpSpreadsheet/releases/tag/1.19.0)
+* Enhancement: Added a `gfexcel_renderer_csv_output_encoding` hook to set the character encoding on the CSV.
 
 = 2.2.0 on March 8, 2024 =
 
