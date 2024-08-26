@@ -125,8 +125,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'dom',
 					'zlib',
 					'xml',
-                    'iconv',
-                    'mbstring',
+					'iconv',
+					'mbstring',
 				],
 			]
 		];

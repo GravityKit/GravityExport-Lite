@@ -62,7 +62,7 @@
             "@unbuild",
             "cp composer.json build/composer.json",
             "mkdir build/src && cp src/GFExcelAdmin.php build/src/",
-            "composer config repositories.source '{\"type\":\"path\", \"url\":\"../src\",\"options\": {\"symlink\":false}}' --working-dir=build",
+            "composer config repositories.source '{\"type\":\"package\", \"package\": { \"name\": \"gravitykit/gravityexport-lite-src\", \"version\": \"dev-main\", \"dist\": { \"type\": \"path\", \"url\":\"../src\", \"options\": {\"symlink\":false}}}}' --working-dir=build",
             "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts",
             "cd build && ./strauss.phar",
             "composer dump-autoload -o --working-dir=build"
