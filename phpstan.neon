@@ -11,6 +11,8 @@ parameters:
   bootstrapFiles:
     - gfexcel.php
     - tests/phpstan/bootstrap.php
+  editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+
   inferPrivatePropertyTypeFromConstructor: true
   #    autoload_files:
   #        # Missing constants, function and class stubs
@@ -24,11 +26,16 @@ parameters:
   paths:
     - src
     - tests
+
+  scanDirectories:
+    - vendor/gravityforms/gravityforms # Gravity Forms has no `autoload` section, so we need to configure the path.
+    - /Users/doekenorg/Sites/gravity-export/wp-content/plugins/gravityformssurvey
+
   #    excludes_analyse:
   #        - %currentWorkingDirectory%/inc/views/
   ignoreErrors:
-    - '/Function gform_tooltip not found\./'
-    - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
+#    - '/Function gform_tooltip not found\./'
+#    - '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
     - '/^Function gf_apply_filters invoked with \d+ parameters, 2 required.$/'
     - '/^Function gf_do_action invoked with \d+ parameters, 1 required.$/'
     - '/Parameter #3 \$default of function rgar expects string\|null/'

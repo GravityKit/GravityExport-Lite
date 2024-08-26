@@ -58,7 +58,7 @@ class FilterRequest
      */
     public function __construct()
     {
-        add_action('request', [$this, 'request'], 0);
+        add_filter('request', [$this, 'request'], 0);
         add_filter('query_vars', [$this, 'getQueryVars']);
         add_filter('gfexcel_output_search_criteria', [$this, 'setSearchCriteria'], 0);
     }
@@ -119,18 +119,15 @@ class FilterRequest
      * Parses a filter-string and adds the filters to the internal array.
      * @since 1.7.0
      * @param string $filter_string the string that contains the filters.
-     *
+     * @return void
      */
-    private function parseFilters(string $filter_string)
-    {
-        $sets = explode(';', $filter_string);
-        if (count($sets) > 0) {
-            foreach ($sets as $set_string) {
-                $filter = explode(':', $set_string);
-                $this->addFilter($filter);
-            }
-        }
-    }
+	private function parseFilters( string $filter_string ) {
+		$sets = explode( ';', $filter_string );
+		foreach ( $sets as $set_string ) {
+			$filter = explode( ':', $set_string );
+			$this->addFilter( $filter );
+		}
+	}
 
     /**
      * Adds the filter to the internal array.

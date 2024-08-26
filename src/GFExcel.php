@@ -45,7 +45,7 @@ class GFExcel
 	/**
 	 * The endpoint slug of the plugin.
 	 * @since 1.0.0
-	 * @var string
+	 * @var string[]
 	 */
 	public static $endpoints = [
 		'gf-entries-in-excel',
@@ -71,11 +71,11 @@ class GFExcel
      */
     public function __construct()
     {
-        add_action('init', [$this, 'addPermalinkRules']);
-        add_action('request', [$this, 'request']);
-        add_action('parse_request', [$this, 'downloadFile']);
-        add_filter('query_vars', [$this, 'getQueryVars']);
-        add_filter('robots_txt', [$this, 'robotsTxt']);
+	    add_action( 'init', [ $this, 'addPermalinkRules' ] );
+	    add_filter( 'request', [ $this, 'request' ] );
+	    add_filter( 'parse_request', [ $this, 'downloadFile' ] );
+	    add_filter( 'query_vars', [ $this, 'getQueryVars' ] );
+	    add_filter( 'robots_txt', [ $this, 'robotsTxt' ] );
     }
 
     /** Return the url for the form
@@ -179,11 +179,11 @@ class GFExcel
      * @return string The file extension.
      */
 	public static function getFileExtension( $form ) {
-		if ( ! static::$file_extension ) {
+		if ( ! self::$file_extension ) {
 			$form_id   = rgar( $form, 'id', 0 );
 			$extension = gf_apply_filters(
 				[
-					static::KEY_FILE_EXTENSION,
+					self::KEY_FILE_EXTENSION,
 					$form_id,
 				],
 				GravityExportAddon::get_instance()->get_feed_meta_field( 'file_extension', $form_id, 'xlsx' ),
@@ -197,7 +197,7 @@ class GFExcel
 			return $extension;
 		}
 
-		return static::$file_extension;
+		return self::$file_extension;
 	}
 
     /**
@@ -240,6 +240,7 @@ class GFExcel
      * Registers the permalink structures for the download
      *
      * @since 1.0.0
+     * @return void
      */
     public function addPermalinkRules() {
 
@@ -289,7 +290,7 @@ class GFExcel
 
 	    if ( preg_match( '/\\.(' . GFExcel::getPluginFileExtensions( true ) . ')$/is', $hash, $match ) ) {
 		    $hash                   = str_replace( $match[0], '', $hash );
-		    static::$file_extension = $match[1];
+		    self::$file_extension = $match[1];
 	    }
 
 	    $feed = $this->getFeedByHash( $hash );
@@ -342,7 +343,7 @@ class GFExcel
          * @used-by \GFExcel\Action\CountDownloads::incrementCounter
          *
          * @param int $form_id ID of the form being downloaded
-         * @param GFExcelOutput Output of the file
+         * @param GFExcelOutput $output Output of the file
          */
         do_action(GFExcelConfigConstants::GFEXCEL_EVENT_DOWNLOAD, $form_id, $output);
 
@@ -438,7 +439,7 @@ class GFExcel
 
 		$feed   = GravityExportAddon::get_instance()->get_feed_by_form_id($form_id);
 
-		return (bool) rgars( $feed, 'meta/is_secured', false );
+		return (bool) rgars( $feed, 'meta/is_secured' );
 	}
 
     /**

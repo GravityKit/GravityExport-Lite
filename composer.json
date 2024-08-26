@@ -37,16 +37,23 @@
             "GFExcel\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:gravityforms/gravityforms.git"
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "GFExcel\\Tests\\": "tests/"
         }
     },
     "require-dev": {
+        "gravityforms/gravityforms": "dev-master",
         "phpunit/phpunit": "7.5.*",
         "10up/wp_mock": "0.4.*",
-        "szepeviktor/phpstan-wordpress": "^0.6.2",
-        "phpstan/phpstan-mockery": "^0.12.5",
+        "szepeviktor/phpstan-wordpress": "^1.0",
+        "phpstan/phpstan-mockery": "^1.1",
         "overtrue/phplint": "^2.1"
     },
     "scripts": {

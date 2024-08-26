@@ -36,6 +36,7 @@ class CountDownloads {
 	 * @since 1.6.1
 	 *
 	 * @param int $form_id The form id.
+	 * @return void
 	 */
 	public function incrementCounter( $form_id ) {
 		// Get the form data.

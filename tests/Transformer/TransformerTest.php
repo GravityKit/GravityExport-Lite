@@ -44,6 +44,7 @@ final class TransformerTest extends TestCase {
 
 		$this->field->method( 'get_input_type' )->willReturn( 'test' );
 
+		/** @var TestField $field */
 		$field = $transformer->transform( $this->field );
 
 		self::assertInstanceOf( TestField::class, $field );
@@ -73,13 +74,15 @@ final class TransformerTest extends TestCase {
 final class TestField implements FieldInterface, TransformerAwareInterface {
 	public $transformer;
 
-	public function __construct( \GF_Field $field ) {
+	public function __construct( \GF_Field $field ) { // @phpstan-ignore constructor.unusedParameter
 	}
 
 	public function getColumns() {
+		return [];
 	}
 
 	public function getCells( $entry ) {
+		return [];
 	}
 
 	public function setTransformer( Transformer $transformer ): void {
