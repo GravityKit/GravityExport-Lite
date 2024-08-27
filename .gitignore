@@ -13,3 +13,4 @@ vendor_prefixed
 !vendor_prefixed/.gitkeep
 !build/strauss.phar
 !build/vendor_prefixed/.gitkeep
+phpstan.neon
