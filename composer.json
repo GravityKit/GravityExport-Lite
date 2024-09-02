@@ -57,7 +57,7 @@
         "overtrue/phplint": "^2.1"
     },
     "scripts": {
-        "unbuild": "rm -rf build/composer.* build/vendor build/src",
+        "unbuild": "rm -rf build/composer.* build/vendor*/* build/src",
         "build": [
             "@unbuild",
             "cp composer.json build/composer.json",

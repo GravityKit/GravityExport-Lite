@@ -70,7 +70,7 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer
 		);
 
 		$this->setWorksheetTitle( $this->worksheet, $this->form );
-		$this->spreadsheet->getProperties()->setTitle( $title );
+		$this->spreadsheet->getProperties()->setTitle( (string) $title );
 
 		return $this;
 	}
