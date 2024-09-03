@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2420b025b6683e1206b934a0f60c789",
+    "content-hash": "1a75632605983f4878c430df0945e125",
     "packages": [
         {
             "name": "ezyang/htmlpurifier",
@@ -1084,6 +1084,16 @@
                 "source": "https://github.com/gravityforms/gravityforms/tree/master"
             },
             "time": "2024-08-20T17:03:30+00:00"
+        },
+        {
+            "name": "gravityforms/gravitysurvey",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:gravityforms/gravityformssurvey.git",
+                "reference": "HEAD"
+            },
+            "type": "library"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -4017,7 +4027,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "gravitykit/gravityexport-base": 20,
-        "gravityforms/gravityforms": 20
+        "gravityforms/gravityforms": 20,
+        "gravityforms/gravitysurvey": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

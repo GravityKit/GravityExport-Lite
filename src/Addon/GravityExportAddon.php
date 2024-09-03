@@ -125,8 +125,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'dom',
 					'zlib',
 					'xml',
-                    'iconv',
-                    'mbstring',
+					'iconv',
+					'mbstring',
 				],
 			]
 		];
@@ -1070,7 +1070,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			return null;
 		}
 
-		$new_feed    = \GFAPI::get_feed( $new_feed_id );
+		$new_feed = \GFAPI::get_feed( $new_feed_id );
 
 		if ( is_array( $new_feed ) && $this->hasAction( DownloadUrlResetAction::$name ) ) {
 			$form_id  = $new_feed['form_id'] ?? 0;

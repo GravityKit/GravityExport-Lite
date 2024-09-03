@@ -29,6 +29,7 @@ parameters:
 
   scanDirectories:
     - vendor/gravityforms/gravityforms # Gravity Forms has no `autoload` section, so we need to configure the path.
+    - vendor/gravityforms/gravitysurvey # Gravity Forms' Survey Add-on has no `autoload` section, so we need to configure the path.
 
   scanFiles:
     - phpstan-stubs/gravityforms.php.stub # Needed until https://github.com/phpstan/phpstan/issues/11559 is resolved.

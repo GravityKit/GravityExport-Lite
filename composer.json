@@ -41,6 +41,18 @@
         {
             "type": "vcs",
             "url": "git@github.com:gravityforms/gravityforms.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "gravityforms/gravitysurvey",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "git@github.com:gravityforms/gravityformssurvey.git",
+                    "reference": "HEAD"
+                }
+            }
         }
     ],
     "autoload-dev": {
@@ -50,6 +62,7 @@
     },
     "require-dev": {
         "gravityforms/gravityforms": "dev-master",
+        "gravityforms/gravitysurvey": "dev-master",
         "phpunit/phpunit": "7.5.*",
         "10up/wp_mock": "0.4.*",
         "szepeviktor/phpstan-wordpress": "^1.0",
