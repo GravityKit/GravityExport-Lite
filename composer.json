@@ -27,7 +27,9 @@
         "ext-json": "*",
         "php": "^7.2",
         "gravitykit/gravityexport-base": "dev-master",
-        "phpoffice/phpspreadsheet": "1.19.*"
+        "phpoffice/phpspreadsheet": "1.19.*",
+        "symfony/polyfill-iconv": "^1.31",
+        "symfony/polyfill-mbstring": "^1.31"
     },
     "autoload": {
         "classmap": [
