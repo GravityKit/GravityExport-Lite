@@ -168,7 +168,7 @@ class DownloadUrl {
 			return true;
 		}
 
-		return (bool) rgars( $feed, 'meta/has_embed_secret', false );
+		return (bool) rgars( $feed, 'meta/has_embed_secret' );
 	}
 
 	/**

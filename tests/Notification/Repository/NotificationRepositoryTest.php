@@ -84,7 +84,8 @@ class NotificationRepositoryTest extends TestCase
             'return' => true,
         ]);
 
-        $this->assertNull($this->repository->markAsDismissed($notifications[0]));
+	    $this->expectNotToPerformAssertions();
+        $this->repository->markAsDismissed($notifications[0]);
     }
 
     /**
@@ -124,7 +125,8 @@ class NotificationRepositoryTest extends TestCase
             'return' => true,
         ]);
 
-        $this->assertNull($this->repository->storeNotification(...$new_notifications));
+	    $this->expectNotToPerformAssertions();
+        $this->repository->storeNotification(...$new_notifications);
     }
 
     /**

@@ -197,7 +197,7 @@ class GFExcelOutput
 	 *
 	 * @since 1.9
 	 *
-	 * @return array|false
+	 * @return array
 	 */
 	private function getFeed()
 	{
@@ -231,7 +231,7 @@ class GFExcelOutput
     {
         $fieldClass = $this->transformer->transform($field);
         return array_filter($fieldClass->getColumns(), function ($column) {
-            return $column instanceof BaseValue;
+            return $column instanceof BaseValue; // @phpstan-ignore instanceof.alwaysTrue
         });
     }
 

@@ -14,6 +14,7 @@ use GFExcel\GravityForms\Field\CopyShortcode;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\SortFields;
+use GFExcel\Renderer\AbstractPHPExcelRenderer;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormRepositoryInterface;
@@ -23,7 +24,7 @@ use Gravity_Forms\Gravity_Forms\Settings\Fields;
  * GravityExport Lite add-on.
  * @since 2.0.0
  */
-final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, ActionAwareInterface {
+final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, ActionAwareInterface {
 	use ActionAware;
 	use AddonTrait;
 	use AddonHelperTrait;
@@ -124,6 +125,8 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 					'dom',
 					'zlib',
 					'xml',
+					'iconv',
+					'mbstring',
 				],
 			]
 		];
@@ -152,10 +155,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	public function init_admin(): void {
 		parent::init_admin();
 
-		add_action( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
+		add_filter( 'bulk_actions-toplevel_page_gf_edit_forms', \Closure::fromCallable( [ $this, 'bulk_actions' ] ) );
 		add_action( 'wp_loaded', \Closure::fromCallable( [ $this, 'handle_bulk_actions' ] ) );
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
-		add_filter( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
+		add_action( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
 		add_filter( 'gform_export_fields', \Closure::fromCallable( [ $this, 'gform_export_fields' ] ) );
 	}
 
@@ -896,7 +899,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 *
 	 * @param string $field The name of the meta field.
 	 * @param int $form_id The form id.
-	 * @param null $default The default value.
+	 * @param mixed|null $default The default value.
 	 *
 	 * @return mixed The field value.
 	 */
@@ -922,7 +925,6 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	}
 
 	/**
-	 * /**
 	 * Handles the download of multiple forms as a bulk action.
 	 * @since 1.2.0
 	 * @throws \PhpOffice\PhpSpreadsheet\Exception When the file could not be rendered.
@@ -948,6 +950,10 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 		$renderer = count( $form_ids ) > 1
 			? new PHPExcelMultisheetRenderer()
 			: GFExcel::getRenderer( current( $form_ids ) );
+
+		if ( ! $renderer instanceof AbstractPHPExcelRenderer ) {
+			return;
+		}
 
 		foreach ( $form_ids as $form_id ) {
 			$feed   = $this->get_feed_by_form_id( $form_id );
@@ -981,7 +987,7 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 * @return array The new form actions.
 	 */
 	private function gform_form_actions( array $form_actions, string $form_id ): array {
-		if ( $url = GFExcel::url( $form_id ) ) {
+		if ( $url = GFExcel::url( (int) $form_id ) ) {
 
 			$form_actions['download'] = [
 				'label'      => __( 'Download', 'gk-gravityexport-lite' ),
@@ -1060,7 +1066,11 @@ final class GravityExportAddon extends \GFFeedAddon implements AddonInterface, A
 	 */
 	public function duplicate_feed( $id, $new_form_id = false ): ?int {
 		$new_feed_id = parent::duplicate_feed( $id, $new_form_id );
-		$new_feed    = \GFAPI::get_feed( $new_feed_id );
+		if ( ! $new_feed_id ) {
+			return null;
+		}
+
+		$new_feed = \GFAPI::get_feed( $new_feed_id );
 
 		if ( is_array( $new_feed ) && $this->hasAction( DownloadUrlResetAction::$name ) ) {
 			$form_id  = $new_feed['form_id'] ?? 0;

@@ -29,9 +29,8 @@ class DownloadUrl extends Text {
 	/**
 	 * This is a readonly field.
 	 * @since 2.0.0
-	 * @var bool
 	 */
-	public $readonly = true;
+	public $readonly = 'readonly';
 
 	/**
 	 * @inheritdoc

@@ -8,13 +8,13 @@ use GFExcel\Values\BaseValue;
 class CreatedBy extends MetaField
 {
     /** @var string */
-    const USER_ID = 'user_id';
+    public const USER_ID = 'user_id';
 
     /** @var string */
-    const NICKNAME = 'nickname';
+    public const NICKNAME = 'nickname';
 
     /** @var string */
-    const DISPLAY_NAME = 'display_name';
+    public const DISPLAY_NAME = 'display_name';
 
     /**
      * {@inheritdoc}
@@ -54,10 +54,11 @@ class CreatedBy extends MetaField
      */
     private function getUserName($user_id, $property = 'nickname')
     {
-        if (!is_numeric($user_id) || (!$user = get_userdata($user_id))) {
-            // no user id or no user, return default.
-            return $user_id;
-        }
+	    $user = get_userdata( $user_id );
+	    if ( ! $user ) {
+		    // no user id or no user, return default.
+		    return $user_id;
+	    }
 
         if (!isset($user->$property)) {
             throw new \InvalidArgumentException(sprintf('User object does not contain the property \'%s\'', $property));

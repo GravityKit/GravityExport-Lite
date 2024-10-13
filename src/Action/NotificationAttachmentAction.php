@@ -24,7 +24,7 @@ final class NotificationAttachmentAction {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-		add_action( 'gform_notification', \Closure::fromCallable( [ $this, 'handle_notification' ] ), 10, 3 );
+		add_filter( 'gform_notification', \Closure::fromCallable( [ $this, 'handle_notification' ] ), 10, 3 );
 		add_action( 'gform_after_email', \Closure::fromCallable( [ $this, 'remove_temporary_file' ] ), 10, 13 );
 	}
 

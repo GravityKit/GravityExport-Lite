@@ -23,7 +23,7 @@ final class Usage {
 				require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
 			}
 
-			/** @var \stdClass $data */
+			/** @var object|array $data */
 			$data = plugins_api( 'plugin_information', [
 				'slug'   => 'gf-entries-in-excel',
 				'fields' => [ 'active_installs' => true ],
@@ -56,7 +56,7 @@ final class Usage {
 		// What step should we reach for?
 		$next_level = 1000;
 
-		$usage_target = ( ( $current_count / $next_level ) + 1 ) * $next_level;
+		$usage_target = ( ( (int) $current_count / $next_level ) + 1 ) * $next_level;
 
 		return (string) $number_format ? number_format_i18n( $usage_target ) : $usage_target;
 	}

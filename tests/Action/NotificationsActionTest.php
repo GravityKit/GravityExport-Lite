@@ -107,7 +107,8 @@ class NotificationsActionTest extends TestCase
             ],
         ]);
 
-        $this->assertNull($this->action->dismissNotification());
+		$this->expectNotToPerformAssertions();
+        $this->action->dismissNotification();
     }
 
     /**
@@ -158,6 +159,7 @@ class NotificationsActionTest extends TestCase
             ],
         ]);
 
-        $this->assertNull($this->action->registerScripts());
+	    $this->expectNotToPerformAssertions();
+        $this->action->registerScripts();
     }
 }
