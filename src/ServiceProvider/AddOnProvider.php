@@ -109,7 +109,7 @@ class AddOnProvider extends AbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 * Overwritten to ensure proper container type.
-	 * @since $ver$
+	 * @since 2.3.2
 	 * @return Container
 	 */
 	public function getContainer(): ContainerInterface {
