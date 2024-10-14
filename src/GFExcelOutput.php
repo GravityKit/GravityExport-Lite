@@ -130,7 +130,7 @@ class GFExcelOutput
         $rows = $this->getRows();
         $columns = $this->getColumns();
 
-        return $this->renderer->handle($form, $columns, $rows, $save);
+        return @$this->renderer->handle($form, $columns, $rows, $save);
     }
 
     /**
