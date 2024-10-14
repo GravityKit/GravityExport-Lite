@@ -2,6 +2,7 @@
 
 namespace GFExcel\Addon;
 
+use GFCommon;
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Action\DownloadUrlResetAction;
@@ -167,6 +168,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @since 2.0.0
 	 */
 	public function feed_settings_fields(): array {
+		require_once GFCommon::get_base_path() . '/includes/settings/class-fields.php';
+
 		// Register custom fields first.
 		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
