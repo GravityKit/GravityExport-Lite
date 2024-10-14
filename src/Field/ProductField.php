@@ -98,12 +98,12 @@ class ProductField extends SeparableField
 
 	/**
 	 * Whether the product field has a numeric value / price.
-	 * @return bool.
+	 * @return bool
 	 */
 	protected function hasNumericPrice(): bool {
 		$plugin = GravityExportAddon::get_instance();
 
-		return gf_apply_filters( [
+		return (bool) gf_apply_filters( [
 			'gfexcel_numeric_price',
 			$this->field->get_input_type(),
 			$this->field->formId,

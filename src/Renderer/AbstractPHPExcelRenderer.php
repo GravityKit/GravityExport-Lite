@@ -159,11 +159,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
      */
     protected function autoSizeColumns(Worksheet $worksheet, int $columns_count): AbstractPHPExcelRenderer
     {
-        for ($i = 1; $i <= $columns_count; $i++) {
-            if ($dimension = $worksheet->getColumnDimensionByColumn($i)) {
-                $dimension->setAutoSize(true);
-            }
-        }
+	    for ( $i = 1; $i <= $columns_count; $i ++ ) {
+		    $worksheet->getColumnDimensionByColumn( $i )->setAutoSize( true );
+	    }
 
         $max_width = gf_apply_filters([
             'gfexcel_renderer_columns_max_width',
@@ -198,9 +196,9 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
                 $form_id,
             ], false, $row);
 
-            if ($hide_row && ($row_dimension = $worksheet->getRowDimension($x + 1))) {
-                $row_dimension->setVisible(false);
-            }
+	        if ( $hide_row ) {
+		        $worksheet->getRowDimension( $x + 1 )->setVisible( false );
+	        }
 
             foreach ($row as $i => $value) {
                 try {
@@ -211,13 +209,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
                         $this->getCellType($value)
                     );
 
-                    $cell = $worksheet->getCellByColumnAndRow($i + 1, $x + 1);
-                    if (!$cell) {
-                        // This isn't going to happen, but it makes the IDE happy.
-                        continue;
-                    }
-
-                    $this->setProperties($cell, $value, $form_id);
+	                $cell = $worksheet->getCellByColumnAndRow( $i + 1, $x + 1 );
+	                $this->setProperties( $cell, $value, $form_id );
 
                     $wrap_text = (bool) gf_apply_filters([
                         'gfexcel_renderer_wrap_text',
@@ -405,12 +398,12 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
             }
 
             if ($value->hasBorder()) {
-                $array = array_filter([
-                    $value->getBorderPosition() => array_filter([
-                        'borderStyle' => Border::BORDER_THIN,
-                        'color' => $value->getBorderColor() ? ['rgb' => $value->getBorderColor()] : null,
-                    ]),
-                ]);
+	            $array = [
+		            $value->getBorderPosition() => array_filter( [
+			            'borderStyle' => Border::BORDER_THIN,
+			            'color'       => $value->getBorderColor() ? [ 'rgb' => $value->getBorderColor() ] : null,
+		            ] ),
+	            ];
 
                 $cell->getStyle()->getBorders()->applyFromArray($array);
             }

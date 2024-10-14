@@ -27,7 +27,9 @@
         "ext-json": "*",
         "php": "^7.2",
         "gravitykit/gravityexport-base": "dev-master",
-        "phpoffice/phpspreadsheet": "1.19.*"
+        "phpoffice/phpspreadsheet": "1.19.*",
+        "symfony/polyfill-iconv": "^1.31",
+        "symfony/polyfill-mbstring": "^1.31"
     },
     "autoload": {
         "classmap": [
@@ -37,20 +39,40 @@
             "GFExcel\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:gravityforms/gravityforms.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "gravityforms/gravitysurvey",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "git@github.com:gravityforms/gravityformssurvey.git",
+                    "reference": "HEAD"
+                }
+            }
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "GFExcel\\Tests\\": "tests/"
         }
     },
     "require-dev": {
+        "gravityforms/gravityforms": "dev-master",
+        "gravityforms/gravitysurvey": "dev-master",
         "phpunit/phpunit": "7.5.*",
         "10up/wp_mock": "0.4.*",
-        "szepeviktor/phpstan-wordpress": "^0.6.2",
-        "phpstan/phpstan-mockery": "^0.12.5",
+        "szepeviktor/phpstan-wordpress": "^1.0",
+        "phpstan/phpstan-mockery": "^1.1",
         "overtrue/phplint": "^2.1"
     },
     "scripts": {
-        "unbuild": "rm -rf build/composer.* build/vendor build/src",
+        "unbuild": "rm -rf build/composer.* build/vendor*/* build/src",
         "build": [
             "@unbuild",
             "cp composer.json build/composer.json",
@@ -62,6 +84,7 @@
         ],
         "linter": "vendor/bin/phplint --no-cache",
         "test": "vendor/bin/phpunit",
+        "analyse": "vendor/bin/phpstan",
         "post-install-cmd": [
             "composer dump-autoload -o"
         ],

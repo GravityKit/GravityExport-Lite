@@ -25,7 +25,7 @@ class SurveyLikertField extends SeparableField {
 			}
 
 			return $this->field->gsurveyLikertEnableMultipleRows
-				? $this->field->get_column_text( false, $entry, $input_id, true )
+				? $this->field->get_column_text( '', $entry, $input_id, true )
 				: $this->field->get_value_export( $entry, $input_id );
 		}
 

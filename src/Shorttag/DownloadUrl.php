@@ -1,10 +1,7 @@
 <?php
 
-use GFExcel\Shortcode\DownloadUrl;
-use GFExcel\Shorttag\DownloadUrl as DeprecatedDownloadUrl;
-
 /**
  * @deprecated use {@see DownloadUrl} instead.
  * @since 2.2.0
  */
-class_alias( DownloadUrl::class, DeprecatedDownloadUrl::class );
+class_alias( GFExcel\Shortcode\DownloadUrl::class, 'GFExcel\Shorttag\DownloadUrl' );

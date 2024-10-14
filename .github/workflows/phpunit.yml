@@ -13,7 +13,7 @@ jobs:
       matrix:
         php-versions: ['7.3', '7.4', '7.2']
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -24,13 +24,15 @@ jobs:
         run: composer validate
       - name: Cache dependencies
         id: cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-build-${{ matrix.php-versions }}-${{ hashFiles('composer.json') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ matrix.php-versions }}-
       - name: Install dependencies
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{secrets.COMPOSER_AUTH}}"} }'
         if: steps.cache.outputs.cache-hit != 'true'
         # We run `--no-scripts` to avoid using Strauss during unit tests
         run: composer install --prefer-dist --no-progress --no-scripts
@@ -39,6 +41,9 @@ jobs:
 
       - name: Run linter
         run: composer run-script linter
+
+      - name: Run PHPStan
+        run: composer run-script analyse
 
       - name: Run test suite
         run: composer run-script test

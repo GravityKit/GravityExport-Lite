@@ -120,6 +120,7 @@ class MigrationManagerTest extends TestCase {
 		$migrations = $this->manager->getMigrations();
 		self::assertCount( 3, $migrations );
 
+		/** @var Test_Migration_1_0_0[] $migrations */
 		foreach ( $migrations as $migration ) {
 			self::assertTrue( $migration->ran );
 			self::assertSame( $this->manager, $migration->getManager() );

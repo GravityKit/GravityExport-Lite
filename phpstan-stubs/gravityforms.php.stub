@@ -1,0 +1,38 @@
+<?php
+
+declare( strict_types=1 );
+
+/**
+ * @param string|mixed[] $filter The name of the filter.
+ * @param mixed $value The value to filter.
+ * @param mixed ...$extra_values Extra values.
+ *
+ * @return mixed The filtered value.
+ */
+function gf_apply_filters( $filter, $value, ...$extra_values ) {
+	return $value;
+}
+
+/**
+ * @param string|mixed[] $action The action.
+ * @param mixed ...$extra_values The extra values.
+ */
+function gf_do_action( $action, ...$extra_values ): void {
+}
+
+/**
+ * Get a specific property of an array without needing to check if that property exists.
+ *
+ * Provide a default value if you want to return a specific value if the property is not set.
+ *
+ * @since  Unknown
+ * @access public
+ *
+ * @param array<mixed> $array Array from which the property's value should be retrieved.
+ * @param string $prop Name of the property to be retrieved.
+ * @param mixed $default Optional. Value that should be returned if the property is not set or empty. Defaults to null.
+ *
+ * @return null|string|mixed The value
+ */
+function rgar( $array, $prop, $default = null ) {
+}
