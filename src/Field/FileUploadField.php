@@ -106,7 +106,7 @@ class FileUploadField extends BaseField implements RowsInterface {
 	/**
 	 * Returns whether to force a download URL.
 	 *
-	 * @since $ver$
+	 * @since 2.3.3
 	 *
 	 * @return bool Whether to force a download URL.
 	 */
