@@ -256,9 +256,9 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= 2.3.3 on October 28, 2024 =
+= 2.3.3 on October 29, 2024 =
 
-* Enhancement: Added `gfexcel_field_fileuploads_force_download` hook, to disable the forced download links.
+* Enhancement: Added a `gfexcel_field_fileuploads_force_download` filter to control whether file upload links open in the browser or download directly.
 
 = 2.3.2 on October 14, 2024 =
 
