@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.6.2
-Stable tag: 2.3.2
+Tested up to: 6.7
+Stable tag: 2.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,10 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.3.3 on October 29, 2024 =
+
+* Enhancement: Added a `gfexcel_field_fileuploads_force_download` filter to control whether file upload links open in the browser or download directly.
 
 = 2.3.2 on October 14, 2024 =
 
