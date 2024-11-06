@@ -100,6 +100,7 @@
             "classmap_output": false,
             "delete_vendor_packages": true,
             "delete_vendor_files": true,
+            "include_modified_date": false,
             "exclude_from_prefix": {
                 "namespaces": [
                     "GFExcel"
