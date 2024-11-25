@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     GravityExport Lite
- * Version:         2.3.4
+ * Version:         2.3.5
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityKit
@@ -28,7 +28,7 @@ if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '2.3.4' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '2.3.5' );
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
@@ -46,12 +46,14 @@ if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
 	return;
 }
 
+add_action( 'init', static function (): void {
+	load_plugin_textdomain( 'gk-gravityexport-lite', false, basename( __DIR__ ) . '/languages' );
+} );
+
 add_action( 'gform_loaded', static function (): void {
 	if ( ! class_exists( 'GFForms' ) || ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
 		return;
 	}
-
-	load_plugin_textdomain( 'gk-gravityexport-lite', false, basename( __DIR__ ) . '/languages' );
 
 	GFForms::include_addon_framework();
 	GFForms::include_feed_addon_framework();
@@ -94,7 +96,7 @@ add_action( 'gform_loaded', static function (): void {
 
 		// Also autoload any old class as possible class aliases.
 		spl_autoload_register( function ( string $class ) {
-			if (strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0) {
+			if ( strpos( $class, 'PhpOffice\\PhpSpreadsheet\\' ) === 0 ) {
 				$target = 'GFExcel\\Vendor\\' . $class;
 				if ( class_exists( $target ) || interface_exists( $target ) ) {
 					class_alias( $target, $class );
@@ -104,7 +106,7 @@ add_action( 'gform_loaded', static function (): void {
 	}
 
 	// Start DI container.
-	$container = (new Container())
+	$container = ( new Container() )
 		// add internal service provider
 		->addServiceProvider( new BaseServiceProvider() )
 		->addServiceProvider( new AddOnProvider() );
