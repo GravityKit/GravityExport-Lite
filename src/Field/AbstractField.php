@@ -4,6 +4,7 @@ namespace GFExcel\Field;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Values\BaseValue;
+use Throwable;
 
 /**
  * @since 1.0.0
@@ -137,7 +138,13 @@ abstract class AbstractField implements FieldInterface {
 			return date_i18n( 'Y-m-d H:i:s', $lead_local_time, true );
 		}
 
-		$value = $this->field->get_value_export( $entry, $input_id, $use_text = false, $is_csv = false );
+		// Prevent Type Errors from fields.
+		try {
+			$value = $this->field->get_value_export( $entry, $input_id, $use_text = false, $is_csv = false );
+		} catch ( Throwable $error ) {
+			GravityExportAddon::get_instance()->log_error( $error->getMessage() );
+			$value = null;
+		}
 
 		if ( is_string( $value ) ) {
 			$value = html_entity_decode( $value );
