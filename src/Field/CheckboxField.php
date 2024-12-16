@@ -44,13 +44,31 @@ class CheckboxField extends BaseField implements RowsInterface {
 			);
 			yield $this->wrap( [ $value ] );
 		} else {
+			$has_values = false;
 			foreach ( $inputs as $input ) {
 				$index = (string) $input['id'];
 
 				if ( ! rgempty( $index, $entry ) ) {
-					$value = $this->filter_value( $this->getFieldValue( $entry, $index ), $entry );
-
+					$has_values = true;
+					$value      = $this->filter_value( $this->getFieldValue( $entry, $index ), $entry );
 					yield $this->wrap( [ $value ] );
+				}
+			}
+
+			if ( ! $has_values ) {
+				$empty_value = gf_apply_filters(
+					[
+						'gfexcel_field_checkbox_empty',
+						$this->field->formId,
+						$this->field->id,
+					],
+					'',
+					$entry,
+					$this->field
+				);
+
+				if ( '' !== $empty_value ) {
+					yield $this->wrap( [ $empty_value ] );
 				}
 			}
 		}
