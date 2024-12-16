@@ -256,6 +256,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Type errors on fields no longer cause exports to fail. Values become empty, and errors are logged.
+* Enhancement: Added a `gfexcel_field_checkbox_empty` filter to control checkbox output, when no option was selected.
+
 = 2.3.5 on November 25, 2024 =
 
 * Fixed: PHP notice in WordPress 6.7 caused by initializing product translations too early.
