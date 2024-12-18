@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.7
-Stable tag: 2.3.5
+Stable tag: 2.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,7 +256,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.3.6 on December 18, 2024 =
 
 * Fixed: Type errors on fields no longer cause exports to fail. Values become empty, and errors are logged.
 * Enhancement: Added a `gfexcel_field_checkbox_empty` filter to control checkbox output, when no option was selected.
