@@ -12,11 +12,18 @@ use GFExcel\GFExcel;
  * @since 1.6.1
  */
 class DownloadUrl {
-	/** @var string */
+	/**
+	 * The short code name.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @var string
+	 */
 	public const SHORTCODE = 'gravityexport_download_url';
 
 	/**
-	 * @deprecated $ver$ use
+	 * @deprecated 2.2.0 use {@see self::SHORTCODE}.
+	 *
 	 * @var string
 	 */
 	public const SHORTTAG = self::SHORTCODE;
@@ -27,6 +34,11 @@ class DownloadUrl {
 	 */
 	private const SECRET_LENGTH = 6;
 
+	/**
+	 * Adds the required hooks.
+	 *
+	 * @since 2.2.0
+	 */
 	public function __construct() {
 		add_shortcode( 'gfexcel_download_url', [ $this, 'handle' ] ); // Backward compatibility.
 		add_shortcode( self::SHORTCODE, [ $this, 'handle' ] );
