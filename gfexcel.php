@@ -63,11 +63,18 @@ add_action( 'gform_loaded', static function (): void {
 	}
 
 	$autoload_file = __DIR__ . '/build/vendor/autoload.php';
-	$is_build      = true;
+	$src_folder    = __DIR__ . '/build/vendor_prefixed/gravitykit/gravityexport-lite-src';
+
+	$is_build = true;
 	if ( ! file_exists( $autoload_file ) ) {
 		$autoload_file = __DIR__ . '/vendor/autoload.php';
 		$is_build      = false;
 	}
+
+	if ( ! $is_build || ! is_readable( $src_folder ) ) {
+		$src_folder = __DIR__ . '/src';
+	}
+	define( 'GFEXCEL_SRC_FOLDER', $src_folder );
 
 	require_once $autoload_file;
 
