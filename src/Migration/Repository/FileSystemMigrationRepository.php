@@ -51,6 +51,10 @@ final class FileSystemMigrationRepository implements MigrationRepositoryInterfac
 	 * @since 2.0.0
 	 */
 	public function getMigrations(): array {
+		if ( ! is_readable( $this->migration_path ) ) {
+			return [];
+		}
+
 		// Change directory for glob. We do this here, so we can better test `getMigrations()`.
 		chdir( $this->migration_path );
 

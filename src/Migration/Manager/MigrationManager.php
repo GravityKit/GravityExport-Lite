@@ -72,6 +72,8 @@ class MigrationManager {
 			$this->migrate();
 		} catch ( MigrationException $e ) {
 			GravityExportAddon::get_instance()->log_error( sprintf( 'Migration error: %s', $e->getMessage() ) );
+			// Clear running status.
+			$this->repository->setRunning( false );
 		}
 	}
 

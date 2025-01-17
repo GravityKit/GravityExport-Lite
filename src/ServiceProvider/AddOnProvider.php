@@ -59,7 +59,7 @@ class AddOnProvider extends AbstractServiceProvider {
 		$container = $this->getContainer();
 
 		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class )
-		          ->addArgument( dirname( GFEXCEL_PLUGIN_FILE ) . '/src/Migration/Migration/' );
+		          ->addArgument( GFEXCEL_SRC_FOLDER . '/Migration/Migration/' );
 		$container->add( NotificationRepositoryInterface::class, NotificationRepository::class );
 		$container->add( NotificationManager::class )->addArgument( NotificationRepositoryInterface::class );
 

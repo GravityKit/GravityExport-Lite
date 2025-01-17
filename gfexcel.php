@@ -35,6 +35,12 @@ if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
 	define( 'GFEXCEL_MIN_PHP_VERSION', '7.2' );
 }
 
+$src_folder    = __DIR__ . '/build/vendor_prefixed/gravitykit/gravityexport-lite-src';
+if ( ! is_readable( $src_folder ) ) {
+	$src_folder = __DIR__ . '/src';
+}
+define( 'GFEXCEL_SRC_FOLDER', $src_folder );
+
 if ( version_compare( phpversion(), GFEXCEL_MIN_PHP_VERSION, '<' ) ) {
 	$show_minimum_php_version_message = function () {
 		$message = wpautop( sprintf( esc_html__( 'GravityExport Lite requires PHP %s or newer.', 'gk-gravityexport-lite' ), GFEXCEL_MIN_PHP_VERSION ) );
@@ -63,7 +69,8 @@ add_action( 'gform_loaded', static function (): void {
 	}
 
 	$autoload_file = __DIR__ . '/build/vendor/autoload.php';
-	$is_build      = true;
+
+	$is_build = true;
 	if ( ! file_exists( $autoload_file ) ) {
 		$autoload_file = __DIR__ . '/vendor/autoload.php';
 		$is_build      = false;

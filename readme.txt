@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: A warning would appear when upgrading GravityExport Lite.
+
 = 2.3.6 on December 18, 2024 =
 
 * Fixed: Type errors on fields no longer cause exports to fail. Values become empty, and errors are logged.
