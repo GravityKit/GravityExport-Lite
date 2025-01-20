@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Enhancement: Nested forms can now also export entry meta values.
+
 = 2.3.7 on January 17, 2025 =
 
 * Fixed: A warning would appear when upgrading GravityExport Lite.

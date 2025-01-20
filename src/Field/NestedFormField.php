@@ -5,6 +5,7 @@ namespace GFExcel\Field;
 use GFExcel\GFExcel;
 use GFExcel\Transformer\Transformer;
 use GFExcel\Transformer\TransformerAwareInterface;
+use GFExport;
 
 /**
  * A field transformer for {@see \GP_Nested_Form_Field}.
@@ -102,6 +103,8 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 		if ( ! $nested_form ) {
 			return $this->fields = [];
 		}
+
+		$nested_form = GFExport::add_default_export_fields( $nested_form );
 
 		// Cache the results.
 		$this->fields = array_reduce(
