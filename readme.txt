@@ -260,6 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Enhancement: Nested forms can now also export entry meta values.
 * Fixed: Nested form values could cause an exception.
+* Fixed: Columns labels from Nested Form Fields no longer included the parent label.
 
 = 2.3.7 on January 17, 2025 =
 

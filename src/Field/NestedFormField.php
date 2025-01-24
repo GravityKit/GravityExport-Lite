@@ -69,11 +69,30 @@ class NestedFormField extends SeparableField implements RowsInterface, Transform
 	 * @since 1.10
 	 */
 	protected function getSeparatedColumns(): array {
-		$fields = array_map( function ( FieldInterface $field ): array {
+		$columns = array_map( static function ( FieldInterface $field ): array {
 			return $field->getColumns();
 		}, array_values( $this->getNestedFields() ) );
 
-		return array_merge( [], ...$fields );
+		return array_map(
+			function ( $column ): string {
+				return
+					gf_apply_filters(
+						[
+							'gfexcel_field_label',
+							$this->field->get_input_type(),
+							$this->field->formId,
+							$this->field->id,
+						],
+						sprintf(
+							'%s (%s)', // Nested field label (Wrapper label)
+							(string) $column,
+							$this->getSubLabel( $this->field )
+						),
+						$this->field
+					);
+			},
+			array_merge( [], ...$columns )
+		);
 	}
 
 	/**
