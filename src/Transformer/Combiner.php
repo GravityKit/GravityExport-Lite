@@ -78,7 +78,8 @@ class Combiner implements CombinerInterface {
 				return $output;
 			}, '' );
 
-			$gf_field = array_filter( $values ) ? reset( $values )->getField() : new GF_Field();
+			$non_empty_values = array_filter( $values );
+			$gf_field         = $non_empty_values ? reset( $non_empty_values )->getField() : new GF_Field();
 
 			$combined_row[ $column ] = new StringValue( $combined, $gf_field );
 		}

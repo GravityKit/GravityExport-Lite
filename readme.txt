@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Enhancement: Nested forms can now also export entry meta values.
+* Fixed: Nested form values could cause an exception.
 
 = 2.3.7 on January 17, 2025 =
 
