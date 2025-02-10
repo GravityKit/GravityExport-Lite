@@ -104,7 +104,7 @@ class DownloadUrl extends Text {
 		}
 
 		$permalink = '/index.php?' . GFExcel::KEY_ACTION . '=%s&' . GFExcel::KEY_HASH . '=%s';
-		$action    = GFExcel::$slug;
+		$action    = GFExcel::get_default_endpoint();
 
 		if ( get_option( 'permalink_structure' ) ) {
 			$permalink = '/%s/%s';

@@ -83,25 +83,24 @@ class GFExcel
      * @param int $form_id The id of the form.
      * @return string|null
      */
-    public static function url($form_id)
-    {
-        $blogurl = get_bloginfo('url');
-        $permalink = '/index.php?' . self::KEY_ACTION . '=%s&' . self::KEY_HASH . '=%s';
+	public static function url( $form_id ) {
+		$blogurl   = get_bloginfo( 'url' );
+		$permalink = '/index.php?' . self::KEY_ACTION . '=%s&' . self::KEY_HASH . '=%s';
 
-        $action = self::$slug;
-        $hash = self::getHash($form_id);
-        if (!$hash) {
-            return null;
-        }
+		$action = self::get_default_endpoint();
+		$hash   = self::getHash( $form_id );
+		if ( ! $hash ) {
+			return null;
+		}
 
-        if (get_option('permalink_structure')) {
-            $permalink = '/%s/%s';
-        } else {
-            $hash = urlencode($hash);
-        }
+		if ( get_option( 'permalink_structure' ) ) {
+			$permalink = '/%s/%s';
+		} else {
+			$hash = urlencode( $hash );
+		}
 
-        return $blogurl . sprintf($permalink, $action, $hash);
-    }
+		return $blogurl . sprintf( $permalink, $action, $hash );
+	}
 
     /**
      * Returns the download hash for a form.
@@ -247,7 +246,7 @@ class GFExcel
 	    $rewrite_rules = get_option( 'rewrite_rules' );
 	    $flush_rules   = false;
 
-	    foreach ( self::$endpoints as $endpoint ) {
+	    foreach ( self::get_endpoints() as $endpoint ) {
 
 		    $endpoint_regex = '^' . $endpoint . '/(.+)/?$';
 
@@ -282,7 +281,7 @@ class GFExcel
 		    return $query_vars;
 	    }
 
-	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], self::$endpoints, true ) ) {
+	    if ( ! in_array( $query_vars[ self::KEY_ACTION ], self::get_endpoints(), true ) ) {
 		    return $query_vars;
 	    }
 
@@ -404,7 +403,7 @@ class GFExcel
         $path = (!empty($site_url['path'])) ? $site_url['path'] : '';
 
         $lines = '';
-        foreach( self::$endpoints as $endpoint ) {
+        foreach( self::get_endpoints() as $endpoint ) {
 	        $lines .= sprintf( 'Disallow: %s/%s/', esc_attr( $path ), $endpoint ) . "\n";
         }
 
@@ -415,6 +414,37 @@ class GFExcel
 
         return trim(sprintf("%s\n%s\n%s", $output, 'User-agent: *', $lines));
     }
+
+	/**
+	 * Returns the possible endpoints for the download url.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string[] The possible endpoints.
+	 */
+	public static function get_endpoints(): array {
+		return array_merge(
+			self::$endpoints,
+			(array) apply_filters( 'gk/gravityexport/download/endpoints', [] )
+		);
+	}
+
+	/**
+	 * Returns the default endpoint for the download url.
+	 *
+	 * Note: The endpoint must be a valid, registered, endpoint; otherwise the default will be used.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The endpoint.
+	 */
+	public static function get_default_endpoint(): string {
+		$endpoint = (string) apply_filters( 'gk/gravityexport/download/default-endpoint', self::$slug );
+
+		return in_array( $endpoint, self::get_endpoints(), false )
+			? $endpoint
+			: self::$slug;
+	}
 
     /**
      * Whether all forms should be secured.

@@ -258,7 +258,12 @@ You can hide a row by adding a hook. Checkout this example:
 
 = develop =
 
+* Enhancement: The slug of the download URL can be changed using the `gk/gravityexport/download/default-endpoint` and `gk/gravityexport/download/endpoints` hooks.
 * Fixed: The download URL of an Upload Field with multiple files was not passed through `gfexcel_field_value`.
+
+__Developers__:
+* `gk/gravityexport/download/endpoints` hook was added to append extra download slugs as possible download URLs.
+* `gk/gravityexport/download/default-endpoint` hook was added to set the default download slug.
 
 = 2.3.8 on January 27, 2025 =
 

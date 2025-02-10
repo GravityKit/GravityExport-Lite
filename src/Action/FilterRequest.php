@@ -87,7 +87,7 @@ class FilterRequest
      */
 	public function request( $query_vars ) {
 		// only respond to a GFexcel URL.
-		if ( ! in_array( $query_vars[ GFExcel::KEY_ACTION ] ?? null, GFExcel::$endpoints, true ) ) {
+		if ( ! in_array( $query_vars[ GFExcel::KEY_ACTION ] ?? null, GFExcel::get_endpoints(), true ) ) {
 			return $query_vars;
 		}
 
