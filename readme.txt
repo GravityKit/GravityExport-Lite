@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = 2.3.9 on May 5, 2025 =
 
 * Fixed: PHP notice in WordPress 6.8 caused by initializing product translations too early.
+* Fixed: The download URL of an Upload Field with multiple files was not passed through `gfexcel_field_value`.
 
 = 2.3.8 on January 27, 2025 =
 
