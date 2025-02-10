@@ -81,7 +81,10 @@ class FileUploadField extends BaseField implements RowsInterface {
 
 				foreach ( $files as $file ) {
 					yield $this->wrap( [
-						$this->field->get_download_url( $file, $this->should_force_download() ),
+						$this->filter_value(
+							$this->field->get_download_url( $file, $this->should_force_download() ),
+							$entry ?? []
+						),
 					] );
 				}
 			}

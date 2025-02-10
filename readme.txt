@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: The download URL of an Upload Field with multiple files was not passed through `gfexcel_field_value`.
+
 = 2.3.8 on January 27, 2025 =
 
 * Enhancement: Nested forms can now also export entry meta values.
