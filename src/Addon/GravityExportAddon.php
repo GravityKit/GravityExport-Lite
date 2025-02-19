@@ -82,13 +82,13 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @since 2.0.0
 	 * @var string Relative path to file from plugins directory.
 	 */
-	protected $_path = 'gf-entries-in-excel/src/Addon/GravityExportAddon.php';
+	protected $_path = 'gravityexport-lite/gfexcel.php';
 
 	/**
 	 * @since 2.0.0
 	 * @var string Full path to this file.
 	 */
-	protected $_full_path = __FILE__;
+	protected $_full_path = GFEXCEL_PLUGIN_FILE;
 
 	/**
 	 * A micro cache for the feed object.
