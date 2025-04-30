@@ -23,7 +23,7 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 	public function __construct( HashGeneratorInterface $generator ) {
 		parent::__construct( $generator );
 
-		static::$success_message = esc_html__( 'The download URL has been enabled.', 'gk-gravityexport-lite' );
+		static::$success_message = 'The download URL has been enabled.';
 	}
 
 	/**
