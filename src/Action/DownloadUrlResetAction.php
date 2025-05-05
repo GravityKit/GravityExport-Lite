@@ -38,7 +38,7 @@ class DownloadUrlResetAction extends AbstractAction {
 	public function __construct( HashGeneratorInterface $generator ) {
 		$this->generator = $generator;
 
-		static::$success_message = esc_html__( 'The download URL has been reset.', 'gk-gravityexport-lite' );
+		static::$success_message = 'The download URL has been reset.';
 	}
 
 	/**
@@ -73,6 +73,6 @@ class DownloadUrlResetAction extends AbstractAction {
 		$addon->set_previous_settings( $settings );
 
 		// Set notification of success.
-		$addon->add_message( static::$success_message );
+		$addon->add_message( esc_html__( static::$success_message, 'gk-gravityexport-lite' ) );
 	}
 }
