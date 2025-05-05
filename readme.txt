@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: PHP notice in WordPress 6.8 caused by initializing product translations too early.
+
 = 2.3.8 on January 27, 2025 =
 
 * Enhancement: Nested forms can now also export entry meta values.
