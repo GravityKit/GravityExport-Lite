@@ -5,7 +5,8 @@ namespace GFExcel\GravityForms\Field;
 use GFExcel\Action\DownloadUrlDisableAction;
 use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
-use GFExcel\GFExcel;
+use GFExcel\Routing\Router;
+use GFExcel\Routing\WordPressRouter;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Text;
 
 /**
@@ -103,8 +104,8 @@ class DownloadUrl extends Text {
 			return $hash;
 		}
 
-		$permalink = '/index.php?' . GFExcel::KEY_ACTION . '=%s&' . GFExcel::KEY_HASH . '=%s';
-		$action    = GFExcel::$slug;
+		$permalink = '/index.php?' . Router::KEY_ACTION . '=%s&' . Router::KEY_HASH . '=%s';
+		$action    = WordPressRouter::DEFAULT_ACTION;
 
 		if ( get_option( 'permalink_structure' ) ) {
 			$permalink = '/%s/%s';

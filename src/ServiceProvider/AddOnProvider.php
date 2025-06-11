@@ -19,6 +19,8 @@ use GFExcel\Migration\Repository\MigrationRepositoryInterface;
 use GFExcel\Notification\Manager\NotificationManager;
 use GFExcel\Notification\Repository\NotificationRepository;
 use GFExcel\Notification\Repository\NotificationRepositoryInterface;
+use GFExcel\Routing\Router;
+use GFExcel\Routing\WordPressRouter;
 use GFExcel\Shortcode\DownloadUrl;
 use League\Container\Container;
 use League\Container\Definition\DefinitionInterface;
@@ -42,6 +44,7 @@ class AddOnProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		self::AUTOSTART_TAG,
+		Router::class,
 		NotificationRepositoryInterface::class,
 		NotificationManager::class,
 		CountDownloads::class,
@@ -58,6 +61,7 @@ class AddOnProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$container = $this->getContainer();
 
+		$container->add( Router::class, WordPressRouter::class );
 		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class )
 		          ->addArgument( GFEXCEL_SRC_FOLDER . '/Migration/Migration/' );
 		$container->add( NotificationRepositoryInterface::class, NotificationRepository::class );
@@ -65,7 +69,8 @@ class AddOnProvider extends AbstractServiceProvider {
 
 		$this->addAutoStart( CountDownloads::class );
 		$this->addAutoStart( DownloadUrl::class );
-		$this->addAutoStart( FilterRequest::class );
+		$this->addAutoStart( FilterRequest::class )
+		     ->addArgument( Router::class );
 		$this->addAutoStart( MetaBoxes::class );
 
 		$this->addAutoStart( MigrationManager::class )
