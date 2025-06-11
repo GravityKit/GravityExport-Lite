@@ -26,7 +26,7 @@
     "require": {
         "ext-json": "*",
         "php": "^7.2",
-        "gravitykit/gravityexport-base": "dev-master",
+        "league/container": "^3.3",
         "phpoffice/phpspreadsheet": "1.19.*",
         "symfony/polyfill-iconv": "^1.31",
         "symfony/polyfill-mbstring": "^1.31"
@@ -65,7 +65,7 @@
     "require-dev": {
         "gravityforms/gravityforms": "dev-master",
         "gravityforms/gravitysurvey": "dev-master",
-        "phpunit/phpunit": "7.5.*",
+        "phpunit/phpunit": "8.5.*",
         "10up/wp_mock": "0.4.*",
         "szepeviktor/phpstan-wordpress": "^1.0",
         "phpstan/phpstan-mockery": "^1.1",
@@ -105,15 +105,6 @@
                 "namespaces": [
                     "GFExcel"
                 ]
-            },
-            "override_autoload": {
-                "gravitykit/gravityexport-base": {
-                    "files": [
-                        "templates",
-                        "public",
-                        "src"
-                    ]
-                }
             }
         }
     }

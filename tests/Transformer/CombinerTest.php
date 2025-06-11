@@ -93,7 +93,7 @@ class CombinerTest extends TestCase
         $this->gf_field->id = 1;
         $this->gf_field->formId = 1;
 
-        $field = $this->createMock([RowsInterface::class, FieldInterface::class]);
+	    $field = $this->createMock( CombinerFieldTestInterface::class );
         $field->expects($this->exactly(2))->method('getRows')->with([])->willReturn([
             [new StringValue('Jane', $this->gf_field), new StringValue('Doe', $this->gf_field)],
             [new StringValue('John', $this->gf_field), new StringValue('Jones', $this->gf_field)],
@@ -131,4 +131,10 @@ class CombinerTest extends TestCase
             $this->assertSame($expected_value, $rows[0][$i]->getValue());
         }
     }
+}
+
+/**
+ * For testing purposes.
+ */
+interface CombinerFieldTestInterface extends CombinerInterface, FieldInterface {
 }
