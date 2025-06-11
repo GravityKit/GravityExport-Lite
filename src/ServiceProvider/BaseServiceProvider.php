@@ -6,6 +6,7 @@ use GFExcel\Action\ActionAwareInterface;
 use GFExcel\Action\ActionInterface;
 use GFExcel\Generator\HashGenerator;
 use GFExcel\Generator\HashGeneratorInterface;
+use GFExcel\Routing\Router;
 use GFExcel\Template\TemplateAwareInterface;
 use GFExcel\Repository\FormRepository;
 use GFExcel\Repository\FormRepositoryInterface;
@@ -36,7 +37,10 @@ class BaseServiceProvider extends AbstractServiceProvider
         $container->add(
             FormRepositoryInterface::class,
             FormRepository::class
-        )->addArgument(\GFAPI::class);
+        )
+                  ->addArgument(\GFAPI::class)
+                  ->addArgument(Router::class)
+        ;
 
         $container->add(HashGeneratorInterface::class, HashGenerator::class);
     }

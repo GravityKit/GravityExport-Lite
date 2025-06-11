@@ -219,6 +219,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'name'       => 'hash',
 					'type'       => 'download_url',
 					'assets_dir' => $this->assets_dir,
+					'url' => $this->form_repository->getDownloadUrl( $this->get_current_settings() )
 				],
 				[
 					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),

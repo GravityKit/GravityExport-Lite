@@ -34,6 +34,13 @@ class DownloadUrl extends Text {
 	public $readonly = 'readonly';
 
 	/**
+	 * The url for the download form.
+	 * @since $ver$
+	 * @var string
+	 */
+	public $url = '';
+
+	/**
 	 * @inheritdoc
 	 * @since 2.0.0
 	 */
@@ -104,16 +111,7 @@ class DownloadUrl extends Text {
 			return $hash;
 		}
 
-		$permalink = '/index.php?' . Router::KEY_ACTION . '=%s&' . Router::KEY_HASH . '=%s';
-		$action    = WordPressRouter::DEFAULT_ACTION;
-
-		if ( get_option( 'permalink_structure' ) ) {
-			$permalink = '/%s/%s';
-		} else {
-			$hash = urlencode( $hash );
-		}
-
-		return $blog_url . sprintf( $permalink, $action, $hash );
+		return $this->url;
 	}
 
 	/**

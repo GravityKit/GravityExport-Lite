@@ -77,6 +77,7 @@ class GFExcel {
 	public const KEY_FILE_EXTENSION = 'gfexcel_file_extension';
 
 	private static $file_extension;
+
 	/**
 	 * The router instance.
 	 * @since $ver$
