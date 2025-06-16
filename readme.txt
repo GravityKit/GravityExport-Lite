@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Changed: Replaced Router logic with a new implementation for future features.
+
 = 2.3.9 on May 5, 2025 =
 
 * Fixed: PHP notice in WordPress 6.8 caused by initializing product translations too early.
