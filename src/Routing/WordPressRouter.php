@@ -32,7 +32,7 @@ final class WordPressRouter implements Router {
 	 * @since $ver$
 	 */
 	public function init(): void {
-		$this->maybe_register_routes();
+		$this->register_endpoints( $this->endpoints() );
 	}
 
 	/**
@@ -49,11 +49,11 @@ final class WordPressRouter implements Router {
 	 *
 	 * @since 1.0.0
 	 */
-	private function maybe_register_routes(): void {
+	public function register_endpoints( array $endpoints ): void {
 		$rewrite_rules = get_option( 'rewrite_rules' );
 		$flush_rules   = false;
 
-		foreach ( $this->endpoints() as $endpoint ) {
+		foreach ( $endpoints as $endpoint ) {
 			$endpoint_regex = '^' . $endpoint . '/(.+)/?$';
 
 			add_rewrite_rule(
@@ -124,7 +124,7 @@ final class WordPressRouter implements Router {
 	 *
 	 * @return string|null the hash
 	 */
-	private function get_hash_for_form( int $form_id ): ?string {
+	public function get_hash_for_form( int $form_id ): ?string {
 		if ( ! \GFAPI::form_id_exists( $form_id ) ) {
 			return null;
 		}

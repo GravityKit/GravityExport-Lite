@@ -45,6 +45,7 @@ class AddOnProvider extends AbstractServiceProvider {
 	protected $provides = [
 		self::AUTOSTART_TAG,
 		Router::class,
+		WordPressRouter::class,
 		NotificationRepositoryInterface::class,
 		NotificationManager::class,
 		CountDownloads::class,
@@ -62,6 +63,7 @@ class AddOnProvider extends AbstractServiceProvider {
 		$container = $this->getContainer();
 
 		$container->add( Router::class, WordPressRouter::class );
+
 		$container->add( MigrationRepositoryInterface::class, FileSystemMigrationRepository::class )
 		          ->addArgument( GFEXCEL_SRC_FOLDER . '/Migration/Migration/' );
 		$container->add( NotificationRepositoryInterface::class, NotificationRepository::class );
