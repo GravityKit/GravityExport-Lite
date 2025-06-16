@@ -12,7 +12,7 @@ interface FormRepositoryInterface
      *
      * @since $ver$
      * @param int $form_id The form id to retrieve the entries from.
-     * @param string[] $search_criteria (Optional) search criteria.
+     * @param array $search_criteria (Optional) search criteria.
      * @param string [] $sorting (Optional) sorting criteria.
      * @return iterable All entries for a form.
      */

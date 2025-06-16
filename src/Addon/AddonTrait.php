@@ -44,12 +44,12 @@ trait AddonTrait
      */
     public static function get_instance(): AddonInterface
     {
-        if (self::$_instance === null) {
-            throw new \RuntimeException(sprintf(
-                'No instance of "%s" provided.',
-                self::class
-            ));
-        }
+	    if ( ! self::$_instance instanceof static ) {
+		    throw new \RuntimeException( sprintf(
+			    'No instance of "%s" provided.',
+			    self::class
+		    ) );
+	    }
 
         return self::$_instance;
     }

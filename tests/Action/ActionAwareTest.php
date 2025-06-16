@@ -16,7 +16,6 @@ class ActionAwareTest extends TestCase
     /**
      * The Trait under test.
      * @since $ver$
-     * @var ActionAware
      */
     private $trait;
 

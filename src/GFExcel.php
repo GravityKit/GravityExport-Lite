@@ -93,14 +93,14 @@ class GFExcel {
 	 *
 	 * @var self
 	 */
-	private static $_instance;
+	private static $_instance = null;
 
 	/**
 	 * Instantiates the plugin.
 	 * @since 1.0.0
 	 */
 	public function __construct( Router $router ) {
-		if ( isset( self::$_instance ) ) {
+		if ( self::$_instance !== null ) {
 			return;
 		}
 
@@ -117,15 +117,16 @@ class GFExcel {
 	/** Return the url for the form
 	 * @since 1.0.0
 	 *
-	 * @param int $form_id The id of the form.
+	 * @param int|string $form_id The id of the form.
 	 *
 	 * @depreacted $ver$ Use Router instead.
 	 *
 	 * @return string|null
 	 */
 	public static function url( $form_id ) {
-		return ( self::$_instance->router ?? new WordPressRouter() )
-			->get_url_for_form( $form_id );
+		$router = self::$_instance !== null ? self::$_instance->router : new WordPressRouter();
+
+		return $router->get_url_for_form( $form_id );
 	}
 
 	/**

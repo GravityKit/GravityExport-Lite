@@ -32,9 +32,11 @@ abstract class AbstractServiceProvider extends LeagueAbstractServiceProviderAlia
     protected function addAction(string $id, $concrete = null, ?bool $shared = null) : DefinitionInterface
     {
         $container = $this->getContainer();
-        $definition = $shared
-            ? $container->addShared($id, $concrete)
-            : $container->add($id, $concrete);
+	    if ( ! $container instanceof Container ) {
+		    throw new \InvalidArgumentException( 'Wrong container type provided.' );
+	    }
+
+        $definition = $container->add($id, $concrete, $shared);
 
         return $definition->addTag(ActionAwareInterface::ACTION_TAG);
     }
@@ -54,9 +56,13 @@ abstract class AbstractServiceProvider extends LeagueAbstractServiceProviderAlia
      * @return Container
      * @deprecated Use getContainer instead.
      */
-    public function getLeagueContainer() : Container
-    {
-        return $this->getContainer();
+    public function getLeagueContainer() : Container {
+	    $container = $this->getContainer();
+	    if ( ! $container instanceof Container ) {
+		    throw new \InvalidArgumentException( 'Wrong container type provided.' );
+	    }
+
+	    return $container;
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace GFExcel\Tests\Template;
 
+use Com\Tecnick\Color\Model\Template;
 use GFExcel\Template\TemplateAware;
+use GFExcel\Template\TemplateAwareInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,7 +16,7 @@ class TemplateAwareTest extends TestCase
     /**
      * The trait under test.
      * @since $ver$
-     * @var TemplateAware
+     * @var TemplateAwareInterface
      */
     private $trait;
 
@@ -26,7 +28,7 @@ class TemplateAwareTest extends TestCase
     {
         parent::setUp();
 
-        $this->trait = new class {
+        $this->trait = new class implements TemplateAwareInterface{
           use TemplateAware;
         };
 
@@ -73,7 +75,7 @@ class TemplateAwareTest extends TestCase
     /**
      * Test case for {@see TemplateAware::renderTemplate}.
      * @since $ver$
-     * @return string[] The variables for each test.
+     * @return array The variables for each test.
      */
     public function dataProviderForTestRenderTemplate(): array
     {

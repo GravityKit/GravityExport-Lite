@@ -10,6 +10,7 @@ use GFExcel\Routing\Router;
 use GFExcel\Template\TemplateAwareInterface;
 use GFExcel\Repository\FormRepository;
 use GFExcel\Repository\FormRepositoryInterface;
+use League\Container\Container;
 
 /**
  * The service provider for the base of GFExcel.
@@ -32,13 +33,16 @@ class BaseServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$container = $this->getContainer();
 
+		if ( ! $container instanceof Container ) {
+			return;
+		}
+
 		$container->add(
 			FormRepositoryInterface::class,
 			FormRepository::class
 		)
 		          ->addArgument( \GFAPI::class )
-		          ->addArgument( Router::class )
-		;
+		          ->addArgument( Router::class );
 
 		$container->add( HashGeneratorInterface::class, HashGenerator::class );
 	}
@@ -63,6 +67,9 @@ class BaseServiceProvider extends AbstractServiceProvider {
 	 */
 	public function boot(): void {
 		$container = $this->getContainer();
+		if ( ! $container instanceof Container ) {
+			return;
+		}
 
 		$container
 			->inflector( ActionAwareInterface::class, function ( ActionAwareInterface $instance ) {

@@ -15,7 +15,6 @@ class ContainerAwareTest extends TestCase
     /**
      * Trait under test.
      * @since $ver$
-     * @var ContainerAware
      */
     private $trait;
 
@@ -36,10 +35,9 @@ class ContainerAwareTest extends TestCase
      * Test case for {@see ContainerAware::setContainer} and {@see ContainerAware::getContaienr}.
      * @since $ver$
      */
-    public function testContainer(): void
-    {
-        $container = $this->createMock(ContainerInterface::class);
-        $this->assertNull($this->trait->setContainer($container));
-        $this->assertEquals($container, $this->trait->getContainer());
+    public function testContainer(): void {
+	    $container = $this->createMock( ContainerInterface::class );
+	    $this->trait->setContainer( $container );
+	    $this->assertEquals( $container, $this->trait->getContainer() );
     }
 }
