@@ -70,10 +70,12 @@ class AddOnProvider extends AbstractServiceProvider {
 		$container->add( NotificationManager::class )->addArgument( NotificationRepositoryInterface::class );
 
 		$this->addAutoStart( CountDownloads::class );
-		$this->addAutoStart( DownloadUrl::class );
+		$this->addAutoStart( DownloadUrl::class )
+		     ->addArgument( Router::class );
 		$this->addAutoStart( FilterRequest::class )
 		     ->addArgument( Router::class );
-		$this->addAutoStart( MetaBoxes::class );
+		$this->addAutoStart( MetaBoxes::class )
+			->addArgument( Router::class );
 
 		$this->addAutoStart( MigrationManager::class )
 		     ->addArgument( NotificationManager::class )
