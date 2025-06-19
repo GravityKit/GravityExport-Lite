@@ -222,7 +222,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'name'       => 'hash',
 					'type'       => 'download_url',
 					'assets_dir' => $this->assets_dir,
-					'url'        => ! empty( $hash ) ? $this->router->get_url_for_hash( $hash ) : '',
+					'url'        => $this->router->get_url_for_hash( $hash ),
 				],
 				[
 					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
@@ -281,7 +281,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'label'   => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
 					'tooltip' => 'export_date_range',
 					'type'    => 'download_file',
-					'url'     => ! empty( $hash ) ? $this->router->get_url_for_hash( $hash ) : '',
+					'url'     => $this->router->get_url_for_hash( $hash ),
 				]
 			],
 		];
@@ -994,7 +994,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @return array The new form actions.
 	 */
 	private function gform_form_actions( array $form_actions, string $form_id ): array {
-		$url = $this->router->get_url_for_form( $form_id );
+		$url = $this->router->get_url_for_form( (int) $form_id );
+
 		if ( $url ) {
 
 			$form_actions['download'] = [
