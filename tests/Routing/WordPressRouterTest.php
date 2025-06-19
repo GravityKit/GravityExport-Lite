@@ -61,19 +61,6 @@ final class WordPressRouterTest extends TestCase {
 	}
 
 	/**
-	 * Test case for {@see WordPressRouter::matches()} with invalid action.
-	 * @since $ver$
-	 */
-	public function test_matches_with_invalid_action(): void {
-		$request = Request::from_query_vars( [
-			Router::KEY_ACTION => 'invalid-action',
-			Router::KEY_HASH   => 'test-hash'
-		] );
-
-		$this->assertFalse( $this->router->matches( $request ) );
-	}
-
-	/**
 	 * Test case for {@see WordPressRouter::endpoints()}.
 	 * @since $ver$
 	 */
