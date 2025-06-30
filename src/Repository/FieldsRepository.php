@@ -214,7 +214,7 @@ class FieldsRepository {
 		$default_fields = [
 			[
 				'value' => 'date_created',
-				'label' => __( 'Date Created', 'gk-gravityexport-lite' ),
+				'label' => __( 'Entry Date', 'gk-gravityexport-lite' ),
 			],
             [
                 'value' => 'date_updated',
