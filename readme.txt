@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Changed: Replaced Router logic with a new implementation for future features.
+* Enhanced: Entries can now be ordered by "Date Updated".
 
 = 2.3.9 on May 5, 2025 =
 
