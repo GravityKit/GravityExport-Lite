@@ -5,8 +5,6 @@ namespace GFExcel\GravityForms\Field;
 use GFExcel\Action\DownloadUrlDisableAction;
 use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
-use GFExcel\Routing\Router;
-use GFExcel\Routing\WordPressRouter;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Text;
 
 /**
@@ -102,7 +100,8 @@ class DownloadUrl extends Text {
 	 * @since 2.0.0
 	 */
 	public function get_value() {
-		if ( ! $hash = parent::get_value() ) {
+		$hash = $this->default_value ?: parent::get_value();
+		if ( ! $hash ) {
 			return '';
 		}
 
