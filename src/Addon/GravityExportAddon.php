@@ -276,15 +276,16 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			'id'     => 'gk-gravityexport-download-file',
 			'class'  => 'gk-gravityexport-download-file',
 			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
-			'fields' => [
-				[
-					'name'    => 'download_file',
-					'label'   => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
-					'tooltip' => 'export_date_range',
-					'type'    => 'download_file',
-					'url'     => $this->router->get_url_for_hash( $hash ),
-				]
-			],
+            'fields' => [
+                [
+                    'name'          => 'download_file',
+                    'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
+                    'tooltip'       => 'export_date_range',
+                    'type'          => 'download_file',
+                    'default_value' => $hash,
+                    'url'           => $this->router->get_url_for_hash( $hash ),
+                ],
+            ],
 		];
 
 		$settings_sections[] = [
