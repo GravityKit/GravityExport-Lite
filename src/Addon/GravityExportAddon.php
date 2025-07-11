@@ -18,7 +18,7 @@ use GFExcel\GravityForms\Field\SortFields;
 use GFExcel\Renderer\AbstractPHPExcelRenderer;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
-use GFExcel\Repository\FormRepositoryInterface;
+use GFExcel\Routing\Router;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
 
 /**
@@ -98,11 +98,13 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	private $feed = [];
 
 	/**
-	 * The form repository.
-	 * @since 2.0.0
-	 * @var FormRepositoryInterface
+	 * The router.
+	 *
+	 * @since $ver$
+	 *
+	 * @var Router
 	 */
-	private $form_repository;
+	private $router;
 
 	/**
 	 * The usage component.
@@ -137,7 +139,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @inheritdoc
 	 * @since 2.0.0
 	 */
-	public function __construct( FormRepositoryInterface $form_repository ) {
+	public function __construct( Router $router ) {
 		parent::__construct();
 
 		$title = defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite';
@@ -145,7 +147,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		$this->_title       = $title;
 		$this->_short_title = $title;
 
-		$this->form_repository = $form_repository;
+		$this->router          = $router;
 		$this->component_usage = new Usage();
 	}
 
@@ -209,16 +211,19 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			];
 		}
 
+		$hash = $this->get_setting( 'hash' );
 		$settings_sections[] = [
 			'id'          => 'gk-gravityexport-download',
 			'title'       => __( 'Download settings', 'gk-gravityexport-lite' ),
 			'collapsible' => true,
 			'fields'      => [
 				[
-					'label'      => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
-					'name'       => 'hash',
-					'type'       => 'download_url',
-					'assets_dir' => $this->assets_dir,
+					'label'         => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
+					'name'          => 'hash',
+					'type'          => 'download_url',
+					'assets_dir'    => $this->assets_dir,
+					'default_value' => $hash,
+					'url'           => $this->router->get_url_for_hash( $hash ),
 				],
 				[
 					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
@@ -271,15 +276,16 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			'id'     => 'gk-gravityexport-download-file',
 			'class'  => 'gk-gravityexport-download-file',
 			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
-			'fields' => [
-				[
-					'name'    => 'download_file',
-					'label'   => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
-					'tooltip' => 'export_date_range',
-					'type'    => 'download_file',
-					'url'     => $this->form_repository->getDownloadUrl( $this->get_current_settings() ),
-				]
-			],
+            'fields' => [
+                [
+                    'name'          => 'download_file',
+                    'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
+                    'tooltip'       => 'export_date_range',
+                    'type'          => 'download_file',
+                    'default_value' => $hash,
+                    'url'           => $this->router->get_url_for_hash( $hash ),
+                ],
+            ],
 		];
 
 		$settings_sections[] = [
@@ -990,7 +996,9 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @return array The new form actions.
 	 */
 	private function gform_form_actions( array $form_actions, string $form_id ): array {
-		if ( $url = GFExcel::url( (int) $form_id ) ) {
+		$url = $this->router->get_url_for_form( (int) $form_id );
+
+		if ( $url ) {
 
 			$form_actions['download'] = [
 				'label'      => __( 'Download', 'gk-gravityexport-lite' ),
@@ -1007,7 +1015,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * Adds the export links to the admin bar.
 	 * @since 1.7.0
 	 */
-	private static function admin_bar(): void {
+	private function admin_bar(): void {
 		// Only show links if the user has the rights for exporting.
 		if ( ! \GFCommon::current_user_can_any( 'gravityforms_export_entries' ) ) {
 			return;
@@ -1029,7 +1037,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 
 		// add download URL to every form that has a hash.
 		foreach ( $form_ids as $id ) {
-			if ( $url = GFExcel::url( $id ) ) {
+			$url = $this->router->get_url_for_form( $id );
+			if ( $url ) {
 				$wp_admin_bar->add_node( [
 					'id'     => 'gfexcel-form-' . $id . '-download',
 					'parent' => 'gform-form-' . $id,
