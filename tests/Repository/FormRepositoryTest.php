@@ -9,26 +9,26 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for {@see FormRepository}.
- * @since $ver$
+ * @since 2.4.0
  */
 class FormRepositoryTest extends TestCase {
 	/**
 	 * The class under test.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @var FormRepository
 	 */
 	private $repository;
 
 	/**
 	 * Mocked GFAPI instance.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @var \GFAPI|MockObject
 	 */
 	private $api;
 
 	/**
 	 * {@inheritdoc}
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -43,7 +43,7 @@ class FormRepositoryTest extends TestCase {
 
 	/**
 	 * Test case for {@see FormRepository::getEntries}.
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function testGetEntries(): void {
 		$this->api

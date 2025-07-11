@@ -10,20 +10,20 @@ use League\Container\ServiceProvider\AbstractServiceProvider as LeagueAbstractSe
 
 /**
  * Abstract service provider that provides helper methods.
- * @since $ver$
+ * @since 2.4.0
  */
 abstract class AbstractServiceProvider extends LeagueAbstractServiceProviderAlias implements
     ServiceProviderInterface
 {
     /**
      * List of classes the service provider provides.
-     * @since $ver$
+     * @since 2.4.0
      */
     protected $provides = [];
 
     /**
      * Helper method to quickly add an action.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $id The id of the definition.
      * @param mixed $concrete The concrete implementation.
      * @param bool|null $shared Whether this is a shared instance.
@@ -43,7 +43,7 @@ abstract class AbstractServiceProvider extends LeagueAbstractServiceProviderAlia
 
     /**
      * Whether this service provide provides the requested service id.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function provides(string $id) : bool
     {
@@ -52,7 +52,7 @@ abstract class AbstractServiceProvider extends LeagueAbstractServiceProviderAlia
 
     /**
      * Backwards compatability for plugins.
-     * @since $ver$
+     * @since 2.4.0
      * @return Container
      * @deprecated Use getContainer instead.
      */

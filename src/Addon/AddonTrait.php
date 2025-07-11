@@ -4,7 +4,7 @@ namespace GFExcel\Addon;
 
 /**
  * A trait to satisfy {@see AddonInterface}.
- * @since $ver$
+ * @since 2.4.0
  */
 trait AddonTrait
 {
@@ -17,14 +17,14 @@ trait AddonTrait
 
     /**
      * The assets directory for this plugin.
-     * @since $ver$
+     * @since 2.4.0
      * @var string|null
      */
     private $assets_dir;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public static function set_instance(AddonInterface $addon): void
     {
@@ -39,7 +39,7 @@ trait AddonTrait
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.4.0
      * @return static
      */
     public static function get_instance(): AddonInterface
@@ -56,7 +56,7 @@ trait AddonTrait
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public function setAssetsDir(string $assets_dir): void
     {

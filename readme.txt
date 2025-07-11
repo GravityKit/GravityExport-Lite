@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.8
+Tested up to: 6.8.1
 Stable tag: 2.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -256,10 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.4.0 on July 10, 2025 =
 
-* Changed: Replaced Router logic with a new implementation for future features.
-* Enhanced: Entries can now be ordered by "Date Updated".
+* Changed: Updated download link handling to allow future enhancements.
+* Enhancement: Entries can now be ordered by "Date Updated".
 
 = 2.3.9 on May 5, 2025 =
 

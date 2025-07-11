@@ -10,7 +10,7 @@ interface FormRepositoryInterface
      * Method should return an iterable, be it a generator, Iterator or a flat array. The resulting items should be
      * the default entry array Gravity Forms returns.
      *
-     * @since $ver$
+     * @since 2.4.0
      * @param int $form_id The form id to retrieve the entries from.
      * @param array $search_criteria (Optional) search criteria.
      * @param string [] $sorting (Optional) sorting criteria.
@@ -20,7 +20,7 @@ interface FormRepositoryInterface
 
     /**
      * Should return the download url of the form.
-     * @since $ver$
+     * @since 2.4.0
      * @param array $settings The settings for a form.
      * @return string|null The url, or null if not available.
      */

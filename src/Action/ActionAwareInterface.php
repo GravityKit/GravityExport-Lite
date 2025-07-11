@@ -4,34 +4,34 @@ namespace GFExcel\Action;
 
 /**
  * Interface that makes an addon action aware.
- * @since $ver$
+ * @since 2.4.0
  */
 interface ActionAwareInterface
 {
     /**
      * The string an Action must be tagged with.
-     * @since $ver$
+     * @since 2.4.0
      * @var string
      */
     public const ACTION_TAG = 'gfexcel.action';
 
     /**
      * Should set all tagged actions on the class.
-     * @since $ver$
+     * @since 2.4.0
      * @param ActionInterface[] $actions The actions.
      */
     public function setActions(array $actions): void;
 
     /**
      * Should return all tagged actions.
-     * @since $ver$
+     * @since 2.4.0
      * @return ActionInterface[] The actions.
      */
     public function getActions(): array;
 
     /**
      * Should return whether this action is available.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $action The action name.
      * @return bool Whether this action is available.
      */
@@ -39,7 +39,7 @@ interface ActionAwareInterface
 
     /**
      * Should return the action.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $action The action name.
      * @return ActionInterface The action.
      * @throws \RuntimeException When action is not available.

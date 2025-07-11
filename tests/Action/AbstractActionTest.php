@@ -8,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for {@see AbstractAction}.
- * @since $ver$
+ * @since 2.4.0
  */
 class AbstractActionTest extends TestCase
 {
     /**
      * Test case for {@see AbstractAction::getName}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testGetName(): void
     {
@@ -23,7 +23,7 @@ class AbstractActionTest extends TestCase
 
     /**
      * Test case for {@see AbstractAction::getName} with a missing name.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testGetNameWithException(): void
     {
@@ -34,13 +34,13 @@ class AbstractActionTest extends TestCase
 
 /**
  * Helper class to test {@see AbstractAction}.
- * @since $ver$
+ * @since 2.4.0
  */
 class ConcreteAction extends AbstractAction
 {
     /**
      * Helper constructor to set the name of the action.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $name
      */
     public function __construct(string $name)
@@ -50,7 +50,7 @@ class ConcreteAction extends AbstractAction
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public function fire(\GFAddOn $addon, array $form): void
     {

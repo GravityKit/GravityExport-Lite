@@ -6,13 +6,13 @@ use GFExcel\Addon\GravityExportAddon;
 
 /**
  * Represents a WordPress router for GravityExport Lite.
- * @since $ver$
+ * @since 2.4.0
  */
 final class WordPressRouter implements Router {
 	/**
 	 * The slug used in the generated URL.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var string
 	 */
@@ -21,7 +21,7 @@ final class WordPressRouter implements Router {
 	/**
 	 * Instantiates the router.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function __construct() {
 		add_filter( 'query_vars', [ $this, 'update_query_vars' ] );
@@ -29,7 +29,7 @@ final class WordPressRouter implements Router {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function init(): void {
 		$this->register_endpoints( $this->endpoints() );
@@ -37,7 +37,7 @@ final class WordPressRouter implements Router {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function matches( Request $request ): bool {
 		return in_array( $request->action(), $this->endpoints(), true );
@@ -74,7 +74,7 @@ final class WordPressRouter implements Router {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function get_url_for_form( int $form_id ): ?string {
 		$hash = $this->get_hash_for_form( $form_id );
@@ -118,7 +118,7 @@ final class WordPressRouter implements Router {
 	/**
 	 * Returns the download hash for a form.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param int $form_id the form id to get the hash for.
 	 *
@@ -144,7 +144,7 @@ final class WordPressRouter implements Router {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function endpoints(): array {
 		return [
@@ -171,7 +171,7 @@ final class WordPressRouter implements Router {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function get_url_for_hash( string $hash ): string {
 		$blogurl   = get_bloginfo( 'url' );

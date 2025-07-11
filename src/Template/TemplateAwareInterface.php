@@ -4,20 +4,20 @@ namespace GFExcel\Template;
 
 /**
  * Interface that makes a class Template aware. This makes it able to register template paths and render templates.
- * @since $ver$
+ * @since 2.4.0
  */
 interface TemplateAwareInterface
 {
     /**
      * Adds a folder path to the class.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $folder The path to the folder.
      */
     public function addTemplateFolder(string $folder): void;
 
     /**
      * Should return whether a template is available.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $name The name of the template.
      * @return bool Whether the template is available.
      */
@@ -25,7 +25,7 @@ interface TemplateAwareInterface
 
     /**
      * Should return the path to a template if it exists.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $name The name of the template
      * @return string|null The path to the template.
      */
@@ -33,7 +33,7 @@ interface TemplateAwareInterface
 
     /**
      * Should render and echo out the template.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $name The name of the template.
      * @param mixed[] $context The context available to the template.
      */

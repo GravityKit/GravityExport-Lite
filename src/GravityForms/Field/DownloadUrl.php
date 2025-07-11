@@ -33,7 +33,7 @@ class DownloadUrl extends Text {
 
 	/**
 	 * The url for the download form.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @var string
 	 */
 	public $url = '';

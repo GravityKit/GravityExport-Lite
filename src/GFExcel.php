@@ -80,7 +80,7 @@ class GFExcel {
 
 	/**
 	 * The router instance.
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var Router
 	 */
@@ -89,7 +89,7 @@ class GFExcel {
 	/**
 	 * Holds the singleton.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var self
 	 */

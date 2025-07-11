@@ -13,7 +13,7 @@ final class MetaBoxes {
 	/**
 	 * The router.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var Router
 	 */

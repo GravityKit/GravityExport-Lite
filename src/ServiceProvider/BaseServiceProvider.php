@@ -14,12 +14,12 @@ use League\Container\Container;
 
 /**
  * The service provider for the base of GFExcel.
- * @since $ver$
+ * @since 2.4.0
  */
 class BaseServiceProvider extends AbstractServiceProvider {
 	/**
 	 * {@inheritdoc}
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	protected $provides = [
 		FormRepositoryInterface::class,
@@ -28,7 +28,7 @@ class BaseServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * {@inheritdoc}
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function register(): void {
 		$container = $this->getContainer();
@@ -49,7 +49,7 @@ class BaseServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * Retrieve all tagged actions from the container.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @return ActionInterface[] The actions.
 	 */
 	protected function getActions(): array {
@@ -63,7 +63,7 @@ class BaseServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function boot(): void {
 		$container = $this->getContainer();

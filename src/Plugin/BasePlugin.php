@@ -7,27 +7,27 @@ use GFExcel\Container\ContainerInterface;
 
 /**
  * A base for a plugin to extend from.
- * @since $ver$
+ * @since 2.4.0
  */
 abstract class BasePlugin
 {
     /**
      * The {@see AddonInterface} classes.
-     * @since $ver$
+     * @since 2.4.0
      * @var string[]
      */
     protected $addons = [];
 
     /**
      * The container instance.
-     * @since $ver$
+     * @since 2.4.0
      * @var ContainerInterface
      */
     protected $container;
 
     /**
      * The assets directory for this plugin.
-     * @since $ver$
+     * @since 2.4.0
      * @var string|null
      */
     private $assets_dir;
@@ -45,7 +45,7 @@ abstract class BasePlugin
 
     /**
      * Register the available add-ons.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function registerAddOns(): self
     {

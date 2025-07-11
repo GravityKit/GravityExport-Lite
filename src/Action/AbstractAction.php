@@ -6,14 +6,14 @@ abstract class AbstractAction implements ActionInterface
 {
     /**
      * A unique name representing the action.
-     * @since $ver$
+     * @since 2.4.0
      * @var string
      */
     public static $name = '';
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function getName(): string
     {

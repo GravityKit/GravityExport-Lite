@@ -6,12 +6,12 @@ use GFExcel\Routing\Router;
 
 /**
  * Repository to retrieve all information for a form.
- * @since $ver$
+ * @since 2.4.0
  */
 class FormRepository implements FormRepositoryInterface {
 	/**
 	 * Gravity Forms Api.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @var \GFAPI
 	 */
 	private $api;
@@ -19,7 +19,7 @@ class FormRepository implements FormRepositoryInterface {
 	/**
 	 * The Router.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var Router
 	 */
@@ -37,7 +37,7 @@ class FormRepository implements FormRepositoryInterface {
 
 	/**
 	 * {@inheritdoc}
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function getEntries( int $form_id, array $search_criteria = [], array $sorting = [] ): iterable {
 		$page_size = 100;
@@ -69,7 +69,7 @@ class FormRepository implements FormRepositoryInterface {
 
 	/**
 	 * Returns the fields for a form.
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param int $form_id The form id.
 	 *
@@ -99,7 +99,7 @@ class FormRepository implements FormRepositoryInterface {
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function getDownloadUrl( array $settings ): ?string {
 		if ( ! $hash = $settings['hash'] ?? null ) {

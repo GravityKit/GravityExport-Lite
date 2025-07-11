@@ -4,20 +4,20 @@ namespace GFExcel\Container;
 
 /**
  * Trait that makes a class container aware.
- * @since $ver$
+ * @since 2.4.0
  */
 trait ContainerAware
 {
     /**
      * Holds the container instance.
-     * @since $ver$
+     * @since 2.4.0
      * @var ContainerInterface
      */
     private $container;
 
     /**
      * Sets the container instance for a class.
-     * @since $ver$
+     * @since 2.4.0
      * @param ContainerInterface $container The container instance
      */
     public function setContainer(ContainerInterface $container)
@@ -27,7 +27,7 @@ trait ContainerAware
 
     /**
      * Get the container instance for this class.
-     * @since $ver$
+     * @since 2.4.0
      * @return ContainerInterface|null The container instance.
      */
     public function getContainer(): ?ContainerInterface

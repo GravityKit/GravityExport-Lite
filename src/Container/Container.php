@@ -9,13 +9,13 @@ use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Container implementation backed by the League Container package.
- * @since $ver$
+ * @since 2.4.0
  */
 final class Container implements ContainerInterface
 {
     /**
      * The league container class.
-     * @since $ver$
+     * @since 2.4.0
      * @var LeagueContainer
      */
     private $container;
@@ -30,7 +30,7 @@ final class Container implements ContainerInterface
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public function addServiceProvider(ServiceProviderInterface $provider) : ContainerInterface
     {
@@ -41,7 +41,7 @@ final class Container implements ContainerInterface
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public function get(string $id)
     {
@@ -54,7 +54,7 @@ final class Container implements ContainerInterface
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 2.4.0
      */
     public function has(string $id) : bool
     {

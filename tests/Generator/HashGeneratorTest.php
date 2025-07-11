@@ -7,13 +7,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for {@see HashGenerator}.
- * @since $ver$
+ * @since 2.4.0
  */
 class HashGeneratorTest extends TestCase
 {
     /**
      * Test case for {@see HashGenerator::generate()}.
-     * @since $ver$
+     * @since 2.4.0
      * @throws \Exception
      */
     public function testGenerate(): void

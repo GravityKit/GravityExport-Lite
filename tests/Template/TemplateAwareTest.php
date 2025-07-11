@@ -9,20 +9,20 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for {@see TemplateAware} trait.
- * @since $ver$
+ * @since 2.4.0
  */
 class TemplateAwareTest extends TestCase
 {
     /**
      * The trait under test.
-     * @since $ver$
+     * @since 2.4.0
      * @var TemplateAwareInterface
      */
     private $trait;
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     protected function setUp(): void
     {
@@ -38,7 +38,7 @@ class TemplateAwareTest extends TestCase
 
     /**
      * Test case for {@see TemplateAware::addTemplateFolder} With an invalid folder.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testAddTemplateFolderException(): void
     {
@@ -52,7 +52,7 @@ class TemplateAwareTest extends TestCase
 
     /**
      * Test case for {@see TemplateAware::hasTemplate}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testHasTemplate(): void
     {
@@ -63,7 +63,7 @@ class TemplateAwareTest extends TestCase
 
     /**
      * Test case for {@see TemplateAware::getTemplate}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testGetTemplate(): void
     {
@@ -74,7 +74,7 @@ class TemplateAwareTest extends TestCase
 
     /**
      * Test case for {@see TemplateAware::renderTemplate}.
-     * @since $ver$
+     * @since 2.4.0
      * @return array The variables for each test.
      */
     public function dataProviderForTestRenderTemplate(): array
@@ -96,7 +96,7 @@ class TemplateAwareTest extends TestCase
 
     /**
      * Test case for {@see TemplateAware::renderTemplate}.
-     * @since $ver$
+     * @since 2.4.0
      * @param string $template The template to render.
      * @param string $expected_content The expected output of the render.
      * @param array $context The context provided to the template.

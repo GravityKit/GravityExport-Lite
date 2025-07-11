@@ -4,20 +4,20 @@ namespace GFExcel\Template;
 
 /**
  * Trait to complement {@see \GFExcel\Template\TemplateAwareInterface}.
- * @since $ver$
+ * @since 2.4.0
  */
 trait TemplateAware
 {
     /**
      * Holds the folders that contain templates.
-     * @since $ver$
+     * @since 2.4.0
      * @var string[]
      */
     protected $template_folders = [];
 
    /**`
     * {@inheritdoc}
-    * @since $ver$
+    * @since 2.4.0
     */
     public function addTemplateFolder(string $folder): void
     {
@@ -30,7 +30,7 @@ trait TemplateAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function hasTemplate(string $name): bool
     {
@@ -46,7 +46,7 @@ trait TemplateAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function getTemplate(string $name): ?string
     {
@@ -62,7 +62,7 @@ trait TemplateAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function renderTemplate(string $name, array $context = []): void
     {

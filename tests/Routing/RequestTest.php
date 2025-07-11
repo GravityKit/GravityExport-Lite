@@ -8,13 +8,13 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see Request}.
- * @since $ver$
+ * @since 2.4.0
  */
 final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::from_query_vars()}.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_from_query_vars(): void {
 		$query_vars = [
@@ -31,7 +31,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::from_query_vars()} with empty query vars.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_from_query_vars_with_empty_vars(): void {
 		$request = Request::from_query_vars( [] );
@@ -43,7 +43,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::from_query_vars()} with partial query vars.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_from_query_vars_with_partial_vars(): void {
 		$query_vars = [
@@ -59,7 +59,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::hash()} without extension.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_hash_without_extension(): void {
 		$query_vars = [
@@ -74,7 +74,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::hash()} with extension.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_hash_with_extension(): void {
 		$query_vars = [
@@ -89,7 +89,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Data provider for extension test cases.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @return array
 	 */
@@ -121,7 +121,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::extension()}.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @dataProvider extension_data_provider
 	 */
@@ -138,7 +138,7 @@ final class RequestTest extends TestCase {
 	/**
 	 * Test case for {@see Request::action()}.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_action(): void {
 		$query_vars = [

@@ -8,19 +8,19 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for {@see ContainerAware}.
- * @since $ver$
+ * @since 2.4.0
  */
 class ContainerAwareTest extends TestCase
 {
     /**
      * Trait under test.
-     * @since $ver$
+     * @since 2.4.0
      */
     private $trait;
 
     /**
      * @inheritdoc
-     * @since $ver$
+     * @since 2.4.0
      */
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class ContainerAwareTest extends TestCase
 
     /**
      * Test case for {@see ContainerAware::setContainer} and {@see ContainerAware::getContaienr}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testContainer(): void {
 	    $container = $this->createMock( ContainerInterface::class );

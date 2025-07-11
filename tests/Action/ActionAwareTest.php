@@ -9,13 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for {@see ActionAware}.
- * @since $ver$
+ * @since 2.4.0
  */
 class ActionAwareTest extends TestCase
 {
     /**
      * The Trait under test.
-     * @since $ver$
+     * @since 2.4.0
      */
     private $trait;
 
@@ -23,7 +23,7 @@ class ActionAwareTest extends TestCase
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     protected function setUp(): void
     {
@@ -42,7 +42,7 @@ class ActionAwareTest extends TestCase
 
     /**
      * Test case for {@see ActionAware::setActions} and {@see ActionAware::getActions}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testActions(): void
     {
@@ -57,7 +57,7 @@ class ActionAwareTest extends TestCase
 
     /**
      * Test case for {@see ActionAware::hasAction}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testHasAction(): void
     {
@@ -71,7 +71,7 @@ class ActionAwareTest extends TestCase
 
     /**
      * Test case for {@see ActionAware::getAction}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testGetAction(): void
     {
@@ -84,7 +84,7 @@ class ActionAwareTest extends TestCase
 
     /**
      * Test case for {@see ActionAware::getAction}.
-     * @since $ver$
+     * @since 2.4.0
      */
     public function testGetActionWithException(): void
     {
@@ -97,7 +97,7 @@ class ActionAwareTest extends TestCase
 
     /**
      *
-     * @since $ver$
+     * @since 2.4.0
      * @param string $name
      * @return MockObject|ActionInterface
      */

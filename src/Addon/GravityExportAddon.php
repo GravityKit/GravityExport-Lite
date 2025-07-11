@@ -100,7 +100,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	/**
 	 * The router.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var Router
 	 */

@@ -4,13 +4,13 @@ namespace GFExcel\Routing;
 
 /**
  * Represents an HTTP router for GravityExport Lite.
- * @since $ver$
+ * @since 2.4.0
  */
 interface Router {
 	/**
 	 * The query keys.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public const KEY_HASH = 'gfexcel_hash';
 	public const KEY_ACTION = 'gfexcel_action';
@@ -18,14 +18,14 @@ interface Router {
 	/**
 	 * Initializes the router lazily.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function init(): void;
 
 	/**
 	 * Get the endpoints for this router.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @return string[] The endpoints.
 	 */
@@ -34,7 +34,7 @@ interface Router {
 	/**
 	 * Get the download URL for a specific form.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param int $form_id The form ID.
 	 *
@@ -54,7 +54,7 @@ interface Router {
 	/**
 	 * Check if the router can handle the given request.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param Request $request The Request object to match against.
 	 *
@@ -65,7 +65,7 @@ interface Router {
 	/**
 	 * Get the feed by the request.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param Request $request The Request object to match against.
 	 *

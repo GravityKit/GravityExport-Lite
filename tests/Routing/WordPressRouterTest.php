@@ -10,13 +10,13 @@ use GFExcel\Tests\TestCase;
 /**
  * Unit tests for {@see WordPressRouter}.
  *
- * @since $ver$
+ * @since 2.4.0
  */
 final class WordPressRouterTest extends TestCase {
 	/**
 	 * The class under test.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var WordPressRouter
 	 */
@@ -24,7 +24,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * {@inheritdoc}
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function setUp(): void {
 		parent::setUp();
@@ -34,7 +34,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Data provider for matches test cases.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @return array
 	 */
 	public function dataprovider_for_matches_test(): array {
@@ -48,7 +48,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Test case for {@see WordPressRouter::matches()}.
-	 * @since $ver$
+	 * @since 2.4.0
 	 * @dataProvider dataprovider_for_matches_test
 	 */
 	public function test_matches( string $action, bool $expected ): void {
@@ -62,7 +62,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Test case for {@see WordPressRouter::endpoints()}.
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_endpoints(): void {
 		$expected = [
@@ -76,7 +76,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Test case for {@see WordPressRouter::update_query_vars()}.
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	public function test_update_query_vars(): void {
 		$original_vars = [ 'post_type', 'page_id' ];

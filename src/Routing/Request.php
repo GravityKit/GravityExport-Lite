@@ -4,13 +4,13 @@ namespace GFExcel\Routing;
 
 /**
  * Represents a request to the router.
- * @since $ver$
+ * @since 2.4.0
  */
 final class Request {
 	/**
 	 * The action name.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var string
 	 */
@@ -19,7 +19,7 @@ final class Request {
 	/**
 	 * The hash.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @var string
 	 */
@@ -28,7 +28,7 @@ final class Request {
 	/**
 	 * Prevents instantiation.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 */
 	private function __construct() {
 	}
@@ -36,7 +36,7 @@ final class Request {
 	/**
 	 * Named constructor for a Request from WordPress query vars.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @param array $query_vars The query vars.
 	 *
@@ -53,7 +53,7 @@ final class Request {
 	/**
 	 * Returns the hash.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @return string
 	 */
@@ -65,7 +65,7 @@ final class Request {
 	/**
 	 * Get the requested file extension.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @return string The extension or null if not available.
 	 */
@@ -80,7 +80,7 @@ final class Request {
 	/**
 	 * The recorded action.
 	 *
-	 * @since $ver$
+	 * @since 2.4.0
 	 *
 	 * @return string
 	 */

@@ -6,14 +6,14 @@ trait ActionAware
 {
     /**
      * Holds the actions for the class.
-     * @since $ver$
+     * @since 2.4.0
      * @var ActionInterface[]
      */
     protected $actions = [];
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function setActions(array $actions): void
     {
@@ -24,7 +24,7 @@ trait ActionAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function getActions(): array
     {
@@ -33,7 +33,7 @@ trait ActionAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function hasAction(string $action): bool
     {
@@ -42,7 +42,7 @@ trait ActionAware
 
     /**
      * {@inheritdoc}
-     * @since $ver$
+     * @since 2.4.0
      */
     public function getAction(string $action): ActionInterface
     {
