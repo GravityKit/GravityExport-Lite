@@ -216,6 +216,10 @@ class FieldsRepository {
 				'value' => 'date_created',
 				'label' => __( 'Entry Date', 'gk-gravityexport-lite' ),
 			],
+            [
+                'value' => 'date_updated',
+                'label' => __( 'Date Updated', 'gk-gravityexport-lite' ),
+            ],
 			[
 				'value' => 'id',
 				'label' => __( 'Entry ID', 'gk-gravityexport-lite' ),

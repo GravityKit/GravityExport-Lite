@@ -118,6 +118,9 @@ add_action( 'gform_loaded', static function (): void {
 		->addServiceProvider( new BaseServiceProvider() )
 		->addServiceProvider( new AddOnProvider() );
 
+    // Dispatch event including the container.
+    do_action( 'gfexcel_container_loaded', $container );
+
 	// Instantiate add on from container.
 	$addon = $container->get( GravityExportAddon::class );
 

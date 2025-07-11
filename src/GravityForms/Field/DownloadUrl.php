@@ -5,7 +5,6 @@ namespace GFExcel\GravityForms\Field;
 use GFExcel\Action\DownloadUrlDisableAction;
 use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
-use GFExcel\GFExcel;
 use Gravity_Forms\Gravity_Forms\Settings\Fields\Text;
 
 /**
@@ -31,6 +30,13 @@ class DownloadUrl extends Text {
 	 * @since 2.0.0
 	 */
 	public $readonly = 'readonly';
+
+	/**
+	 * The url for the download form.
+	 * @since 2.4.0
+	 * @var string
+	 */
+	public $url = '';
 
 	/**
 	 * @inheritdoc
@@ -94,7 +100,8 @@ class DownloadUrl extends Text {
 	 * @since 2.0.0
 	 */
 	public function get_value() {
-		if ( ! $hash = parent::get_value() ) {
+		$hash = $this->default_value ?: parent::get_value();
+		if ( ! $hash ) {
 			return '';
 		}
 
@@ -103,16 +110,7 @@ class DownloadUrl extends Text {
 			return $hash;
 		}
 
-		$permalink = '/index.php?' . GFExcel::KEY_ACTION . '=%s&' . GFExcel::KEY_HASH . '=%s';
-		$action    = GFExcel::$slug;
-
-		if ( get_option( 'permalink_structure' ) ) {
-			$permalink = '/%s/%s';
-		} else {
-			$hash = urlencode( $hash );
-		}
-
-		return $blog_url . sprintf( $permalink, $action, $hash );
+		return $this->url;
 	}
 
 	/**

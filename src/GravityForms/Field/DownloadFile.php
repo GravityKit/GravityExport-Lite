@@ -36,7 +36,26 @@ class DownloadFile extends Base {
 		add_filter( 'gk-gravityexport-after_feed_edit_page', \Closure::fromCallable( [ $this, 'render_form' ] ) );
 	}
 
-	/**
+    /**
+     * @inheritDoc
+     * Added the full url to the value.
+     * @since 2.0.0
+     */
+    public function get_value() {
+        $hash = $this->default_value ?: parent::get_value();
+        if ( ! $hash ) {
+            return '';
+        }
+
+        $blog_url = get_bloginfo( 'url' );
+        if ( strpos( $hash, $blog_url ) !== false ) {
+            return $hash;
+        }
+
+        return $this->url;
+    }
+
+    /**
 	 * @inheritdoc
 	 * @since 2.0.0
 	 */
@@ -114,7 +133,7 @@ JS;
 
 		printf(
 			'<form method="post" action="%s" id="%s" target="_blank"></form>',
-			$this->url,
+			$this->get_value(),
 			$this->get_parsed_name()
 		);
 	}

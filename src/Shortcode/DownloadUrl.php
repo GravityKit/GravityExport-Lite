@@ -4,6 +4,7 @@ namespace GFExcel\Shortcode;
 
 use GFExcel\Addon\GravityExportAddon;
 use GFExcel\GFExcel;
+use GFExcel\Routing\Router;
 
 /**
  * A shortcode handler for [gravityexport_download_url].
@@ -35,11 +36,22 @@ class DownloadUrl {
 	private const SECRET_LENGTH = 6;
 
 	/**
+	 * The router instance.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @var Router
+	 */
+	private $router;
+
+	/**
 	 * Adds the required hooks.
 	 *
 	 * @since 2.2.0
 	 */
-	public function __construct() {
+	public function __construct( Router $router ) {
+		$this->router = $router;
+
 		add_shortcode( 'gfexcel_download_url', [ $this, 'handle' ] ); // Backward compatibility.
 		add_shortcode( self::SHORTCODE, [ $this, 'handle' ] );
 		add_filter( 'gform_replace_merge_tags', [ $this, 'handleNotification' ], 10, 2 );
@@ -124,7 +136,7 @@ class DownloadUrl {
 	 * @return string
 	 */
 	private function getUrl( $id, $type = null ): string {
-		$url = GFExcel::url( $id );
+		$url = $this->router->get_url_for_form( $id );
 
 		if ( $type && in_array( strtolower( $type ), GFExcel::getPluginFileExtensions(), true ) ) {
 			$url .= '.' . strtolower( $type );
@@ -197,7 +209,7 @@ class DownloadUrl {
 			return '';
 		}
 
-		return self::generate_secret_from_hash($hash);
+		return self::generate_secret_from_hash( $hash );
 	}
 
 	/**
