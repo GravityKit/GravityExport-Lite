@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Enhancement: Defining a `GFEXCEL_AVOID_CLASS_ALIAS` constant as `true` will avoid registering PHPSpreadsheet class aliases.
+
 = 2.4.0 on July 10, 2025 =
 
 * Changed: Updated download link handling to allow future enhancements.
