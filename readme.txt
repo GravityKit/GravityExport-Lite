@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -256,9 +256,9 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.4.1 on August 28, 2025 =
 
-* Enhancement: Defining a `GFEXCEL_AVOID_CLASS_ALIAS` constant as `true` will avoid registering PHPSpreadsheet class aliases.
+* Enhancement: Added support for defining a `GFEXCEL_AVOID_CLASS_ALIAS` constant as `true` to prevent registering PhpSpreadsheet class aliases.
 
 = 2.4.0 on July 10, 2025 =
 
