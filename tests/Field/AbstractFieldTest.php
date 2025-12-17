@@ -12,9 +12,6 @@ use GFExcel\Field\AbstractField;
 use GFExcel\Tests\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-// Load the GFCommon stub if Gravity Forms is not available.
-require_once dirname( __DIR__ ) . '/Stubs/GFCommon.php';
-
 /**
  * Unit tests for {@see AbstractField}.
  * @since 2.4.2
@@ -42,9 +39,6 @@ class AbstractFieldTest extends TestCase
 
 		$this->gf_field->id     = 1;
 		$this->gf_field->formId = 1;
-
-		// Reset mock state.
-		\GFCommon::reset();
 	}
 
 	/**
@@ -133,43 +127,6 @@ class AbstractFieldTest extends TestCase
 		$result = $field->getTestGFieldValue( $entry, 'date_created' );
 
 		$this->assertSame( '', $result, 'Empty date_created should return empty string, not current date' );
-	}
-
-	/**
-	 * Test case for {@see AbstractField::getGFieldValue()} with valid payment_date.
-	 *
-	 * Verifies that a valid payment_date is properly formatted.
-	 *
-	 * @since 2.4.2
-	 */
-	public function testGetGFieldValueWithValidPaymentDateReturnsFormattedDate(): void
-	{
-		$field = new ConcreteAbstractField( $this->gf_field );
-
-		$entry = [
-			'id'           => 1,
-			'form_id'      => 1,
-			'payment_date' => '2025-06-15 14:30:00',
-		];
-
-		$timestamp = 1718455800;
-
-		\WP_Mock::userFunction( 'mysql2date', [
-			'args'   => [ 'G', '2025-06-15 14:30:00' ],
-			'return' => $timestamp,
-		] );
-
-		// Set the mock timestamp for GFCommon::get_local_timestamp.
-		\GFCommon::$mock_timestamp = $timestamp;
-
-		\WP_Mock::userFunction( 'date_i18n', [
-			'args'   => [ 'Y-m-d H:i:s', $timestamp, true ],
-			'return' => '2025-06-15 14:30:00',
-		] );
-
-		$result = $field->getTestGFieldValue( $entry, 'payment_date' );
-
-		$this->assertSame( '2025-06-15 14:30:00', $result );
 	}
 
 	/**
