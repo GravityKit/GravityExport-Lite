@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Entries without a `payment_date` value would show the current date/time instead of an empty value.
+
 = 2.4.1 on August 28, 2025 =
 
 * Enhancement: Added support for defining a `GFEXCEL_AVOID_CLASS_ALIAS` constant as `true` to prevent registering PhpSpreadsheet class aliases.
