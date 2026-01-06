@@ -100,8 +100,10 @@
             "@unbuild",
             "cp composer.json build/composer.json",
             "mkdir build/src && cp src/GFExcelAdmin.php build/src/",
+            "composer config --unset repositories --working-dir=build",
             "composer config repositories.source '{\"type\":\"path\", \"url\":\"../src\",\"options\": {\"symlink\":false}}' --working-dir=build",
-            "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts",
+            "composer remove gravityforms/gravityforms gravityforms/gravitysurvey --no-update --dev --working-dir=build",
+            "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts --ignore-platform-reqs",
             "cd build && ./strauss.phar",
             "composer dump-autoload -o --working-dir=build"
         ],
