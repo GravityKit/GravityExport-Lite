@@ -9,6 +9,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Mark github workspace as safe
+        run: |
+          git config --global --add safe.directory /app
       - name: Build
         id: build
         uses: php-actions/composer@v6
