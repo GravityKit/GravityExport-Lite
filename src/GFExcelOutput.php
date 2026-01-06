@@ -2,6 +2,8 @@
 
 namespace GFExcel;
 
+use GF_Query;
+use GF_Query_Column;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Repository\FormsRepository;
@@ -294,9 +296,12 @@ class GFExcelOutput
 				    $paging
 			    );
 
+				if ( is_null( $new_entries ) || $new_entries === $this->form_id ) {
+				    $query = new GF_Query( $this->form_id, $search_criteria, $sorting, $paging );
 
-			    if ( is_null( $new_entries ) || $new_entries === $this->form_id ) {
-				    $new_entries = \GFAPI::get_entries( $this->form_id, $search_criteria, $sorting, $paging );
+					// Ensure a repeatable unique order.
+				    $query->order( new GF_Query_Column( 'id' ), 'DESC' );
+					$new_entries = $query->get();
 			    }
 
 			    $count = count( $new_entries );
