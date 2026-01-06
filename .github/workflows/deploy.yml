@@ -17,6 +17,8 @@ jobs:
         uses: php-actions/composer@v6
         with:
           command: 'build'
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ADD_TO_PROJECTS_PAT }}"} }'
 
       - name: WordPress Plugin Deploy
         id: deploy
