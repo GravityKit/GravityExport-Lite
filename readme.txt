@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 6.8.2
-Stable tag: 2.4.0
+Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,12 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.4.2 on January 7, 2026 =
+
+* Fixed: Added a deterministic sort order to prevent missing and duplicate entries.
+* Fixed: Entries without a `payment_date` value would show the current date/time instead of an empty value.
+* Change: Release process to WordPress.org from GitHub Actions.
 
 = 2.4.1 on August 28, 2025 =
 

@@ -132,6 +132,11 @@ abstract class AbstractField implements FieldInterface {
 	 */
 	protected function getGFieldValue( $entry, $input_id ) {
 		if ( in_array( $input_id, [ 'date_created', 'payment_date' ] ) ) {
+			// Return empty string if the date value is not set to avoid falling back to current time.
+			if ( empty( $entry[ $input_id ] ) ) {
+				return '';
+			}
+
 			$lead_gmt_time   = mysql2date( 'G', $entry[ $input_id ] );
 			$lead_local_time = \GFCommon::get_local_timestamp( $lead_gmt_time );
 

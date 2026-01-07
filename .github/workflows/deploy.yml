@@ -1,0 +1,32 @@
+name: Deploy to WordPress.org
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  tag:
+    name: New release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Mark GitHub workspace as safe
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+      - name: Build
+        run: composer build
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.ADD_TO_PROJECTS_PAT }}"}}'
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: gf-entries-in-excel
+          ASSETS_DIR: assets

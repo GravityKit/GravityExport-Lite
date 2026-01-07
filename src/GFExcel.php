@@ -40,7 +40,7 @@ class GFExcel {
 	/**
 	 * The endpoint slug of the plugin.
 	 * @since 1.0.0
-	 * @depreacted $ver$ Use Router instead.
+	 * @deprecated 2.4.0 Use Router instead.
 	 * @var string
 	 */
 	public static $slug = 'gravityexport-lite';
@@ -50,7 +50,7 @@ class GFExcel {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @deprecated $ver$ Use Router instead.
+	 * @deprecated 2.4.0 Use Router instead.
 	 *
 	 * @var string[]
 	 */
@@ -61,12 +61,12 @@ class GFExcel {
 	];
 
 	/**
-	 * @depreacted $ver$ Use Router instead.
+	 * @deprecated 2.4.0 Use Router instead.
 	 */
 	public const KEY_HASH = Router::KEY_HASH;
 
 	/**
-	 * @depreacted $ver$ Use Router instead.
+	 * @deprecated 2.4.0 Use Router instead.
 	 */
 	public const KEY_ACTION = Router::KEY_ACTION;
 
@@ -119,7 +119,7 @@ class GFExcel {
 	 *
 	 * @param int|string $form_id The id of the form.
 	 *
-	 * @depreacted $ver$ Use Router instead.
+	 * @deprecated 2.4.0 Use Router instead.
 	 *
 	 * @return string|null
 	 */
