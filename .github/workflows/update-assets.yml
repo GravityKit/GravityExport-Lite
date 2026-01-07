@@ -16,3 +16,4 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           ASSETS_DIR: assets
           IGNORE_OTHER_FILES: true
+          SLUG: gf-entries-in-excel
