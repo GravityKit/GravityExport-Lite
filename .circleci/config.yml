@@ -28,8 +28,8 @@ jobs:
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
             mkdir -p gf-entries-in-excel
-            rm -rf build/composer.* build/strauss.phar
             cp -R build gf-entries-in-excel
+            rm -rf gf-entries-in-excel/build/composer.* gf-entries-in-excel/build/strauss.phar
             zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
             zip -d $(ls gf-entries-in-excel-*.zip)  "gf-entries-in-excel/src/*" "gf-entries-in-excel/assets/*"
             mkdir .release
