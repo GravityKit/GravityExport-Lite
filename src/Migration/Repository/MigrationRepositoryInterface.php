@@ -48,8 +48,8 @@ interface MigrationRepositoryInterface {
 	public function getLatestVersion(): string;
 
 	/**
-	 * Sets the latest version, if it is later than the current latest version.
-	 * @since $ve$
+	 * Sets the latest version if it is later than the current latest version.
+	 * @since 2.0.0
 	 *
 	 * @param string $version The version to set.
 	 */

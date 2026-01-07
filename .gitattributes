@@ -14,7 +14,9 @@ build export-ignore
 tests export-ignore
 phpstan-stubs export-ignore
 
+/.claude export-ignore
 /.circleci export-ignore
 /.github export-ignore
 /.idea export-ignore
+/assets export-ignore
 /tests export-ignore
