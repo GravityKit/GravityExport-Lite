@@ -260,7 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Fixed: Added a deterministic sort order to prevent missing and duplicate entries.
 * Fixed: Entries without a `payment_date` value would show the current date/time instead of an empty value.
-* Change: Release-process to wordpress.org from GitHub Actions.
+* Change: Release process to WordPress.org from GitHub Actions.
 
 = 2.4.1 on August 28, 2025 =
 
