@@ -46,9 +46,25 @@ class SeparableField extends BaseField
 			return $this->wrap( $fields );
 		}
 
-		$value = $this->filter_value( implode( "\n", array_filter( $fields ) ), $entry );
+		$value = $this->filter_value( implode( $this->getCombinedFieldsSeparator(), array_filter( $fields ) ), $entry );
 
 		return $this->wrap( [ $value ] );
+	}
+
+	/**
+	 * Returns the separator used to combine subfield values when separation is disabled.
+	 *
+	 * @since TODO
+	 *
+	 * @return string The separator string.
+	 */
+	protected function getCombinedFieldsSeparator() {
+		return gf_apply_filters( [
+			'gfexcel_field_separated_separator',
+			$this->field->get_input_type(),
+			$this->field->formId,
+			$this->field->id,
+		], "\n", $this->field );
 	}
 
     /**
