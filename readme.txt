@@ -256,10 +256,6 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
-
-* Fixed: WordPress no longer logs suppressed warnings emitted by 'MetaField' tests.
-
 = 2.5.0 on January 29, 2026 =
 
 * Added: A search field for the Enabled and Disabled Fields lists on the form settings page. Quickly find fields by name when configuring exports for forms with many fields.
@@ -270,6 +266,7 @@ You can hide a row by adding a hook. Checkout this example:
     - Proper ARIA labels on all interactive elements.
 * Improved: RTL (right-to-left) language support for the field selector interface.
 * Enhancement: Added filter hooks change the separator used to combine complex fields, like Name and Address.
+* Fixed: WordPress no longer logs suppressed warnings emitted by "MetaField" tests.
 
 __Developer Updates:__
 
