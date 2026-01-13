@@ -256,6 +256,16 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Enhancement: Added filter hooks change the separator used to combine complex fields, like name and address.
+
+__Developer Updates:__
+
+* Added: `gfexcel_field_separated_separator` hook.
+* Added: `gfexcel_field_<field type>_separator` hook, eg. `gfexcel_field_name_separator`.
+
+
 = 2.4.2 on January 7, 2026 =
 
 * Fixed: Added a deterministic sort order to prevent missing and duplicate entries.
