@@ -796,7 +796,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 						'tab'        => $this->get_slug(),
 					],
 				],
-				'deps'     => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
+				'deps'     => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker', 'underscore', 'wp-i18n', 'wp-a11y' ],
 				'callback' => [ $this, 'localize_sortable_script' ],
 			],
 			[
@@ -810,6 +810,32 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 				],
 				'deps'    => [ 'jquery' ],
 			],
+		] );
+	}
+
+	/**
+	 * Localize the sortable script with i18n strings.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return void
+	 */
+	public function localize_sortable_script(): void {
+		wp_localize_script( 'gravityexport_lite', 'gravityexport_lite_strings', [
+			'enable'              => esc_html__( 'Enable all', 'gk-gravityexport-lite' ),
+			'disable'             => esc_html__( 'Disable all', 'gk-gravityexport-lite' ),
+			'enable_visible'      => esc_html__( 'Enable visible', 'gk-gravityexport-lite' ),
+			'disable_visible'     => esc_html__( 'Disable visible', 'gk-gravityexport-lite' ),
+			'no_fields_match'     => esc_html__( 'No fields match your search.', 'gk-gravityexport-lite' ),
+			'one_field_matches'   => esc_html__( '1 field matches your search.', 'gk-gravityexport-lite' ),
+			/* translators: %d: number of fields matching the search */
+			'n_fields_match'      => esc_html__( '%d fields match your search.', 'gk-gravityexport-lite' ),
+			/* translators: %1$s: field name, %2$s: destination list name (e.g., "Enabled Fields") */
+			'field_moved'         => esc_html__( '%1$s moved to %2$s.', 'gk-gravityexport-lite' ),
+			/* translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields") */
+			'fields_moved'        => esc_html__( '%1$d fields moved to %2$s.', 'gk-gravityexport-lite' ),
+			/* translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields") */
+			'one_field_moved'     => esc_html__( '1 field moved to %2$s.', 'gk-gravityexport-lite' ),
 		] );
 	}
 
