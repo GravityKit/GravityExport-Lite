@@ -752,10 +752,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @since 2.0.0
 	 */
 	public function styles(): array {
+		$css_file    = plugin_dir_path( GFEXCEL_PLUGIN_FILE ) . 'public/css/gravityexport-lite.css';
+		$css_version = file_exists( $css_file ) ? (string) filemtime( $css_file ) : $this->get_version();
+
 		return array_merge( parent::styles(), [
 			[
 				'handle'  => 'gravityexport_lite',
 				'src'     => $this->assets_dir . 'css/gravityexport-lite.css',
+				'version' => $css_version,
 				'enqueue' => [
 					[ 'admin_page' => 'form_settings', 'tab' => $this->get_slug() ],
 					[ 'admin_page' => 'plugin_settings', 'tab' => $this->get_slug() ],
@@ -769,6 +773,9 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @since 2.0.0
 	 */
 	public function scripts(): array {
+		$js_file    = plugin_dir_path( GFEXCEL_PLUGIN_FILE ) . 'public/js/gravityexport-lite.js';
+		$js_version = file_exists( $js_file ) ? (string) filemtime( $js_file ) : $this->get_version();
+
 		return array_merge( parent::scripts(), [
 			[
 				'handle'  => 'jquery-ui-sortable',
@@ -780,19 +787,17 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 				],
 			],
 			[
-				'handle'  => 'gravityexport_lite',
-				'src'     => $this->assets_dir . 'js/gravityexport-lite.js',
-				'strings' => [
-					'enable'  => esc_html__( 'Enable all', 'gk-gravityexport-lite' ),
-					'disable' => esc_html__( 'Disable all', 'gk-gravityexport-lite' ),
-				],
-				'enqueue' => [
+				'handle'   => 'gravityexport_lite',
+				'src'      => $this->assets_dir . 'js/gravityexport-lite.js',
+				'version'  => $js_version,
+				'enqueue'  => [
 					[
 						'admin_page' => 'form_settings',
 						'tab'        => $this->get_slug(),
 					],
 				],
-				'deps'    => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
+				'deps'     => [ 'jquery', 'jquery-ui-sortable', 'jquery-ui-datepicker' ],
+				'callback' => [ $this, 'localize_sortable_script' ],
 			],
 			[
 				'handle'  => 'gravityexport_lite_settings',
