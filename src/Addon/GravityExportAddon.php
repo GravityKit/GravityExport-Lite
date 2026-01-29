@@ -348,45 +348,58 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'title'       => __( 'General Settings', 'gk-gravityexport-lite' ),
 					'fields'      => [
 						[
-							'name'    => 'enable_notes',
-							'label'   => esc_html__( 'Include Entry Notes', 'gk-gravityexport-lite' ),
-							'type'    => 'checkbox',
-							'choices' => [
+							'name'        => 'enable_notes',
+							'label'       => esc_html__( 'Include Entry Notes', 'gk-gravityexport-lite' ),
+							'type'        => 'checkbox',
+							'description' => esc_html__( 'Entry notes are comments added by users as well as system logging for an entry.', 'gk-gravityexport-lite' ),
+							'choices'     => [
 								[
 									'name'  => 'enable_notes',
-									'label' => esc_html__( 'Yes, enable the notes for every entry', 'gk-gravityexport-lite' ),
+									'label' => esc_html__( 'Include entry notes in the export', 'gk-gravityexport-lite' ),
 									'value' => '1',
 								],
 							],
 						],
 						[
-							'label'   => esc_html__( 'Attach Single Entry to Notification', 'gk-gravityexport-lite' ),
-							'type'    => 'select',
-							'name'    => 'attachment_notification',
+							'label'       => esc_html__( 'Attach Single Entry to Notification', 'gk-gravityexport-lite' ),
+							'type'        => 'select',
+							'name'        => 'attachment_notification',
+							'description' => strtr(
+								// translators: Placeholders inside [] are not to be translated.
+								__( 'Attach the entry export as a file to the selected notification email. [link]Learn more about attaching exports to notifications[/link]', 'gk-gravityexport-lite' ),
+								[
+									'[link]'  => '<a href="https://docs.gravitykit.com/article/888-attaching-an-entry-export-to-a-notification-using-gravityexport-lite" target="_blank">',
+									'[/link]' => '</a>',
+								]
+							),
 							'choices' => $this->getNotifications(),
 						],
 						[
 							'name'          => 'is_transposed',
 							'type'          => 'radio',
-							'label'         => esc_html__( 'Column Position', 'gk-gravityexport-lite' ),
+							'label'         => esc_html__( 'Header Position', 'gk-gravityexport-lite' ),
+							'description'   => esc_html__( '"Top row" places headers across the first row with entries as rows below. "Left column" transposes the layout so headers run down the first column and each entry becomes a column.', 'gk-gravityexport-lite' ),
 							'default_value' => 0,
 							'choices'       => [
 								[
 									'name'  => 'is_transposed',
-									'label' => esc_html__( 'At the top (normal)', 'gk-gravityexport-lite' ),
+									'label' => esc_html__( 'Top row (default)', 'gk-gravityexport-lite' ),
 									'value' => 0,
+									'icon'  => 'dashicons-table-row-after',
 								],
 								[
 									'name'  => 'is_transposed',
-									'label' => esc_html__( 'At the left (transposed)', 'gk-gravityexport-lite' ),
+									'label' => esc_html__( 'Left column (transposed)', 'gk-gravityexport-lite' ),
 									'value' => 1,
+									'icon'  => 'dashicons-table-col-after',
 								],
 							],
 						],
 						[
-							'name'     => 'order_by',
-							'label'    => esc_html__( 'Order By', 'gk-gravityexport-lite' ),
-							'type'     => 'callback',
+							'name'        => 'order_by',
+							'label'       => esc_html__( 'Sort Order', 'gk-gravityexport-lite' ),
+							'description' => esc_html__( 'Choose which field to sort entries by, and whether to sort in ascending (A–Z) or descending (Z–A) order.', 'gk-gravityexport-lite' ),
+							'type'        => 'callback',
 							'class'    => 'gform-settings-field--multiple-inputs',
 							'callback' => function () {
 								$sort_field = [
@@ -495,13 +508,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			'description' => $this->plugin_settings_description(),
 			'fields'      => [
 				[
-					'name'    => 'labels',
-					'label'   => esc_html__( 'Labels', 'gk-gravityexport-lite' ),
-					'type'    => 'checkbox',
-					'choices' => [
+					'name'        => 'labels',
+					'label'       => esc_html__( 'Field Labels', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'Admin labels are set in each field\'s Advanced settings tab. When no admin label is set, the front-end label is used.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
 							'label' => esc_html__(
-								'Use admin labels',
+								'Use admin labels instead of front-end labels',
 								'gk-gravityexport-lite'
 							),
 							'name'  => 'use_admin_label',
@@ -509,13 +523,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					],
 				],
 				[
-					'name'    => 'field_separate',
-					'label'   => esc_html__( 'Multiple Columns', 'gk-gravityexport-lite' ),
-					'type'    => 'checkbox',
-					'choices' => [
+					'name'        => 'field_separate',
+					'label'       => esc_html__( 'Multi-Input Fields', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'Fields like Name, Address, and Date have multiple inputs. Enable this to give each input (e.g., First Name, Last Name) its own column.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
 							'label' => esc_html__(
-								'Split multi-fields (name, address) into multiple columns',
+								'Split multi-input fields into separate columns',
 								'gk-gravityexport-lite'
 							),
 							'name'  => SeparableField::SETTING_KEY,
@@ -524,63 +539,64 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 				],
 				[
 					'name'    => 'notes',
-					'label'   => esc_html__( 'Notes', 'gravityforms' ),
+					'label'   => esc_html__( 'Entry Notes', 'gk-gravityexport-lite' ),
 					'type'    => 'checkbox',
 					'choices' => [
 						[
-							'label'         => esc_html__( 'Enable notes by default', 'gk-gravityexport-lite' ),
+							'label'         => esc_html__( 'Include entry notes in exports by default', 'gk-gravityexport-lite' ),
 							'name'          => 'notes_enabled',
 							'default_value' => false,
 						],
 					],
 				],
 				[
-					'name'    => 'sections',
-					'label'   => esc_html__( 'Sections', 'gk-gravityexport-lite' ),
-					'type'    => 'checkbox',
-					'choices' => [
+					'name'        => 'sections',
+					'label'       => esc_html__( 'Section Fields', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'Section fields act as visual dividers on the form. Since they contain no data, they will appear as empty columns.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
-							'label'         => esc_html__( 'Enable (empty) section column', 'gk-gravityexport-lite' ),
+							'label'         => esc_html__( 'Include Section fields as columns in the export', 'gk-gravityexport-lite' ),
 							'name'          => 'sections_enabled',
 							'default_value' => false,
 						],
 					],
 				],
 				[
-					'name'  => 'fileuploads',
-					'label' => esc_html__( 'File Uploads', 'gk-gravityexport-lite' ),
-					'type'  => 'checkbox',
-
-					'choices' => [
+					'name'        => 'fileuploads',
+					'label'       => esc_html__( 'File Uploads', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'When enabled, File Upload columns display the URL of each uploaded file.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
-							'label'         => esc_html__( 'Enable file upload columns', 'gk-gravityexport-lite' ),
+							'label'         => esc_html__( 'Include File Upload fields in the export', 'gk-gravityexport-lite' ),
 							'name'          => 'fileuploads_enabled',
 							'default_value' => true,
 						],
 					],
 				],
 				[
-					'name'  => 'hyperlinks',
-					'label' => esc_html__( 'Hyperlinks', 'gk-gravityexport-lite' ),
-					'type'  => 'checkbox',
-
-					'choices' => [
+					'name'        => 'hyperlinks',
+					'label'       => esc_html__( 'Hyperlinks', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'Applies to columns that contain only URLs, such as Website and File Upload fields. Only supported in .xlsx exports.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
-							'label'         => esc_html__( 'Enable hyperlinks on URL-only columns', 'gk-gravityexport-lite' ),
+							'label'         => esc_html__( 'Make URLs clickable in the exported file', 'gk-gravityexport-lite' ),
 							'name'          => 'hyperlinks_enabled',
 							'default_value' => true,
 						],
 					],
 				],
 				[
-					'name'  => 'products_price',
-					'label' => esc_html__( 'Product Fields', 'gk-gravityexport-lite' ),
-					'type'  => 'checkbox',
-
-					'choices' => [
+					'name'        => 'products_price',
+					'label'       => esc_html__( 'Product Fields', 'gk-gravityexport-lite' ),
+					'type'        => 'checkbox',
+					'description' => esc_html__( 'When enabled, prices like "$25.00" are exported as "25.00" so they can be used in spreadsheet calculations.', 'gk-gravityexport-lite' ),
+					'choices'     => [
 						[
 							'label'         => esc_html__(
-								'Export prices as numeric fields, without currency symbol ($)',
+								'Export prices as numbers without currency symbols',
 								'gk-gravityexport-lite'
 							),
 							'name'          => ProductField::SETTING_KEY,
