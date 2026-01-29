@@ -197,9 +197,170 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			return $settings_sections;
 		}
 
+		$hash = $this->get_setting( 'hash' );
+
+		// "Export Settings" tab: file configuration, layout, and sorting.
+		$export_settings_sections = [
+			[
+				'id'     => 'gk-gravityexport-download',
+				'fields' => [
+					[
+						'label'         => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
+						'name'          => 'hash',
+						'type'          => 'download_url',
+						'assets_dir'    => $this->assets_dir,
+						'default_value' => $hash,
+						'url'           => $this->router->get_url_for_hash( $hash ),
+					],
+					[
+						'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
+						'name'       => 'copy_shortcode',
+						'type'       => 'copy_shortcode',
+						'embed_type' => $this->get_setting( 'file_extension' ),
+					],
+					[
+						'label'         => esc_html__( 'Custom Filename', 'gk-gravityexport-lite' ),
+						'type'          => 'text',
+						'name'          => 'custom_filename',
+						'placeholder'   => sprintf(
+							esc_html__( 'Default: %s', 'gk-gravityexport-lite' ),
+							GFExcel::getFilename( $form )
+						),
+						'class'         => 'medium code',
+						'description'   => esc_html__(
+							'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default.',
+							'gk-gravityexport-lite'
+						),
+						'save_callback' => function ( $field, $value ) {
+							return sanitize_file_name( $value );
+						},
+					],
+					[
+						'label'       => esc_html__( 'File Extension', 'gk-gravityexport-lite' ),
+						'type'        => 'select',
+						'name'        => 'file_extension',
+						'class'       => 'small-text',
+						'description' => sprintf(
+							esc_html__(
+								'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
+								'gk-gravityexport-lite'
+							),
+							'<code>.' . implode( '</code>, <code>.', GFExcel::getPluginFileExtensions() ) . '</code>'
+						),
+						'choices'     => array_map( static function ( $extension ) {
+							return
+								[
+									'name'  => 'file_extension',
+									'label' => '.' . $extension,
+									'value' => $extension,
+								];
+						}, GFExcel::getPluginFileExtensions() ),
+					],
+				],
+			],
+			[
+				'title'  => esc_html__( 'Layout & Sorting', 'gk-gravityexport-lite' ),
+				'fields' => [
+					[
+						'name'          => 'is_transposed',
+						'type'          => 'radio',
+						'label'         => esc_html__( 'Header Position', 'gk-gravityexport-lite' ),
+						'description'   => esc_html__( '"Top row" places headers across the first row with entries as rows below. "Left column" transposes the layout so headers run down the first column and each entry becomes a column.', 'gk-gravityexport-lite' ),
+						'default_value' => 0,
+						'choices'       => [
+							[
+								'name'  => 'is_transposed',
+								'label' => esc_html__( 'Top row (default)', 'gk-gravityexport-lite' ),
+								'value' => 0,
+								'icon'  => 'dashicons-table-row-after',
+							],
+							[
+								'name'  => 'is_transposed',
+								'label' => esc_html__( 'Left column (transposed)', 'gk-gravityexport-lite' ),
+								'value' => 1,
+								'icon'  => 'dashicons-table-col-after',
+							],
+						],
+					],
+					[
+						'name'        => 'order_by',
+						'label'       => esc_html__( 'Sort Order', 'gk-gravityexport-lite' ),
+						'description' => esc_html__( 'Choose which field to sort entries by, and whether to sort in ascending (A–Z) or descending (Z–A) order.', 'gk-gravityexport-lite' ),
+						'type'        => 'callback',
+						'class'       => 'gform-settings-field--multiple-inputs',
+						'callback'    => function () {
+							$sort_field = [
+								'name'    => 'sort_field',
+								'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
+							];
+
+							$sort_order = [
+								'name'    => 'sort_order',
+								'type'    => 'select',
+								'choices' => [
+									[
+										'value' => 'ASC',
+										'label' => esc_html__( 'Ascending', 'gk-gravityexport-lite' ),
+									],
+									[
+										'value' => 'DESC',
+										'label' => esc_html__( 'Descending', 'gk-gravityexport-lite' ),
+									],
+								],
+							];
+
+							$this->settings_select( $sort_field );
+							$this->settings_select( $sort_order );
+						},
+					],
+				],
+			],
+			[
+				'title'  => esc_html__( 'Additional Options', 'gk-gravityexport-lite' ),
+				'fields' => [
+					[
+						'name'        => 'enable_notes',
+						'label'       => esc_html__( 'Include Entry Notes', 'gk-gravityexport-lite' ),
+						'type'        => 'checkbox',
+						'description' => esc_html__( 'Entry notes are comments added by users as well as system logging for an entry.', 'gk-gravityexport-lite' ),
+						'choices'     => [
+							[
+								'name'  => 'enable_notes',
+								'label' => esc_html__( 'Include entry notes in the export', 'gk-gravityexport-lite' ),
+								'value' => '1',
+							],
+						],
+					],
+					[
+						'label'       => esc_html__( 'Attach Single Entry to Notification', 'gk-gravityexport-lite' ),
+						'type'        => 'select',
+						'name'        => 'attachment_notification',
+						'description' => strtr(
+							// translators: Placeholders inside [] are not to be translated.
+							__( 'Attach the entry export as a file to the selected notification email. [link]Learn more about attaching exports to notifications[/link]', 'gk-gravityexport-lite' ),
+							[
+								'[link]'  => '<a href="https://docs.gravitykit.com/article/888-attaching-an-entry-export-to-a-notification-using-gravityexport-lite" target="_blank">',
+								'[/link]' => '</a>',
+							]
+						),
+						'choices' => $this->getNotifications(),
+					],
+				],
+			],
+		];
+
+		/**
+		 * Filter the general settings sections for the export settings tab.
+		 *
+		 * @since 1.8.0
+		 *
+		 * @param array[] $sections Array of section arrays, each containing 'title' and 'fields' keys.
+		 */
+		$export_settings_sections = apply_filters( 'gfexcel_general_settings', $export_settings_sections );
+
+		// Prepend the GravityExport Pro upsell message as the first section in the Export Settings tab.
 		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
-			$settings_sections[] = [
-				'title'       => '',
+			array_unshift( $export_settings_sections, [
 				'description' => $this->get_gravityexport_message(),
 				'fields'      => [
 					[
@@ -208,248 +369,116 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 						'value' => 'You should try it!',
 					],
 				],
-			];
+			] );
 		}
 
-		$hash = $this->get_setting( 'hash' );
-		$settings_sections[] = [
-			'id'          => 'gk-gravityexport-download',
-			'title'       => __( 'Download settings', 'gk-gravityexport-lite' ),
-			'collapsible' => true,
-			'fields'      => [
-				[
-					'label'         => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
-					'name'          => 'hash',
-					'type'          => 'download_url',
-					'assets_dir'    => $this->assets_dir,
-					'default_value' => $hash,
-					'url'           => $this->router->get_url_for_hash( $hash ),
-				],
-				[
-					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
-					'name'       => 'copy_shortcode',
-					'type'       => 'copy_shortcode',
-					'embed_type' => $this->get_setting( 'file_extension' ),
-				],
-				[
-					'label'         => esc_html__( 'Custom Filename', 'gk-gravityexport-lite' ),
-					'type'          => 'text',
-					'name'          => 'custom_filename',
-					'placeholder'   => sprintf(
-						esc_html__( 'Default: %s', 'gk-gravityexport-lite' ),
-						GFExcel::getFilename( $form )
-					),
-					'class'         => 'medium code',
-					'description'   => esc_html__(
-						'Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default.',
-						'gk-gravityexport-lite'
-					),
-					'save_callback' => function ( $field, $value ) {
-						return sanitize_file_name( $value );
-					},
-				],
-				[
-					'label'       => esc_html__( 'File Extension', 'gk-gravityexport-lite' ),
-					'type'        => 'select',
-					'name'        => 'file_extension',
-					'class'       => 'small-text',
-					'description' => sprintf(
-						esc_html__(
-							'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
-							'gk-gravityexport-lite'
-						),
-						'<code>.' . implode( '</code>, <code>.', GFExcel::getPluginFileExtensions() ) . '</code>'
-					),
-					'choices'     => array_map( static function ( $extension ) {
-						return
-							[
-								'name'  => 'file_extension',
-								'label' => '.' . $extension,
-								'value' => $extension,
-							];
-					}, GFExcel::getPluginFileExtensions() ),
-				],
-			],
+		$settings_tabs = [];
+
+		$settings_tabs[] = [
+			'title'    => esc_html__( 'Export Settings', 'gk-gravityexport-lite' ),
+			'id'       => 'gk-tab-export-settings',
+			'sections' => $export_settings_sections,
 		];
 
-		$settings_sections[] = [
-			'id'     => 'gk-gravityexport-download-file',
-			'class'  => 'gk-gravityexport-download-file',
-			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
-            'fields' => [
-                [
-                    'name'          => 'download_file',
-                    'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
-                    'tooltip'       => 'export_date_range',
-                    'type'          => 'download_file',
-                    'default_value' => $hash,
-                    'url'           => $this->router->get_url_for_hash( $hash ),
-                ],
-            ],
-		];
-
-		$settings_sections[] = [
-			'id'          => 'gk-section-security',
-			'collapsible' => true,
-			'title'       => __( 'Security Settings', 'gk-gravityexport-lite' ),
-			'fields'      => [
+		$settings_tabs[] = [
+			'title'    => esc_html__( 'Enabled Fields', 'gk-gravityexport-lite' ),
+			'id'       => 'gk-tab-enabled-fields',
+			'sections' => [
 				[
-					'name'        => 'has_embed_secret',
-					'label'       => esc_html__( 'Secure Shortcodes', 'gk-gravityexport-lite' ),
-					'type'        => 'checkbox',
-					'description' => __( 'A secure shortcode contains a unique <code>secret</code>-attribute which prevents generating the URL for a form without permission.', 'gk-gravityexport-lite' ),
-					'choices'     => [
+					'id'     => 'gk-section-fields',
+					'fields' => [
 						[
-							'name'  => 'has_embed_secret',
-							'label' => esc_html__( 'Enable secure embed shortcode', 'gk-gravityexport-lite' ),
-							'value' => '1',
+							'name'             => 'export-fields',
+							'type'             => 'sort_fields',
+							'choices'          => $this->getFields(),
+							'use_admin_labels' => $this->useAdminLabels(),
+							'sections'         => [
+								'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport-lite' ), 'enabled' ],
+								'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport-lite' ), 'disabled' ],
+							],
 						],
 					],
 				],
-				[
-					'name'          => 'is_secured',
-					'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
-					'type'          => 'select',
-					'description'   => sprintf(
-						esc_html__(
-							'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
-							'gk-gravityexport-lite'
-						),
-						'<code>gravityforms_export_entries</code>'
-					),
-					'default_value' => 0,
-					'choices'       => ( static function (): array {
-						$options = [];
-						if ( ! GFExcel::isAllSecured() ) {
-							$options[] = [
-								'name'  => 'is_secured',
-								'label' => __( 'Everyone can download', 'gk-gravityexport-lite' ),
-								'value' => 0,
-							];
-						}
-						$options[] = [
-							'name'  => 'is_secured',
-							'label' => __( 'Logged-in users who have "Export Entries" access', 'gk-gravityexport-lite' ),
-							'value' => 1,
-						];
-
-						return $options;
-					} )(),
-				],
 			],
 		];
 
-		$settings_sections = array_merge( $settings_sections, apply_filters(
-			'gfexcel_general_settings',
-			[
+		$settings_tabs[] = [
+			'title'    => esc_html__( 'Security', 'gk-gravityexport-lite' ),
+			'id'       => 'gk-tab-security',
+			'sections' => [
 				[
-					'id'          => 'gk-general-security',
-					'collapsible' => true,
-					'title'       => __( 'General Settings', 'gk-gravityexport-lite' ),
-					'fields'      => [
+					'id'     => 'gk-section-security',
+					'fields' => [
 						[
-							'name'        => 'enable_notes',
-							'label'       => esc_html__( 'Include Entry Notes', 'gk-gravityexport-lite' ),
+							'name'        => 'has_embed_secret',
+							'label'       => esc_html__( 'Secure Shortcodes', 'gk-gravityexport-lite' ),
 							'type'        => 'checkbox',
-							'description' => esc_html__( 'Entry notes are comments added by users as well as system logging for an entry.', 'gk-gravityexport-lite' ),
+							'description' => __( 'A secure shortcode contains a unique <code>secret</code>-attribute which prevents generating the URL for a form without permission.', 'gk-gravityexport-lite' ),
 							'choices'     => [
 								[
-									'name'  => 'enable_notes',
-									'label' => esc_html__( 'Include entry notes in the export', 'gk-gravityexport-lite' ),
+									'name'  => 'has_embed_secret',
+									'label' => esc_html__( 'Enable secure embed shortcode', 'gk-gravityexport-lite' ),
 									'value' => '1',
 								],
 							],
 						],
 						[
-							'label'       => esc_html__( 'Attach Single Entry to Notification', 'gk-gravityexport-lite' ),
-							'type'        => 'select',
-							'name'        => 'attachment_notification',
-							'description' => strtr(
-								// translators: Placeholders inside [] are not to be translated.
-								__( 'Attach the entry export as a file to the selected notification email. [link]Learn more about attaching exports to notifications[/link]', 'gk-gravityexport-lite' ),
-								[
-									'[link]'  => '<a href="https://docs.gravitykit.com/article/888-attaching-an-entry-export-to-a-notification-using-gravityexport-lite" target="_blank">',
-									'[/link]' => '</a>',
-								]
+							'name'          => 'is_secured',
+							'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
+							'type'          => 'select',
+							'description'   => sprintf(
+								esc_html__(
+									'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
+									'gk-gravityexport-lite'
+								),
+								'<code>gravityforms_export_entries</code>'
 							),
-							'choices' => $this->getNotifications(),
-						],
-						[
-							'name'          => 'is_transposed',
-							'type'          => 'radio',
-							'label'         => esc_html__( 'Header Position', 'gk-gravityexport-lite' ),
-							'description'   => esc_html__( '"Top row" places headers across the first row with entries as rows below. "Left column" transposes the layout so headers run down the first column and each entry becomes a column.', 'gk-gravityexport-lite' ),
 							'default_value' => 0,
-							'choices'       => [
-								[
-									'name'  => 'is_transposed',
-									'label' => esc_html__( 'Top row (default)', 'gk-gravityexport-lite' ),
-									'value' => 0,
-									'icon'  => 'dashicons-table-row-after',
-								],
-								[
-									'name'  => 'is_transposed',
-									'label' => esc_html__( 'Left column (transposed)', 'gk-gravityexport-lite' ),
+							'choices'       => ( static function (): array {
+								$options = [];
+								if ( ! GFExcel::isAllSecured() ) {
+									$options[] = [
+										'name'  => 'is_secured',
+										'label' => __( 'Everyone can download', 'gk-gravityexport-lite' ),
+										'value' => 0,
+									];
+								}
+								$options[] = [
+									'name'  => 'is_secured',
+									'label' => __( 'Logged-in users who have "Export Entries" access', 'gk-gravityexport-lite' ),
 									'value' => 1,
-									'icon'  => 'dashicons-table-col-after',
-								],
-							],
-						],
-						[
-							'name'        => 'order_by',
-							'label'       => esc_html__( 'Sort Order', 'gk-gravityexport-lite' ),
-							'description' => esc_html__( 'Choose which field to sort entries by, and whether to sort in ascending (A–Z) or descending (Z–A) order.', 'gk-gravityexport-lite' ),
-							'type'        => 'callback',
-							'class'    => 'gform-settings-field--multiple-inputs',
-							'callback' => function () {
-								$sort_field = [
-									'name'    => 'sort_field',
-									'choices' => ( new FieldsRepository( $this->get_current_form() ) )->getSortFieldOptions(),
 								];
 
-								$sort_order = [
-									'name'    => 'sort_order',
-									'type'    => 'select',
-									'choices' => [
-										[
-											'value' => 'ASC',
-											'label' => esc_html__( 'Ascending', 'gk-gravityexport-lite' ),
-										],
-										[
-											'value' => 'DESC',
-											'label' => esc_html__( 'Descending', 'gk-gravityexport-lite' ),
-										],
-									],
-								];
-
-								$this->settings_select( $sort_field );
-								$this->settings_select( $sort_order );
-							},
+								return $options;
+							} )(),
 						],
-					],
-				],
-			]
-		) );
-
-		$settings_sections[] = [
-			'id'          => 'gk-section-fields',
-			'collapsible' => true,
-			'title'       => esc_html__( 'Field settings', 'gk-gravityexport-lite' ),
-			'fields'      => [
-				[
-					'name'             => 'export-fields',
-					'type'             => 'sort_fields',
-					'choices'          => $this->getFields(),
-					'use_admin_labels' => $this->useAdminLabels(),
-					'sections'         => [
-						'disabled' => [ esc_html__( 'Disabled Fields', 'gk-gravityexport-lite' ), 'enabled' ],
-						'enabled'  => [ esc_html__( 'Enabled Fields', 'gk-gravityexport-lite' ), 'disabled' ],
 					],
 				],
 			],
 		];
 
-		return $settings_sections;
+		$settings_tabs[] = [
+			'title'    => esc_html__( 'Instant Download', 'gk-gravityexport-lite' ),
+			'id'       => 'gk-tab-instant-download',
+			'sections' => [
+				[
+					'id'     => 'gk-gravityexport-download-file',
+					'class'  => 'gk-gravityexport-download-file',
+					'fields' => [
+						[
+							'name'          => 'download_file',
+							'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
+							'tooltip'       => 'export_date_range',
+							'type'          => 'download_file',
+							'default_value' => $hash,
+							'url'           => $this->router->get_url_for_hash( $hash ),
+						],
+					],
+				],
+			],
+		];
+
+		return $settings_tabs;
 	}
 
 	/**
