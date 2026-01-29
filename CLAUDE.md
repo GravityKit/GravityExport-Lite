@@ -12,7 +12,7 @@ When Pro is active, Lite's tabbed structure renders as flat collapsible sections
 1. **Export Settings** - Download settings, file configuration
 2. **Enabled Fields** - Field selection, sorting, header position
 3. **Security** - Download permissions
-4. **Instant Download** - Quick download with date range
+4. **Instant Download ⚡** - Quick download with date range (last tab: action, not config)
 
 ## Key Filters & Hooks
 - `gfexcel_general_settings` (line 359): Filters sections within Export Settings tab. Used by multi-row, PDF renderer addons
