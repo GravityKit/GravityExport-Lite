@@ -202,6 +202,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		// "Export Settings" tab: file configuration, layout, and sorting.
 		$export_settings_sections = [
 			[
+				'title'  => esc_html__( 'Download Settings', 'gk-gravityexport-lite' ),
 				'id'     => 'gk-gravityexport-download',
 				'fields' => [
 					[
@@ -427,11 +428,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 							'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
 							'type'          => 'select',
 							'description'   => sprintf(
+								// translators: %1$s is the capability code, %2$s is the opening link tag, %3$s is the closing link tag.
 								esc_html__(
-									'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
+									'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %1$s capability. %2$sLearn more about restricting file access%3$s',
 									'gk-gravityexport-lite'
 								),
-								'<code>gravityforms_export_entries</code>'
+								'<code>gravityforms_export_entries</code>',
+								'<a href="https://docs.gravitykit.com/article/1077-restricting-file-access-in-gravityexport-gravityexport-lite" target="_blank">',
+								'</a>'
 							),
 							'default_value' => 0,
 							'choices'       => ( static function (): array {
