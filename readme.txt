@@ -256,22 +256,21 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.5.0 on January 29, 2026 =
 
 * Added: A search field for the Enabled and Disabled Fields lists on the form settings page. Quickly find fields by name when configuring exports for forms with many fields.
-* Improved: Full accessibility support for the field selector:
-    - Screen reader announcements when fields are moved between lists
-    - Keyboard navigation with Enter/Space to move fields and Escape to clear search
-    - Visible focus indicators for keyboard users
-    - Proper ARIA labels on all interactive elements
+* Improved: Accessibility support for the field selector:
+    - Screen reader announcements when fields are moved between lists;
+    - Keyboard navigation with Enter/Space to move fields and Escape to clear search;
+    - Visible focus indicators for keyboard users;
+    - Proper ARIA labels on all interactive elements.
 * Improved: RTL (right-to-left) language support for the field selector interface.
-* Enhancement: Added filter hooks change the separator used to combine complex fields, like name and address.
+* Enhancement: Added filter hooks change the separator used to combine complex fields, like Name and Address.
 
 __Developer Updates:__
 
-* Added: `gfexcel_field_separated_separator` hook.
-* Added: `gfexcel_field_<field type>_separator` hook, eg. `gfexcel_field_name_separator`.
-
+* Added: `gfexcel_field_separated_separator` filter to change the default separator for all combined subfields (default: newline).
+* Added: `gfexcel_field_{field_type}_separator` filter (e.g., `gfexcel_field_name_separator`) to change the separator for a specific field type.
 
 = 2.4.2 on January 7, 2026 =
 
