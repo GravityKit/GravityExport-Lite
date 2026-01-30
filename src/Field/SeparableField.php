@@ -9,23 +9,21 @@ use GFExcel\Values\BaseValue;
  * A field transformer that serves as the base for every field that has subfields.
  * @since 1.6.0
  */
-class SeparableField extends BaseField
-{
-    /** @var string */
-    public const SETTING_KEY = 'field_separation_enabled';
+class SeparableField extends BaseField {
+	/** @var string */
+	public const SETTING_KEY = 'field_separation_enabled';
 
-    /**
-     * @inheritdoc
-     * @return BaseValue[]
-     */
-    public function getColumns()
-    {
-        if (!$this->isSeparationEnabled()) {
-            return parent::getColumns();
-        }
+	/**
+	 * @inheritdoc
+	 * @return BaseValue[]
+	 */
+	public function getColumns() {
+		if ( ! $this->isSeparationEnabled() ) {
+			return parent::getColumns();
+		}
 
-        return $this->wrap($this->getSeparatedColumns(), true);
-    }
+		return $this->wrap( $this->getSeparatedColumns(), true );
+	}
 
 	/**
 	 * @inheritdoc
@@ -46,69 +44,100 @@ class SeparableField extends BaseField
 			return $this->wrap( $fields );
 		}
 
-		$value = $this->filter_value( implode( "\n", array_filter( $fields ) ), $entry );
+		$value = $this->filter_value( implode( $this->getCombinedFieldsSeparator(), array_filter( $fields ) ), $entry );
 
 		return $this->wrap( [ $value ] );
 	}
 
-    /**
-     * Get the separated fields to go along with the columns.
-     * @param mixed[] $entry The entry object.
-     * @return mixed[] The field values.
-     */
-    protected function getSeparatedFields($entry)
-    {
-        $entry_keys = array_keys($this->getSeparatedColumns());
+	/**
+	 * Returns the separator used to combine subfield values when separation is disabled.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return string The separator string.
+	 */
+	protected function getCombinedFieldsSeparator(): string {
+		$glue = gf_apply_filters(
+			[
+				'gfexcel_field_separated_separator',
+				$this->field->get_input_type(),
+				$this->field->formId,
+				$this->field->id,
+			],
+			"\n",
+			$this->field
+		);
 
-        return array_map(function ($key) use ($entry) {
-            return $this->getFieldValue($entry, $key);
-        }, $entry_keys);
-    }
+		$glue = gf_apply_filters(
+			[
+				'gfexcel_field_' . $this->field->get_input_type() . '_separator',
+				$this->field->formId,
+				$this->field->id,
+			],
+			$glue,
+			$this->field
+		);
 
-    /**
-     * Whether we should use separated fields.
-     * @return bool Whether we should use separated fields.
-     */
-    protected function isSeparationEnabled()
-    {
-	    $plugin = GravityExportAddon::get_instance();
+		return (string) $glue;
+	}
 
-	    return gf_apply_filters( [
-		    'gfexcel_field_separated',
-		    $this->field->get_input_type(),
-		    $this->field->formId,
-		    $this->field->id,
-	    ], (bool) $plugin->get_plugin_setting( self::SETTING_KEY ), $this->field );
-    }
+	/**
+	 * Get the separated fields to go along with the columns.
+	 *
+	 * @param mixed[] $entry The entry object.
+	 *
+	 * @return mixed[] The field values.
+	 */
+	protected function getSeparatedFields( $entry ) {
+		$entry_keys = array_keys( $this->getSeparatedColumns() );
 
-    /**
-     * Get the column names for every active subfield.
-     * @return array
-     */
-    protected function getSeparatedColumns()
-    {
-        return array_reduce($this->getVisibleSubfields(), function ($carry, $field) {
-            $field_id = (string) $field['id'];
-            $carry[$field_id] = gf_apply_filters([
-                'gfexcel_field_label',
-                $this->field->get_input_type(),
-                $this->field->formId,
-                $this->field->id
-            ], $this->getSubLabel($field), $this->field);
-            return $carry;
-        }, []);
-    }
+		return array_map( function ( $key ) use ( $entry ) {
+			return $this->getFieldValue( $entry, $key );
+		}, $entry_keys );
+	}
 
-    /**
-     * Retrieve all active subfields for this field.
-     * @return array
-     */
-    protected function getVisibleSubfields()
-    {
-        return array_filter((array) $this->field->get_entry_inputs(), function ($subfield) {
-            return ! isset( $subfield['isHidden'] ) || ! $subfield['isHidden'];
-        });
-    }
+	/**
+	 * Whether we should use separated fields.
+	 * @return bool Whether we should use separated fields.
+	 */
+	protected function isSeparationEnabled() {
+		$plugin = GravityExportAddon::get_instance();
+
+		return gf_apply_filters( [
+			'gfexcel_field_separated',
+			$this->field->get_input_type(),
+			$this->field->formId,
+			$this->field->id,
+		], (bool) $plugin->get_plugin_setting( self::SETTING_KEY ), $this->field );
+	}
+
+	/**
+	 * Get the column names for every active subfield.
+	 * @return array
+	 */
+	protected function getSeparatedColumns() {
+		return array_reduce( $this->getVisibleSubfields(), function ( $carry, $field ) {
+			$field_id           = (string) $field['id'];
+			$carry[ $field_id ] = gf_apply_filters( [
+				'gfexcel_field_label',
+				$this->field->get_input_type(),
+				$this->field->formId,
+				$this->field->id
+			], $this->getSubLabel( $field ), $this->field );
+
+			return $carry;
+		}, [] );
+	}
+
+	/**
+	 * Retrieve all active subfields for this field.
+	 * @return array
+	 */
+	protected function getVisibleSubfields() {
+		return array_filter( (array) $this->field->get_entry_inputs(), function ( $subfield ) {
+			return ! isset( $subfield['isHidden'] ) || ! $subfield['isHidden'];
+		} );
+	}
 
 	/**
 	 * Get the label for a subfield.
