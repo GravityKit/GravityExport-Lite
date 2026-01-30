@@ -65,7 +65,39 @@ class SortFields extends Base {
 	 * @since 2.0.0
 	 */
 	public function markup(): string {
-		$html = [ '<div class="gk-gravityexport-sort-fields">' ];
+		$search_id          = $this->name . '-search';
+		$search_placeholder = esc_attr__( 'Filter fields…', 'gk-gravityexport-lite' );
+		$search_label       = esc_html__( 'Filter fields', 'gk-gravityexport-lite' );
+
+		$status_id = $this->name . '-search-status';
+
+		$html = [
+			'<div class="gk-gravityexport-sort-fields">',
+			sprintf(
+				'<div class="gk-gravityexport-sort-fields__search">
+					<label for="%s" class="screen-reader-text">%s</label>
+					<div class="gk-gravityexport-sort-fields__search-input-wrapper">
+						<input type="search" id="%s" class="gk-gravityexport-sort-fields__search-input" placeholder="%s" autocomplete="off" aria-controls="%s %s" aria-describedby="%s">
+						<span class="gk-gravityexport-sort-fields__search-icon" aria-hidden="true">
+							<i class="fa fa-search"></i>
+						</span>
+					</div>
+					<div id="%s" class="gk-gravityexport-sort-fields__search-status" role="status" aria-live="polite">
+						<span class="gk-gravityexport-sort-fields__search-status-text"></span>
+						<a href="#" class="gk-gravityexport-sort-fields__clear-search">%s</a>
+					</div>
+				</div>',
+				esc_attr( $search_id ),
+				$search_label,
+				esc_attr( $search_id ),
+				$search_placeholder,
+				esc_attr( $this->name . '-enabled' ),
+				esc_attr( $this->name . '-disabled' ),
+				esc_attr( $status_id ),
+				esc_attr( $status_id ),
+				esc_html__( 'Clear search', 'gk-gravityexport-lite' )
+			),
+		];
 
 		foreach ( $this->sections as $section => [$heading, $target] ) {
 			$html[] = sprintf( '<div><p><strong>%s</strong></p>', $heading );
@@ -80,10 +112,12 @@ class SortFields extends Base {
 			);
 
 			$html[] = sprintf(
-				'<ul id="%s" %s data-send-to="%s" class="fields-select">%s</ul>',
+				'<ul id="%s" %s data-send-to="%s" data-list-label="%s" class="fields-select" role="listbox" aria-label="%s">%s</ul>',
 				$this->name . '-' . $section,
 				implode( ' ', $this->get_attributes() ),
 				$this->name . '-' . $target,
+				esc_attr( wp_strip_all_tags( $heading ) ),
+				esc_attr( wp_strip_all_tags( $heading ) ),
 				implode( "\n", array_map( \Closure::fromCallable( [
 					$this,
 					'choiceHtml'
@@ -106,16 +140,21 @@ class SortFields extends Base {
 	 * @return string The HTML for this choice.
 	 */
 	protected function choiceHtml( \GF_Field $choice ): string {
+		$label = $choice->get_field_label( ! $this->use_admin_labels, '' );
+
 		return sprintf(
-			'<li data-value="%s">
-                <div class="field"><i class="fa fa-bars"></i> <span>%s</span></div>
-                <div class="move">
-                    <i class="fa fa-arrow-right"></i>
-                    <i class="fa fa-close"></i>
+			'<li data-value="%s" role="option" aria-label="%s">
+                <div class="field"><i class="fa fa-bars" aria-hidden="true"></i> <span>%s</span></div>
+                <div class="move" role="button" tabindex="0" aria-label="%s">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    <i class="fa fa-close" aria-hidden="true"></i>
                 </div>
             </li>',
 			$choice->id,
-			$choice->get_field_label( !$this->use_admin_labels, '' )
+			esc_attr( $label ),
+			$label,
+			/* translators: %s: field label */
+			esc_attr( sprintf( __( 'Move %s', 'gk-gravityexport-lite' ), $label ) )
 		);
 	}
 
