@@ -52,7 +52,7 @@ class SeparableField extends BaseField {
 	/**
 	 * Returns the separator used to combine subfield values when separation is disabled.
 	 *
-	 * @since TODO
+	 * @since 2.5.0
 	 *
 	 * @return string The separator string.
 	 */

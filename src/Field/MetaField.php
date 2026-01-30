@@ -123,7 +123,7 @@ class MetaField extends BaseField implements RowsInterface {
 	/**
 	 * Returns whether the provided pattern is a valid regex.
 	 *
-	 * @since $ver$
+	 * @since 2.5.0
 	 *
 	 * @param string $pattern The string to check.
 	 *
