@@ -41,6 +41,8 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @since $ver$
 	 */
 	public function getRows( ?array $entry = null ): iterable {
+		$entry = $entry ?? [];
+
 		if ( $this->field->get_input_type() !== 'workflow_multi_user' ) {
 			yield $this->getCells( $entry );
 
@@ -207,11 +209,16 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @return string The resolved role value.
 	 */
 	private function resolve_role( $value ): string {
-		if ( $this->should_translate_role() ) {
-			return translate_user_role( (string) $value );
+		$role_key = (string) $value;
+
+		if ( ! $this->should_translate_role() ) {
+			return $role_key;
 		}
 
-		return (string) $value;
+		$roles     = wp_roles()->roles;
+		$role_name = $roles[ $role_key ]['name'] ?? $role_key;
+
+		return translate_user_role( $role_name );
 	}
 
 	/**
