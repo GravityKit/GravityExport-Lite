@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: "Date Updated" values were displayed in GMT instead of the local time.
+
 = 2.5.0 on January 29, 2026 =
 
 * Added: A search field for the Enabled and Disabled Fields lists on the form settings page. Quickly find fields by name when configuring exports for forms with many fields.
