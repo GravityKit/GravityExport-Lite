@@ -80,16 +80,35 @@ class FieldsRepository {
 		}
 
 		if ( empty( $this->meta_fields ) ) {
+			$additional_fields = (array) gf_apply_filters(
+				[
+					'gk/gravityexport/fields/additional-meta-fields',
+					$this->form['id'] ?? 0,
+				],
+				[
+					'date_updated' => __( 'Date Updated', 'gk-gravityexport-lite' ),
+				]
+			);
 
-			add_filter( 'gform_export_fields', function ( $form ) {
-				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport-lite' ) ) );
+			add_filter( 'gform_export_fields', $cb = function ( $form ) use ( $additional_fields ) {
+				foreach ($additional_fields as $id => $label) {
+					$form['fields'][] = compact( 'id', 'label' );
+				}
+
 				return $form;
 			} );
 
-			$form              = GFExport::add_default_export_fields( [ 'id' => $this->form['id'] ?? 0, 'fields' => [] ] );
-			$this->meta_fields = array_reduce( $form['fields'], function ( $carry, GF_Field $field ) {
+			$form              = GFExport::add_default_export_fields( [
+				'id'     => $this->form['id'] ?? 0,
+				'fields' => []
+			] );
+
+			remove_filter( 'gform_export_fields', $cb );
+
+			$this->meta_fields = array_reduce( $form['fields'], static function ( $carry, GF_Field $field ) {
 				$field->type         = 'meta';
 				$carry[ $field->id ] = $field;
+
 				return $carry;
 			} );
 		}
@@ -216,10 +235,10 @@ class FieldsRepository {
 				'value' => 'date_created',
 				'label' => __( 'Entry Date', 'gk-gravityexport-lite' ),
 			],
-            [
-                'value' => 'date_updated',
-                'label' => __( 'Date Updated', 'gk-gravityexport-lite' ),
-            ],
+			[
+				'value' => 'date_updated',
+				'label' => __( 'Date Updated', 'gk-gravityexport-lite' ),
+			],
 			[
 				'value' => 'id',
 				'label' => __( 'Entry ID', 'gk-gravityexport-lite' ),

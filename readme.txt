@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: "Date Updated" values were displayed in GMT instead of the local time.
+* Added: A filter hook to customize the additional meta fields available for export.
 
 = 2.5.0 on January 29, 2026 =
 
