@@ -125,6 +125,10 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @return mixed The resolved user property value, or the original value if unresolvable.
 	 */
 	private function resolve_user( $value ) {
+		if ( empty( $value ) ) {
+			return $value;
+		}
+
 		$user_id  = (int) $value;
 		$property = $this->get_user_property_name();
 

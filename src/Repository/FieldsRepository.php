@@ -105,12 +105,12 @@ class FieldsRepository {
 
 			remove_filter( 'gform_export_fields', $cb );
 
-			$this->meta_fields = array_reduce( $form['fields'], static function ( $carry, GF_Field $field ) {
+			$this->meta_fields = array_reduce( $form['fields'], static function ( array $carry, GF_Field $field ) {
 				$field->type         = 'meta';
 				$carry[ $field->id ] = $field;
 
 				return $carry;
-			} );
+			}, [] );
 		}
 
 		return $use_metadata;
