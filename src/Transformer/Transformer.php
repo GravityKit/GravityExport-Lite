@@ -17,20 +17,24 @@ class Transformer {
 	 * @var array
 	 */
 	protected $fields = [
-		'calculation'   => 'GFExcel\Field\ProductField',
-		'checkbox'      => 'GFExcel\Field\CheckboxField',
-		'date'          => 'GFExcel\Field\DateField',
-		'fileupload'    => 'GFExcel\Field\FileUploadField',
-		'form'          => 'GFExcel\Field\NestedFormField',
-		'likert'        => 'GFExcel\Field\SurveyLikertField',
-		'list'          => 'GFExcel\Field\ListField',
-		'meta'          => 'GFExcel\Field\MetaField',
-		'name'          => 'GFExcel\Field\SeparableField',
-		'notes'         => 'GFExcel\Field\NotesField',
-		'number'        => 'GFExcel\Field\NumberField',
-		'repeater'      => 'GFExcel\Field\RepeaterField',
-		'singleproduct' => 'GFExcel\Field\ProductField',
-		'section'       => 'GFExcel\Field\SectionField',
+		'calculation'                => 'GFExcel\Field\ProductField',
+		'checkbox'                   => 'GFExcel\Field\CheckboxField',
+		'date'                       => 'GFExcel\Field\DateField',
+		'fileupload'                 => 'GFExcel\Field\FileUploadField',
+		'form'                       => 'GFExcel\Field\NestedFormField',
+		'likert'                     => 'GFExcel\Field\SurveyLikertField',
+		'list'                       => 'GFExcel\Field\ListField',
+		'meta'                       => 'GFExcel\Field\MetaField',
+		'name'                       => 'GFExcel\Field\SeparableField',
+		'notes'                      => 'GFExcel\Field\NotesField',
+		'number'                     => 'GFExcel\Field\NumberField',
+		'repeater'                   => 'GFExcel\Field\RepeaterField',
+		'section'                    => 'GFExcel\Field\SectionField',
+		'singleproduct'              => 'GFExcel\Field\ProductField',
+		'workflow_assignee_select'   => 'GFExcel\Field\FlowField',
+		'workflow_multi_user'        => 'GFExcel\Field\FlowField',
+		'workflow_role'              => 'GFExcel\Field\FlowField',
+		'workflow_user'              => 'GFExcel\Field\FlowField',
 	];
 
 	/**
