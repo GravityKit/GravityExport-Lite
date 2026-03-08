@@ -105,9 +105,11 @@ class PHPExcelRenderer extends AbstractPHPExcelRenderer
             ->setCreator(GFExcel::$name)
             ->setLastModifiedBy(GFExcel::$name);
 
-        $this->setTitle($this->form['title'])
-            ->setSubject($this->form['title'])
-            ->setDescription($this->form['description']);
+        $title = $this->form['title'] ?? '';
+
+        $this->setTitle($title)
+            ->setSubject($title)
+            ->setDescription($this->form['description'] ?? '');
 
         $this->extension = GFExcel::getFileExtension($this->form);
 
