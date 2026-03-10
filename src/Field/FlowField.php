@@ -3,17 +3,14 @@
 namespace GFExcel\Field;
 
 use GFExcel\Values\BaseValue;
+use Gravity_Flow;
 
 /**
  * Field transformer for Gravity Flow fields.
  *
- * Handles `workflow_user`, `workflow_multi_user`, `workflow_assignee_select`,
- * and `workflow_role` fields by resolving user IDs and assignee references
- * to human-readable values for export.
- *
  * @since $ver$
  */
-class FlowField extends BaseField implements RowsInterface {
+final class FlowField extends BaseField implements RowsInterface {
 	/**
 	 * User property options.
 	 *
@@ -22,6 +19,51 @@ class FlowField extends BaseField implements RowsInterface {
 	public const PROPERTY_USER_ID = 'user_id';
 	public const PROPERTY_NICKNAME = 'nickname';
 	public const PROPERTY_DISPLAY_NAME = 'display_name';
+
+	/**
+	 * Timestamp display type options.
+	 *
+	 * @since $ver$
+	 */
+	public const TIMESTAMP_GMT = 'gmt';
+	public const TIMESTAMP_LOCAL = 'local';
+	public const TIMESTAMP_RAW = 'timestamp';
+
+	/**
+	 * Cached user property name.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string|null
+	 */
+	private $user_property_name;
+
+	/**
+	 * Cached translate role flag.
+	 *
+	 * @since $ver$
+	 *
+	 * @var bool|null
+	 */
+	private $translate_role;
+
+	/**
+	 * Cached timestamp type.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string|null
+	 */
+	private $timestamp_type;
+
+	/**
+	 * Cached timestamp format.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string|null
+	 */
+	private $timestamp_format;
 
 	/**
 	 * {@inheritdoc}
@@ -99,6 +141,14 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @return mixed The resolved value.
 	 */
 	private function resolve_field_value( $value ) {
+		if ( $this->is_timestamp_field() ) {
+			return $this->resolve_timestamp( $value );
+		}
+
+		if ( $this->is_status_field() ) {
+			return $this->resolve_status( $value );
+		}
+
 		switch ( $this->field->get_input_type() ) {
 			case 'workflow_user':
 				return $this->resolve_user( $value );
@@ -195,7 +245,27 @@ class FlowField extends BaseField implements RowsInterface {
 				return $this->resolve_role( $id );
 
 			default:
-				return $value;
+				/**
+				 * Resolves the value for an unknown assignee type.
+				 *
+				 * @since $ver$
+				 *
+				 * @param mixed     $value The raw assignee value.
+				 * @param string    $type  The assignee type prefix.
+				 * @param string    $id    The assignee identifier.
+				 * @param \GF_Field $field The current field object.
+				 */
+				return gf_apply_filters(
+					[
+						'gk/gravityexport/field/flow/assignee-value',
+						$this->field->formId,
+						$this->field->id,
+					],
+					$value,
+					$type,
+					$id,
+					$this->field
+				);
 		}
 	}
 
@@ -229,6 +299,10 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @return bool Whether to translate the role.
 	 */
 	private function should_translate_role(): bool {
+		if ( $this->translate_role !== null ) {
+			return $this->translate_role;
+		}
+
 		/**
 		 * Controls whether Gravity Flow role field values are translated.
 		 *
@@ -244,7 +318,7 @@ class FlowField extends BaseField implements RowsInterface {
 		 * @param bool $translate Whether to translate the role. Default `true`.
 		 * @param \GF_Field $field The current field object.
 		 */
-		return (bool) gf_apply_filters(
+		$this->translate_role = (bool) gf_apply_filters(
 			[
 				'gk/gravityexport/field/flow/translate-role',
 				$this->field->formId,
@@ -253,6 +327,8 @@ class FlowField extends BaseField implements RowsInterface {
 			true,
 			$this->field
 		);
+
+		return $this->translate_role;
 	}
 
 	/**
@@ -263,6 +339,10 @@ class FlowField extends BaseField implements RowsInterface {
 	 * @return string The property name.
 	 */
 	private function get_user_property_name(): string {
+		if ( $this->user_property_name !== null ) {
+			return $this->user_property_name;
+		}
+
 		/**
 		 * Modifies the user property used to resolve Gravity Flow user field values.
 		 *
@@ -277,7 +357,7 @@ class FlowField extends BaseField implements RowsInterface {
 		 * @param string $property The user property name. Default `user_id`.
 		 * @param \GF_Field $field The current field object.
 		 */
-		return (string) gf_apply_filters(
+		$this->user_property_name = (string) gf_apply_filters(
 			[
 				'gk/gravityexport/field/flow/user-property',
 				$this->field->formId,
@@ -286,5 +366,176 @@ class FlowField extends BaseField implements RowsInterface {
 			self::PROPERTY_USER_ID,
 			$this->field
 		);
+
+		return $this->user_property_name;
+	}
+
+	/**
+	 * Returns whether the current field is a timestamp field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the field ID ends in `_timestamp`.
+	 */
+	private function is_timestamp_field(): bool {
+		return str_ends_with( (string) $this->field->id, '_timestamp' );
+	}
+
+	/**
+	 * Returns whether the current field is a status field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the field ID contains `_status`.
+	 */
+	private function is_status_field(): bool {
+		return strpos( (string) $this->field->id, '_status' ) !== false;
+	}
+
+	/**
+	 * Resolves a status value to a human-readable label.
+	 *
+	 * @since $ver$
+	 *
+	 * @param mixed $value The raw status value (e.g., `complete`, `pending`).
+	 *
+	 * @return string The resolved status label.
+	 */
+	private function resolve_status( $value ): string {
+		if ( empty( $value ) ) {
+			return '';
+		}
+
+		$status = (string) $value;
+
+		if ( class_exists( 'Gravity_Flow' ) ) {
+			$gravity_flow = Gravity_Flow::get_instance();
+			$label        = $gravity_flow->translate_status_label( $status );
+		} else {
+			$label = ucfirst( $status );
+		}
+
+		/**
+		 * Controls the label for a Gravity Flow status value.
+		 *
+		 * @since $ver$
+		 *
+		 * @param string $label The translated status label.
+		 * @param string $status The raw status value.
+		 * @param \GF_Field $field The current field object.
+		 */
+		return (string) gf_apply_filters(
+			[
+				'gk/gravityexport/field/flow/status-label',
+				$this->field->formId,
+				$this->field->id,
+			],
+			$label,
+			$status,
+			$this->field
+		);
+	}
+
+	/**
+	 * Resolves a unix timestamp to a human-readable date string.
+	 *
+	 * @since $ver$
+	 *
+	 * @param mixed $value The raw timestamp value.
+	 *
+	 * @return mixed The formatted date string, or the original value.
+	 */
+	private function resolve_timestamp( $value ) {
+		if ( empty( $value ) ) {
+			return $value;
+		}
+
+		$timestamp = (int) $value;
+		$type      = $this->get_timestamp_type();
+
+		if ( $type === self::TIMESTAMP_RAW ) {
+			return $timestamp;
+		}
+
+		$format = $this->get_timestamp_format();
+
+		if ( $type === self::TIMESTAMP_GMT ) {
+			return gmdate( $format, $timestamp );
+		}
+
+		// Local time.
+		$local_time = \GFCommon::get_local_timestamp( $timestamp );
+
+		return date_i18n( $format, $local_time, true );
+	}
+
+	/**
+	 * Returns the timestamp display type.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string One of the `TIMESTAMP_*` constants.
+	 */
+	private function get_timestamp_type(): string {
+		if ( $this->timestamp_type !== null ) {
+			return $this->timestamp_type;
+		}
+
+		/**
+		 * Controls how Gravity Flow timestamp values are displayed.
+		 *
+		 * Accepts `local` (default), `gmt`, or `timestamp` (raw unix timestamp).
+		 *
+		 * @since $ver$
+		 *
+		 * @param string $type The display type. Default `local`.
+		 * @param \GF_Field $field The current field object.
+		 */
+		$this->timestamp_type = (string) gf_apply_filters(
+			[
+				'gk/gravityexport/field/flow/timestamp-type',
+				$this->field->formId,
+				$this->field->id,
+			],
+			self::TIMESTAMP_LOCAL,
+			$this->field
+		);
+
+		return $this->timestamp_type;
+	}
+
+	/**
+	 * Returns the date format for timestamp output.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The date format string.
+	 */
+	private function get_timestamp_format(): string {
+		if ( $this->timestamp_format !== null ) {
+			return $this->timestamp_format;
+		}
+
+		/**
+		 * Controls the date format for Gravity Flow timestamp values.
+		 *
+		 * Only applies when the timestamp type is `gmt` or `local`.
+		 *
+		 * @since $ver$
+		 *
+		 * @param string $format The date format. Default `Y-m-d H:i:s`.
+		 * @param \GF_Field $field The current field object.
+		 */
+		$this->timestamp_format = (string) gf_apply_filters(
+			[
+				'gk/gravityexport/field/flow/timestamp-format',
+				$this->field->formId,
+				$this->field->id,
+			],
+			'Y-m-d H:i:s',
+			$this->field
+		);
+
+		return $this->timestamp_format;
 	}
 }

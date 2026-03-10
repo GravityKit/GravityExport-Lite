@@ -277,6 +277,10 @@ class GFExcelOutput
 			    $this->feed_id
 		    );
 
+			// Clear the meta cache for late meta field registration.
+		    global $_entry_meta;
+		    unset( $_entry_meta[ $this->form_id ] );
+
 		    // prevent a multi-k database query to build up the array.
 		    $loop = true;
 		    while ( $loop ) {

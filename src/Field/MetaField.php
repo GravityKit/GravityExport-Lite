@@ -10,12 +10,14 @@ use GFExcel\Values\BaseValue;
 class MetaField extends BaseField implements RowsInterface {
 	/**
 	 * List of internal subfields.
+	 *
 	 * @var string[]
 	 */
 	protected $subfields = [
 		'created_by'       => 'GFExcel\Field\Meta\CreatedBy',
 		'date_created'     => 'GFExcel\Field\Meta\DateCreated',
 		'/gpml_ids_\d+/is' => 'GFExcel\Field\Meta\GPMediaLibrary',
+		'/^workflow_/is'   => 'GFExcel\Field\FlowField',
 	];
 
 	/**
@@ -59,7 +61,7 @@ class MetaField extends BaseField implements RowsInterface {
 		if ( in_array( $this->field->id, [
 			'id',
 			'form_id',
-			'created_by'
+			'created_by',
 		] ) ) {
 			return BaseValue::TYPE_NUMERIC;
 		}
@@ -70,6 +72,7 @@ class MetaField extends BaseField implements RowsInterface {
 
 	/**
 	 * Returns a list of classnames map for meta fields. 'field' => 'FQN'
+	 *
 	 * @return string[]
 	 */
 	private function getSubFieldsClasses() {
@@ -80,6 +83,7 @@ class MetaField extends BaseField implements RowsInterface {
 
 	/**
 	 * Get a subfield instance if available.
+	 *
 	 * @return FieldInterface|null
 	 */
 	private function getSubField() {
