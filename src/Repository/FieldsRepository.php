@@ -96,7 +96,7 @@ class FieldsRepository {
 				[
 					'date_updated' => __( 'Date Updated', 'gk-gravityexport-lite' ),
 				],
-				$this->form['id'] ?? 0,
+				$this->form['id'] ?? 0
 			);
 
 			add_filter( 'gform_export_fields', $cb = function ( $form ) use ( $additional_fields ) {
