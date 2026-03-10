@@ -249,27 +249,7 @@ final class FlowField extends BaseField implements RowsInterface {
 				return $this->resolve_role( $id );
 
 			default:
-				/**
-				 * Resolves the value for an unknown assignee type.
-				 *
-				 * @since $ver$
-				 *
-				 * @param mixed     $value The raw assignee value.
-				 * @param string    $type  The assignee type prefix.
-				 * @param string    $id    The assignee identifier.
-				 * @param \GF_Field $field The current field object.
-				 */
-				return gf_apply_filters(
-					[
-						'gk/gravityexport/field/flow/assignee-value',
-						$this->field->formId,
-						$this->field->id,
-					],
-					$value,
-					$type,
-					$id,
-					$this->field
-				);
+				return $value;
 		}
 	}
 
