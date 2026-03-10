@@ -107,7 +107,12 @@ class FieldsRepository {
 				return $form;
 			} );
 
-			add_filter( 'gform_entry_meta', static function ( array $entry_meta ) use ( $additional_fields ): array {
+			$current_form_id = (int) ( $this->form['id'] ?? 0 );
+			add_filter( 'gform_entry_meta', static function ( array $entry_meta, $form_id ) use ( $additional_fields, $current_form_id ): array {
+				if ( (int) $form_id !== $current_form_id ) {
+					return $entry_meta;
+				}
+
 				foreach ( $additional_fields as $id => $label ) {
 					if ( isset( $entry_meta[ $id ] ) ) {
 						continue;
@@ -121,7 +126,7 @@ class FieldsRepository {
 				}
 
 				return $entry_meta;
-			}, 10 );
+			}, 10, 2 );
 
 			$form              = GFExport::add_default_export_fields( [
 				'id'     => $this->form['id'] ?? 0,

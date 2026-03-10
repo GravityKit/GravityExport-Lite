@@ -105,6 +105,10 @@ final class FlowField extends BaseField implements RowsInterface {
 	 * Returns numeric type only for single user fields with the user_id property.
 	 */
 	public function getValueType() {
+		if ( $this->is_timestamp_field() && $this->get_timestamp_type() === self::TIMESTAMP_RAW ) {
+			return BaseValue::TYPE_NUMERIC;
+		}
+
 		if (
 			$this->field->get_input_type() === 'workflow_user'
 			&& $this->get_user_property_name() === self::PROPERTY_USER_ID
