@@ -17,7 +17,6 @@ class MetaField extends BaseField implements RowsInterface {
 		'created_by'       => 'GFExcel\Field\Meta\CreatedBy',
 		'date_created'     => 'GFExcel\Field\Meta\DateCreated',
 		'/gpml_ids_\d+/is' => 'GFExcel\Field\Meta\GPMediaLibrary',
-		'/^workflow_/is'   => 'GFExcel\Field\FlowField',
 	];
 
 	/**

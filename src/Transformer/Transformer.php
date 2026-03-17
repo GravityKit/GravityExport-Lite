@@ -31,10 +31,6 @@ class Transformer {
 		'repeater'                 => 'GFExcel\Field\RepeaterField',
 		'section'                  => 'GFExcel\Field\SectionField',
 		'singleproduct'            => 'GFExcel\Field\ProductField',
-		'workflow_assignee_select' => 'GFExcel\Field\FlowField',
-		'workflow_multi_user'      => 'GFExcel\Field\FlowField',
-		'workflow_role'            => 'GFExcel\Field\FlowField',
-		'workflow_user'            => 'GFExcel\Field\FlowField',
 	];
 
 	/**
