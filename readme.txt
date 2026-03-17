@@ -260,7 +260,6 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Fixed: "Date Updated" values were displayed in GMT instead of the local time.
 * Added: A filter hook to customize the additional meta fields available for export.
-* Added: Support for Gravity Flow fields (User, Multi User, Assignee Select, and Role) with filter hooks to control user display properties and role translation.
 
 = 2.5.0 on January 29, 2026 =
 
