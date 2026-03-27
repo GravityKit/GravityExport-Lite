@@ -83,7 +83,7 @@ class FieldsRepository {
 			/**
 			 * Modifies the additional meta fields added to the export.
 			 *
-			 * @since $ver$
+			 * @since 2.6.0
 			 *
 			 * @param array $additional_fields Associative array of field ID to label. Default `[ 'date_updated' => 'Date Updated' ]`.
 			 * @param int   $form_id           The current form ID.

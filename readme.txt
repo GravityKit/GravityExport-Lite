@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.9.0
+Tested up to: 6.9.4
 Stable tag: 2.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -256,10 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.6.0 on March 26, 2026 =
 
-* Fixed: "Date Updated" values were displayed in GMT instead of the local time.
 * Added: A filter hook to customize the additional meta fields available for export.
+* Fixed: "Date Updated" values were displayed in GMT instead of the local time.
 
 = 2.5.0 on January 29, 2026 =
 
