@@ -61,15 +61,29 @@ final class SingleFeedMigration extends Migration {
 			$this->updateForms( $form_ids );
 		}
 
-		if ($this->manager) {
+		$message = sprintf(
+			esc_html__( 'The settings for %s 2.0 were migrated successfully.', 'gk-gravityexport-lite' ),
+			defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite'
+		);
+
+		if ( class_exists( 'GravityKitFoundation' ) ) {
+			\GravityKitFoundation::notices()->add_stored( [
+				'namespace'    => 'gk-gravityexport',
+				'slug'         => 'migration-2-0-0',
+				'message'      => $message,
+				'severity'     => 'success',
+				'dismissible'  => true,
+				'screens'      => [ 'dashboard' ],
+				'context'      => 'all',
+				'capabilities' => [ 'manage_options' ],
+			] );
+		} elseif ( $this->manager ) {
 			$notifications = $this->manager->getNotificationManager();
+
 			try {
 				$notifications->storeNotification( new Notification(
 					'gk/gravity-export-migration/2.0.0',
-					sprintf(
-						esc_html__( 'The settings for %s 2.0 were migrated successfully.', 'gk-gravityexport-lite' ),
-						defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ? 'GravityExport' : 'GravityExport Lite'
-					),
+					$message,
 					Notification::TYPE_SUCCESS
 				) );
 			} catch ( NotificationException|NotificationManagerException $e ) {

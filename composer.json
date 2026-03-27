@@ -52,7 +52,8 @@
         "league/container": "^3.3",
         "phpoffice/phpspreadsheet": "1.19.*",
         "symfony/polyfill-iconv": "^1.31",
-        "symfony/polyfill-mbstring": "^1.31"
+        "symfony/polyfill-mbstring": "^1.31",
+        "symfony/polyfill-php80": "^1.31"
     },
     "autoload": {
         "classmap": [

@@ -80,18 +80,67 @@ class FieldsRepository {
 		}
 
 		if ( empty( $this->meta_fields ) ) {
+			/**
+			 * Modifies the additional meta fields added to the export.
+			 *
+			 * @since 2.6.0
+			 *
+			 * @param array $additional_fields Associative array of field ID to label. Default `[ 'date_updated' => 'Date Updated' ]`.
+			 * @param int   $form_id           The current form ID.
+			 */
+			$additional_fields = (array) gf_apply_filters(
+				[
+					'gk/gravityexport/fields/additional-meta-fields',
+					$this->form['id'] ?? 0,
+				],
+				[
+					'date_updated' => __( 'Date Updated', 'gk-gravityexport-lite' ),
+				],
+				$this->form['id'] ?? 0
+			);
 
-			add_filter( 'gform_export_fields', function ( $form ) {
-				array_push( $form['fields'], array( 'id' => 'date_updated', 'label' => __( 'Date Updated', 'gk-gravityexport-lite' ) ) );
+			add_filter( 'gform_export_fields', $cb = function ( $form ) use ( $additional_fields ) {
+				foreach ($additional_fields as $id => $label) {
+					$form['fields'][] = compact( 'id', 'label' );
+				}
+
 				return $form;
 			} );
 
-			$form              = GFExport::add_default_export_fields( [ 'id' => $this->form['id'] ?? 0, 'fields' => [] ] );
-			$this->meta_fields = array_reduce( $form['fields'], function ( $carry, GF_Field $field ) {
+			$current_form_id = (int) ( $this->form['id'] ?? 0 );
+			add_filter( 'gform_entry_meta', static function ( array $entry_meta, $form_id ) use ( $additional_fields, $current_form_id ): array {
+				if ( (int) $form_id !== $current_form_id ) {
+					return $entry_meta;
+				}
+
+				foreach ( $additional_fields as $id => $label ) {
+					if ( isset( $entry_meta[ $id ] ) ) {
+						continue;
+					}
+
+					$entry_meta[ $id ] = [
+						'label'             => $label,
+						'is_numeric'        => false,
+						'is_default_column' => false,
+					];
+				}
+
+				return $entry_meta;
+			}, 10, 2 );
+
+			$form              = GFExport::add_default_export_fields( [
+				'id'     => $this->form['id'] ?? 0,
+				'fields' => []
+			] );
+
+			remove_filter( 'gform_export_fields', $cb );
+
+			$this->meta_fields = array_reduce( $form['fields'], static function ( array $carry, GF_Field $field ) {
 				$field->type         = 'meta';
 				$carry[ $field->id ] = $field;
+
 				return $carry;
-			} );
+			}, [] );
 		}
 
 		return $use_metadata;
@@ -216,10 +265,10 @@ class FieldsRepository {
 				'value' => 'date_created',
 				'label' => __( 'Entry Date', 'gk-gravityexport-lite' ),
 			],
-            [
-                'value' => 'date_updated',
-                'label' => __( 'Date Updated', 'gk-gravityexport-lite' ),
-            ],
+			[
+				'value' => 'date_updated',
+				'label' => __( 'Date Updated', 'gk-gravityexport-lite' ),
+			],
 			[
 				'value' => 'id',
 				'label' => __( 'Entry ID', 'gk-gravityexport-lite' ),

@@ -131,7 +131,7 @@ abstract class AbstractField implements FieldInterface {
 	 * @return mixed The value of the field.
 	 */
 	protected function getGFieldValue( $entry, $input_id ) {
-		if ( in_array( $input_id, [ 'date_created', 'payment_date' ] ) ) {
+		if ( in_array( $input_id, [ 'date_created', 'date_updated', 'payment_date' ] ) ) {
 			// Return empty string if the date value is not set to avoid falling back to current time.
 			if ( empty( $entry[ $input_id ] ) ) {
 				return '';

@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.9.0
-Stable tag: 2.4.2
+Tested up to: 6.9.4
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,14 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.6.0 on March 26, 2026 =
+
+* Added: `gk/gravityexport/fields/additional-meta-fields` filter to customize the additional meta fields available for export.
+* Fixed: "Date Updated" values were displayed in GMT instead of the local time.
+
+__Developer Updates:__
+* Please note that the `gravitykit/gravityexport-lite` package on Packagist has been abandoned and is no longer maintained.
 
 = 2.5.0 on January 29, 2026 =
 
