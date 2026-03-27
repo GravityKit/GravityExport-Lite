@@ -258,7 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 = 2.6.0 on March 26, 2026 =
 
-* Added: A filter hook to customize the additional meta fields available for export.
+* Added: `gk/gravityexport/fields/additional-meta-fields` filter to customize the additional meta fields available for export.
 * Fixed: "Date Updated" values were displayed in GMT instead of the local time.
 
 = 2.5.0 on January 29, 2026 =
