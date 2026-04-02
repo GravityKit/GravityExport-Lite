@@ -9,8 +9,13 @@ anchors:
     machine:
       image: default
 
+  test_job_config: &test_job_config
+    <<: *context
+    requires:
+      - prepare_test_and_build_environment
+
 jobs:
-  build_package_release:
+  prepare_test_and_build_environment:
     <<: *default_job_config
     steps:
       - checkout
@@ -18,6 +23,84 @@ jobs:
           name: Getting GravityKit test/build tools
           command: |
             git clone git@github.com:GravityKit/Tooling.git /home/circleci/tooling
+      - run:
+          name: Create .npmrc
+          command: |
+            echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
+            echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
+      - restore_cache:
+          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
+      - restore_cache:
+          key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: |
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
+            /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+      - run:
+          name: Download Gravity Forms
+          command: |
+            /home/circleci/tooling/build-tools/build_tools.sh gh -o 'release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp'
+            unzip .tmp/gravityforms*.zip -d .tmp
+      - run:
+          name: Configure environment variables
+          command: |
+            cp .env.sample .env
+            sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
+            sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
+            sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYKIT_LICENSE_KEY}|" .env
+      - save_cache:
+          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+            - vendor_prefixed
+      - save_cache:
+          key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - .
+
+  run_e2e_tests:
+    <<: *default_job_config
+    parallelism: 1
+    resource_class: xlarge
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Run E2E tests
+          command: |
+            attempt=0
+            max_attempts=3
+            sleep_time=5
+            while [ $attempt -lt $max_attempts ]; do
+              npm run tests:e2e:setup && break
+              attempt=$(( attempt + 1 ))
+              rm -rf /home/circleci/.wp-env
+              echo "Retrying WP-ENV setup in $sleep_time seconds… (attempt $attempt/$max_attempts)"
+              sleep $sleep_time
+            done
+            if [ $attempt -eq $max_attempts ]; then
+              echo "WP-ENV setup failed."
+              exit 1
+            fi
+            TESTFILES=$(circleci tests glob "tests/E2E/tests/**/*.spec.js")
+            echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose
+      - store_artifacts:
+          path: tests/E2E/results
+      - store_artifacts:
+          path: tests/E2E/report
+      - store_test_results:
+          path: tests/E2E/results/junit.xml
+
+  build_package_release:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
       - run:
           name: Building and packaging
           command: |
@@ -31,7 +114,7 @@ jobs:
             cp -R build gf-entries-in-excel
             rm -rf gf-entries-in-excel/build/composer.* gf-entries-in-excel/build/strauss.phar
             zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
-            zip -d $(ls gf-entries-in-excel-*.zip)  "gf-entries-in-excel/src/*" "gf-entries-in-excel/assets/*"
+            zip -d $(ls gf-entries-in-excel-*.zip) "gf-entries-in-excel/src/*" "gf-entries-in-excel/assets/*"
             mkdir .release
             cp gf-entries-in-excel-*.zip .release
       - run:
@@ -56,5 +139,11 @@ workflows:
   version: 2
   test_and_package:
     jobs:
+      - prepare_test_and_build_environment:
+          <<: *context
+      - run_e2e_tests:
+          <<: *test_job_config
       - build_package_release:
           <<: *context
+          requires:
+            - run_e2e_tests

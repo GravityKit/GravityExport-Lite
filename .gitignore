@@ -14,3 +14,13 @@ vendor_prefixed
 !build/strauss.phar
 !build/vendor_prefixed/.gitkeep
 phpstan.neon
+
+# Environment
+.env
+
+# E2E Testing
+tests/E2E/setup/.wp-env.json
+tests/E2E/setup/.e2e-ports.json
+tests/E2E/setup/.state.json
+tests/E2E/results/
+tests/E2E/report/

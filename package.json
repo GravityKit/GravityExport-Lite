@@ -1,0 +1,17 @@
+{
+  "name": "gk-gravityexport-lite",
+  "version": "1.0.0",
+  "license": "GPL-2.0",
+  "scripts": {
+    "wp-env:start": "cd tests/E2E/setup && wp-env start",
+    "wp-env:stop": "cd tests/E2E/setup && wp-env stop",
+    "wp-env:cli": "cd tests/E2E/setup && wp-env run tests-cli",
+    "tests:e2e:setup": "node tests/E2E/setup/wp-env.config.js && cd tests/E2E/setup && wp-env start",
+    "tests:e2e:run": "playwright test --config=tests/E2E/setup/playwright.config.js"
+  },
+  "devDependencies": {
+    "@gravitykit/e2e-bootstrap": "^1.0.0",
+    "@playwright/test": "1.56.1",
+    "@wordpress/env": "^10.0.0"
+  }
+}
