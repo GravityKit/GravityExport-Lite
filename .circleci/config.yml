@@ -29,10 +29,13 @@ jobs:
             echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
             echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - restore_cache:
+          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
+      - restore_cache:
           key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
       - run:
-          name: Install npm dependencies
+          name: Install dependencies
           command: |
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
             /home/circleci/tooling/build-tools/build_tools.sh npm -o install
       - run:
           name: Download Gravity Forms
@@ -46,6 +49,11 @@ jobs:
             sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
             sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYKIT_LICENSE_KEY}|" .env
+      - save_cache:
+          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+            - vendor_prefixed
       - save_cache:
           key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
           paths:
