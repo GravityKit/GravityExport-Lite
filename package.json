@@ -7,7 +7,7 @@
     "wp-env:stop": "cd tests/E2E/setup && wp-env stop",
     "wp-env:cli": "cd tests/E2E/setup && wp-env run tests-cli",
     "tests:e2e:setup": "node tests/E2E/setup/wp-env.config.js && cd tests/E2E/setup && wp-env start",
-    "tests:e2e": "playwright test --config=tests/E2E/setup/playwright.config.js"
+    "tests:e2e:run": "playwright test --config=tests/E2E/setup/playwright.config.js"
   },
   "devDependencies": {
     "@gravitykit/e2e-bootstrap": "^1.0.0",
