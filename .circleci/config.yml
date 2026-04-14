@@ -12,52 +12,35 @@ anchors:
   test_job_config: &test_job_config
     <<: *context
     requires:
-      - prepare_test_and_build_environment
+      - prepare
 
 jobs:
-  prepare_test_and_build_environment:
+  prepare:
     <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: Getting GravityKit test/build tools
-          command: |
-            git clone git@github.com:GravityKit/Tooling.git /home/circleci/tooling
+          name: Fetch tags
+          command: git fetch --tags
       - run:
           name: Create .npmrc
           command: |
             echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
             echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
-      - restore_cache:
-          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
-      - restore_cache:
-          key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
       - run:
           name: Install dependencies
           command: |
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
-            /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+            npx @gravitykit/gktools composer install
+            npx @gravitykit/gktools npm install
       - run:
-          name: Download Gravity Forms
+          name: Configure E2E environment
           command: |
-            /home/circleci/tooling/build-tools/build_tools.sh gh -o 'release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp'
+            npx @gravitykit/gktools gh release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp
             unzip .tmp/gravityforms*.zip -d .tmp
-      - run:
-          name: Configure environment variables
-          command: |
             cp .env.sample .env
             sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
-            sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYKIT_LICENSE_KEY}|" .env
-      - save_cache:
-          key: composer-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-            - vendor_prefixed
-      - save_cache:
-          key: node-dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
+            sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
       - persist_to_workspace:
           root: /home/circleci
           paths:
@@ -102,48 +85,43 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Building and packaging
+          name: Configure git
           command: |
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o "build"
-            if [ "${CIRCLE_BRANCH}" != "main" ]; then
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
-            else
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
-            fi
-            mkdir -p gf-entries-in-excel
-            cp -R build gf-entries-in-excel
-            rm -rf gf-entries-in-excel/build/composer.* gf-entries-in-excel/build/strauss.phar
-            zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
-            zip -d $(ls gf-entries-in-excel-*.zip) "gf-entries-in-excel/src/*" "gf-entries-in-excel/assets/*"
-            mkdir .release
-            cp gf-entries-in-excel-*.zip .release
+            git config user.email "support@gravitykit.com"
+            git config user.name "GravityKit - CI"
       - run:
-          name: Creating a GitHub release
+          name: Replace @since tags
+          command: npx @gravitykit/gktools replace-since --commit
+      - run:
+          name: Build and package
+          command: npx @gravitykit/gktools build
+      - run:
+          name: Create GitHub release
+          command: npx @gravitykit/gktools release
+      - run:
+          name: Announce build
           command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravitykit.com"
-              git config user.name "GravityKit - CI"
-              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gfexcel.php $(ls gf-entries-in-excel-*.zip)"
+            if ! git log -1 --pretty=%B | grep -iq "\[skip notify\]"; then
+              npx @gravitykit/gktools announce
             fi
       - run:
-          name: Notifying GravityKit Release Manager
+          name: Collect build artifacts
           command: |
-            if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-              /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gfexcel.php $(ls gf-entries-in-excel-*.zip) --with-circle"
-            fi
+            mkdir -p .release
+            cp gf-entries-in-excel-*.zip .release/ 2>/dev/null || true
       - store_artifacts:
           path: .release
           destination: release
 
 workflows:
   version: 2
-  test_and_package:
+  test_and_release:
     jobs:
-      - prepare_test_and_build_environment:
+      - prepare:
           <<: *context
       - run_e2e_tests:
           <<: *test_job_config
       - build_package_release:
           <<: *context
           requires:
-            - run_e2e_tests
+            - prepare

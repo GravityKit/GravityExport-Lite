@@ -21,4 +21,10 @@ phpstan-stubs export-ignore
 /.github export-ignore
 /.idea export-ignore
 /assets export-ignore
+/src export-ignore
 /tests export-ignore
+.env.sample export-ignore
+package.json export-ignore
+package-lock.json export-ignore
+.gktools.json export-ignore
+.gktools.env export-ignore
