@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-15T19:25:27-04:00\n"
+"POT-Creation-Date: 2026-04-15T19:58:00-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -337,28 +337,24 @@ msgstr ""
 msgid "1 field matches your search."
 msgstr ""
 
-#. translators: %d: number of fields matching the search
+#. translators: [count] is replaced with the number of matching fields. Do not translate text inside square brackets.
 #: src/Addon/GravityExportAddon.php:832
-#, php-format
-msgid "%d fields match your search."
+msgid "[count] fields match your search."
 msgstr ""
 
-#. translators: %1$s: field name, %2$s: destination list name (e.g., "Enabled Fields")
+#. translators: [field] is the field name, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
 #: src/Addon/GravityExportAddon.php:834
-#, php-format
-msgid "%1$s moved to %2$s."
+msgid "[field] moved to [destination]."
 msgstr ""
 
-#. translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields")
+#. translators: [count] is the number of fields, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
 #: src/Addon/GravityExportAddon.php:836
-#, php-format
-msgid "%1$d fields moved to %2$s."
+msgid "[count] fields moved to [destination]."
 msgstr ""
 
-#. translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields")
+#. translators: [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
 #: src/Addon/GravityExportAddon.php:838
-#, php-format
-msgid "1 field moved to %2$s."
+msgid "1 field moved to [destination]."
 msgstr ""
 
 #: src/Addon/GravityExportAddon.php:961
