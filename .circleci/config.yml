@@ -96,6 +96,14 @@ jobs:
           name: Build and package
           command: npx @gravitykit/gktools build
       - run:
+          name: Trigger translation pipeline
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "main" ]; then
+              npx @gravitykit/gktools translate gk-gravityexport-lite --commit --push
+            else
+              echo "Skipping translation pipeline."
+            fi
+      - run:
           name: Create GitHub release
           command: npx @gravitykit/gktools release
       - run:

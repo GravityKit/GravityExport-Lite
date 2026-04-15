@@ -238,23 +238,27 @@ trait AddonHelperTrait
     }
 
     /**
-     * Helper function that adds (and translates) a message.
+     * Helper function that adds a message.
+     *
      * @since 2.4.0
-     * @param string $message The message.
+     *
+     * @param string $message The already-translated message.
      */
     public function add_message(string $message): void
     {
-        \GFCommon::add_message(__($message));
+        \GFCommon::add_message($message);
     }
 
     /**
-     * Helper function that adds (and translates) an error message.
+     * Helper function that adds an error message.
+     *
      * @since 2.4.0
-     * @param string $message The error message.
+     *
+     * @param string $message The already-translated error message.
      */
     public function add_error_message(string $message): void
     {
-        \GFCommon::add_error_message(__($message));
+        \GFCommon::add_error_message($message);
     }
 
     /**

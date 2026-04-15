@@ -24,7 +24,9 @@ phpstan-stubs export-ignore
 /src export-ignore
 /tests export-ignore
 .env.sample export-ignore
+Gruntfile.js export-ignore
 package.json export-ignore
 package-lock.json export-ignore
+translations.pot export-ignore
 .gktools.json export-ignore
 .gktools.env export-ignore

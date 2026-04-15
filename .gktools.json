@@ -1,6 +1,7 @@
 {
 	"build": [
 		"npm install",
+		"grunt",
 		"composer build"
 	],
 	"package": {

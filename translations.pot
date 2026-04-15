@@ -1,0 +1,16 @@
+# Copyright (C) 2026 GravityKit
+# This file is distributed under the GPLv2 or later
+msgid ""
+msgstr ""
+"Project-Id-Version: GravityExport Lite 2.6.0\n"
+"Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
+"Last-Translator: GravityKit <support@gravitykit.com>\n"
+"Language-Team: GravityKit <support@gravitykit.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-04-15T19:19:02-04:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: gk-gravityexport-lite\n"
