@@ -9,8 +9,550 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-15T19:19:02-04:00\n"
+"POT-Creation-Date: 2026-04-15T19:25:27-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityexport-lite\n"
+
+#. Plugin Name of the plugin
+#: gfexcel.php
+msgid "GravityExport Lite"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: gfexcel.php
+msgid "https://gfexcel.com"
+msgstr ""
+
+#. Description of the plugin
+#: gfexcel.php
+msgid "Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL."
+msgstr ""
+
+#. Author of the plugin
+#: gfexcel.php
+msgid "GravityKit"
+msgstr ""
+
+#. Author URI of the plugin
+#: gfexcel.php
+msgid "https://www.gravitykit.com/extensions/gravityexport/"
+msgstr ""
+
+#: gfexcel.php:46
+#, php-format
+msgid "GravityExport Lite requires PHP %s or newer."
+msgstr ""
+
+#: src/Action/DownloadUrlDisableAction.php:38
+msgid "The download URL has been disabled."
+msgstr ""
+
+#: src/Action/DownloadUrlEnableAction.php:26
+msgid "The download URL has been enabled."
+msgstr ""
+
+#: src/Action/DownloadUrlResetAction.php:41
+msgid "The download URL has been reset."
+msgstr ""
+
+#: src/Action/DownloadUrlResetAction.php:58
+#, php-format
+msgid "There was an error generating the URL: %s"
+msgstr ""
+
+#: src/Action/NotificationsAction.php:65
+msgid "The notifications could not be retrieved."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:186
+msgid "Activate GravityExport"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:217
+msgid "Download settings"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:221
+msgid "Download URL"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:229
+msgid "Embed shortcode"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:235
+msgid "Custom Filename"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:239
+#, php-format
+msgid "Default: %s"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:243
+msgid "Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:252
+msgid "File Extension"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:257
+#, php-format
+msgid "Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:278
+msgid "Instant Download ⚡️"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:282
+msgid "Select Date Range (optional)"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:294
+msgid "Security Settings"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:298
+msgid "Secure Shortcodes"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:300
+msgid "A secure shortcode contains a unique <code>secret</code>-attribute which prevents generating the URL for a form without permission."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:304
+msgid "Enable secure embed shortcode"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:311
+msgid "Download Permissions"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:314
+#, php-format
+msgid "If set to \"Everyone can download\", anyone with the link can download. If \"Logged-in users who have 'Export Entries' access\" is selected, users must be logged-in and have the %s capability."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:326
+msgid "Everyone can download"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:332
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:348
+msgid "General Settings"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:352
+msgid "Include Entry Notes"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:357
+msgid "Yes, enable the notes for every entry"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:363
+msgid "Attach Single Entry to Notification"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:371
+msgid "Column Position"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:376
+msgid "At the top (normal)"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:381
+msgid "At the left (transposed)"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:388
+msgid "Order By"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:403
+msgid "Ascending"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:407
+msgid "Descending"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:424
+msgid "Field settings"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:432
+msgid "Disabled Fields"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:433
+msgid "Enabled Fields"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:494
+msgid "Default Settings"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:499
+msgid "Labels"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:503
+msgid "Use admin labels"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:513
+msgid "Multiple Columns"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:517
+msgid "Split multi-fields (name, address) into multiple columns"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:531
+msgid "Enable notes by default"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:539
+msgid "Sections"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:543
+msgid "Enable (empty) section column"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:551
+msgid "File Uploads"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:556
+msgid "Enable file upload columns"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:564
+msgid "Hyperlinks"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:569
+msgid "Enable hyperlinks on URL-only columns"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:577
+msgid "Product Fields"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:582
+msgid "Export prices as numeric fields, without currency symbol ($)"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:595
+msgid "Default Enabled Meta Fields"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:599
+msgid "Select all meta fields that are enabled by default. Once you've saved your form, these settings will not do anything any more."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:652
+msgid "Select a Notification"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:671
+#, php-format
+msgid "If you like the plugin, 📣 %slet others know%s! We already have %s active users. Let's get to %s by spreading the news!"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:675
+#: src/Addon/GravityExportAddon.php:742
+#: src/Component/Plugin.php:43
+msgid "This link opens in a new window"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:695
+msgid "These are global settings for new forms. You can overwrite them per form using the available hooks."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:711
+msgid "Upgrade to GravityExport for these useful features:"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:715
+msgid "Save exports to Dropbox, FTP, &amp; local storage"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:718
+msgid "Automatically upload exports to Dropbox, a remote server using SFTP and FTP, or store locally."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:724
+msgid "Filter exports with Conditional Logic"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:726
+msgid "Create advanced filters, including exporting entries created by only the currently logged-in user."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:732
+msgid "Exports are ready for data analysis"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:734
+msgid "When analyzing data, you want fields with multiple values broken into multiple rows each with one value. If you work with data, you&rsquo;ll love this feature!"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:743
+#: src/Component/Plugin.php:44
+msgid "Gain Powerful Features with GravityExport"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:825
+msgid "Enable all"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:826
+msgid "Disable all"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:827
+msgid "Enable visible"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:828
+msgid "Disable visible"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:829
+msgid "No fields match your search."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:830
+msgid "1 field matches your search."
+msgstr ""
+
+#. translators: %d: number of fields matching the search
+#: src/Addon/GravityExportAddon.php:832
+#, php-format
+msgid "%d fields match your search."
+msgstr ""
+
+#. translators: %1$s: field name, %2$s: destination list name (e.g., "Enabled Fields")
+#: src/Addon/GravityExportAddon.php:834
+#, php-format
+msgid "%1$s moved to %2$s."
+msgstr ""
+
+#. translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields")
+#: src/Addon/GravityExportAddon.php:836
+#, php-format
+msgid "%1$d fields moved to %2$s."
+msgstr ""
+
+#. translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields")
+#: src/Addon/GravityExportAddon.php:838
+#, php-format
+msgid "1 field moved to %2$s."
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:961
+msgid "Download as one file"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:1035
+#: src/Addon/GravityExportAddon.php:1076
+#: src/GravityForms/Field/DownloadFile.php:75
+msgid "Download"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:1036
+msgid "Download an Export"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:1164
+msgid "Deselect All"
+msgstr ""
+
+#: src/Addon/GravityExportAddon.php:1165
+msgid "Select All"
+msgstr ""
+
+#: src/Component/MetaBoxes.php:90
+msgid "Download this single entry as a file."
+msgstr ""
+
+#: src/Component/Plugin.php:34
+#: src/Component/Plugin.php:35
+msgid "Documentation"
+msgstr ""
+
+#: src/Component/Usage.php:33
+#: src/Component/Usage.php:52
+msgid "countless"
+msgstr ""
+
+#: src/Component/Usage.php:53
+msgid "even more"
+msgstr ""
+
+#: src/Field/Meta/DateCreated.php:18
+msgid "Date"
+msgstr ""
+
+#: src/Field/Meta/DateCreated.php:19
+msgid "Time"
+msgstr ""
+
+#: src/GravityForms/Field/CopyShortcode.php:47
+msgid "The shortcode has been copied to your clipboard."
+msgstr ""
+
+#: src/GravityForms/Field/CopyShortcode.php:64
+msgid "Copy Shortcode"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadFile.php:81
+msgid "Reset count"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadFile.php:86
+msgid "Download count"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadFile.php:115
+msgid "You are about to reset the download count for this form. This can’t be undone."
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:66
+msgid "Regenerate URL"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:71
+msgid "Disable download URL"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:80
+msgid "Copy URL to Clipboard"
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:160
+msgid "You are about to reset the URL for this form. This can’t be undone."
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:161
+msgid "You are about to disable the URL for this form. This will invalidate the URL, and can’t be undone."
+msgstr ""
+
+#: src/GravityForms/Field/DownloadUrl.php:163
+msgid "The file URL has been copied to your clipboard."
+msgstr ""
+
+#: src/GravityForms/Field/SortFields.php:69
+msgid "Filter fields…"
+msgstr ""
+
+#: src/GravityForms/Field/SortFields.php:70
+msgid "Filter fields"
+msgstr ""
+
+#: src/GravityForms/Field/SortFields.php:98
+msgid "Clear search"
+msgstr ""
+
+#. translators: %s: field label
+#: src/GravityForms/Field/SortFields.php:157
+#, php-format
+msgid "Move %s"
+msgstr ""
+
+#: src/Migration/Migration/SingleFeedMigration.php:65
+#, php-format
+msgid "The settings for %s 2.0 were migrated successfully."
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:326
+msgid "GravityExport Lite: Something is broken"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:327
+msgid "Error message:"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:329
+#, php-format
+msgid "If you need support, please contact us via <a target=\"_blank\" href=\"%s\">WordPress.org support forum</a>."
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:331
+msgid "Check if someone else had the same error before posting a new support question."
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:333
+msgid "And when opening a new question, <strong>please use the error message as the title</strong>."
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:335
+msgid "Include the following details in your message:"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:337
+#, php-format
+msgid "Plugin Version: %s"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:338
+#, php-format
+msgid "Gravity Forms Version: %s"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:339
+#, php-format
+msgid "PHP Version: %s"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:341
+msgid " (this version is too low, please update to at least PHP 5.6)"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:344
+#, php-format
+msgid "WordPress Version: %s"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:345
+#, php-format
+msgid "Error message: %s"
+msgstr ""
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:346
+#, php-format
+msgid "Error stack trace: %s"
+msgstr ""
+
+#: src/Repository/FieldsRepository.php:97
+#: src/Repository/FieldsRepository.php:270
+msgid "Date Updated"
+msgstr ""
+
+#: src/Repository/FieldsRepository.php:266
+msgid "Entry Date"
+msgstr ""
+
+#: src/Repository/FieldsRepository.php:274
+msgid "Entry ID"
+msgstr ""
+
+#: src/Shortcode/DownloadUrl.php:94
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
+msgstr ""
