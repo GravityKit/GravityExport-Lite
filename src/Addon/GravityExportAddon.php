@@ -828,14 +828,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			'disable_visible'     => esc_html__( 'Disable visible', 'gk-gravityexport-lite' ),
 			'no_fields_match'     => esc_html__( 'No fields match your search.', 'gk-gravityexport-lite' ),
 			'one_field_matches'   => esc_html__( '1 field matches your search.', 'gk-gravityexport-lite' ),
-			/* translators: %d: number of fields matching the search */
-			'n_fields_match'      => esc_html__( '%d fields match your search.', 'gk-gravityexport-lite' ),
-			/* translators: %1$s: field name, %2$s: destination list name (e.g., "Enabled Fields") */
-			'field_moved'         => esc_html__( '%1$s moved to %2$s.', 'gk-gravityexport-lite' ),
-			/* translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields") */
-			'fields_moved'        => esc_html__( '%1$d fields moved to %2$s.', 'gk-gravityexport-lite' ),
-			/* translators: %1$d: number of fields, %2$s: destination list name (e.g., "Enabled Fields") */
-			'one_field_moved'     => esc_html__( '1 field moved to %2$s.', 'gk-gravityexport-lite' ),
+			/* translators: [count] is replaced with the number of matching fields. Do not translate text inside square brackets. */
+			'n_fields_match'      => esc_html__( '[count] fields match your search.', 'gk-gravityexport-lite' ),
+			/* translators: [field] is the field name, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets. */
+			'field_moved'         => esc_html__( '[field] moved to [destination].', 'gk-gravityexport-lite' ),
+			/* translators: [count] is the number of fields, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets. */
+			'fields_moved'        => esc_html__( '[count] fields moved to [destination].', 'gk-gravityexport-lite' ),
+			/* translators: [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets. */
+			'one_field_moved'     => esc_html__( '1 field moved to [destination].', 'gk-gravityexport-lite' ),
 		] );
 	}
 

@@ -1,6 +1,6 @@
 var gfexcel_sortable;
 
-( function ( $, sprintf ) {
+( function ( $ ) {
 
 	// Delay before starting the light-up animation, allowing the DOM to update after appending.
 	var LIGHT_UP_DELAY = 10;
@@ -51,7 +51,7 @@ var gfexcel_sortable;
 				statusMessage = strings.one_field_matches;
 				$status.removeClass( 'is-no-results' );
 			} else {
-				statusMessage = strings.n_fields_match.replace( '%d', totalVisible );
+				statusMessage = strings.n_fields_match.replace( '[count]', totalVisible );
 				$status.removeClass( 'is-no-results' );
 			}
 			$statusText.text( statusMessage );
@@ -89,10 +89,10 @@ var gfexcel_sortable;
 				'disable_visible': 'Disable visible',
 				'no_fields_match': 'No fields match your search.',
 				'one_field_matches': '1 field matches your search.',
-				'n_fields_match': '%d fields match your search.',
-				'field_moved': '%1$s moved to %2$s.',
-				'fields_moved': '%1$d fields moved to %2$s.',
-				'one_field_moved': '1 field moved to %2$s.'
+				'n_fields_match': '[count] fields match your search.',
+				'field_moved': '[field] moved to [destination].',
+				'fields_moved': '[count] fields moved to [destination].',
+				'one_field_moved': '1 field moved to [destination].'
 			};
 
 		// Track buttons for label updates during search
@@ -176,9 +176,9 @@ var gfexcel_sortable;
 					// Announce the action to screen readers
 					var message;
 					if ( count === 1 ) {
-						message = sprintf( strings.one_field_moved, count, targetLabel );
+						message = strings.one_field_moved.replace( '[destination]', targetLabel );
 					} else {
-						message = sprintf( strings.fields_moved, count, targetLabel );
+						message = strings.fields_moved.replace( '[count]', count ).replace( '[destination]', targetLabel );
 					}
 					wp.a11y.speak( message );
 				} );
@@ -218,7 +218,7 @@ var gfexcel_sortable;
 			updateLists( $elements );
 
 			// Announce the action to screen readers
-			var message = sprintf( strings.field_moved, fieldLabel, targetLabel );
+			var message = strings.field_moved.replace( '[field]', fieldLabel ).replace( '[destination]', targetLabel );
 			wp.a11y.speak( message );
 		};
 
@@ -271,4 +271,4 @@ var gfexcel_sortable;
 			$embedShortcodeEl.val( embedShortcode );
 		} );
 	} );
-} )( jQuery, wp.i18n.sprintf );
+} )( jQuery );
