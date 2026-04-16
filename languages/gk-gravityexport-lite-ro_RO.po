@@ -2,11 +2,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gk-gravityexport-lite\n"
 "PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
-"Language: fi\n"
+"Language: ro_RO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && "
+"n%100<20)) ? 1 : 2);\n"
 
 #: gfexcel.php
 msgid "GravityExport Lite"
@@ -21,8 +22,8 @@ msgid ""
 "Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
 "shareable URL."
 msgstr ""
-"Vie kaikki Gravity Forms -lomakkeiden merkinnät Exceliin (.xlsx) tai "
-"CSV-muodossa salaisen ja jaettavan URL-osoitteen kautta."
+"Exportă toate intrările Gravity Forms în Excel (.xlsx) sau CSV printr-un "
+"URL secret partajabil."
 
 #: gfexcel.php
 msgid "GravityKit"
@@ -34,104 +35,103 @@ msgstr "https://www.gravitykit.com/extensions/gravityexport/"
 
 #: gfexcel.php:46
 msgid "GravityExport Lite requires PHP %s or newer."
-msgstr "GravityExport Lite vaatii PHP:n version %s tai uudemman."
+msgstr "GravityExport Lite necesită PHP %s sau o versiune mai nouă."
 
 #: src/Action/DownloadUrlDisableAction.php:38
 msgid "The download URL has been disabled."
-msgstr "Lataus-URL on poistettu käytöstä."
+msgstr "URL-ul de descărcare a fost dezactivat."
 
 #: src/Action/DownloadUrlEnableAction.php:26
 msgid "The download URL has been enabled."
-msgstr "Lataus-URL on otettu käyttöön."
+msgstr "URL-ul de descărcare a fost activat."
 
 #: src/Action/DownloadUrlResetAction.php:41
 msgid "The download URL has been reset."
-msgstr "Lataus-URL on nollattu."
+msgstr "URL-ul de descărcare a fost resetat."
 
 #: src/Action/DownloadUrlResetAction.php:58
 msgid "There was an error generating the URL: %s"
-msgstr "URL-osoitteen luomisessa tapahtui virhe: %s"
+msgstr "A apărut o eroare la generarea URL-ului: %s"
 
 #: src/Action/NotificationsAction.php:65
 msgid "The notifications could not be retrieved."
-msgstr "Ilmoituksia ei voitu hakea."
+msgstr "Notificările nu au putut fi preluate."
 
 #: src/Addon/GravityExportAddon.php:186
 msgid "Activate GravityExport"
-msgstr "Ota GravityExport käyttöön"
+msgstr "Activează GravityExport"
 
 #: src/Addon/GravityExportAddon.php:217
 msgid "Download settings"
-msgstr "Latausasetukset"
+msgstr "Setări de descărcare"
 
 #: src/Addon/GravityExportAddon.php:221
 msgid "Download URL"
-msgstr "Lataus-URL"
+msgstr "URL de descărcare"
 
 #: src/Addon/GravityExportAddon.php:229
 msgid "Embed shortcode"
-msgstr "Upota shortcode"
+msgstr "Incorporează shortcode"
 
 #: src/Addon/GravityExportAddon.php:235
 msgid "Custom Filename"
-msgstr "Mukautettu tiedostonimi"
+msgstr "Nume fișier personalizat"
 
 #: src/Addon/GravityExportAddon.php:239
 msgid "Default: %s"
-msgstr "Oletus: %s"
+msgstr "Implicit: %s"
 
 #: src/Addon/GravityExportAddon.php:243
 msgid ""
 "Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
 "for default."
 msgstr ""
-"Useimmat ei-aakkosnumeeriset merkit korvataan yhdysmerkeillä. Jätä tyhjäksi "
-"käyttääksesi oletusta."
+"Majoritatea caracterelor non-alfanumerice vor fi înlocuite cu cratime. Lasă "
+"gol pentru valoarea implicită."
 
 #: src/Addon/GravityExportAddon.php:252
 msgid "File Extension"
-msgstr "Tiedostopääte"
+msgstr "Extensie fișier"
 
 #: src/Addon/GravityExportAddon.php:257
 msgid ""
 "Note: You may override the file type by adding the desired extension (%s) "
 "to the end of the Download URL."
 msgstr ""
-"Huom: Voit muuttaa tiedostotyyppiä lisäämällä halutun päätteen (%s) "
-"lataus-URL:n loppuun."
+"Notă: Poți suprascrie tipul fișierului adăugând extensia dorită (%s) la "
+"sfârșitul URL-ului de descărcare."
 
 #: src/Addon/GravityExportAddon.php:278
 msgid "Instant Download ⚡️"
-msgstr "Välitön lataus ⚡️"
+msgstr "Descărcare Instantanee ⚡️"
 
 #: src/Addon/GravityExportAddon.php:282
 msgid "Select Date Range (optional)"
-msgstr "Valitse aikaväli (valinnainen)"
+msgstr "Selectați Intervalul de Date (opțional)"
 
 #: src/Addon/GravityExportAddon.php:294
 msgid "Security Settings"
-msgstr "Tietoturva-asetukset"
+msgstr "Setări de Securitate"
 
 #: src/Addon/GravityExportAddon.php:298
 msgid "Secure Shortcodes"
-msgstr "Turvalliset lyhytkoodit"
+msgstr "Coduri Scurte Securizate"
 
 #: src/Addon/GravityExportAddon.php:300
 msgid ""
 "A secure shortcode contains a unique <code>secret</code>-attribute which "
 "prevents generating the URL for a form without permission."
 msgstr ""
-"Turvallinen lyhytkoodi sisältää ainutlaatuisen "
-"<code>salainen</code>-attribuutin, joka estää lomakkeen URL-osoitteen "
-"luomisen ilman lupaa."
+"Un cod scurt securizat conține un atribut unic <code>secret</code> care "
+"previne generarea URL-ului pentru un formular fără permisiune."
 
 #: src/Addon/GravityExportAddon.php:304
 msgid "Enable secure embed shortcode"
-msgstr "Ota käyttöön turvallinen upotettu lyhytkoodi"
+msgstr "Activează codul scurt securizat pentru încorporare"
 
 #: src/Addon/GravityExportAddon.php:311
 msgid "Download Permissions"
-msgstr "Latausoikeudet"
+msgstr "Permisiuni de Descărcare"
 
 #: src/Addon/GravityExportAddon.php:314
 msgid ""
@@ -139,196 +139,196 @@ msgid ""
 "\"Logged-in users who have 'Export Entries' access\" is selected, users "
 "must be logged-in and have the %s capability."
 msgstr ""
-"Jos asetuksena on \"Kaikki voivat ladata\", kuka tahansa linkin saanut voi "
-"ladata. Jos valittuna on \"Kirjautuneet käyttäjät, joilla on 'Vie "
-"merkinnät' -oikeus\", käyttäjän on oltava kirjautuneena ja hänellä on "
-"oltava %s-oikeus."
+"Dacă este setat pe „Oricine poate descărca”, oricine are linkul poate "
+"descărca. Dacă este selectat „Utilizatori autentificați care au acces la "
+"'Exportă Înregistrări'”, utilizatorii trebuie să fie autentificați și să "
+"aibă capacitatea %s."
 
 #: src/Addon/GravityExportAddon.php:326
 msgid "Everyone can download"
-msgstr "Kaikki voivat ladata"
+msgstr "Oricine poate descărca"
 
 #: src/Addon/GravityExportAddon.php:332
 msgid "Logged-in users who have \"Export Entries\" access"
-msgstr "Kirjautuneet käyttäjät, joilla on \"Vie merkinnät\" -oikeus"
+msgstr "Utilizatori autentificați care au acces la „Exportă Înregistrări”"
 
 #: src/Addon/GravityExportAddon.php:348
 msgid "General Settings"
-msgstr "Yleiset asetukset"
+msgstr "Setări Generale"
 
 #: src/Addon/GravityExportAddon.php:352
 msgid "Include Entry Notes"
-msgstr "Sisällytä merkintämuistiinpanot"
+msgstr "Include Notițele Înregistrării"
 
 #: src/Addon/GravityExportAddon.php:357
 msgid "Yes, enable the notes for every entry"
-msgstr "Kyllä, ota muistiinpanot käyttöön jokaiselle merkinnälle"
+msgstr "Da, activează notițele pentru fiecare înregistrare"
 
 #: src/Addon/GravityExportAddon.php:363
 msgid "Attach Single Entry to Notification"
-msgstr "Liitä yksittäinen merkintä ilmoitukseen"
+msgstr "Atașează o singură înregistrare la notificare"
 
 #: src/Addon/GravityExportAddon.php:371
 msgid "Column Position"
-msgstr "Sarakkeen sijainti"
+msgstr "Poziția Coloanei"
 
 #: src/Addon/GravityExportAddon.php:376
 msgid "At the top (normal)"
-msgstr "Ylhäällä (normaali)"
+msgstr "În partea de sus (normal)"
 
 #: src/Addon/GravityExportAddon.php:381
 msgid "At the left (transposed)"
-msgstr "Vasemmalla (käännetty)"
+msgstr "În partea stângă (transpus)"
 
 #: src/Addon/GravityExportAddon.php:388
 msgid "Order By"
-msgstr "Lajitteluperuste"
+msgstr "Ordonează după"
 
 #: src/Addon/GravityExportAddon.php:403
 msgid "Ascending"
-msgstr "Nouseva"
+msgstr "Ascendent"
 
 #: src/Addon/GravityExportAddon.php:407
 msgid "Descending"
-msgstr "Laskeva"
+msgstr "Descendent"
 
 #: src/Addon/GravityExportAddon.php:424
 msgid "Field settings"
-msgstr "Kenttäasetukset"
+msgstr "Setări câmp"
 
 #: src/Addon/GravityExportAddon.php:432
 msgid "Disabled Fields"
-msgstr "Poistetut kentät"
+msgstr "Câmpuri dezactivate"
 
 #: src/Addon/GravityExportAddon.php:433
 msgid "Enabled Fields"
-msgstr "Ota kentät käyttöön"
+msgstr "Câmpuri activate"
 
 #: src/Addon/GravityExportAddon.php:494
 msgid "Default Settings"
-msgstr "Oletusasetukset"
+msgstr "Setări implicite"
 
 #: src/Addon/GravityExportAddon.php:499
 msgid "Labels"
-msgstr "Tunnisteet"
+msgstr "Etichete"
 
 #: src/Addon/GravityExportAddon.php:503
 msgid "Use admin labels"
-msgstr "Käytä ylläpitäjän tunnisteita"
+msgstr "Folosește etichete de administrator"
 
 #: src/Addon/GravityExportAddon.php:513
 msgid "Multiple Columns"
-msgstr "Useita sarakkeita"
+msgstr "Coloane multiple"
 
 #: src/Addon/GravityExportAddon.php:517
 msgid "Split multi-fields (name, address) into multiple columns"
-msgstr "Jaa moniosaiset kentät (nimi, osoite) useisiin sarakkeisiin"
+msgstr "Împarte câmpurile multiple (nume, adresă) în mai multe coloane"
 
 #: src/Addon/GravityExportAddon.php:531
 msgid "Enable notes by default"
-msgstr "Ota muistiinpanot käyttöön oletuksena"
+msgstr "Activează notele implicit"
 
 #: src/Addon/GravityExportAddon.php:539
 msgid "Sections"
-msgstr "Osastot"
+msgstr "Secțiuni"
 
 #: src/Addon/GravityExportAddon.php:543
 msgid "Enable (empty) section column"
-msgstr "Ota (tyhjä) osastosarake käyttöön"
+msgstr "Activează coloana de secțiune (goală)"
 
 #: src/Addon/GravityExportAddon.php:551
 msgid "File Uploads"
-msgstr "Tiedoston lataukset"
+msgstr "Încărcări de fișiere"
 
 #: src/Addon/GravityExportAddon.php:556
 msgid "Enable file upload columns"
-msgstr "Ota tiedoston lataussarakkeet käyttöön"
+msgstr "Activează coloanele pentru încărcarea fișierelor"
 
 #: src/Addon/GravityExportAddon.php:564
 msgid "Hyperlinks"
-msgstr "Hyperlinkit"
+msgstr "Hyperlinkuri"
 
 #: src/Addon/GravityExportAddon.php:569
 msgid "Enable hyperlinks on URL-only columns"
-msgstr "Ota hyperlinkit käyttöön pelkkien URL-sarakkeiden kohdalla"
+msgstr "Activează hyperlinkurile pe coloanele doar cu URL"
 
 #: src/Addon/GravityExportAddon.php:577
 msgid "Product Fields"
-msgstr "Tuotekentät"
+msgstr "Câmpuri produs"
 
 #: src/Addon/GravityExportAddon.php:582
 msgid "Export prices as numeric fields, without currency symbol ($)"
-msgstr "Vie hinnat numeerisina kenttinä ilman valuuttamerkkiä ($)"
+msgstr "Exportă prețurile ca câmpuri numerice, fără simbolul monedei ($)"
 
 #: src/Addon/GravityExportAddon.php:595
 msgid "Default Enabled Meta Fields"
-msgstr "Oletuksena käytössä olevat metakentät"
+msgstr "Câmpuri meta activate implicit"
 
 #: src/Addon/GravityExportAddon.php:599
 msgid ""
 "Select all meta fields that are enabled by default. Once you've saved your "
 "form, these settings will not do anything any more."
 msgstr ""
-"Valitse kaikki metakentät, jotka ovat oletuksena käytössä. Kun olet "
-"tallentanut lomakkeesi, nämä asetukset eivät enää vaikuta mihinkään."
+"Selectați toate câmpurile meta care sunt activate implicit. După ce ați "
+"salvat formularul, aceste setări nu vor mai avea efect."
 
 #: src/Addon/GravityExportAddon.php:652
 msgid "Select a Notification"
-msgstr "Valitse ilmoitus"
+msgstr "Selectați o notificare"
 
 #: src/Addon/GravityExportAddon.php:671
 msgid ""
 "If you like the plugin, 📣 %slet others know%s! We already have %s active "
 "users. Let's get to %s by spreading the news!"
 msgstr ""
-"Jos pidät lisäosasta, 📣 %skerro siitä muille%s! Meillä on jo %s aktiivista "
-"käyttäjää. Saavuttakaamme %s levittämällä sanaa!"
+"Dacă îți place pluginul, 📣 %slasă-i pe alții să afle%s! Avem deja %s "
+"utilizatori activi. Să ajungem la %s răspândind vestea!"
 
 #: src/Addon/GravityExportAddon.php:675
 #: src/Addon/GravityExportAddon.php:742
 #: src/Component/Plugin.php:43
 msgid "This link opens in a new window"
-msgstr "Tämä linkki avautuu uuteen ikkunaan"
+msgstr "Acest link se deschide într-o fereastră nouă"
 
 #: src/Addon/GravityExportAddon.php:695
 msgid ""
 "These are global settings for new forms. You can overwrite them per form "
 "using the available hooks."
 msgstr ""
-"Nämä ovat globaalit asetukset uusille lomakkeille. Voit ylikirjoittaa ne "
-"lomakkeittain käytettävissä olevien koukkujen avulla."
+"Acestea sunt setările globale pentru formularele noi. Le poți suprascrie "
+"per formular folosind hook-urile disponibile."
 
 #: src/Addon/GravityExportAddon.php:711
 msgid "Upgrade to GravityExport for these useful features:"
-msgstr "Päivitä GravityExportiin näitä hyödyllisiä ominaisuuksia varten:"
+msgstr "Actualizează la GravityExport pentru aceste funcții utile:"
 
 #: src/Addon/GravityExportAddon.php:715
 msgid "Save exports to Dropbox, FTP, &amp; local storage"
-msgstr "Tallenna vientitiedostot Dropboxiin, FTP:hen ja paikalliseen tallennustilaan"
+msgstr "Salvează exporturile în Dropbox, FTP și stocare locală"
 
 #: src/Addon/GravityExportAddon.php:718
 msgid ""
 "Automatically upload exports to Dropbox, a remote server using SFTP and "
 "FTP, or store locally."
 msgstr ""
-"Lähetä vientitiedostot automaattisesti Dropboxiin, etäpalvelimelle SFTP:n "
-"ja FTP:n avulla tai tallenna paikallisesti."
+"Încarcă automat exporturile în Dropbox, pe un server la distanță folosind "
+"SFTP și FTP sau stochează local."
 
 #: src/Addon/GravityExportAddon.php:724
 msgid "Filter exports with Conditional Logic"
-msgstr "Suodata vientitiedostot ehtologiikalla"
+msgstr "Filtrează exporturile cu Logică Condițională"
 
 #: src/Addon/GravityExportAddon.php:726
 msgid ""
 "Create advanced filters, including exporting entries created by only the "
 "currently logged-in user."
 msgstr ""
-"Luo edistyneitä suodattimia, mukaan lukien vientiä vain kirjautuneen "
-"käyttäjän luomista merkinnöistä."
+"Creează filtre avansate, inclusiv exportul înregistrărilor create doar de "
+"utilizatorul conectat în prezent."
 
 #: src/Addon/GravityExportAddon.php:732
 msgid "Exports are ready for data analysis"
-msgstr "Vientitiedostot ovat valmiita data-analyysiin"
+msgstr "Exporturile sunt pregătite pentru analiza datelor"
 
 #: src/Addon/GravityExportAddon.php:734
 msgid ""
@@ -336,255 +336,263 @@ msgid ""
 "multiple rows each with one value. If you work with data, you&rsquo;ll love "
 "this feature!"
 msgstr ""
-"Kun analysoit dataa, haluat useita arvoja sisältävät kentät jaettuna "
-"useille riveille, joista jokaisella on yksi arvo. Jos työskentelet datan "
-"parissa, tulet rakastamaan tätä ominaisuutta!"
+"Când analizezi date, vrei ca câmpurile cu valori multiple să fie împărțite "
+"în mai multe rânduri, fiecare cu o valoare. Dacă lucrezi cu date, îți va "
+"plăcea această funcție!"
 
 #: src/Addon/GravityExportAddon.php:743
 #: src/Component/Plugin.php:44
 msgid "Gain Powerful Features with GravityExport"
-msgstr "Hanki tehokkaita ominaisuuksia GravityExportin avulla"
+msgstr "Obține funcții puternice cu GravityExport"
 
 #: src/Addon/GravityExportAddon.php:825
 msgid "Enable all"
-msgstr "Ota kaikki käyttöön"
+msgstr "Activează tot"
 
 #: src/Addon/GravityExportAddon.php:826
 msgid "Disable all"
-msgstr "Poista kaikkien käytöstä"
+msgstr "Dezactivează tot"
 
 #: src/Addon/GravityExportAddon.php:827
 msgid "Enable visible"
-msgstr "Ota näkyvät käyttöön"
+msgstr "Activează vizibil"
 
 #: src/Addon/GravityExportAddon.php:828
 msgid "Disable visible"
-msgstr "Poista näkyvien käytöstä"
+msgstr "Dezactivează vizibil"
 
 #: src/Addon/GravityExportAddon.php:829
 msgid "No fields match your search."
-msgstr "Yksikään kenttä ei vastaa hakua."
+msgstr "Niciun câmp nu se potrivește căutării tale."
 
 #: src/Addon/GravityExportAddon.php:830
 msgid "1 field matches your search."
-msgstr "1 kenttä vastaa hakua."
+msgstr "1 câmp se potrivește căutării tale."
 
 #: src/Addon/GravityExportAddon.php:961
 msgid "Download as one file"
-msgstr "Lataa yhtenä tiedostona"
+msgstr "Descarcă ca un singur fișier"
 
 #: src/Addon/GravityExportAddon.php:1035
 #: src/Addon/GravityExportAddon.php:1076
 #: src/GravityForms/Field/DownloadFile.php:75
 msgid "Download"
-msgstr "Lataa"
+msgstr "Descarcă"
 
 #: src/Addon/GravityExportAddon.php:1036
 msgid "Download an Export"
-msgstr "Lataa vienti"
+msgstr "Descarcă un Export"
 
 #: src/Addon/GravityExportAddon.php:1164
 msgid "Deselect All"
-msgstr "Poista kaikki valinnat"
+msgstr "Deselectează tot"
 
 #: src/Addon/GravityExportAddon.php:1165
 msgid "Select All"
-msgstr "Valitse kaikki"
+msgstr "Selectează tot"
 
 #: src/Component/MetaBoxes.php:90
 msgid "Download this single entry as a file."
-msgstr "Lataa tämä yksittäinen merkintä tiedostona."
+msgstr "Descarcă această intrare individuală ca fișier."
 
 #: src/Component/Plugin.php:34
 #: src/Component/Plugin.php:35
 msgid "Documentation"
-msgstr "Dokumentaatio"
+msgstr "Documentație"
 
 #: src/Component/Usage.php:33
 #: src/Component/Usage.php:52
 msgid "countless"
-msgstr "lukematon määrä"
+msgstr "nenumărat"
 
 #: src/Component/Usage.php:53
 msgid "even more"
-msgstr "vielä enemmän"
+msgstr "și mai mult"
 
 #: src/Field/Meta/DateCreated.php:18
 msgid "Date"
-msgstr "Päivämäärä"
+msgstr "Dată"
 
 #: src/Field/Meta/DateCreated.php:19
 msgid "Time"
-msgstr "Aika"
+msgstr "Timp"
 
 #: src/GravityForms/Field/CopyShortcode.php:47
 msgid "The shortcode has been copied to your clipboard."
-msgstr "Lyhytkoodi on kopioitu leikepöydälle."
+msgstr "Codul scurt a fost copiat în clipboard."
 
 #: src/GravityForms/Field/CopyShortcode.php:64
 msgid "Copy Shortcode"
-msgstr "Kopioi lyhytkoodi"
+msgstr "Copiază codul scurt"
 
 #: src/GravityForms/Field/DownloadFile.php:81
 msgid "Reset count"
-msgstr "Nollaa laskuri"
+msgstr "Resetează numărătoarea"
 
 #: src/GravityForms/Field/DownloadFile.php:86
 msgid "Download count"
-msgstr "Latausten määrä"
+msgstr "Numărătoare descărcări"
 
 #: src/GravityForms/Field/DownloadFile.php:115
 msgid ""
 "You are about to reset the download count for this form. This can’t be "
 "undone."
-msgstr "Olet nollaamassa tämän lomakkeen latausmäärän. Tätä ei voi perua."
+msgstr ""
+"Ești pe cale să resetezi numărul de descărcări pentru acest formular. "
+"Această acțiune nu poate fi anulată."
 
 #: src/GravityForms/Field/DownloadUrl.php:66
 msgid "Regenerate URL"
-msgstr "Luo URL uudelleen"
+msgstr "Regenerare URL"
 
 #: src/GravityForms/Field/DownloadUrl.php:71
 msgid "Disable download URL"
-msgstr "Poista lataus-URL käytöstä"
+msgstr "Dezactivează URL-ul de descărcare"
 
 #: src/GravityForms/Field/DownloadUrl.php:75
 msgid "Copied!"
-msgstr "Kopioitu!"
+msgstr "Copiat!"
 
 #: src/GravityForms/Field/DownloadUrl.php:80
 msgid "Copy URL to Clipboard"
-msgstr "Kopioi URL leikepöydälle"
+msgstr "Copiază URL în Clipboard"
 
 #: src/GravityForms/Field/DownloadUrl.php:160
 msgid "You are about to reset the URL for this form. This can’t be undone."
-msgstr "Olet nollaamassa tämän lomakkeen URL-osoitetta. Tätä ei voi kumota."
+msgstr ""
+"Ești pe punctul de a reseta URL-ul acestui formular. Aceasta nu poate fi "
+"anulată."
 
 #: src/GravityForms/Field/DownloadUrl.php:161
 msgid ""
 "You are about to disable the URL for this form. This will invalidate the "
 "URL, and can’t be undone."
 msgstr ""
-"Olet poistamassa tämän lomakkeen URL-osoitteen käytöstä. Tämä tekee "
-"URL-osoitteesta virheellisen eikä sitä voi kumota."
+"Ești pe punctul de a dezactiva URL-ul acestui formular. Aceasta va invalida "
+"URL-ul și nu poate fi anulată."
 
 #: src/GravityForms/Field/DownloadUrl.php:163
 msgid "The file URL has been copied to your clipboard."
-msgstr "Tiedoston URL on kopioitu leikepöydälle."
+msgstr "URL-ul fișierului a fost copiat în clipboard."
 
 #: src/GravityForms/Field/SortFields.php:69
 msgid "Filter fields…"
-msgstr "Suodata kenttiä…"
+msgstr "Filtrează câmpurile…"
 
 #: src/GravityForms/Field/SortFields.php:70
 msgid "Filter fields"
-msgstr "Suodata kenttiä"
+msgstr "Filtrează câmpurile"
 
 #: src/GravityForms/Field/SortFields.php:98
 msgid "Clear search"
-msgstr "Tyhjennä haku"
+msgstr "Șterge căutarea"
 
 #: src/GravityForms/Field/SortFields.php:157
 msgid "Move %s"
-msgstr "Siirrä %s"
+msgstr "Mută %s"
 
 #: src/Migration/Migration/SingleFeedMigration.php:65
 msgid "The settings for %s 2.0 were migrated successfully."
-msgstr "Asetukset %s 2.0 siirrettiin onnistuneesti."
+msgstr "Setările pentru %s 2.0 au fost migrate cu succes."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:326
 msgid "GravityExport Lite: Something is broken"
-msgstr "GravityExport Lite: Jokin on rikki"
+msgstr "GravityExport Lite: Ceva este defect"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:327
 msgid "Error message:"
-msgstr "Virheilmoitus:"
+msgstr "Mesaj de eroare:"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:329
 msgid ""
 "If you need support, please contact us via <a target=\"_blank\" "
 "href=\"%s\">WordPress.org support forum</a>."
 msgstr ""
-"Jos tarvitset tukea, ota meihin yhteyttä osoitteessa <a target=\"_blank\" "
-"href=\"%s\">WordPress.org tukifoorumi</a>."
+"Dacă ai nevoie de suport, te rugăm să ne contactezi prin <a "
+"target=\"_blank\" href=\"%s\">forumul de suport WordPress.org</a>."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:331
 msgid ""
 "Check if someone else had the same error before posting a new support "
 "question."
 msgstr ""
-"Tarkista, onko joku muu jo saanut saman virheen ennen uuden tukikysymyksen "
-"lähettämistä."
+"Verifică dacă altcineva a avut aceeași eroare înainte de a posta o nouă "
+"întrebare de suport."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:333
 msgid ""
 "And when opening a new question, <strong>please use the error message as "
 "the title</strong>."
 msgstr ""
-"Ja kun avaat uuden kysymyksen, <strong>käytä virheilmoitusta "
-"otsikkona</strong>."
+"Și când deschizi o întrebare nouă, <strong>te rugăm să folosești mesajul de "
+"eroare ca titlu</strong>."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:335
 msgid "Include the following details in your message:"
-msgstr "Sisällytä viestiisi seuraavat tiedot:"
+msgstr "Include următoarele detalii în mesajul tău:"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:337
 msgid "Plugin Version: %s"
-msgstr "Lisäosan versio: %s"
+msgstr "Versiunea pluginului: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:338
 msgid "Gravity Forms Version: %s"
-msgstr "Gravity Forms -versio: %s"
+msgstr "Versiunea Gravity Forms: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:339
 msgid "PHP Version: %s"
-msgstr "PHP-versio: %s"
+msgstr "Versiunea PHP: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:341
 msgid " (this version is too low, please update to at least PHP 5.6)"
-msgstr " (tämä versio on liian alhainen, päivitä vähintään versioon PHP 5.6)"
+msgstr ""
+" (această versiune este prea veche, te rugăm să faci upgrade la cel puțin "
+"PHP 5.6)"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:344
 msgid "WordPress Version: %s"
-msgstr "WordPress-versio: %s"
+msgstr "Versiunea WordPress: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:345
 msgid "Error message: %s"
-msgstr "Virhesanoma: %s"
+msgstr "Mesaj de eroare: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:346
 msgid "Error stack trace: %s"
-msgstr "Virheen pinon jäljitys: %s"
+msgstr "Urmărire stivă eroare: %s"
 
 #: src/Repository/FieldsRepository.php:97
 #: src/Repository/FieldsRepository.php:270
 msgid "Date Updated"
-msgstr "Päivämäärä päivitetty"
+msgstr "Dată actualizată"
 
 #: src/Repository/FieldsRepository.php:266
 msgid "Entry Date"
-msgstr "Merkinnän päivämäärä"
+msgstr "Dată înregistrare"
 
 #: src/Repository/FieldsRepository.php:274
 msgid "Entry ID"
-msgstr "Merkinnän tunnus"
+msgstr "ID înregistrare"
 
 #: src/Addon/GravityExportAddon.php:832
 msgid "[count] fields match your search."
-msgstr "[count] kenttää vastaa hakua."
+msgstr "[count] câmpuri corespund căutării tale."
 
 #: src/Addon/GravityExportAddon.php:834
 msgid "[field] moved to [destination]."
-msgstr "[field] siirrettiin kohtaan [destination]."
+msgstr "[field] mutat în [destination]."
 
 #: src/Addon/GravityExportAddon.php:836
 msgid "[count] fields moved to [destination]."
-msgstr "[count] kenttää siirrettiin kohtaan [destination]."
+msgstr "[count] câmpuri mutate în [destination]."
 
 #: src/Addon/GravityExportAddon.php:838
 msgid "1 field moved to [destination]."
-msgstr "1 kenttä siirrettiin kohtaan [destination]."
+msgstr "1 câmp mutat în [destination]."
 
 #: src/Shortcode/DownloadUrl.php:94
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
-msgstr "Lisää kelvollinen 'secret'-attribuutti '[shortcode]'-lyhytkoodiin."
+msgstr ""
+"Vă rugăm să adăugați un atribut „secret” valid la shortcode-ul "
+"'[shortcode]'."

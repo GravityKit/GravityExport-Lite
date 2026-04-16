@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gk-gravityexport-lite\n"
 "PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
-"Language: fi\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,8 +21,8 @@ msgid ""
 "Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
 "shareable URL."
 msgstr ""
-"Vie kaikki Gravity Forms -lomakkeiden merkinnät Exceliin (.xlsx) tai "
-"CSV-muodossa salaisen ja jaettavan URL-osoitteen kautta."
+"Tüm Gravity Forms girişlerini gizli paylaşılabilir bir URL aracılığıyla "
+"Excel (.xlsx) veya CSV olarak dışa aktarın."
 
 #: gfexcel.php
 msgid "GravityKit"
@@ -34,104 +34,103 @@ msgstr "https://www.gravitykit.com/extensions/gravityexport/"
 
 #: gfexcel.php:46
 msgid "GravityExport Lite requires PHP %s or newer."
-msgstr "GravityExport Lite vaatii PHP:n version %s tai uudemman."
+msgstr "GravityExport Lite, PHP %s veya daha yenisini gerektirir."
 
 #: src/Action/DownloadUrlDisableAction.php:38
 msgid "The download URL has been disabled."
-msgstr "Lataus-URL on poistettu käytöstä."
+msgstr "İndirme URL'si devre dışı bırakıldı."
 
 #: src/Action/DownloadUrlEnableAction.php:26
 msgid "The download URL has been enabled."
-msgstr "Lataus-URL on otettu käyttöön."
+msgstr "İndirme URL'si etkinleştirildi."
 
 #: src/Action/DownloadUrlResetAction.php:41
 msgid "The download URL has been reset."
-msgstr "Lataus-URL on nollattu."
+msgstr "İndirme URL'si sıfırlandı."
 
 #: src/Action/DownloadUrlResetAction.php:58
 msgid "There was an error generating the URL: %s"
-msgstr "URL-osoitteen luomisessa tapahtui virhe: %s"
+msgstr "URL oluşturulurken hata oluştu: %s"
 
 #: src/Action/NotificationsAction.php:65
 msgid "The notifications could not be retrieved."
-msgstr "Ilmoituksia ei voitu hakea."
+msgstr "Bildirimler alınamadı."
 
 #: src/Addon/GravityExportAddon.php:186
 msgid "Activate GravityExport"
-msgstr "Ota GravityExport käyttöön"
+msgstr "GravityExport'u Etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:217
 msgid "Download settings"
-msgstr "Latausasetukset"
+msgstr "İndirme ayarları"
 
 #: src/Addon/GravityExportAddon.php:221
 msgid "Download URL"
-msgstr "Lataus-URL"
+msgstr "İndirme URL'si"
 
 #: src/Addon/GravityExportAddon.php:229
 msgid "Embed shortcode"
-msgstr "Upota shortcode"
+msgstr "Kısa kodu yerleştir"
 
 #: src/Addon/GravityExportAddon.php:235
 msgid "Custom Filename"
-msgstr "Mukautettu tiedostonimi"
+msgstr "Özel Dosya Adı"
 
 #: src/Addon/GravityExportAddon.php:239
 msgid "Default: %s"
-msgstr "Oletus: %s"
+msgstr "Varsayılan: %s"
 
 #: src/Addon/GravityExportAddon.php:243
 msgid ""
 "Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
 "for default."
 msgstr ""
-"Useimmat ei-aakkosnumeeriset merkit korvataan yhdysmerkeillä. Jätä tyhjäksi "
-"käyttääksesi oletusta."
+"Çoğu alfasayısal olmayan karakter tire ile değiştirilecektir. Varsayılan "
+"için boş bırakın."
 
 #: src/Addon/GravityExportAddon.php:252
 msgid "File Extension"
-msgstr "Tiedostopääte"
+msgstr "Dosya Uzantısı"
 
 #: src/Addon/GravityExportAddon.php:257
 msgid ""
 "Note: You may override the file type by adding the desired extension (%s) "
 "to the end of the Download URL."
 msgstr ""
-"Huom: Voit muuttaa tiedostotyyppiä lisäämällä halutun päätteen (%s) "
-"lataus-URL:n loppuun."
+"Not: Dosya türünü, İndirme URL'sinin sonuna istediğiniz uzantıyı (%s) "
+"ekleyerek geçersiz kılabilirsiniz."
 
 #: src/Addon/GravityExportAddon.php:278
 msgid "Instant Download ⚡️"
-msgstr "Välitön lataus ⚡️"
+msgstr "Anında İndir ⚡️"
 
 #: src/Addon/GravityExportAddon.php:282
 msgid "Select Date Range (optional)"
-msgstr "Valitse aikaväli (valinnainen)"
+msgstr "Tarih Aralığını Seçin (isteğe bağlı)"
 
 #: src/Addon/GravityExportAddon.php:294
 msgid "Security Settings"
-msgstr "Tietoturva-asetukset"
+msgstr "Güvenlik Ayarları"
 
 #: src/Addon/GravityExportAddon.php:298
 msgid "Secure Shortcodes"
-msgstr "Turvalliset lyhytkoodit"
+msgstr "Güvenli Kısa Kodlar"
 
 #: src/Addon/GravityExportAddon.php:300
 msgid ""
 "A secure shortcode contains a unique <code>secret</code>-attribute which "
 "prevents generating the URL for a form without permission."
 msgstr ""
-"Turvallinen lyhytkoodi sisältää ainutlaatuisen "
-"<code>salainen</code>-attribuutin, joka estää lomakkeen URL-osoitteen "
-"luomisen ilman lupaa."
+"Güvenli bir kısa kod, izin olmadan bir formun URL’sinin oluşturulmasını "
+"engelleyen benzersiz bir <code>secret</code> niteliği içerir."
 
 #: src/Addon/GravityExportAddon.php:304
 msgid "Enable secure embed shortcode"
-msgstr "Ota käyttöön turvallinen upotettu lyhytkoodi"
+msgstr "Güvenli gömme kısa kodunu etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:311
 msgid "Download Permissions"
-msgstr "Latausoikeudet"
+msgstr "İndirme İzinleri"
 
 #: src/Addon/GravityExportAddon.php:314
 msgid ""
@@ -139,196 +138,196 @@ msgid ""
 "\"Logged-in users who have 'Export Entries' access\" is selected, users "
 "must be logged-in and have the %s capability."
 msgstr ""
-"Jos asetuksena on \"Kaikki voivat ladata\", kuka tahansa linkin saanut voi "
-"ladata. Jos valittuna on \"Kirjautuneet käyttäjät, joilla on 'Vie "
-"merkinnät' -oikeus\", käyttäjän on oltava kirjautuneena ja hänellä on "
-"oltava %s-oikeus."
+"Eğer \"Herkes indirebilir\" olarak ayarlanırsa, bağlantıya sahip herkes "
+"indirebilir. Eğer \"‘Kayıtlı kullanıcılar ‘Kayıtları Dışa Aktar’ erişimine "
+"sahip\" seçilirse, kullanıcıların giriş yapmış olması ve %s yeteneğine "
+"sahip olması gerekir."
 
 #: src/Addon/GravityExportAddon.php:326
 msgid "Everyone can download"
-msgstr "Kaikki voivat ladata"
+msgstr "Herkes indirebilir"
 
 #: src/Addon/GravityExportAddon.php:332
 msgid "Logged-in users who have \"Export Entries\" access"
-msgstr "Kirjautuneet käyttäjät, joilla on \"Vie merkinnät\" -oikeus"
+msgstr "‘Kayıtları Dışa Aktar’ erişimine sahip kayıtlı kullanıcılar"
 
 #: src/Addon/GravityExportAddon.php:348
 msgid "General Settings"
-msgstr "Yleiset asetukset"
+msgstr "Genel Ayarlar"
 
 #: src/Addon/GravityExportAddon.php:352
 msgid "Include Entry Notes"
-msgstr "Sisällytä merkintämuistiinpanot"
+msgstr "Kayıt Notlarını Dahil Et"
 
 #: src/Addon/GravityExportAddon.php:357
 msgid "Yes, enable the notes for every entry"
-msgstr "Kyllä, ota muistiinpanot käyttöön jokaiselle merkinnälle"
+msgstr "Evet, her kayıt için notları etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:363
 msgid "Attach Single Entry to Notification"
-msgstr "Liitä yksittäinen merkintä ilmoitukseen"
+msgstr "Tek Kayıt Bildirime Ekle"
 
 #: src/Addon/GravityExportAddon.php:371
 msgid "Column Position"
-msgstr "Sarakkeen sijainti"
+msgstr "Sütun Konumu"
 
 #: src/Addon/GravityExportAddon.php:376
 msgid "At the top (normal)"
-msgstr "Ylhäällä (normaali)"
+msgstr "Üstte (normal)"
 
 #: src/Addon/GravityExportAddon.php:381
 msgid "At the left (transposed)"
-msgstr "Vasemmalla (käännetty)"
+msgstr "Solda (transpoze)"
 
 #: src/Addon/GravityExportAddon.php:388
 msgid "Order By"
-msgstr "Lajitteluperuste"
+msgstr "Sırala"
 
 #: src/Addon/GravityExportAddon.php:403
 msgid "Ascending"
-msgstr "Nouseva"
+msgstr "Artan"
 
 #: src/Addon/GravityExportAddon.php:407
 msgid "Descending"
-msgstr "Laskeva"
+msgstr "Azalan"
 
 #: src/Addon/GravityExportAddon.php:424
 msgid "Field settings"
-msgstr "Kenttäasetukset"
+msgstr "Alan ayarları"
 
 #: src/Addon/GravityExportAddon.php:432
 msgid "Disabled Fields"
-msgstr "Poistetut kentät"
+msgstr "Devre dışı bırakılan Alanlar"
 
 #: src/Addon/GravityExportAddon.php:433
 msgid "Enabled Fields"
-msgstr "Ota kentät käyttöön"
+msgstr "Etkin Alanlar"
 
 #: src/Addon/GravityExportAddon.php:494
 msgid "Default Settings"
-msgstr "Oletusasetukset"
+msgstr "Varsayılan Ayarlar"
 
 #: src/Addon/GravityExportAddon.php:499
 msgid "Labels"
-msgstr "Tunnisteet"
+msgstr "Etiketler"
 
 #: src/Addon/GravityExportAddon.php:503
 msgid "Use admin labels"
-msgstr "Käytä ylläpitäjän tunnisteita"
+msgstr "Yönetici etiketlerini kullan"
 
 #: src/Addon/GravityExportAddon.php:513
 msgid "Multiple Columns"
-msgstr "Useita sarakkeita"
+msgstr "Çoklu Sütunlar"
 
 #: src/Addon/GravityExportAddon.php:517
 msgid "Split multi-fields (name, address) into multiple columns"
-msgstr "Jaa moniosaiset kentät (nimi, osoite) useisiin sarakkeisiin"
+msgstr "Çoklu alanları (isim, adres) birden fazla sütuna böl"
 
 #: src/Addon/GravityExportAddon.php:531
 msgid "Enable notes by default"
-msgstr "Ota muistiinpanot käyttöön oletuksena"
+msgstr "Notları varsayılan olarak etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:539
 msgid "Sections"
-msgstr "Osastot"
+msgstr "Bölümler"
 
 #: src/Addon/GravityExportAddon.php:543
 msgid "Enable (empty) section column"
-msgstr "Ota (tyhjä) osastosarake käyttöön"
+msgstr "(boş) bölüm sütununu etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:551
 msgid "File Uploads"
-msgstr "Tiedoston lataukset"
+msgstr "Dosya Yüklemeleri"
 
 #: src/Addon/GravityExportAddon.php:556
 msgid "Enable file upload columns"
-msgstr "Ota tiedoston lataussarakkeet käyttöön"
+msgstr "Dosya yükleme sütunlarını etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:564
 msgid "Hyperlinks"
-msgstr "Hyperlinkit"
+msgstr "Hiperlinkler"
 
 #: src/Addon/GravityExportAddon.php:569
 msgid "Enable hyperlinks on URL-only columns"
-msgstr "Ota hyperlinkit käyttöön pelkkien URL-sarakkeiden kohdalla"
+msgstr "Sadece URL sütunlarında hiperlinkleri etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:577
 msgid "Product Fields"
-msgstr "Tuotekentät"
+msgstr "Ürün Alanları"
 
 #: src/Addon/GravityExportAddon.php:582
 msgid "Export prices as numeric fields, without currency symbol ($)"
-msgstr "Vie hinnat numeerisina kenttinä ilman valuuttamerkkiä ($)"
+msgstr "Fiyatları para birimi simgesi olmadan sayısal alanlar olarak dışa aktar ($)"
 
 #: src/Addon/GravityExportAddon.php:595
 msgid "Default Enabled Meta Fields"
-msgstr "Oletuksena käytössä olevat metakentät"
+msgstr "Varsayılan Etkin Meta Alanları"
 
 #: src/Addon/GravityExportAddon.php:599
 msgid ""
 "Select all meta fields that are enabled by default. Once you've saved your "
 "form, these settings will not do anything any more."
 msgstr ""
-"Valitse kaikki metakentät, jotka ovat oletuksena käytössä. Kun olet "
-"tallentanut lomakkeesi, nämä asetukset eivät enää vaikuta mihinkään."
+"Varsayılan olarak etkin olan tüm meta alanlarını seçin. Formunuzu "
+"kaydettikten sonra, bu ayarlar artık işe yaramayacaktır."
 
 #: src/Addon/GravityExportAddon.php:652
 msgid "Select a Notification"
-msgstr "Valitse ilmoitus"
+msgstr "Bir Bildirim Seçin"
 
 #: src/Addon/GravityExportAddon.php:671
 msgid ""
 "If you like the plugin, 📣 %slet others know%s! We already have %s active "
 "users. Let's get to %s by spreading the news!"
 msgstr ""
-"Jos pidät lisäosasta, 📣 %skerro siitä muille%s! Meillä on jo %s aktiivista "
-"käyttäjää. Saavuttakaamme %s levittämällä sanaa!"
+"Eklentiyi beğendiyseniz, 📣 %sbaşkalarına haber verin%s! Zaten %s aktif "
+"kullanıcımız var. Haberi yayarak %s hedefine ulaşalım!"
 
 #: src/Addon/GravityExportAddon.php:675
 #: src/Addon/GravityExportAddon.php:742
 #: src/Component/Plugin.php:43
 msgid "This link opens in a new window"
-msgstr "Tämä linkki avautuu uuteen ikkunaan"
+msgstr "Bu bağlantı yeni bir pencerede açılır"
 
 #: src/Addon/GravityExportAddon.php:695
 msgid ""
 "These are global settings for new forms. You can overwrite them per form "
 "using the available hooks."
 msgstr ""
-"Nämä ovat globaalit asetukset uusille lomakkeille. Voit ylikirjoittaa ne "
-"lomakkeittain käytettävissä olevien koukkujen avulla."
+"Bunlar yeni formlar için genel ayarlardır. Mevcut kancalar kullanılarak her "
+"form için üzerine yazabilirsiniz."
 
 #: src/Addon/GravityExportAddon.php:711
 msgid "Upgrade to GravityExport for these useful features:"
-msgstr "Päivitä GravityExportiin näitä hyödyllisiä ominaisuuksia varten:"
+msgstr "Bu kullanışlı özellikler için GravityExport’a yükseltin:"
 
 #: src/Addon/GravityExportAddon.php:715
 msgid "Save exports to Dropbox, FTP, &amp; local storage"
-msgstr "Tallenna vientitiedostot Dropboxiin, FTP:hen ja paikalliseen tallennustilaan"
+msgstr "Dışa aktarımları Dropbox, FTP ve yerel depolamaya kaydedin"
 
 #: src/Addon/GravityExportAddon.php:718
 msgid ""
 "Automatically upload exports to Dropbox, a remote server using SFTP and "
 "FTP, or store locally."
 msgstr ""
-"Lähetä vientitiedostot automaattisesti Dropboxiin, etäpalvelimelle SFTP:n "
-"ja FTP:n avulla tai tallenna paikallisesti."
+"Dışa aktarımları otomatik olarak Dropbox’a, SFTP ve FTP kullanan uzak bir "
+"sunucuya yükleyin ya da yerelde saklayın."
 
 #: src/Addon/GravityExportAddon.php:724
 msgid "Filter exports with Conditional Logic"
-msgstr "Suodata vientitiedostot ehtologiikalla"
+msgstr "Dışa aktarımları Koşullu Mantık ile filtreleyin"
 
 #: src/Addon/GravityExportAddon.php:726
 msgid ""
 "Create advanced filters, including exporting entries created by only the "
 "currently logged-in user."
 msgstr ""
-"Luo edistyneitä suodattimia, mukaan lukien vientiä vain kirjautuneen "
-"käyttäjän luomista merkinnöistä."
+"Sadece şu anda giriş yapmış kullanıcı tarafından oluşturulan kayıtlar da "
+"dahil olmak üzere gelişmiş filtreler oluşturun."
 
 #: src/Addon/GravityExportAddon.php:732
 msgid "Exports are ready for data analysis"
-msgstr "Vientitiedostot ovat valmiita data-analyysiin"
+msgstr "Dışa aktarımlar veri analizi için hazırdır"
 
 #: src/Addon/GravityExportAddon.php:734
 msgid ""
@@ -336,255 +335,256 @@ msgid ""
 "multiple rows each with one value. If you work with data, you&rsquo;ll love "
 "this feature!"
 msgstr ""
-"Kun analysoit dataa, haluat useita arvoja sisältävät kentät jaettuna "
-"useille riveille, joista jokaisella on yksi arvo. Jos työskentelet datan "
-"parissa, tulet rakastamaan tätä ominaisuutta!"
+"Veri analizinde, çok değerli alanların her bir değeri içeren birden çok "
+"satıra bölünmesini istersiniz. Veriyle çalışıyorsanız, bu özelliği "
+"seveceksiniz!"
 
 #: src/Addon/GravityExportAddon.php:743
 #: src/Component/Plugin.php:44
 msgid "Gain Powerful Features with GravityExport"
-msgstr "Hanki tehokkaita ominaisuuksia GravityExportin avulla"
+msgstr "GravityExport ile Güçlü Özellikler Kazanın"
 
 #: src/Addon/GravityExportAddon.php:825
 msgid "Enable all"
-msgstr "Ota kaikki käyttöön"
+msgstr "Hepsini etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:826
 msgid "Disable all"
-msgstr "Poista kaikkien käytöstä"
+msgstr "Hepsini devre dışı bırak"
 
 #: src/Addon/GravityExportAddon.php:827
 msgid "Enable visible"
-msgstr "Ota näkyvät käyttöön"
+msgstr "Görünür olanları etkinleştir"
 
 #: src/Addon/GravityExportAddon.php:828
 msgid "Disable visible"
-msgstr "Poista näkyvien käytöstä"
+msgstr "Görünür olanları devre dışı bırak"
 
 #: src/Addon/GravityExportAddon.php:829
 msgid "No fields match your search."
-msgstr "Yksikään kenttä ei vastaa hakua."
+msgstr "Aramanızla eşleşen alan yok."
 
 #: src/Addon/GravityExportAddon.php:830
 msgid "1 field matches your search."
-msgstr "1 kenttä vastaa hakua."
+msgstr "Aramanızla eşleşen 1 alan var."
 
 #: src/Addon/GravityExportAddon.php:961
 msgid "Download as one file"
-msgstr "Lataa yhtenä tiedostona"
+msgstr "Tek dosya olarak indir"
 
 #: src/Addon/GravityExportAddon.php:1035
 #: src/Addon/GravityExportAddon.php:1076
 #: src/GravityForms/Field/DownloadFile.php:75
 msgid "Download"
-msgstr "Lataa"
+msgstr "İndir"
 
 #: src/Addon/GravityExportAddon.php:1036
 msgid "Download an Export"
-msgstr "Lataa vienti"
+msgstr "Bir Dışa Aktarma indir"
 
 #: src/Addon/GravityExportAddon.php:1164
 msgid "Deselect All"
-msgstr "Poista kaikki valinnat"
+msgstr "Tümünü Seçimi Kaldır"
 
 #: src/Addon/GravityExportAddon.php:1165
 msgid "Select All"
-msgstr "Valitse kaikki"
+msgstr "Tümünü Seç"
 
 #: src/Component/MetaBoxes.php:90
 msgid "Download this single entry as a file."
-msgstr "Lataa tämä yksittäinen merkintä tiedostona."
+msgstr "Bu tek kaydı dosya olarak indir."
 
 #: src/Component/Plugin.php:34
 #: src/Component/Plugin.php:35
 msgid "Documentation"
-msgstr "Dokumentaatio"
+msgstr "Dokümantasyon"
 
 #: src/Component/Usage.php:33
 #: src/Component/Usage.php:52
 msgid "countless"
-msgstr "lukematon määrä"
+msgstr "sayısız"
 
 #: src/Component/Usage.php:53
 msgid "even more"
-msgstr "vielä enemmän"
+msgstr "daha da fazla"
 
 #: src/Field/Meta/DateCreated.php:18
 msgid "Date"
-msgstr "Päivämäärä"
+msgstr "Tarih"
 
 #: src/Field/Meta/DateCreated.php:19
 msgid "Time"
-msgstr "Aika"
+msgstr "Saat"
 
 #: src/GravityForms/Field/CopyShortcode.php:47
 msgid "The shortcode has been copied to your clipboard."
-msgstr "Lyhytkoodi on kopioitu leikepöydälle."
+msgstr "Kısa kod panonuza kopyalandı."
 
 #: src/GravityForms/Field/CopyShortcode.php:64
 msgid "Copy Shortcode"
-msgstr "Kopioi lyhytkoodi"
+msgstr "Kısa Kodu Kopyala"
 
 #: src/GravityForms/Field/DownloadFile.php:81
 msgid "Reset count"
-msgstr "Nollaa laskuri"
+msgstr "Sayacı sıfırla"
 
 #: src/GravityForms/Field/DownloadFile.php:86
 msgid "Download count"
-msgstr "Latausten määrä"
+msgstr "İndirme sayısı"
 
 #: src/GravityForms/Field/DownloadFile.php:115
 msgid ""
 "You are about to reset the download count for this form. This can’t be "
 "undone."
-msgstr "Olet nollaamassa tämän lomakkeen latausmäärän. Tätä ei voi perua."
+msgstr "Bu formun indirme sayısını sıfırlamak üzeresiniz. Bu işlem geri alınamaz."
 
 #: src/GravityForms/Field/DownloadUrl.php:66
 msgid "Regenerate URL"
-msgstr "Luo URL uudelleen"
+msgstr "URL'yi yeniden oluştur"
 
 #: src/GravityForms/Field/DownloadUrl.php:71
 msgid "Disable download URL"
-msgstr "Poista lataus-URL käytöstä"
+msgstr "İndirme URL'sini devre dışı bırak"
 
 #: src/GravityForms/Field/DownloadUrl.php:75
 msgid "Copied!"
-msgstr "Kopioitu!"
+msgstr "Kopyalandı!"
 
 #: src/GravityForms/Field/DownloadUrl.php:80
 msgid "Copy URL to Clipboard"
-msgstr "Kopioi URL leikepöydälle"
+msgstr "URL'yi Panoya Kopyala"
 
 #: src/GravityForms/Field/DownloadUrl.php:160
 msgid "You are about to reset the URL for this form. This can’t be undone."
-msgstr "Olet nollaamassa tämän lomakkeen URL-osoitetta. Tätä ei voi kumota."
+msgstr "Bu formun URL'sini sıfırlamak üzeresiniz. Bu işlem geri alınamaz."
 
 #: src/GravityForms/Field/DownloadUrl.php:161
 msgid ""
 "You are about to disable the URL for this form. This will invalidate the "
 "URL, and can’t be undone."
 msgstr ""
-"Olet poistamassa tämän lomakkeen URL-osoitteen käytöstä. Tämä tekee "
-"URL-osoitteesta virheellisen eikä sitä voi kumota."
+"Bu formun URL'sini devre dışı bırakmak üzeresiniz. Bu URL'yi geçersiz "
+"kılacak ve geri alınamaz."
 
 #: src/GravityForms/Field/DownloadUrl.php:163
 msgid "The file URL has been copied to your clipboard."
-msgstr "Tiedoston URL on kopioitu leikepöydälle."
+msgstr "Dosya URL'si panonuza kopyalandı."
 
 #: src/GravityForms/Field/SortFields.php:69
 msgid "Filter fields…"
-msgstr "Suodata kenttiä…"
+msgstr "Alanları filtrele…"
 
 #: src/GravityForms/Field/SortFields.php:70
 msgid "Filter fields"
-msgstr "Suodata kenttiä"
+msgstr "Alanları filtrele"
 
 #: src/GravityForms/Field/SortFields.php:98
 msgid "Clear search"
-msgstr "Tyhjennä haku"
+msgstr "Aramayı temizle"
 
 #: src/GravityForms/Field/SortFields.php:157
 msgid "Move %s"
-msgstr "Siirrä %s"
+msgstr "%s öğesini taşı"
 
 #: src/Migration/Migration/SingleFeedMigration.php:65
 msgid "The settings for %s 2.0 were migrated successfully."
-msgstr "Asetukset %s 2.0 siirrettiin onnistuneesti."
+msgstr "%s 2.0 için ayarlar başarıyla taşındı."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:326
 msgid "GravityExport Lite: Something is broken"
-msgstr "GravityExport Lite: Jokin on rikki"
+msgstr "GravityExport Lite: Bir şeyler yanlış"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:327
 msgid "Error message:"
-msgstr "Virheilmoitus:"
+msgstr "Hata mesajı:"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:329
 msgid ""
 "If you need support, please contact us via <a target=\"_blank\" "
 "href=\"%s\">WordPress.org support forum</a>."
 msgstr ""
-"Jos tarvitset tukea, ota meihin yhteyttä osoitteessa <a target=\"_blank\" "
-"href=\"%s\">WordPress.org tukifoorumi</a>."
+"Destek ihtiyacınız varsa, lütfen <a target=\"_blank\" "
+"href=\"%s\">WordPress.org destek forumu</a> üzerinden bizimle iletişime "
+"geçin."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:331
 msgid ""
 "Check if someone else had the same error before posting a new support "
 "question."
 msgstr ""
-"Tarkista, onko joku muu jo saanut saman virheen ennen uuden tukikysymyksen "
-"lähettämistä."
+"Yeni bir destek sorusu sormadan önce başkalarının aynı hatayı yaşayıp "
+"yaşamadığını kontrol edin."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:333
 msgid ""
 "And when opening a new question, <strong>please use the error message as "
 "the title</strong>."
 msgstr ""
-"Ja kun avaat uuden kysymyksen, <strong>käytä virheilmoitusta "
-"otsikkona</strong>."
+"Yeni bir soru açarken, <strong>lütfen hata mesajını başlık olarak "
+"kullanın</strong>."
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:335
 msgid "Include the following details in your message:"
-msgstr "Sisällytä viestiisi seuraavat tiedot:"
+msgstr "Mesajınızda aşağıdaki bilgileri ekleyin:"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:337
 msgid "Plugin Version: %s"
-msgstr "Lisäosan versio: %s"
+msgstr "Eklenti Sürümü: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:338
 msgid "Gravity Forms Version: %s"
-msgstr "Gravity Forms -versio: %s"
+msgstr "Gravity Forms Sürümü: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:339
 msgid "PHP Version: %s"
-msgstr "PHP-versio: %s"
+msgstr "PHP Sürümü: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:341
 msgid " (this version is too low, please update to at least PHP 5.6)"
-msgstr " (tämä versio on liian alhainen, päivitä vähintään versioon PHP 5.6)"
+msgstr " (bu sürüm çok düşük, lütfen en az PHP 5.6 sürümüne güncelleyin)"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:344
 msgid "WordPress Version: %s"
-msgstr "WordPress-versio: %s"
+msgstr "WordPress Sürümü: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:345
 msgid "Error message: %s"
-msgstr "Virhesanoma: %s"
+msgstr "Hata mesajı: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:346
 msgid "Error stack trace: %s"
-msgstr "Virheen pinon jäljitys: %s"
+msgstr "Hata yığını izi: %s"
 
 #: src/Repository/FieldsRepository.php:97
 #: src/Repository/FieldsRepository.php:270
 msgid "Date Updated"
-msgstr "Päivämäärä päivitetty"
+msgstr "Güncelleme Tarihi"
 
 #: src/Repository/FieldsRepository.php:266
 msgid "Entry Date"
-msgstr "Merkinnän päivämäärä"
+msgstr "Giriş Tarihi"
 
 #: src/Repository/FieldsRepository.php:274
 msgid "Entry ID"
-msgstr "Merkinnän tunnus"
+msgstr "Giriş Kimliği"
 
 #: src/Addon/GravityExportAddon.php:832
 msgid "[count] fields match your search."
-msgstr "[count] kenttää vastaa hakua."
+msgstr "[count] alan aramanızla eşleşiyor."
 
 #: src/Addon/GravityExportAddon.php:834
 msgid "[field] moved to [destination]."
-msgstr "[field] siirrettiin kohtaan [destination]."
+msgstr "[field], [destination] konumuna taşındı."
 
 #: src/Addon/GravityExportAddon.php:836
 msgid "[count] fields moved to [destination]."
-msgstr "[count] kenttää siirrettiin kohtaan [destination]."
+msgstr "[count] alan, [destination] konumuna taşındı."
 
 #: src/Addon/GravityExportAddon.php:838
 msgid "1 field moved to [destination]."
-msgstr "1 kenttä siirrettiin kohtaan [destination]."
+msgstr "1 alan, [destination] konumuna taşındı."
 
 #: src/Shortcode/DownloadUrl.php:94
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
-msgstr "Lisää kelvollinen 'secret'-attribuutti '[shortcode]'-lyhytkoodiin."
+msgstr "'[shortcode]' kısa koduna geçerli bir 'secret' özniteliği ekleyin lütfen."
