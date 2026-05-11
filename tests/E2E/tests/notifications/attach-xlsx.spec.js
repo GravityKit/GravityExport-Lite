@@ -7,7 +7,7 @@ const {
 	patchExportFeedMeta,
 	addNotification,
 	submitEntryTriggeringNotifications,
-	getCapturedEmails,
+	waitForCapturedEmail,
 	readAttachmentBytes,
 } = require( '../../helpers/test-helpers' );
 
@@ -29,7 +29,6 @@ test.describe( 'GravityExport Lite — Attach single-entry export to a notificat
 
 	test( 'a new entry triggers the configured notification with an XLSX attachment', async ( {
 		page,
-		request,
 	} ) => {
 		await enableDownloadUrl( page, data.form_id );
 
@@ -54,14 +53,13 @@ test.describe( 'GravityExport Lite — Attach single-entry export to a notificat
 		} );
 		expect( entryId ).toBeGreaterThan( 0 );
 
-		const allMessages = await getCapturedEmails( request );
-		const messages = allMessages.filter( ( m ) => m.subject === subject );
-		expect(
-			messages,
-			'Exactly one notification with our spec-scoped subject'
-		).toHaveLength( 1 );
-
-		const message = messages[ 0 ];
+		// Poll the capture endpoint via Node fetch with retry — Playwright's
+		// APIRequestContext reuses keep-alive connections and Apache's idle
+		// timeout can drop them between specs (manifesting as "socket hang
+		// up").
+		const message = await waitForCapturedEmail(
+			( m ) => m.subject === subject
+		);
 		expect( message.to ).toContain( 'xlsx-target@example.test' );
 		expect( message.attachments ).toHaveLength( 1 );
 

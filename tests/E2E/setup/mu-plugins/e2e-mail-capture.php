@@ -144,6 +144,13 @@ add_action(
 						@unlink( $file );
 					}
 
+					// Also wipe stored attachment copies — otherwise the
+					// uploads dir grows unbounded across long-running suites.
+					$attachments = glob( $dir . 'attachments/*' ) ?: [];
+					foreach ( $attachments as $attachment ) {
+						@unlink( $attachment );
+					}
+
 					return new WP_REST_Response( [ 'cleared' => count( $files ) ], 200 );
 				},
 			]

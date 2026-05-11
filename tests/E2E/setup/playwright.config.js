@@ -13,12 +13,4 @@ module.exports = createPlaywrightConfig( {
 	testDir: '../tests',
 	use: { baseURL: testsBaseURL },
 	webServer: { url: testsBaseURL },
-	// The bootstrap default is `workers: '50%'`. The GravityExport suite
-	// shares a single wp-env WordPress instance, and several specs mutate
-	// global state (rewrite rules on feed-enable, the gf_addon_feed table,
-	// the captured-mail inbox). With multiple workers we see intermittent
-	// contention on those globals. Run serially — the suite is fast
-	// enough (≈40s end-to-end) that the simplicity is worth more than the
-	// parallel speedup.
-	workers: 1,
 } );

@@ -199,21 +199,87 @@ function parseCsv( body ) {
 	return rows.filter( ( r ) => r.some( ( c ) => c.length > 0 ) );
 }
 
+const MAIL_URL = () => `${ testsBaseURL }/wp-json/gk-e2e/v1/mail`;
+const MAIL_HEADERS = { 'X-E2E-TEST-TOKEN': 'gravitykit-e2e-test' };
+
+/**
+ * Whether an error from `fetch` looks like a transient connection-level
+ * failure that's worth retrying.
+ *
+ * Apache in the wp-env container has a 5s KeepAlive timeout. Long-running
+ * suites reuse connections from a previous test's request, and the server
+ * may have already closed the socket — surfacing as ECONNRESET / EPIPE /
+ * "socket hang up". A single retry on a fresh socket reliably succeeds.
+ *
+ * @param {Error} err
+ * @returns {boolean}
+ */
+function isTransientNetworkError( err ) {
+	if ( ! err ) {
+		return false;
+	}
+	const msg = String( err.message || err );
+	const code = err.code || err.cause?.code || '';
+	return (
+		/socket hang up/i.test( msg ) ||
+		/ECONNRESET/.test( msg ) ||
+		/ECONNREFUSED/.test( msg ) ||
+		/EPIPE/.test( msg ) ||
+		/fetch failed/i.test( msg ) ||
+		code === 'ECONNRESET' ||
+		code === 'EPIPE' ||
+		code === 'UND_ERR_SOCKET'
+	);
+}
+
+/**
+ * fetch() wrapper that retries on transient connection-level failures.
+ *
+ * We use Node's global fetch rather than the Playwright APIRequestContext
+ * for the mail endpoints because:
+ *  1) The APIRequestContext aggressively reuses HTTP connections, and
+ *     Apache's keep-alive idle timeout (5s) causes "socket hang up" when
+ *     the next test reuses a stale connection.
+ *  2) The mail endpoint doesn't need browser cookies — auth is the
+ *     X-E2E-TEST-TOKEN header.
+ *
+ * @param {string} url
+ * @param {object} options
+ * @returns {Promise<Response>}
+ */
+async function fetchWithRetry( url, options = {}, { tries = 4, baseDelayMs = 100 } = {} ) {
+	let lastError;
+	for ( let attempt = 0; attempt < tries; attempt++ ) {
+		try {
+			return await fetch( url, options );
+		} catch ( err ) {
+			lastError = err;
+			if ( ! isTransientNetworkError( err ) ) {
+				throw err;
+			}
+			// Exponential backoff: 100 → 200 → 400 → 800 ms.
+			await new Promise( ( r ) =>
+				setTimeout( r, baseDelayMs * 2 ** attempt )
+			);
+		}
+	}
+	throw lastError;
+}
+
 /**
  * Fetch captured emails from the mail-capture mu-plugin.
  *
- * @param {import('@playwright/test').APIRequestContext} request
+ * `request` is accepted for backwards compatibility but ignored — the
+ * implementation uses Node fetch with retries (see fetchWithRetry).
+ *
  * @returns {Promise<Array>}
  */
-async function getCapturedEmails( request ) {
-	const url = `${ testsBaseURL }/wp-json/gk-e2e/v1/mail`;
-	const response = await request.get( url, {
-		headers: { 'X-E2E-TEST-TOKEN': 'gravitykit-e2e-test' },
-	} );
+async function getCapturedEmails() {
+	const response = await fetchWithRetry( MAIL_URL(), { headers: MAIL_HEADERS } );
 
-	if ( ! response.ok() ) {
+	if ( ! response.ok ) {
 		throw new Error(
-			`Mail capture GET failed: ${ response.status() } ${ response.statusText() }`
+			`Mail capture GET failed: ${ response.status } ${ response.statusText }`
 		);
 	}
 
@@ -222,20 +288,52 @@ async function getCapturedEmails( request ) {
 }
 
 /**
- * Clear all captured emails. Call in beforeEach to avoid cross-test bleed.
+ * Poll the mail-capture endpoint until a message matching the predicate
+ * appears, or the timeout expires. The mu-plugin writes the JSON record
+ * synchronously inside `pre_wp_mail`, so as soon as the wp-cli call that
+ * triggered the notification returns, the message is on disk — but we
+ * still poll defensively because PHP opcache + bind-mounts have produced
+ * sub-second race windows.
  *
- * @param {import('@playwright/test').APIRequestContext} request
+ * @param {(message: object) => boolean} predicate
+ * @param {object} [opts]
+ * @param {number} [opts.timeoutMs=10000]
+ * @param {number} [opts.intervalMs=100]
+ * @returns {Promise<object>} The matched message.
  */
-async function clearCapturedEmails( request ) {
-	const url = `${ testsBaseURL }/wp-json/gk-e2e/v1/mail`;
-	const response = await request.delete( url, {
-		headers: { 'X-E2E-TEST-TOKEN': 'gravitykit-e2e-test' },
+async function waitForCapturedEmail( predicate, opts = {} ) {
+	const { timeoutMs = 10000, intervalMs = 100 } = opts;
+	const deadline = Date.now() + timeoutMs;
+	let lastSeenSubjects = [];
+
+	while ( Date.now() < deadline ) {
+		const messages = await getCapturedEmails();
+		lastSeenSubjects = messages.map( ( m ) => m.subject );
+		const hit = messages.find( predicate );
+		if ( hit ) {
+			return hit;
+		}
+		await new Promise( ( r ) => setTimeout( r, intervalMs ) );
+	}
+
+	throw new Error(
+		`waitForCapturedEmail: no message matched predicate within ${ timeoutMs }ms.\n` +
+			`Last seen subjects: ${ JSON.stringify( lastSeenSubjects ) }`
+	);
+}
+
+/**
+ * Clear all captured emails. Call in beforeEach to avoid cross-test bleed.
+ * Accepts `request` for backwards compatibility but ignores it.
+ */
+async function clearCapturedEmails() {
+	const response = await fetchWithRetry( MAIL_URL(), {
+		method: 'DELETE',
+		headers: MAIL_HEADERS,
 	} );
 
-	if ( ! response.ok() ) {
-		throw new Error(
-			`Mail capture DELETE failed: ${ response.status() }`
-		);
+	if ( ! response.ok ) {
+		throw new Error( `Mail capture DELETE failed: ${ response.status }` );
 	}
 }
 
@@ -455,6 +553,7 @@ module.exports = {
 	fetchDownload,
 	parseCsv,
 	getCapturedEmails,
+	waitForCapturedEmail,
 	clearCapturedEmails,
 	readAttachmentBytes,
 	addNotification,
