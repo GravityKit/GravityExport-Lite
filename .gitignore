@@ -24,5 +24,7 @@ tests/E2E/setup/.e2e-ports.json
 tests/E2E/setup/.state.json
 tests/E2E/results/
 tests/E2E/report/
+tests/E2E/setup/mail-capture/
 .playwright-mcp/
 playwright-transform-*
+playwright_chromiumdev_profile-*

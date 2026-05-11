@@ -18,16 +18,30 @@ if ( ! defined( 'GK_E2E_MAIL_TOKEN' ) ) {
 
 if ( ! function_exists( 'gk_e2e_mail_dir' ) ) {
 	/**
-	 * Resolve the capture directory inside uploads.
+	 * Resolve the capture directory.
+	 *
+	 * The previous home, `wp-content/uploads`, is created by Apache
+	 * (www-data, UID 33) inside the tests-wordpress container. wp-env's
+	 * tests-cli container runs as the host user (UID 501 locally, but
+	 * UID 3434 on CircleCI), and that user cannot write into a
+	 * www-data-owned uploads dir — so the JSON capture never lands and
+	 * waitForCapturedEmail times out with an empty inbox.
+	 *
+	 * We instead write to `wp-content/e2e-mail-capture/`, which is a
+	 * dedicated host directory bind-mounted via wp-env.config.js's
+	 * additionalMappings. The host directory is owned by the host user,
+	 * mode 0777, so the cli container can always write to it. Apache
+	 * (www-data) only needs to READ for the REST endpoint, which works
+	 * via the world-readable mode bits.
 	 *
 	 * @return string Absolute path with trailing slash.
 	 */
 	function gk_e2e_mail_dir() {
-		$uploads = wp_upload_dir( null, false );
-		$dir     = trailingslashit( $uploads['basedir'] ) . 'e2e-mail-capture/';
+		$dir = ( defined( 'WP_CONTENT_DIR' ) ? WP_CONTENT_DIR : ABSPATH . 'wp-content' )
+			. '/e2e-mail-capture/';
 
 		if ( ! is_dir( $dir ) ) {
-			wp_mkdir_p( $dir );
+			@mkdir( $dir, 0777, true );
 		}
 
 		return $dir;

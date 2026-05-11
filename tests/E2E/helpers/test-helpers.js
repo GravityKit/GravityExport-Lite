@@ -29,14 +29,22 @@ const NEW_NOTIFICATION_PATH = ( formId ) =>
 	`/wp-admin/admin.php?page=gf_edit_forms&view=settings&subview=notification&id=${ formId }&nid=0`;
 
 /**
- * Navigate to GravityExport Lite form settings.
+ * Navigate to GravityExport Lite form settings and wait until the form
+ * settings panel is actually present in the DOM (the title alone can
+ * resolve while Gravity Forms is still rendering the body).
  *
  * @param {import('@playwright/test').Page} page
  * @param {number} formId
  */
 async function goToFormSettings( page, formId ) {
 	await page.goto( FORM_SETTINGS_PATH( formId ) );
-	await expect( page ).toHaveTitle( /GravityExport Lite/ );
+	// The form-settings form wrapper renders for both the activation and
+	// the enabled states, so this is a stable anchor regardless of
+	// whether the download URL has been enabled yet.
+	await expect(
+		page.locator( 'form#gform-settings' ),
+		'Form settings panel should be rendered'
+	).toBeVisible( { timeout: 15000 } );
 }
 
 /**
@@ -108,7 +116,18 @@ async function saveSettings( page ) {
  * @param {string} buttonSelector - Selector for the submit button.
  */
 async function submitSettingsForm( page, buttonSelector ) {
-	const navigation = page.waitForLoadState( 'load' );
+	// `waitForLoadState('load')` can resolve against the *current* page if
+	// it's already loaded, which races with the form-submit navigation
+	// that's about to start. Instead, register a navigation expectation
+	// that only resolves when the document leaves and a new one finishes
+	// loading. The Settings save POSTs to the same URL and reloads, so
+	// any navigation matching the gravityexport-lite subview is good.
+	const navigationStarted = page.waitForRequest(
+		( req ) =>
+			req.url().includes( 'subview=gravityexport-lite' ) &&
+			req.method() === 'POST',
+		{ timeout: 30000 }
+	);
 	await page.evaluate( ( selector ) => {
 		const btn = document.querySelector( selector );
 		if ( ! btn ) {
@@ -120,7 +139,8 @@ async function submitSettingsForm( page, buttonSelector ) {
 		}
 		form.requestSubmit( btn );
 	}, buttonSelector );
-	await navigation;
+	await navigationStarted;
+	await page.waitForLoadState( 'domcontentloaded' );
 }
 
 /**
