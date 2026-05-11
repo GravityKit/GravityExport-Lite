@@ -7,6 +7,10 @@ generateWpEnvConfig( {
 	outputDir: __dirname,
 	pluginPath: '../../..',
 	additionalLifecycleCommands: [],
+	additionalMappings: {
+		// wp_mail short-circuit + REST inspection endpoint used by notification specs.
+		'wp-content/mu-plugins/e2e-mail-capture.php': './mu-plugins/e2e-mail-capture.php',
+	},
 } ).catch( ( err ) => {
 	console.error( err );
 	process.exit( 1 );
