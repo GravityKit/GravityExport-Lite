@@ -25,3 +25,4 @@ tests/E2E/setup/.state.json
 tests/E2E/results/
 tests/E2E/report/
 .playwright-mcp/
+playwright-transform-*
