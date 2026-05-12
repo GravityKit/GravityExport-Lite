@@ -62,7 +62,14 @@ jobs:
             while [ $attempt -lt $max_attempts ]; do
               npm run tests:e2e:setup && break
               attempt=$(( attempt + 1 ))
-              rm -rf /home/circleci/.wp-env
+              # Apache inside the wp-env container creates the bind-mounted
+              # mu-plugin files (e2e-fixtures.php, e2e-mail-capture.php) as
+              # uid 0, so a plain `rm -rf` from the circleci user fails on
+              # them and every retry hits the same "permission denied"
+              # state. Stop the containers first, then clean up with sudo
+              # which is available on CircleCI Linux machine runners.
+              (cd tests/E2E/setup && npx wp-env stop 2>/dev/null) || true
+              sudo rm -rf /home/circleci/.wp-env
               echo "Retrying WP-ENV setup in $sleep_time seconds… (attempt $attempt/$max_attempts)"
               sleep $sleep_time
             done
