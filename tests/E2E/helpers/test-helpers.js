@@ -387,12 +387,18 @@ function readAttachmentBytes( attachment ) {
 	} );
 }
 
-let cachedWpContainer = null;
-let cachedCliContainer = null;
+const containerCache = {};
 
-function findContainer( filterName, cache ) {
-	if ( cache.value ) {
-		return cache.value;
+/**
+ * Resolve the docker container name matching `name=<filterName>`, memoising
+ * the result per filter so repeated calls don't shell out.
+ *
+ * @param {string} filterName
+ * @returns {string}
+ */
+function findContainer( filterName ) {
+	if ( containerCache[ filterName ] ) {
+		return containerCache[ filterName ];
 	}
 
 	const { execFileSync } = require( 'child_process' );
@@ -410,29 +416,18 @@ function findContainer( filterName, cache ) {
 		);
 	}
 
-	cache.value = name.trim();
-	return cache.value;
+	containerCache[ filterName ] = name.trim();
+	return containerCache[ filterName ];
 }
 
 /** Container hosting the WordPress webserver for tests (port = wpTestsPort). */
 function findTestsContainer() {
-	return findContainer( 'tests-wordpress', { value: cachedWpContainer } );
+	return findContainer( 'tests-wordpress' );
 }
 
 /** Container with wp-cli installed (read/write WP state from the shell). */
 function findCliContainer() {
-	if ( cachedCliContainer ) {
-		return cachedCliContainer;
-	}
-	cachedCliContainer = findContainer( 'tests-cli', {
-		get value() {
-			return cachedCliContainer;
-		},
-		set value( v ) {
-			cachedCliContainer = v;
-		},
-	} );
-	return cachedCliContainer;
+	return findContainer( 'tests-cli' );
 }
 
 /**

@@ -180,7 +180,7 @@ Observed in `gravitykit-qa2/GravityView/tests/E2E/` and `gravitykit-qa/GravityEx
 6. **Custom column labels (#8) — DROPPED.** Lite ships only a global `use_admin_label` plugin setting; per-field custom-label override is a Pro-only UI. Documented here for completeness; not in the test suite.
 7. **Settings-form submit gotcha** — the form has `data-js="page-loader"` which intercepts `<button>.click()` and submits without preserving the clicked button's name/value. The result is that `Regenerate URL` and `Disable download URL` clicks were being interpreted as plain `Save`. The `submitSettingsForm` helper bypasses this by calling `form.requestSubmit(button)` directly, which guarantees the addon action handler receives the right `gform-settings-save` value.
 8. **Anonymous request isolation (#7)** — `request.newContext()` in Playwright can carry browser storage state in some configurations. Tests use Node's global `fetch` for guaranteed anonymous calls when the assertion depends on lack-of-auth.
-9. **Suite parallelism** — Several specs mutate global WordPress state (rewrite rules, `gf_addon_feed`, the shared capture inbox). The bootstrap default `workers: '50%'` was observed to cause intermittent contention failures. `playwright.config.js` pins `workers: 1`; the full suite runs end-to-end in ~90s.
+9. **Suite parallelism** — Several specs mutate global WordPress state (rewrite rules, `gf_addon_feed`, the shared capture inbox). An earlier iteration pinned `workers: 1` to mask intermittent failures, but the underlying flake turned out to be a connection-pool race (Apache KeepAlive idle timeout vs. Playwright APIRequestContext reuse) that was fixed by `fetchWithRetry` + `waitForCapturedEmail`. With the retry layer in place, `playwright.config.js` leaves the bootstrap default (`workers: '50%'`) in place — the suite runs in roughly 35–50s on a typical dev box.
 
 ---
 
@@ -213,4 +213,4 @@ Observed in `gravitykit-qa2/GravityView/tests/E2E/` and `gravitykit-qa/GravityEx
 ### Supporting infrastructure
 - `tests/E2E/helpers/test-helpers.js` — wraps `@gravitykit/e2e-bootstrap` `createHelpers`, re-derives the tests baseURL in each worker (the bootstrap's `api.initFromEnv()` requires `WP_ENV_URL` which is not in `.env`), and adds the Lite-specific helpers (`enableDownloadUrl`, `submitSettingsForm`, `patchExportFeedMeta`, `addNotification`, `submitEntryTriggeringNotifications`, `getCapturedEmails`, `readAttachmentBytes`, `parseCsv`).
 - `tests/E2E/setup/mu-plugins/e2e-mail-capture.php` — mail capture mu-plugin, mounted via `additionalMappings` in `tests/E2E/setup/wp-env.config.js`.
-- `tests/E2E/setup/playwright.config.js` — adds `workers: 1` over the bootstrap defaults.
+- `tests/E2E/setup/playwright.config.js` — wraps the bootstrap default with a `testsBaseURL` that safely combines `WP_ENV_URL` and the resolved tests port (handles both `WP_ENV_URL=http://localhost` and an already-portified `WP_ENV_URL=http://localhost:8888`).

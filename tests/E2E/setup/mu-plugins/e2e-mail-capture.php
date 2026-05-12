@@ -80,9 +80,11 @@ add_filter(
 			// often delete the source file after wp_mail returns
 			// (e.g. GravityExport's gform_after_email cleanup), so tests
 			// need an independent copy to read full bytes from.
-			$copy  = $copy_dir . $sha1 . '-' . $base;
-			if ( ! file_exists( $copy ) ) {
-				@copy( $path, $copy );
+			$copy = $copy_dir . $sha1 . '-' . $base;
+			if ( ! file_exists( $copy ) && ! @copy( $path, $copy ) ) {
+				// Source went away before we could grab it; skip rather than
+				// record a path tests would fail to read.
+				continue;
 			}
 
 			$attachment_records[] = [
@@ -104,8 +106,14 @@ add_filter(
 			'attachments' => $attachment_records,
 		];
 
+		// Atomic write: a parallel worker hitting GET /mail mid-write would
+		// otherwise see a half-flushed JSON file. Write to a temp file, then
+		// rename — POSIX rename is atomic within the same filesystem.
 		$filename = $dir . sprintf( '%010d-%s.json', floor( $record['timestamp'] ), $record['id'] );
-		file_put_contents( $filename, wp_json_encode( $record, JSON_UNESCAPED_SLASHES ) );
+		$tmp      = $filename . '.tmp';
+		if ( false !== file_put_contents( $tmp, wp_json_encode( $record, JSON_UNESCAPED_SLASHES ) ) ) {
+			@rename( $tmp, $filename );
+		}
 
 		// Return non-null to short-circuit the real wp_mail.
 		return true;

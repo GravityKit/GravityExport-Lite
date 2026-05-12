@@ -60,15 +60,8 @@ test.describe( 'GravityExport Lite — Regenerate and Disable Download URL', () 
 		const liveResponse = await fetchDownload( request, newUrl );
 		expect( liveResponse.status, 'New URL serves the export' ).toBe( 200 );
 
-		// Disable.
+		// Disable. Activation button is back; URL input is gone.
 		await submitSettingsForm( page, '#download-url-disable' );
-		await expect(
-			page.locator(
-				'button[name="gform-settings-save"][value="download_url_enable"]'
-			)
-		).toBeVisible();
-
-		// Activation button is back; URL input is gone.
 		await expect(
 			page.locator(
 				'button[name="gform-settings-save"][value="download_url_enable"]'
