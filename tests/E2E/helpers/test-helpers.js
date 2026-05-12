@@ -529,7 +529,23 @@ async function submitEntryTriggeringNotifications( formId, values ) {
 		$entry_id = GFAPI::add_entry( $entry );
 		if ( is_wp_error( $entry_id ) ) { fwrite( STDERR, $entry_id->get_error_message() ); exit( 1 ); }
 		$entry = GFAPI::get_entry( $entry_id );
-		GFAPI::send_notifications( $form, $entry, 'form_submission' );
+
+		// GFAPI::send_notifications routes through the GF_Notifications
+		// background processor when async sending is enabled, which is the
+		// default on recent GF versions. The processor queues the work for
+		// dispatch on PHP shutdown — but in a one-shot wp-cli context the
+		// dispatch never reaches a worker, so wp_mail is never called and
+		// our pre_wp_mail hook never sees the notification. Bypass the
+		// async path by calling GFCommon::send_notifications directly with
+		// the explicit list of notification ids that match the event.
+		$ids_to_send = [];
+		foreach ( ( $form['notifications'] ?? [] ) as $n ) {
+			if ( rgar( $n, 'isActive' ) && rgar( $n, 'event' ) === 'form_submission' ) {
+				$ids_to_send[] = $n['id'];
+			}
+		}
+		GFCommon::send_notifications( $ids_to_send, $form, $entry, true, 'form_submission' );
+
 		echo $entry_id;
 		`
 	);
