@@ -10,7 +10,7 @@
     "tests:e2e:run": "playwright test --config=tests/E2E/setup/playwright.config.js"
   },
   "devDependencies": {
-    "@gravitykit/e2e-bootstrap": "^1.0.0",
+    "@gravitykit/e2e-bootstrap": "^1.1.0",
     "@playwright/test": "1.56.1",
     "@wordpress/env": "^10.0.0",
     "grunt": "^1.5.3",

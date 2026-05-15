@@ -119,6 +119,55 @@ jobs:
               echo "Skipping translation pipeline."
             fi
       - run:
+          name: Collect build artifacts
+          command: |
+            mkdir -p .release
+            cp gf-entries-in-excel-*.zip .release/ 2>/dev/null || true
+      - store_artifacts:
+          path: .release
+          destination: release
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - plugin/.release
+            - plugin/gf-entries-in-excel-*.zip
+
+  run_post_build_smoke:
+    <<: *default_job_config
+    working_directory: /home/circleci/plugin
+    machine:
+      image: default
+      docker_layer_caching: true
+    resource_class: xlarge
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Post-build smoke
+          # Unzips .release/*.zip, restores dev deps via gktools' Docker composer,
+          # boots wp-env with retry, runs `playwright test --grep=@smoke` against
+          # the built artifact. See @gravitykit/e2e-bootstrap README for details.
+          command: |
+            npx @gravitykit/e2e-bootstrap smoke \
+              --composer-cmd "npx @gravitykit/gktools composer install"
+      - store_artifacts:
+          path: tests/E2E/results
+      - store_artifacts:
+          path: tests/E2E/report
+      - store_test_results:
+          path: tests/E2E/results/junit.xml
+
+  publish_release:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Configure git
+          command: |
+            git config user.email "support@gravitykit.com"
+            git config user.name "GravityKit - CI"
+      - run:
           name: Create GitHub release
           command: npx @gravitykit/gktools release
       - run:
@@ -127,14 +176,6 @@ jobs:
             if ! git log -1 --pretty=%B | grep -iq "\[skip notify\]"; then
               npx @gravitykit/gktools announce
             fi
-      - run:
-          name: Collect build artifacts
-          command: |
-            mkdir -p .release
-            cp gf-entries-in-excel-*.zip .release/ 2>/dev/null || true
-      - store_artifacts:
-          path: .release
-          destination: release
 
 workflows:
   version: 2
@@ -148,3 +189,11 @@ workflows:
           <<: *context
           requires:
             - prepare
+      - run_post_build_smoke:
+          <<: *context
+          requires:
+            - build_package_release
+      - publish_release:
+          <<: *context
+          requires:
+            - run_post_build_smoke
