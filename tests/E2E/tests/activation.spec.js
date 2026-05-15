@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-test.describe('GravityExport Lite — Activation Smoke Test', () => {
+test.describe('GravityExport Lite — Activation Smoke Test @smoke', () => {
 
 	test('Plugin activates without fatal PHP errors', async ({ page } ) => {
 		await page.goto('/wp-admin/plugins.php');
