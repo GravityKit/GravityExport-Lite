@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Copy-to-clipboard button icons were vertically misaligned in WordPress 7.0.
+
 = 2.6.0 on March 26, 2026 =
 
 * Added: `gk/gravityexport/fields/additional-meta-fields` filter to customize the additional meta fields available for export.
