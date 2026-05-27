@@ -133,7 +133,6 @@ jobs:
     <<: *default_job_config
     machine:
       image: default
-      docker_layer_caching: true
     resource_class: xlarge
     steps:
       - attach_workspace:
