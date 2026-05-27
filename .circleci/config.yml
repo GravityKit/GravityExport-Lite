@@ -131,6 +131,9 @@ jobs:
           paths:
             - plugin/.release
             - plugin/gf-entries-in-excel-*.zip
+            # Sidecar written by `gktools sign`; consumed by `gktools announce` in the
+            # separate publish_release job. Without this the release is silently unsigned.
+            - plugin/.gktools-signing.json
 
   run_post_build_smoke:
     <<: *default_job_config
