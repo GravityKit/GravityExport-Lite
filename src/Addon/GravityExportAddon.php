@@ -565,7 +565,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'choices'     => [
 						[
 							'label' => esc_html__(
-								'Split multi-input fields into separate columns',
+								'Split multi-input fields (e.g. Name, Address, and multi-row Survey/Likert) into separate columns',
 								'gk-gravityexport-lite'
 							),
 							'name'  => SeparableField::SETTING_KEY,
