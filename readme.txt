@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: Copy-to-clipboard button icons were vertically misaligned in WordPress 7.0.
+* Fixed: A "translation loading triggered too early" notice (WordPress 6.7+) caused by the download-URL feed actions loading translations during plugin bootstrap.
 
 = 2.6.0 on March 26, 2026 =
 

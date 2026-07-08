@@ -17,13 +17,6 @@ class DownloadUrlResetAction extends AbstractAction {
 	public static $name = 'download_url_reset';
 
 	/**
-	 * The message to show when the action was successful.
-	 * @since 2.0.0
-	 * @var string
-	 */
-	protected static $success_message = '';
-
-	/**
 	 * The hash generator.
 	 * @since 2.0.0
 	 * @var HashGeneratorInterface
@@ -37,8 +30,21 @@ class DownloadUrlResetAction extends AbstractAction {
 	 */
 	public function __construct( HashGeneratorInterface $generator ) {
 		$this->generator = $generator;
+	}
 
-		static::$success_message = esc_html__( 'The download URL has been reset.', 'gk-gravityexport-lite' );
+	/**
+	 * The message to show when the action was successful.
+	 *
+	 * Translated lazily, not in the constructor: the action is resolved from the
+	 * service container during load (before after_setup_theme), and translating
+	 * there trips WordPress 6.7's just-in-time translation notice.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	protected function get_success_message(): string {
+		return esc_html__( 'The download URL has been reset.', 'gk-gravityexport-lite' );
 	}
 
 	/**
@@ -73,6 +79,6 @@ class DownloadUrlResetAction extends AbstractAction {
 		$addon->set_previous_settings( $settings );
 
 		// Set notification of success.
-		$addon->add_message( static::$success_message );
+		$addon->add_message( $this->get_success_message() );
 	}
 }
