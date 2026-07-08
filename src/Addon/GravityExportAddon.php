@@ -5,7 +5,11 @@ namespace GFExcel\Addon;
 use GFCommon;
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
+use GFExcel\Action\ActionNotice;
+use GFExcel\Action\DownloadUrlDisableAction;
+use GFExcel\Action\DownloadUrlEnableAction;
 use GFExcel\Action\DownloadUrlResetAction;
+use GFExcel\Action\NotifyingActionInterface;
 use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
 use GFExcel\Field\SeparableField;
@@ -163,6 +167,96 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
 		add_action( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
 		add_filter( 'gform_export_fields', \Closure::fromCallable( [ $this, 'gform_export_fields' ] ) );
+		add_action( 'admin_notices', \Closure::fromCallable( [ $this, 'queue_download_url_error_notice' ] ) );
+
+		// Strip a one-time success/error token from the address bar after first paint so a browser
+		// refresh (a GET of the same URL) cannot re-surface the message. Keeps the flow storage-free;
+		// if JS is off it degrades to re-showing the message on refresh, which never re-runs the action.
+		if ( rgget( 'gexcel_notice' ) || rgget( 'gexcel_error' ) ) {
+			add_action( 'admin_print_footer_scripts', [ self::class, 'clean_notice_query_arg' ] );
+		}
+	}
+
+	/**
+	 * Queues a download-URL action's failure, carried across its redirect by an allowlisted
+	 * `gexcel_error` token (see self::save_feed_settings()).
+	 *
+	 * Uses Gravity Forms' own error queue rather than the Settings postback box (which can only paint
+	 * success styling on a GET) or a raw admin notice (GF renders its pages in a custom layout where
+	 * admin_notices output lands in the document head). The specific cause is logged, not shown, so
+	 * internals do not leak to the browser.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function queue_download_url_error_notice(): void {
+		if ( ! $this->is_download_url_notice( sanitize_key( (string) rgget( 'gexcel_error' ) ) ) ) {
+			return;
+		}
+
+		GFCommon::add_error_message( esc_html__( 'There was an error generating the download URL. Please try again.', 'gk-gravityexport-lite' ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * Re-surfaces a successful download-URL action's confirmation after its PRG redirect via the
+	 * Settings framework's postback message. The action name rides an allowlisted `gexcel_notice`
+	 * token on the redirect (see self::save_feed_settings()), so nothing is stored to survive it.
+	 *
+	 * @since TBD
+	 */
+	public function feed_settings_init(): void {
+		parent::feed_settings_init();
+
+		$message = $this->get_download_url_notice_message( sanitize_key( (string) rgget( 'gexcel_notice' ) ) );
+		if ( '' === $message ) {
+			return;
+		}
+
+		$renderer = $this->get_settings_renderer();
+		if ( ! $renderer ) {
+			return;
+		}
+
+		// Only reached with a valid token, so replacing GF's own postback callback (which handles the
+		// new-feed fid=0 redirect) is safe: that flow never carries a gexcel_notice token.
+		$renderer->set_postback_message_callback( static function ( $default ) use ( $message ) {
+			// Only surface our notice on the post-redirect GET. On a save (POST) pass GF's own
+			// success/validation message through untouched, as GFFeedAddOn's own callback does.
+			if ( ! empty( $_POST ) ) {
+				return $default;
+			}
+
+			return $message ?: $default;
+		} );
+	}
+
+	/**
+	 * Prints a one-liner that removes the one-time `gexcel_notice`/`gexcel_error` tokens from the
+	 * current URL, so a browser refresh does not re-surface the message.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public static function clean_notice_query_arg(): void {
+		?>
+		<script>
+			( function () {
+				const url = new URL( window.location.href );
+
+				if ( ! url.searchParams.has( 'gexcel_notice' ) && ! url.searchParams.has( 'gexcel_error' ) ) {
+					return;
+				}
+
+				url.searchParams.delete( 'gexcel_notice' );
+				url.searchParams.delete( 'gexcel_error' );
+				window.history.replaceState( {}, '', url.toString() );
+			} )();
+		</script>
+		<?php
 	}
 
 	/**
@@ -853,9 +947,35 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			// Prevent indefinite loop in case action's fire() method calls save_feed_settings().
 			unset( $_POST['gform-settings-save'] );
 
-			$this->getAction( $action )->fire( $this, [ $feed_id, $form_id, $settings ] );
+			$action_object = $this->getAction( $action );
 
-			self::refresh();
+			if ( $action_object instanceof NotifyingActionInterface ) {
+				$notice = $action_object->fire_with_notice( $this, [ $feed_id, $form_id, $settings ] );
+
+				if ( $notice && ActionNotice::ERROR === $notice->type() ) {
+					// The action failed and changed nothing. Log the specific cause and carry an
+					// error token so the redirect target paints a red notice; GF's postback box can
+					// only render success styling on a GET, so the error cannot ride that channel.
+					$this->log_error( __METHOD__ . '(): ' . $notice->message() );
+
+					self::refresh( self::feed_settings_url( null, $action ) );
+
+					return $feed_id;
+				}
+
+				// PRG so a browser refresh cannot re-run a successful destructive action. Carry the
+				// allowlisted action token only on success, so feed_settings_init() never confirms
+				// something that did not happen. Nothing is stored to survive the redirect.
+				$token = $notice && ActionNotice::SUCCESS === $notice->type() ? $action : null;
+
+				self::refresh( self::feed_settings_url( $token ) );
+
+				return $feed_id;
+			}
+
+			$action_object->fire( $this, [ $feed_id, $form_id, $settings ] );
+
+			self::refresh( self::feed_settings_url() );
 
 			return $feed_id;
 		}
@@ -864,20 +984,83 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	}
 
 	/**
-	 * Helper method to refresh the page, to an optional url.
+	 * Redirects (PRG) to the current feed settings page, or to an explicit URL.
+	 *
 	 * @since 2.0.0
 	 */
 	protected static function refresh( ?string $url = null ): void {
-		if ( $url === null ) {
-			$url = add_query_arg( [
-				'page'    => rgget( 'page' ),
-				'view'    => rgget( 'view' ),
-				'subview' => rgget( 'subview' ),
-				'id'      => rgget( 'id' ),
-			], get_admin_url() );
+		wp_safe_redirect( $url ?? self::feed_settings_url() );
+		exit;
+	}
+
+	/**
+	 * Builds the current feed-settings URL, optionally carrying a one-time success or error token.
+	 *
+	 * @since TBD
+	 *
+	 * @param string|null $notice Allowlisted success token to confirm after the redirect.
+	 * @param string|null $error  Allowlisted error token to surface a failure after the redirect.
+	 *
+	 * @return string
+	 */
+	protected static function feed_settings_url( ?string $notice = null, ?string $error = null ): string {
+		$args = [
+			'page'    => rgget( 'page' ),
+			'view'    => rgget( 'view' ),
+			'subview' => rgget( 'subview' ),
+			'id'      => rgget( 'id' ),
+		];
+
+		if ( $fid = rgget( 'fid' ) ) {
+			$args['fid'] = $fid;
 		}
 
-		wp_safe_redirect( $url );
+		if ( $notice ) {
+			$args['gexcel_notice'] = $notice;
+		}
+
+		if ( $error ) {
+			$args['gexcel_error'] = $error;
+		}
+
+		return add_query_arg( $args, get_admin_url() );
+	}
+
+	/**
+	 * Whether the token identifies a download-URL action whose success message may be shown after a redirect.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $notice The notice token.
+	 *
+	 * @return bool
+	 */
+	private function is_download_url_notice( string $notice ): bool {
+		return in_array( $notice, [
+			DownloadUrlResetAction::$name,
+			DownloadUrlEnableAction::$name,
+			DownloadUrlDisableAction::$name,
+		], true );
+	}
+
+	/**
+	 * Returns the translated success message for an allowlisted download-URL notice token, sourced
+	 * from the action itself so the string has a single source of truth.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $notice The notice token.
+	 *
+	 * @return string
+	 */
+	private function get_download_url_notice_message( string $notice ): string {
+		if ( ! $this->is_download_url_notice( $notice ) || ! $this->hasAction( $notice ) ) {
+			return '';
+		}
+
+		$action = $this->getAction( $notice );
+
+		return $action instanceof NotifyingActionInterface ? $action->get_success_notice()->message() : '';
 	}
 
 	/**

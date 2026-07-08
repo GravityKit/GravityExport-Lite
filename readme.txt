@@ -260,6 +260,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Fixed: Copy-to-clipboard button icons were vertically misaligned in WordPress 7.0.
 * Fixed: A "translation loading triggered too early" notice (WordPress 6.7+) caused by the download-URL feed actions loading translations during plugin bootstrap.
+* Fixed: The success message shown after regenerating, enabling, or disabling a download URL was lost because the page redirected before it could display.
 
 = 2.6.0 on March 26, 2026 =
 

@@ -19,29 +19,29 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 	 * @inheritDoc
 	 * @since TBD
 	 */
-	protected function get_success_message(): string {
-		return esc_html__( 'The download URL has been enabled.', 'gk-gravityexport-lite' );
+	public function get_success_notice(): ActionNotice {
+		return ActionNotice::success( esc_html__( 'The download URL has been enabled.', 'gk-gravityexport-lite' ) );
 	}
 
 	/**
-	 * @inheritdoc
-	 * @since 2.0.0
+	 * @inheritDoc
+	 * @since TBD
 	 */
-	public function fire( \GFAddOn $addon, array $form ): void {
+	public function fire_with_notice( \GFAddOn $addon, array $form ): ?ActionNotice {
 		if ( ! $addon instanceof GravityExportAddon ) {
-			return;
+			return null;
 		}
 
 		$settings = $form[2] ?? [];
 
 		if ( ! empty( $settings['hash'] ?? null ) ) {
 			// Feed is already enabled.
-			return;
+			return null;
 		}
 
 		// Enable embed secret by default.
 		$form[2]['has_embed_secret'] = 1;
 
-		parent::fire( $addon, $form );
+		return parent::fire_with_notice( $addon, $form );
 	}
 }
