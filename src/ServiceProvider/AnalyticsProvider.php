@@ -11,6 +11,7 @@ use GFExcel\Analytics\DownloadCompletedListener;
 use GFExcel\Analytics\Queue;
 use GFExcel\Analytics\Scrub;
 use GFExcel\Analytics\SiteIdentity;
+use GFExcel\Analytics\SiteScan;
 use GFExcel\Analytics\SuperProps;
 use GFExcel\Container\ContainerInterface;
 use League\Container\Container;
@@ -36,6 +37,7 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		Consent::class,
 		Queue::class,
 		SiteIdentity::class,
+		SiteScan::class,
 		ConsentCard::class,
 		DownloadCompletedListener::class,
 	];
@@ -58,8 +60,13 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		$container->add( Scrub::class )->setShared( true );
 		$container->add( Queue::class )->setShared( true );
 
+		$container->add( SiteScan::class )
+		          ->addArgument( Consent::class )
+		          ->setShared( true );
+
 		$container->add( SuperProps::class )
 		          ->addArgument( SiteIdentity::class )
+		          ->addArgument( SiteScan::class )
 		          ->setShared( true );
 
 		$container->add( Client::class )
@@ -115,6 +122,10 @@ class AnalyticsProvider extends AbstractServiceProvider {
 
 		if ( is_admin() ) {
 			$container->get( ConsentCard::class );
+
+			// Admin-side only: the scan runs three aggregate queries and no
+			// visitor should ever pay for our measurement.
+			add_action( 'admin_init', [ $container->get( SiteScan::class ), 'maybeRefresh' ] );
 		}
 
 		// Flush after the listener has had its shutdown turn, which runs at 10.

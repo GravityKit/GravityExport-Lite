@@ -113,6 +113,19 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'install_channel',
 		],
+		'mysql_version' => [
+			'type' => 'string',
+		],
+		'theme' => [
+			'type' => 'enum',
+			'enum' => 'theme',
+		],
+		'is_block_theme' => [
+			'type' => 'bool',
+		],
+		'is_child_theme' => [
+			'type' => 'bool',
+		],
 	];
 
 	public const PROPS = [
@@ -161,6 +174,54 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'consent_source',
 		],
+		'has_wpforms' => [
+			'type' => 'bool',
+		],
+		'has_ninja_forms' => [
+			'type' => 'bool',
+		],
+		'has_formidable' => [
+			'type' => 'bool',
+		],
+		'has_fluent_forms' => [
+			'type' => 'bool',
+		],
+		'has_forminator' => [
+			'type' => 'bool',
+		],
+		'has_woocommerce' => [
+			'type' => 'bool',
+		],
+		'has_gravity_flow' => [
+			'type' => 'bool',
+		],
+		'has_gravityview' => [
+			'type' => 'bool',
+		],
+		'has_gravitycharts' => [
+			'type' => 'bool',
+		],
+		'has_gravityimport' => [
+			'type' => 'bool',
+		],
+		'has_elementor' => [
+			'type' => 'bool',
+		],
+		'has_beaver_builder' => [
+			'type' => 'bool',
+		],
+		'has_bricks' => [
+			'type' => 'bool',
+		],
+		'has_wpbakery' => [
+			'type' => 'bool',
+		],
+		'has_oxygen' => [
+			'type' => 'bool',
+		],
+		'has_seedprod' => [
+			'type' => 'bool',
+		],
 	];
 
 	public const ENUMS = [
@@ -200,6 +261,31 @@ final class Schema {
 		'link_medium' => [
 			'plugin',
 			'frontend',
+		],
+		'scale_bucket' => [
+			'0',
+			'1',
+			'2-5',
+			'6-10',
+			'11-25',
+			'26-100',
+			'101-1000',
+			'1001-10000',
+			'10001-50000',
+			'50001-250000',
+			'250001-1000000',
+			'1000000+',
+		],
+		'theme' => [
+			'divi',
+			'avada',
+			'astra',
+			'generatepress',
+			'kadence',
+			'blocksy',
+			'oceanwp',
+			'twenty',
+			'other',
 		],
 		'gk_product' => [
 			'gravityexport',
@@ -316,6 +402,141 @@ final class Schema {
 			'docs' => 'https://www.gravitykit.com/docs/gravityexport-lite/',
 			'docs_notification_attachment' => 'https://www.gravitykit.com/docs/gravityexport/attaching-an-entry-export-to-a-notification-using-gravityexport-lite/',
 			'docs_file_access' => 'https://www.gravitykit.com/docs/gravityexport/restricting-file-access-in-gravityexport-gravityexport-lite/',
+		],
+	];
+
+	public const PLUGIN_PROPS = [
+		'has_wpforms' => [
+			'group' => 'competitors',
+			'paths' => [
+				'wpforms/wpforms.php',
+				'wpforms-lite/wpforms.php',
+			],
+		],
+		'has_ninja_forms' => [
+			'group' => 'competitors',
+			'paths' => [
+				'ninja-forms/ninja-forms.php',
+			],
+		],
+		'has_formidable' => [
+			'group' => 'competitors',
+			'paths' => [
+				'formidable/formidable.php',
+			],
+		],
+		'has_fluent_forms' => [
+			'group' => 'competitors',
+			'paths' => [
+				'fluentform/fluentform.php',
+			],
+		],
+		'has_forminator' => [
+			'group' => 'competitors',
+			'paths' => [
+				'forminator/forminator.php',
+			],
+		],
+		'has_woocommerce' => [
+			'group' => 'complements',
+			'paths' => [
+				'woocommerce/woocommerce.php',
+			],
+		],
+		'has_gravity_flow' => [
+			'group' => 'complements',
+			'paths' => [
+				'gravityflow/gravityflow.php',
+			],
+		],
+		'has_gravityview' => [
+			'group' => 'family',
+			'paths' => [
+				'gravityview/gravityview.php',
+				'GravityView/gravityview.php',
+			],
+		],
+		'has_gravitycharts' => [
+			'group' => 'family',
+			'paths' => [
+				'gravitycharts/gravitycharts.php',
+			],
+		],
+		'has_gravityimport' => [
+			'group' => 'family',
+			'paths' => [
+				'gravityimport/gravityimport.php',
+				'gravityview-importer/gravityview-importer.php',
+			],
+		],
+		'has_elementor' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'elementor/elementor.php',
+			],
+		],
+		'has_beaver_builder' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'beaver-builder-lite-version/fl-builder.php',
+				'bb-plugin/fl-builder.php',
+			],
+		],
+		'has_bricks' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'bricks/bricks.php',
+			],
+		],
+		'has_wpbakery' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'js_composer/js_composer.php',
+			],
+		],
+		'has_oxygen' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'oxygen/functions.php',
+			],
+		],
+		'has_seedprod' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'seedprod-coming-soon-pro-5/seedprod-coming-soon-pro-5.php',
+				'coming-soon/coming-soon.php',
+			],
+		],
+	];
+
+	public const THEMES = [
+		'divi' => [
+			'Divi',
+		],
+		'avada' => [
+			'Avada',
+		],
+		'astra' => [
+			'astra',
+		],
+		'generatepress' => [
+			'generatepress',
+		],
+		'kadence' => [
+			'kadence',
+		],
+		'blocksy' => [
+			'blocksy',
+		],
+		'oceanwp' => [
+			'oceanwp',
+		],
+		'twenty' => [
+			'twentytwentyone',
+			'twentytwentytwo',
+			'twentytwentythree',
+			'twentytwentyfour',
+			'twentytwentyfive',
 		],
 	];
 

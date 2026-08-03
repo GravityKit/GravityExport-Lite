@@ -17,12 +17,34 @@ class SuperProps {
 	private $identity;
 
 	/**
+	 * The install scan.
+	 *
+	 * @since $ver$
+	 * @var SiteScan
+	 */
+	private $scan;
+
+	/**
 	 * @since $ver$
 	 *
 	 * @param SiteIdentity $identity The install identity.
+	 * @param SiteScan     $scan     The install scan.
 	 */
-	public function __construct( SiteIdentity $identity ) {
+	public function __construct( SiteIdentity $identity, SiteScan $scan ) {
 		$this->identity = $identity;
+		$this->scan     = $scan;
+	}
+
+	/**
+	 * Returns the install-scale facts, which belong to the site rather than to
+	 * any single event and are therefore sent as group properties.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array The group properties.
+	 */
+	public function groupProperties(): array {
+		return $this->scan->properties();
 	}
 
 	/**
@@ -45,6 +67,10 @@ class SuperProps {
 			'wp_version'                  => get_bloginfo( 'version' ),
 			'gf_version'                  => $this->gravityFormsVersion(),
 			'php_version'                 => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+			'mysql_version'               => $this->databaseVersion(),
+			'theme'                       => $this->theme(),
+			'is_block_theme'              => $this->isBlockTheme(),
+			'is_child_theme'              => is_child_theme(),
 			'locale'                      => get_locale(),
 			'is_multisite'                => is_multisite(),
 			'license_tier'                => 'free',
@@ -71,6 +97,62 @@ class SuperProps {
 		$version = \GFCommon::$version;
 
 		return is_string( $version ) && '' !== $version ? $version : null;
+	}
+
+	/**
+	 * Returns the database server version, major.minor only.
+	 *
+	 * The full string carries the build and distribution, which is unnecessarily
+	 * precise for a compatibility question and adds fingerprint surface.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The version.
+	 */
+	private function databaseVersion(): string {
+		global $wpdb;
+
+		$version = preg_replace( '/[^0-9.].*/', '', (string) $wpdb->db_version() );
+		$parts   = explode( '.', $version );
+
+		return isset( $parts[1] ) ? $parts[0] . '.' . $parts[1] : (string) $parts[0];
+	}
+
+	/**
+	 * Returns the active theme, or "other" when it is not on the published list.
+	 *
+	 * The raw name is refused: child themes are routinely named after the agency
+	 * or the client that commissioned them, which makes the name a direct
+	 * identifier far more often than it looks.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The theme key.
+	 */
+	private function theme(): string {
+		$theme  = wp_get_theme();
+		$slugs  = array_filter( [ $theme->get_stylesheet(), $theme->get_template() ] );
+
+		foreach ( Schema::THEMES as $key => $known ) {
+			foreach ( (array) $known as $candidate ) {
+				if ( in_array( $candidate, $slugs, true ) ) {
+					return (string) $key;
+				}
+			}
+		}
+
+		return 'other';
+	}
+
+	/**
+	 * Returns true when the active theme is a block theme.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether it is a block theme.
+	 */
+	private function isBlockTheme(): bool {
+		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
 	}
 
 	/**

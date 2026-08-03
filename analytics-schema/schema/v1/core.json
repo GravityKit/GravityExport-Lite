@@ -96,6 +96,20 @@
       "type": "enum",
       "enum": "install_channel",
       "$comment": "Distinguishes the wordpress.org population from the gravitykit.com-distributed one. Without this the opt-in rate is computed against the wrong denominator."
+    },
+    "mysql_version": {
+      "type": "string",
+      "$comment": "major.minor only, never the full build string"
+    },
+    "theme": {
+      "type": "enum",
+      "enum": "theme"
+    },
+    "is_block_theme": {
+      "type": "bool"
+    },
+    "is_child_theme": {
+      "type": "bool"
     }
   },
   "props": {
@@ -141,6 +155,31 @@
     "link_medium": [
       "plugin",
       "frontend"
+    ],
+    "scale_bucket": [
+      "0",
+      "1",
+      "2-5",
+      "6-10",
+      "11-25",
+      "26-100",
+      "101-1000",
+      "1001-10000",
+      "10001-50000",
+      "50001-250000",
+      "250001-1000000",
+      "1000000+"
+    ],
+    "theme": [
+      "divi",
+      "avada",
+      "astra",
+      "generatepress",
+      "kadence",
+      "blocksy",
+      "oceanwp",
+      "twenty",
+      "other"
     ]
   },
   "identity": {
@@ -195,6 +234,106 @@
   },
   "notes": {
     "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time.",
-    "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists."
+    "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists.",
+    "plugin_detection": "Cardinality is the cost here: 11 booleans is 2048 combinations, which combined with the scale buckets is a weak fingerprint. It stays acceptable only while the list is SHORT and made of COMMON plugins, where most combinations are densely populated. Adding rare or niche plugins is what would turn this into an identifier. Keep the list under ~15.",
+    "scale_bucket": "The top buckets are sparse by construction: few installs hold a million entries, so those buckets identify more narrowly than the dense middle. That is the price of seeing real scale, and it is a deliberate trade rather than an oversight.",
+    "theme_detection": "Deliberate deviation from Easy Digital Downloads, which sends the raw active theme name (EDD src/Telemetry/Environment.php). That is the single highest-cardinality field in their payload and the one most likely to name a real business."
+  },
+  "plugin_detection": {
+    "$comment": "A CLOSED, published list of plugins we ask a yes/no question about. Detection is is_plugin_active() against these exact paths, so the site's plugin roster is never read, let alone transmitted. The generator expands each key into a boolean group property named has_<key>, so adding a plugin here is a reviewable schema change and the allowlist guard rejects any name not on this list. Rationale for refusing a roster: wordpress.org already publishes install counts per plugin, so aggregate popularity is public; what is not public, and what these booleans answer, is the OVERLAP with our own install base.",
+    "competitors": {
+      "wpforms": [
+        "wpforms/wpforms.php",
+        "wpforms-lite/wpforms.php"
+      ],
+      "ninja_forms": [
+        "ninja-forms/ninja-forms.php"
+      ],
+      "formidable": [
+        "formidable/formidable.php"
+      ],
+      "fluent_forms": [
+        "fluentform/fluentform.php"
+      ],
+      "forminator": [
+        "forminator/forminator.php"
+      ]
+    },
+    "complements": {
+      "woocommerce": [
+        "woocommerce/woocommerce.php"
+      ],
+      "gravity_flow": [
+        "gravityflow/gravityflow.php"
+      ]
+    },
+    "family": {
+      "gravityview": [
+        "gravityview/gravityview.php",
+        "GravityView/gravityview.php"
+      ],
+      "gravitycharts": [
+        "gravitycharts/gravitycharts.php"
+      ],
+      "gravityimport": [
+        "gravityimport/gravityimport.php",
+        "gravityview-importer/gravityview-importer.php"
+      ]
+    },
+    "page_builders": {
+      "elementor": [
+        "elementor/elementor.php"
+      ],
+      "beaver_builder": [
+        "beaver-builder-lite-version/fl-builder.php",
+        "bb-plugin/fl-builder.php"
+      ],
+      "bricks": [
+        "bricks/bricks.php"
+      ],
+      "wpbakery": [
+        "js_composer/js_composer.php"
+      ],
+      "oxygen": [
+        "oxygen/functions.php"
+      ],
+      "seedprod": [
+        "seedprod-coming-soon-pro-5/seedprod-coming-soon-pro-5.php",
+        "coming-soon/coming-soon.php"
+      ]
+    }
+  },
+  "theme_detection": {
+    "$comment": "A CLOSED list of themes we ask about; anything not listed reports as 'other'. The raw theme name is refused deliberately: child themes are routinely named after the agency or the client that commissioned them, so the name is frequently a direct identifier and is always high-cardinality. Divi and Avada are here rather than in plugin_detection because they are themes that function as page builders.",
+    "known": {
+      "divi": [
+        "Divi"
+      ],
+      "avada": [
+        "Avada"
+      ],
+      "astra": [
+        "astra"
+      ],
+      "generatepress": [
+        "generatepress"
+      ],
+      "kadence": [
+        "kadence"
+      ],
+      "blocksy": [
+        "blocksy"
+      ],
+      "oceanwp": [
+        "oceanwp"
+      ],
+      "twenty": [
+        "twentytwentyone",
+        "twentytwentytwo",
+        "twentytwentythree",
+        "twentytwentyfour",
+        "twentytwentyfive"
+      ]
+    }
   }
 }

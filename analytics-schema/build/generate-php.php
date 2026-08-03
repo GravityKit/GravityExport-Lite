@@ -40,6 +40,39 @@ $json['activation'] = $fragment['activation'] ?? [];
 $json['links']      = array_merge( $core['links'] ?? [], $fragment['links'] ?? [] );
 $json['product']    = $fragment['product'] ?? $product;
 
+// Expand the plugin allowlist into boolean props. Declaring them here rather than
+// by hand keeps one source of truth: a plugin cannot be detected without appearing
+// in the published list, and the runtime allowlist guard rejects anything else.
+$json['plugin_props'] = [];
+foreach ( $json['plugin_detection'] ?? [] as $group => $entries ) {
+	if ( '$comment' === $group || ! is_array( $entries ) ) {
+		continue;
+	}
+
+	foreach ( $entries as $key => $paths ) {
+		$json['plugin_props'][ 'has_' . $key ] = [ 'group' => $group, 'paths' => $paths ];
+		$json['props'][ 'has_' . $key ]        = [ 'type' => 'bool' ];
+	}
+}
+
+// The allowlist is what keeps plugin detection from being a roster, so its shape
+// is enforced at build time. A phpunit assertion cannot do this job: the schema is
+// a compile-time constant, so static analysis folds any such check to "always true".
+if ( count( $json['plugin_props'] ) > 20 ) {
+	fwrite( STDERR, sprintf(
+		"The plugin allowlist has %d entries. Past ~20 it stops being a few questions and becomes an inventory.\n",
+		count( $json['plugin_props'] )
+	) );
+	exit( 1 );
+}
+
+foreach ( $json['plugin_props'] as $prop => $spec ) {
+	if ( empty( $spec['paths'] ) ) {
+		fwrite( STDERR, "Plugin \"{$prop}\" declares no detection path.\n" );
+		exit( 1 );
+	}
+}
+
 // Every destination must sit on a host that preserves query strings. The legacy gfexcel.com
 // redirect drops them, so a link routed through it arrives untagged with no error at all.
 // Validating here rather than at runtime means a bad destination cannot ship.
@@ -115,6 +148,8 @@ $consts = [
 	'TRANSPORT'      => $json['transport'],
 	'SCRUB'          => $json['scrub'],
 	'LINKS'          => $json['links'],
+	'PLUGIN_PROPS'   => $json['plugin_props'],
+	'THEMES'         => $json['theme_detection']['known'],
 	'PRODUCT'        => $json['product'],
 ];
 

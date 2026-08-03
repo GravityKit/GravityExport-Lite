@@ -110,6 +110,10 @@ class Client {
 				'event'      => $event,
 				'properties' => $props,
 				'groups'     => [ 'site' => $super['site_id'] ],
+				// Install-scale facts describe the site, not the action, so they
+				// ride as group properties rather than being stamped onto every
+				// event. One home, so the two copies cannot disagree.
+				'group_props' => $this->super_props->groupProperties(),
 				'timestamp'  => gmdate( 'c' ),
 			]
 		);

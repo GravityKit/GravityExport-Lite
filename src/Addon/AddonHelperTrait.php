@@ -286,6 +286,107 @@ trait AddonHelperTrait
     }
 
 	/**
+	 * Renders the Instant Download section above the tabbed settings interface.
+	 *
+	 * Hooked to `gform_feed_settings_before_fields` to display the download UI
+	 * before the tab navigation, keeping actions separate from configuration.
+	 *
+	 * @since 2.12.0
+	 *
+	 * @param string $before_fields Existing content to display before fields.
+	 * @param array  $form          The form object.
+	 *
+	 * @return string The content with Instant Download section prepended.
+	 */
+	public function render_instant_download_before_fields( string $before_fields, array $form ): string {
+		// Only render on this addon's feed edit page.
+		if ( rgget( 'subview' ) !== $this->get_slug() ) {
+			return $before_fields;
+		}
+
+		$download_url = $this->get_instant_download_url();
+
+		if ( empty( $download_url ) ) {
+			return $before_fields;
+		}
+
+		$start_date_value = $this->get_setting( 'start_date' ) ?: '';
+		$end_date_value   = $this->get_setting( 'end_date' ) ?: '';
+		$date_placeholder = esc_attr_x( 'YYYY-MM-DD', 'Date input field placeholder', 'gk-gravityexport-lite' );
+
+		$description    = esc_html__( 'Setting a range will limit the export to entries submitted during that date range. If no range is set, all entries will be exported.', 'gk-gravityexport-lite' );
+		$start_label    = esc_html__( 'Start Date', 'gk-gravityexport-lite' );
+		$end_label      = esc_html__( 'End Date', 'gk-gravityexport-lite' );
+		$download_label = esc_html__( 'Download', 'gk-gravityexport-lite' );
+
+		$extra_html = $this->get_instant_download_extra_html();
+
+		$html = <<<HTML
+<div class="gform-settings-panel gk-instant-download-panel">
+	<header class="gform-settings-panel__header">
+		<h4 class="gform-settings-panel__title">⚡ {$this->get_instant_download_title()}</h4>
+	</header>
+	<div class="gform-settings-panel__content">
+		<span class="gform-settings-description">{$description}</span>
+		<div class="date-selection" style="display: flex; gap: 1em; align-items: flex-end; margin-top: 0.75em;">
+			<div class="date-field">
+				<label for="start_date">{$start_label}</label>
+				<input form="download-form" placeholder="{$date_placeholder}" type="text" id="start_date" name="start_date" value="{$start_date_value}" class="gaddon-setting gaddon-text" />
+			</div>
+			<div class="date-field">
+				<label for="end_date">{$end_label}</label>
+				<input form="download-form" placeholder="{$date_placeholder}" type="text" id="end_date" name="end_date" value="{$end_date_value}" class="gaddon-setting gaddon-text" />
+			</div>
+			<div class="download-button">
+				<button type="submit" form="download-form" class="button primary button-primary">{$download_label}</button>
+			</div>
+		</div>{$extra_html}
+	</div>
+</div>
+<form id="download-form" method="post" action="{$download_url}" target="_blank"></form>
+HTML;
+
+		return $html . $before_fields;
+	}
+
+	/**
+	 * Returns the title for the Instant Download panel.
+	 *
+	 * @since 2.12.0
+	 *
+	 * @return string The panel title.
+	 */
+	protected function get_instant_download_title(): string {
+		return esc_html__( 'Instant Download', 'gk-gravityexport-lite' );
+	}
+
+	/**
+	 * Returns the download URL for the Instant Download section.
+	 *
+	 * Override in subclasses to provide the correct URL.
+	 *
+	 * @since 2.12.0
+	 *
+	 * @return string The download URL, or empty string if not available.
+	 */
+	protected function get_instant_download_url(): string {
+		return '';
+	}
+
+	/**
+	 * Returns extra HTML to append inside the Instant Download panel.
+	 *
+	 * Override in subclasses to add features like download count.
+	 *
+	 * @since 2.12.0
+	 *
+	 * @return string Extra HTML content.
+	 */
+	protected function get_instant_download_extra_html(): string {
+		return '';
+	}
+
+	/**
 	 * Returns whether the download is enabled for the current form.
 	 *
 	 * @return bool

@@ -5,6 +5,8 @@ namespace GFExcel\Addon;
 use GFCommon;
 use GFExcel\Action\ActionAware;
 use GFExcel\Action\ActionAwareInterface;
+use GFExcel\Action\CountDownloads;
+use GFExcel\Action\DownloadCountResetAction;
 use GFExcel\Action\DownloadUrlResetAction;
 use GFExcel\Component\Usage;
 use GFExcel\Field\ProductField;
@@ -12,7 +14,6 @@ use GFExcel\Field\SeparableField;
 use GFExcel\GFExcel;
 use GFExcel\GFExcelOutput;
 use GFExcel\GravityForms\Field\CopyShortcode;
-use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\SortFields;
 use GFExcel\Links\Links;
@@ -164,6 +165,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		add_filter( 'gform_form_actions', \Closure::fromCallable( [ $this, 'gform_form_actions' ] ), 10, 2 );
 		add_action( 'wp_before_admin_bar_render', \Closure::fromCallable( [ $this, 'admin_bar' ] ), 20 );
 		add_filter( 'gform_export_fields', \Closure::fromCallable( [ $this, 'gform_export_fields' ] ) );
+		add_filter( 'gform_feed_settings_before_fields', [ $this, 'render_instant_download_before_fields' ], 10, 2 );
 	}
 
 	/**
@@ -174,7 +176,6 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		require_once GFCommon::get_base_path() . '/includes/settings/class-fields.php';
 
 		// Register custom fields first.
-		Fields::register( 'download_file', DownloadFile::class );
 		Fields::register( 'download_url', DownloadUrl::class );
 		Fields::register( 'sort_fields', SortFields::class );
 		Fields::register( 'copy_shortcode', CopyShortcode::class );
@@ -239,9 +240,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					],
 					[
 						'label'       => esc_html__( 'File Extension', 'gk-gravityexport-lite' ),
-						'type'        => 'select',
+						'type'        => 'radio',
 						'name'        => 'file_extension',
-						'class'       => 'small-text',
 						'description' => sprintf(
 							esc_html__(
 								'Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL.',
@@ -249,14 +249,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 							),
 							'<code>.' . implode( '</code>, <code>.', GFExcel::getPluginFileExtensions() ) . '</code>'
 						),
-						'choices'     => array_map( static function ( $extension ) {
-							return
-								[
-									'name'  => 'file_extension',
-									'label' => '.' . $extension,
-									'value' => $extension,
-								];
-						}, GFExcel::getPluginFileExtensions() ),
+						'choices'     => self::get_file_extension_choices(),
 					],
 				],
 			],
@@ -456,29 +449,6 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 
 								return $options;
 							} )(),
-						],
-					],
-				],
-			],
-		];
-
-		// "Instant Download" tab - placed after configuration tabs since it's an action, not configuration.
-		$hash = $this->get_setting( 'hash' );
-		$settings_tabs[] = [
-			'title'    => esc_html__( 'Instant Download ⚡', 'gk-gravityexport-lite' ),
-			'id'       => 'gk-tab-instant-download',
-			'sections' => [
-				[
-					'id'     => 'gk-gravityexport-download-file',
-					'class'  => 'gk-gravityexport-download-file',
-					'fields' => [
-						[
-							'name'          => 'download_file',
-							'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
-							'tooltip'       => 'export_date_range',
-							'type'          => 'download_file',
-							'default_value' => $hash,
-							'url'           => $this->router->get_url_for_hash( $hash ),
 						],
 					],
 				],
@@ -926,6 +896,45 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	}
 
 	/**
+	 * @inheritdoc
+	 * @since 2.12.0
+	 */
+	protected function get_instant_download_url(): string {
+		$hash = $this->get_setting( 'hash' );
+
+		if ( empty( $hash ) ) {
+			return '';
+		}
+
+		return $this->router->get_url_for_hash( $hash );
+	}
+
+	/**
+	 * @inheritdoc
+	 * @since 2.12.0
+	 */
+	protected function get_instant_download_extra_html(): string {
+		$count = $this->get_setting( CountDownloads::KEY_COUNT ) ?: 0;
+
+		$count_label   = esc_html__( 'Download count', 'gk-gravityexport-lite' );
+		$reset_label   = esc_attr__( 'Reset count', 'gk-gravityexport-lite' );
+		$confirm_msg   = esc_attr__( 'You are about to reset the download count for this form. This can\'t be undone.', 'gk-gravityexport-lite' );
+
+		return sprintf(
+			'<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75em;">'
+			. '<div class="download-count"><span>%s: %d</span></div>'
+			. '<button id="download-count-reset" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>'
+			. '</div>'
+			. '<script>document.getElementById("download-count-reset").addEventListener("click", function(e) { if (!confirm("%s")) e.preventDefault(); });</script>',
+			$count_label,
+			(int) $count,
+			esc_attr( DownloadCountResetAction::$name ),
+			$reset_label,
+			$confirm_msg
+		);
+	}
+
+	/**
 	 * Helper method to get the only available feed for this add-on.
 	 *
 	 * @since 2.0.0
@@ -1215,5 +1224,28 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		$settings['hash'] = rgars( $feed, 'meta/hash', $settings['hash'] ?? '' );
 
 		return $settings;
+	}
+
+	/**
+	 * Returns file extension choices with icon mappings for radio buttons.
+	 *
+	 * @since 2.4
+	 *
+	 * @return array[] Array of choice arrays with label, value, and icon keys.
+	 */
+	private static function get_file_extension_choices(): array {
+		$icon_map = [
+			'xlsx' => 'dashicons-editor-table',
+			'csv'  => 'dashicons-media-text',
+			'pdf'  => 'dashicons-pdf',
+		];
+
+		return array_map( static function ( $extension ) use ( $icon_map ) {
+			return [
+				'label' => '.' . $extension,
+				'value' => $extension,
+				'icon'  => $icon_map[ $extension ] ?? 'dashicons-media-default',
+			];
+		}, GFExcel::getPluginFileExtensions() );
 	}
 }
