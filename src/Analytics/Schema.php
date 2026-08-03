@@ -119,6 +119,10 @@ final class Schema {
 	];
 
 	public const PROPS = [
+		'link_campaign' => [
+			'type' => 'enum',
+			'enum' => 'link_campaign',
+		],
 		'file_format' => [
 			'type' => 'enum',
 			'enum' => 'file_format',
@@ -160,10 +164,6 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'consent_source',
 		],
-		'link_campaign' => [
-			'type' => 'enum',
-			'enum' => 'link_campaign',
-		],
 	];
 
 	public const ENUMS = [
@@ -194,6 +194,15 @@ final class Schema {
 			'wordpress_org',
 			'gravitykit_com',
 			'unknown',
+		],
+		'link_campaign' => [
+			'upgrade',
+			'docs',
+			'support',
+		],
+		'link_medium' => [
+			'plugin',
+			'frontend',
 		],
 		'gk_product' => [
 			'gravityexport',
@@ -235,11 +244,6 @@ final class Schema {
 		],
 		'consent_source' => [
 			'lite_settings_card',
-		],
-		'link_campaign' => [
-			'upgrade',
-			'docs',
-			'support',
 		],
 	];
 
@@ -303,8 +307,12 @@ final class Schema {
 	];
 
 	public const LINKS = [
+		'host_allowlist' => [
+			'https://www.gravitykit.com/',
+		],
+		'content_is_cta_id' => true,
+		'utm_medium_default' => 'plugin',
 		'utm_source' => 'gravityexport-lite',
-		'utm_medium' => 'plugin',
 		'destinations' => [
 			'upgrade' => 'https://www.gravitykit.com/products/gravityexport/',
 			'docs' => 'https://www.gravitykit.com/docs/gravityexport-lite/',
@@ -312,6 +320,8 @@ final class Schema {
 			'docs_file_access' => 'https://www.gravitykit.com/docs/gravityexport/restricting-file-access-in-gravityexport-gravityexport-lite/',
 		],
 	];
+
+	public const PRODUCT = 'gravityexport-lite';
 
 	/**
 	 * Returns the legal values for a closed enum, or null when the name is not a closed enum.

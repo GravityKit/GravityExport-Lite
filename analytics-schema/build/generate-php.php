@@ -9,14 +9,59 @@
  *   e.g. php analytics-schema/build/generate-php.php 'GFExcel\Analytics' src/Analytics/Schema.php
  */
 
-$schema_file = __DIR__ . '/../schema/v1/analytics-schema.json';
-$namespace   = $argv[1] ?? 'GFExcel\Analytics';
-$out_file    = $argv[2] ?? dirname( __DIR__, 2 ) . '/src/Analytics/Schema.php';
+$product   = $argv[1] ?? 'gravityexport-lite';
+$namespace = $argv[2] ?? 'GFExcel\Analytics';
+$out_file  = $argv[3] ?? dirname( __DIR__, 2 ) . '/src/Analytics/Schema.php';
 
-$json = json_decode( (string) file_get_contents( $schema_file ), true );
-if ( ! is_array( $json ) ) {
-	fwrite( STDERR, "Cannot parse {$schema_file}: " . json_last_error_msg() . "\n" );
-	exit( 1 );
+$core_file    = __DIR__ . '/../schema/v1/core.json';
+$product_file = __DIR__ . '/../schema/v1/products/' . $product . '.json';
+
+/** Reads and decodes a schema file, or dies loudly. */
+function gk_read( string $file ): array {
+	$decoded = json_decode( (string) @file_get_contents( $file ), true );
+	if ( ! is_array( $decoded ) ) {
+		fwrite( STDERR, "Cannot read or parse {$file}: " . json_last_error_msg() . "\n" );
+		exit( 1 );
+	}
+
+	return $decoded;
+}
+
+$core     = gk_read( $core_file );
+$fragment = gk_read( $product_file );
+
+// Merge the product fragment over core. Keys that exist in both are unioned, not replaced,
+// so a product can add enum values and props without restating the platform's.
+$json = $core;
+foreach ( [ 'props', 'enums' ] as $section ) {
+	$json[ $section ] = array_merge( $core[ $section ] ?? [], $fragment[ $section ] ?? [] );
+}
+$json['activation'] = $fragment['activation'] ?? [];
+$json['links']      = array_merge( $core['links'] ?? [], $fragment['links'] ?? [] );
+$json['product']    = $fragment['product'] ?? $product;
+
+// Every destination must sit on a host that preserves query strings. The legacy gfexcel.com
+// redirect drops them, so a link routed through it arrives untagged with no error at all.
+// Validating here rather than at runtime means a bad destination cannot ship.
+$allowed = $json['links']['host_allowlist'] ?? [];
+foreach ( $json['links']['destinations'] ?? [] as $key => $url ) {
+	$ok = false;
+	foreach ( $allowed as $prefix ) {
+		if ( 0 === strpos( (string) $url, (string) $prefix ) ) {
+			$ok = true;
+			break;
+		}
+	}
+
+	if ( ! $ok ) {
+		fwrite( STDERR, sprintf(
+			"Destination \"%s\" (%s) is not on an allowed host.\nAllowed: %s\n",
+			$key,
+			$url,
+			implode( ', ', $allowed )
+		) );
+		exit( 1 );
+	}
 }
 
 /** Renders a value as PHP 7.2-compatible source. */
@@ -70,6 +115,7 @@ $consts = [
 	'TRANSPORT'      => $json['transport'],
 	'SCRUB'          => $json['scrub'],
 	'LINKS'          => $json['links'],
+	'PRODUCT'        => $json['product'],
 ];
 
 $body = '';
@@ -132,4 +178,4 @@ if ( ! is_dir( dirname( $out_file ) ) ) {
 	mkdir( dirname( $out_file ), 0755, true );
 }
 file_put_contents( $out_file, $source );
-fwrite( STDOUT, "Generated {$out_file} (" . count( $json['events'] ) . " events)\n" );
+fwrite( STDOUT, "Generated {$out_file} for {$product} (" . count( $json['events'] ) . " events, " . count( $json['links']['destinations'] ?? [] ) . " destinations)\n" );

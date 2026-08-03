@@ -1,5 +1,5 @@
 {
-  "$comment": "Canonical GravityKit analytics wire contract. Consumed identically by GravityExport Lite and, later, Foundation. Contains NO classes and NO namespaces, so Strauss has nothing to prefix and the two sides cannot drift. Extract to the gravitykit/analytics-schema composer package when Foundation adopts it.",
+  "$comment": "Product-independent half of the GravityKit measurement contract. Events, super-props, platform enums, identity, consent, transport, scrub, and the link SCHEME rules. A product fragment supplies its own slug, destinations, cta_ids and product-specific props/enums; the generator merges core + one fragment into a single locally-namespaced Schema class.",
   "schema_version": 1,
   "events": [
     "product_activated",
@@ -102,47 +102,6 @@
     }
   },
   "props": {
-    "file_format": {
-      "type": "enum",
-      "enum": "file_format"
-    },
-    "column_count": {
-      "type": "int"
-    },
-    "download_permission": {
-      "type": "enum",
-      "enum": "download_permission"
-    },
-    "filter_set_count": {
-      "type": "int"
-    },
-    "save_destination": {
-      "type": "enum",
-      "enum": "save_destination"
-    },
-    "schedule_enabled": {
-      "type": "bool"
-    },
-    "object_type": {
-      "type": "enum",
-      "enum": "object_type"
-    },
-    "feature": {
-      "type": "enum",
-      "enum": "feature"
-    },
-    "config_kind": {
-      "type": "enum",
-      "enum": "config_kind"
-    },
-    "cta_id": {
-      "type": "enum",
-      "enum": "cta_id"
-    },
-    "consent_source": {
-      "type": "enum",
-      "enum": "consent_source"
-    },
     "link_campaign": {
       "type": "enum",
       "enum": "link_campaign"
@@ -177,65 +136,14 @@
       "gravitykit_com",
       "unknown"
     ],
-    "gk_product": [
-      "gravityexport",
-      "gravityexport-lite"
-    ],
-    "object_type": [
-      "export"
-    ],
-    "file_format": [
-      "xlsx",
-      "csv",
-      "pdf"
-    ],
-    "download_permission": [
-      "everyone",
-      "logged_in",
-      "capability"
-    ],
-    "save_destination": [
-      "server",
-      "dropbox",
-      "ftp"
-    ],
-    "feature": [
-      "filter_set",
-      "scheduled_save"
-    ],
-    "config_kind": [
-      "fields",
-      "columns"
-    ],
-    "cta_id": [
-      "plugin_meta_docs",
-      "plugin_meta_upgrade",
-      "feed_settings_upgrade",
-      "feed_settings_notification_docs",
-      "feed_settings_file_access_docs",
-      "consent_card"
-    ],
-    "consent_source": [
-      "lite_settings_card"
-    ],
     "link_campaign": [
       "upgrade",
       "docs",
       "support"
-    ]
-  },
-  "activation": {
-    "gravityexport-lite": [
-      "export_completed",
-      null,
-      null,
-      null
     ],
-    "gravityexport": [
-      "export_completed",
-      null,
-      null,
-      null
+    "link_medium": [
+      "plugin",
+      "frontend"
     ]
   },
   "identity": {
@@ -278,18 +186,15 @@
       "url": "/https?:\\/\\/[^\\s]+/i"
     }
   },
+  "links": {
+    "host_allowlist": [
+      "https://www.gravitykit.com/"
+    ],
+    "content_is_cta_id": true,
+    "$comment": "utm_content always carries a cta_id value, so one identifier appears in PostHog (cta_id) and GA (utm_content) and the two join in aggregate. utm_source is the PRODUCT slug and lives in the product fragment. Destinations are validated against host_allowlist at generation time: the legacy gfexcel.com redirect drops the query string, so a tagged link routed through it arrives untagged with no error.",
+    "utm_medium_default": "plugin"
+  },
   "notes": {
     "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time."
-  },
-  "links": {
-    "utm_source": "gravityexport-lite",
-    "utm_medium": "plugin",
-    "$comment": "utm_content always carries a cta_id value, so the same identifier appears in PostHog (cta_id) and GA (utm_content) and the two can be joined in aggregate without any per-install identifier. Destinations are final canonical URLs on purpose: the gfexcel.com redirect drops the query string, so a UTM routed through it is silently lost.",
-    "destinations": {
-      "upgrade": "https://www.gravitykit.com/products/gravityexport/",
-      "docs": "https://www.gravitykit.com/docs/gravityexport-lite/",
-      "docs_notification_attachment": "https://www.gravitykit.com/docs/gravityexport/attaching-an-entry-export-to-a-notification-using-gravityexport-lite/",
-      "docs_file_access": "https://www.gravitykit.com/docs/gravityexport/restricting-file-access-in-gravityexport-gravityexport-lite/"
-    }
   }
 }

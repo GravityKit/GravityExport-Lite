@@ -15,18 +15,12 @@ class LinksTest extends TestCase {
 	/**
 	 * @inheritdoc
 	 * @since $ver$
+	 *
+	 * WP_Mock stubs apply_filters() itself and passes the value through, so the
+	 * builder's output is unfiltered here unless a test opts in via onFilter().
 	 */
 	public function setUp(): void {
 		parent::setUp();
-
-		// Pass the outbound filter through untouched.
-		\WP_Mock::userFunction( 'apply_filters' )->andReturnUsing(
-			static function () {
-				$args = func_get_args();
-
-				return $args[1];
-			}
-		);
 	}
 
 	/**
@@ -110,12 +104,75 @@ class LinksTest extends TestCase {
 	}
 
 	/**
+	 * A broken documentation key must not land on the sales page. That is the
+	 * exact bug this builder was written to fix (the plugin-meta "Documentation"
+	 * link 301'd to the product page), and defaulting to it would reintroduce it.
+	 *
 	 * @since $ver$
 	 */
-	public function testUnknownDestinationFallsBackToTheProductPage(): void {
-		$url = Links::to( 'no_such_destination', 'plugin_meta_upgrade' );
+	public function testUnknownDocsDestinationFallsBackToDocsNotTheSalesPage(): void {
+		$url = Links::to( 'no_such_destination', 'plugin_meta_docs', 'docs' );
+
+		self::assertStringStartsWith( Schema::LINKS['destinations']['docs'], $url );
+		self::assertStringNotContainsString( '/products/', $url );
+	}
+
+	/**
+	 * @since $ver$
+	 */
+	public function testUnknownUpgradeDestinationFallsBackToTheProductPage(): void {
+		$url = Links::to( 'no_such_destination', 'plugin_meta_upgrade', 'upgrade' );
 
 		self::assertStringStartsWith( Schema::LINKS['destinations']['upgrade'], $url );
+	}
+
+	/**
+	 * Every product bundling this builder fires the same hook name, so a
+	 * site-wide consumer needs to know which one built the link.
+	 *
+	 * @since $ver$
+	 */
+	public function testOutboundFilterReceivesTheProductSlug(): void {
+		$destination = Schema::LINKS['destinations']['upgrade'];
+		$params      = [
+			'utm_source'   => 'gravityexport-lite',
+			'utm_medium'   => 'plugin',
+			'utm_campaign' => 'upgrade',
+			'utm_content'  => 'plugin_meta_upgrade',
+		];
+		$tagged      = $destination . '?' . http_build_query( $params );
+
+		// The reply only lands if the filter fired with the product slug as its
+		// fourth argument; otherwise the real URL comes back and this fails.
+		\WP_Mock::onFilter( 'gk/links/outbound' )
+		        ->with( $tagged, $destination, $params, 'gravityexport-lite' )
+		        ->reply( 'PRODUCT_SLUG_REACHED_THE_FILTER' );
+
+		self::assertSame(
+			'PRODUCT_SLUG_REACHED_THE_FILTER',
+			Links::upgrade( 'plugin_meta_upgrade' )
+		);
+	}
+
+	/**
+	 * @since $ver$
+	 */
+	public function testMediumIsValidatedAgainstItsEnum(): void {
+		self::assertSame( [ 'plugin', 'frontend' ], Schema::enum( 'link_medium' ) );
+		self::assertSame( 'plugin', Schema::LINKS['utm_medium_default'] );
+	}
+
+	/**
+	 * The product slug is data, not a literal in the builder, so extracting the
+	 * shared package later does not require editing the class.
+	 *
+	 * @since $ver$
+	 */
+	public function testUtmSourceComesFromTheProductFragment(): void {
+		$params = $this->query( Links::upgrade( 'plugin_meta_upgrade' ) );
+
+		self::assertSame( Schema::LINKS['utm_source'], $params['utm_source'] );
+		self::assertSame( Schema::PRODUCT, $params['utm_source'] );
 	}
 
 	/**
@@ -164,14 +221,6 @@ class LinksTest extends TestCase {
 	 * @since $ver$
 	 */
 	public function testExistingQueryStringIsPreserved(): void {
-		\WP_Mock::userFunction( 'apply_filters' )->andReturnUsing(
-			static function () {
-				$args = func_get_args();
-
-				return $args[1];
-			}
-		);
-
 		$url = Links::upgrade( 'plugin_meta_upgrade' );
 
 		self::assertStringContainsString( '?utm_source=', $url );

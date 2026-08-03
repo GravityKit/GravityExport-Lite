@@ -1,0 +1,113 @@
+{
+  "$comment": "GravityExport Lite's half of the measurement contract. Merged over core.json by the generator.",
+  "product": "gravityexport-lite",
+  "props": {
+    "file_format": {
+      "type": "enum",
+      "enum": "file_format"
+    },
+    "column_count": {
+      "type": "int"
+    },
+    "download_permission": {
+      "type": "enum",
+      "enum": "download_permission"
+    },
+    "filter_set_count": {
+      "type": "int"
+    },
+    "save_destination": {
+      "type": "enum",
+      "enum": "save_destination"
+    },
+    "schedule_enabled": {
+      "type": "bool"
+    },
+    "object_type": {
+      "type": "enum",
+      "enum": "object_type"
+    },
+    "feature": {
+      "type": "enum",
+      "enum": "feature"
+    },
+    "config_kind": {
+      "type": "enum",
+      "enum": "config_kind"
+    },
+    "cta_id": {
+      "type": "enum",
+      "enum": "cta_id"
+    },
+    "consent_source": {
+      "type": "enum",
+      "enum": "consent_source"
+    }
+  },
+  "enums": {
+    "gk_product": [
+      "gravityexport",
+      "gravityexport-lite"
+    ],
+    "object_type": [
+      "export"
+    ],
+    "file_format": [
+      "xlsx",
+      "csv",
+      "pdf"
+    ],
+    "download_permission": [
+      "everyone",
+      "logged_in",
+      "capability"
+    ],
+    "save_destination": [
+      "server",
+      "dropbox",
+      "ftp"
+    ],
+    "feature": [
+      "filter_set",
+      "scheduled_save"
+    ],
+    "config_kind": [
+      "fields",
+      "columns"
+    ],
+    "cta_id": [
+      "plugin_meta_docs",
+      "plugin_meta_upgrade",
+      "feed_settings_upgrade",
+      "feed_settings_notification_docs",
+      "feed_settings_file_access_docs",
+      "consent_card"
+    ],
+    "consent_source": [
+      "lite_settings_card"
+    ]
+  },
+  "activation": {
+    "gravityexport-lite": [
+      "export_completed",
+      null,
+      null,
+      null
+    ],
+    "gravityexport": [
+      "export_completed",
+      null,
+      null,
+      null
+    ]
+  },
+  "links": {
+    "utm_source": "gravityexport-lite",
+    "destinations": {
+      "upgrade": "https://www.gravitykit.com/products/gravityexport/",
+      "docs": "https://www.gravitykit.com/docs/gravityexport-lite/",
+      "docs_notification_attachment": "https://www.gravitykit.com/docs/gravityexport/attaching-an-entry-export-to-a-notification-using-gravityexport-lite/",
+      "docs_file_access": "https://www.gravitykit.com/docs/gravityexport/restricting-file-access-in-gravityexport-gravityexport-lite/"
+    }
+  }
+}

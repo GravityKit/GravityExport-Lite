@@ -39,3 +39,7 @@ parameters:
   ignoreErrors:
   # Unit tests edge cases
     - '/MockObject|stdClass>? given.$/'
+    # WP_Mock declares Action_Responder inside Action.php, so PSR-4 cannot resolve it.
+    -
+      message: '#unknown class WP_Mock\\Action_Responder#'
+      path: tests/*
