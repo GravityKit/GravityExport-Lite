@@ -1,0 +1,114 @@
+{
+  "$comment": "Canonical GravityKit analytics wire contract. Consumed identically by GravityExport Lite and, later, Foundation. Contains NO classes and NO namespaces, so Strauss has nothing to prefix and the two sides cannot drift. Extract to the gravitykit/analytics-schema composer package when Foundation adopts it.",
+  "schema_version": 1,
+
+  "events": [
+    "product_activated", "product_deactivated", "gf_form_connected", "analytics_opt_in",
+    "object_created", "object_configured", "object_published", "object_embedded",
+    "object_rendered", "feature_enabled", "job_started",
+    "onboarding_started", "onboarding_step_viewed", "onboarding_completed", "onboarding_dismissed",
+    "onboarding_task_completed", "sample_created", "cta_clicked", "video_played",
+    "inline_edit_saved", "card_moved", "card_voted", "export_completed", "import_completed",
+    "bulk_action_completed", "revision_recorded", "revision_history_viewed", "revision_restored",
+    "migration_export_completed", "migration_import_completed"
+  ],
+
+  "super_props": {
+    "environment":                 { "type": "enum", "enum": "environment" },
+    "site_id":                     { "type": "hash" },
+    "gk_analytics_schema_version": { "type": "int" },
+    "wp_version":                  { "type": "string" },
+    "gf_version":                  { "type": "string", "nullable": true },
+    "php_version":                 { "type": "string", "$comment": "major.minor only, never the patch" },
+    "locale":                      { "type": "string" },
+    "is_multisite":                { "type": "bool" },
+    "license_tier":                { "type": "enum", "enum": "license_tier" },
+    "user_role":                   { "type": "string", "$comment": "role NAME only" },
+    "gk_product":                  { "type": "enum", "enum": "gk_product" },
+    "gk_product_version":          { "type": "string" },
+    "trigger_source":              { "type": "enum", "enum": "trigger_source" },
+    "activated_product":           { "type": "enum", "enum": "gk_product", "nullable": true },
+    "is_activation_event":         { "type": "bool" },
+    "funnel_stage":                { "type": "enum", "enum": "funnel_stage" },
+    "days_since_install":          { "type": "int" },
+    "install_channel":             { "type": "enum", "enum": "install_channel",
+                                     "$comment": "Distinguishes the wordpress.org population from the gravitykit.com-distributed one. Without this the opt-in rate is computed against the wrong denominator." }
+  },
+
+  "props": {
+    "file_format":         { "type": "enum", "enum": "file_format" },
+    "column_count":        { "type": "int" },
+    "download_permission": { "type": "enum", "enum": "download_permission" },
+    "filter_set_count":    { "type": "int" },
+    "save_destination":    { "type": "enum", "enum": "save_destination" },
+    "schedule_enabled":    { "type": "bool" },
+    "object_type":         { "type": "enum", "enum": "object_type" },
+    "feature":             { "type": "enum", "enum": "feature" },
+    "config_kind":         { "type": "enum", "enum": "config_kind" },
+    "cta_id":              { "type": "enum", "enum": "cta_id" },
+    "consent_source":      { "type": "enum", "enum": "consent_source" }
+  },
+
+  "enums": {
+    "environment":         ["demo", "production"],
+    "license_tier":        ["none", "free", "core", "pro", "all_access", "agency"],
+    "trigger_source":      ["real", "walkthrough", "sample"],
+    "funnel_stage":        ["installed", "setup", "activated", "habit"],
+    "install_channel":     ["wordpress_org", "gravitykit_com", "unknown"],
+    "gk_product":          ["gravityexport", "gravityexport-lite"],
+    "object_type":         ["export"],
+    "file_format":         ["xlsx", "csv", "pdf"],
+    "download_permission": ["everyone", "logged_in", "capability"],
+    "save_destination":    ["server", "dropbox", "ftp"],
+    "feature":             ["filter_set", "scheduled_save"],
+    "config_kind":         ["fields", "columns"],
+    "cta_id":              ["upgrade_notice", "consent_card"],
+    "consent_source":      ["lite_settings_card"]
+  },
+
+  "activation": {
+    "gravityexport-lite": ["export_completed", null, null, null],
+    "gravityexport":      ["export_completed", null, null, null]
+  },
+
+  "identity": {
+    "salt_option":       "gk_analytics_site_salt",
+    "hmac_algo":         "sha256",
+    "site_id_input":     "home_url",
+    "url_normalization": "strip_trailing_slash_and_scheme_case",
+    "multisite_scope":   "per_site",
+    "refuse_on_no_salt": true
+  },
+
+  "consent": {
+    "option": "gk_analytics_consent",
+    "record": ["granted", "ts", "source", "schema_version", "disclosure_hash"]
+  },
+
+  "attribution": {
+    "salt_option": "gk_attribution_salt",
+    "$comment": "Deliberately a SEPARATE salt from identity.salt_option. Reusing site_id as the discount token would retroactively re-identify every event an install ever sent."
+  },
+
+  "transport": {
+    "host_constant": "GK_ANALYTICS_HOST",
+    "host_filter":   "gk/analytics/host",
+    "default_host":  "understand.gravitykit.com",
+    "path":          "/capture",
+    "max_queue":     50,
+    "timeout":       5
+  },
+
+  "scrub": {
+    "free_text_cutoff":   200,
+    "drop_key_patterns":  ["^\\$"],
+    "redact_value_patterns": {
+      "email": "/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/",
+      "url":   "/https?:\\/\\/[^\\s]+/i"
+    }
+  },
+
+  "notes": {
+    "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time."
+  }
+}

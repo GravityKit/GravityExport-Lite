@@ -115,6 +115,11 @@
         ],
         "post-update-cmd": [
             "composer dump-autoload -o"
+        ],
+        "analytics:generate": "php analytics-schema/build/generate-php.php 'GFExcel\\\\Analytics' src/Analytics/Schema.php",
+        "analytics:verify": [
+            "@analytics:generate",
+            "git diff --exit-code -- src/Analytics/Schema.php"
         ]
     },
     "extra": {

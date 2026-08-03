@@ -21,6 +21,7 @@ use GFExcel\Addon\GravityExportAddon;
 use GFExcel\Container\Container;
 use GFExcel\GFExcel;
 use GFExcel\ServiceProvider\AddOnProvider;
+use GFExcel\ServiceProvider\AnalyticsProvider;
 use GFExcel\ServiceProvider\BaseServiceProvider;
 
 if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
@@ -117,7 +118,8 @@ add_action( 'gform_loaded', static function (): void {
 	$container = ( new Container() )
 		// add internal service provider
 		->addServiceProvider( new BaseServiceProvider() )
-		->addServiceProvider( new AddOnProvider() );
+		->addServiceProvider( new AddOnProvider() )
+		->addServiceProvider( new AnalyticsProvider() );
 
     // Dispatch event including the container.
     do_action( 'gfexcel_container_loaded', $container );
