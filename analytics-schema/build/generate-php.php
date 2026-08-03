@@ -69,6 +69,7 @@ $consts = [
 	'ATTRIBUTION'    => $json['attribution'],
 	'TRANSPORT'      => $json['transport'],
 	'SCRUB'          => $json['scrub'],
+	'LINKS'          => $json['links'],
 ];
 
 $body = '';

@@ -15,6 +15,7 @@ use GFExcel\GravityForms\Field\CopyShortcode;
 use GFExcel\GravityForms\Field\DownloadFile;
 use GFExcel\GravityForms\Field\DownloadUrl;
 use GFExcel\GravityForms\Field\SortFields;
+use GFExcel\Links\Links;
 use GFExcel\Renderer\AbstractPHPExcelRenderer;
 use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
@@ -340,7 +341,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 							// translators: Placeholders inside [] are not to be translated.
 							__( 'Attach the entry export as a file to the selected notification email. [link]Learn more about attaching exports to notifications[/link]', 'gk-gravityexport-lite' ),
 							[
-								'[link]'  => '<a href="https://docs.gravitykit.com/article/888-attaching-an-entry-export-to-a-notification-using-gravityexport-lite" target="_blank">',
+								'[link]'  => '<a href="' . esc_url( Links::docs( 'feed_settings_notification_docs', 'docs_notification_attachment' ) ) . '" target="_blank">',
 								'[/link]' => '</a>',
 							]
 						),
@@ -434,7 +435,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 									'gk-gravityexport-lite'
 								),
 								'<code>gravityforms_export_entries</code>',
-								'<a href="https://docs.gravitykit.com/article/1077-restricting-file-access-in-gravityexport-gravityexport-lite" target="_blank">',
+								'<a href="' . esc_url( Links::docs( 'feed_settings_file_access_docs', 'docs_file_access' ) ) . '" target="_blank">',
 								'</a>'
 							),
 							'default_value' => 0,
@@ -788,7 +789,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 
 			<p>
 				<a class="button button-primary primary large button-hero button-cta"
-				   href="https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=upgrade-message"
+				   href="<?php echo esc_url( Links::upgrade( 'feed_settings_upgrade' ) ); ?>"
 				   target="_blank" rel="noopener noreferrer"
 				   title="<?php esc_attr_e( 'This link opens in a new window', 'gk-gravityexport-lite' ); ?>">⚡️&nbsp;<?php
 					esc_html_e( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ); ?>️</a>

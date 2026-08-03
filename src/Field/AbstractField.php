@@ -93,7 +93,7 @@ abstract class AbstractField implements FieldInterface {
 	 * @return mixed The filtered value.
 	 */
 	final protected function filter_value( $value, array $entry, array $context = [] ) {
-		/** @see https://gfexcel.com/docs/changing-values/ for documentation */
+		/** @see https://www.gravitykit.com/docs/gravityexport-lite/ for documentation */
 		return gf_apply_filters( [
 			'gfexcel_field_value',
 			$this->field->get_input_type(),

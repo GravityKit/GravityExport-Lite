@@ -9,7 +9,7 @@
  * from a fresh generation, which is what stops Lite and Foundation drifting.
  */
 
-namespace GFExcel\\Analytics;
+namespace GFExcel\Analytics;
 
 /**
  * The analytics wire contract, as constants.
@@ -160,6 +160,10 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'consent_source',
 		],
+		'link_campaign' => [
+			'type' => 'enum',
+			'enum' => 'link_campaign',
+		],
 	];
 
 	public const ENUMS = [
@@ -222,11 +226,20 @@ final class Schema {
 			'columns',
 		],
 		'cta_id' => [
-			'upgrade_notice',
+			'plugin_meta_docs',
+			'plugin_meta_upgrade',
+			'feed_settings_upgrade',
+			'feed_settings_notification_docs',
+			'feed_settings_file_access_docs',
 			'consent_card',
 		],
 		'consent_source' => [
 			'lite_settings_card',
+		],
+		'link_campaign' => [
+			'upgrade',
+			'docs',
+			'support',
 		],
 	];
 
@@ -286,6 +299,17 @@ final class Schema {
 		'redact_value_patterns' => [
 			'email' => '/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/',
 			'url' => '/https?:\\/\\/[^\\s]+/i',
+		],
+	];
+
+	public const LINKS = [
+		'utm_source' => 'gravityexport-lite',
+		'utm_medium' => 'plugin',
+		'destinations' => [
+			'upgrade' => 'https://www.gravitykit.com/products/gravityexport/',
+			'docs' => 'https://www.gravitykit.com/docs/gravityexport-lite/',
+			'docs_notification_attachment' => 'https://www.gravitykit.com/docs/gravityexport/attaching-an-entry-export-to-a-notification-using-gravityexport-lite/',
+			'docs_file_access' => 'https://www.gravitykit.com/docs/gravityexport/restricting-file-access-in-gravityexport-gravityexport-lite/',
 		],
 	];
 

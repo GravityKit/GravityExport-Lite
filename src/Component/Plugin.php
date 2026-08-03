@@ -1,6 +1,7 @@
 <?php
 
 namespace GFExcel\Component;
+use GFExcel\Links\Links;
 
 /**
  * Plugin component that handles all plugin specific hooks.
@@ -30,7 +31,7 @@ final class Plugin {
 
 		$add_links = [
 			'docs' => sprintf( '<a href="%s" title="%s" target="_blank" rel="noreferrer noopener">%s</a>',
-				'https://gfexcel.com/docs/getting-started/',
+				Links::docs( 'plugin_meta_docs' ),
 				esc_attr__( 'Documentation', 'gk-gravityexport-lite' ),
 				esc_html__( 'Documentation', 'gk-gravityexport-lite' )
 			),
@@ -39,7 +40,7 @@ final class Plugin {
 		// Not running GravityExport
 		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
 			$add_links['upgrade'] = sprintf( '<a href="%s" title="%s" target="_blank" rel="noreferrer noopener">%s</a>',
-				'https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=plugin-meta-upgrade',
+				Links::upgrade( 'plugin_meta_upgrade' ),
 				esc_attr__( 'This link opens in a new window', 'gk-gravityexport-lite' ),
 				'<strong>⚡&nbsp;' . esc_html__( 'Gain Powerful Features with GravityExport', 'gk-gravityexport-lite' ) . '</strong>'
 			);
