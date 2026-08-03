@@ -28,7 +28,9 @@ $allowed_files = [
 // The analytics ingest host is not a link.
 $allowed_patterns = [ 'understand.gravitykit.com' ];
 
-$pattern    = '#https?://[^\s\'"`]*(gravitykit|gfexcel)\.com#';
+// Case-insensitive, and matches a bare host too, so a URL assembled by
+// concatenation or written in mixed case cannot slip past the gate.
+$pattern    = '#(https?://[^\s\'"`]*)?(gravitykit|gfexcel)\.com#i';
 $violations = [];
 
 /** Returns true when the line is exempt by an allowlisted substring. */

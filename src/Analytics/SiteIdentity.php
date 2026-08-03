@@ -84,7 +84,7 @@ class SiteIdentity {
 	 */
 	private function salt( string $option ): ?string {
 		$stored = get_option( $option );
-		if ( is_string( $stored ) && '' !== $stored ) {
+		if ( $this->isUsableSalt( $stored ) ) {
 			return $stored;
 		}
 
@@ -98,7 +98,24 @@ class SiteIdentity {
 
 		$after = get_option( $option );
 
-		return is_string( $after ) && '' !== $after ? $after : null;
+		return $this->isUsableSalt( $after ) ? $after : null;
+	}
+
+	/**
+	 * Returns true when the value is a salt of the strength this class mints.
+	 *
+	 * Accepting any non-empty string would let a truncated or tampered option
+	 * such as "a" silently downgrade every site_id into a brute-forceable value,
+	 * which defeats the guarantee the consent card makes.
+	 *
+	 * @since $ver$
+	 *
+	 * @param mixed $salt The candidate salt.
+	 *
+	 * @return bool Whether it is usable.
+	 */
+	private function isUsableSalt( $salt ): bool {
+		return is_string( $salt ) && 1 === preg_match( '/^[0-9a-f]{64}$/', $salt );
 	}
 
 	/**

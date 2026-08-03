@@ -3,9 +3,14 @@
 namespace GFExcel\Analytics;
 
 /**
- * Store-and-forward transport.
+ * Batched deferred transport.
  *
  * Captures accumulate in memory and leave in one batched request on shutdown.
+ * Deliberately NOT called store-and-forward: nothing is persisted across
+ * requests, so a batch that fails to send is lost when the request ends. Making
+ * it durable would mean writing every capture to the database, which is a
+ * heavier trade than the data is worth. The name should keep matching what it
+ * does.
  * This is not an optimization. The activation event fires from the download
  * path, and WordPress floors HTTP timeouts at one second and runs curl_exec()
  * synchronously even when 'blocking' is false — so a request sent inline would
@@ -51,18 +56,22 @@ class Queue {
 			return;
 		}
 
-		$batch       = $this->items;
-		$this->items = [];
-
-		wp_remote_post(
+		$response = wp_remote_post(
 			$this->endpoint(),
 			[
 				'timeout'  => (int) Schema::TRANSPORT['timeout'],
 				'blocking' => false,
 				'headers'  => [ 'Content-Type' => 'application/json' ],
-				'body'     => wp_json_encode( [ 'batch' => $batch ] ),
+				'body'     => wp_json_encode( [ 'batch' => $this->items ] ),
 			]
 		);
+
+		// Only drop the batch once the request was actually dispatched. Clearing
+		// first discards events on any DNS or socket failure and makes a retry
+		// impossible even in principle.
+		if ( ! is_wp_error( $response ) ) {
+			$this->items = [];
+		}
 	}
 
 	/**

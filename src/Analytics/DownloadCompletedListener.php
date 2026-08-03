@@ -117,13 +117,18 @@ class DownloadCompletedListener {
 	 * @return bool Whether this request owns the slot.
 	 */
 	private function claimDailySlot( int $form_id ): bool {
-		$key = 'gk_ax_export_' . $form_id . '_' . gmdate( 'Ymd' );
+		$today     = gmdate( 'Ymd' );
+		$key       = 'gk_ax_export_' . $form_id . '_' . $today;
+		$yesterday = 'gk_ax_export_' . $form_id . '_' . gmdate( 'Ymd', time() - DAY_IN_SECONDS );
 
-		if ( get_transient( $key ) ) {
+		// add_option() is an INSERT: it returns false when the row already exists,
+		// so the claim is atomic. A get-then-set pair lets two concurrent hits on
+		// this public URL both win and double-count the activation.
+		if ( ! add_option( $key, 1, '', false ) ) {
 			return false;
 		}
 
-		set_transient( $key, 1, DAY_IN_SECONDS );
+		delete_option( $yesterday );
 
 		return true;
 	}

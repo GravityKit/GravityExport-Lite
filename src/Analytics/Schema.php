@@ -109,9 +109,6 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'funnel_stage',
 		],
-		'days_since_install' => [
-			'type' => 'int',
-		],
 		'install_channel' => [
 			'type' => 'enum',
 			'enum' => 'install_channel',

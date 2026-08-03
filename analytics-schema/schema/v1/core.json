@@ -92,9 +92,6 @@
       "type": "enum",
       "enum": "funnel_stage"
     },
-    "days_since_install": {
-      "type": "int"
-    },
     "install_channel": {
       "type": "enum",
       "enum": "install_channel",
@@ -195,6 +192,7 @@
     "utm_medium_default": "plugin"
   },
   "notes": {
-    "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time."
+    "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time.",
+    "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists."
   }
 }

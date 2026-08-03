@@ -12,6 +12,7 @@ use GFExcel\Analytics\Queue;
 use GFExcel\Analytics\Scrub;
 use GFExcel\Analytics\SiteIdentity;
 use GFExcel\Analytics\SuperProps;
+use GFExcel\Container\ContainerInterface;
 use League\Container\Container;
 
 /**
@@ -82,13 +83,32 @@ class AnalyticsProvider extends AbstractServiceProvider {
 	 * @since $ver$
 	 */
 	public function boot(): void {
-		$container = $this->getContainer();
+		// Resolution is deferred to `gfexcel_container_loaded`, which fires after every
+		// provider has been added. League's ServiceProviderAggregate::add() calls boot()
+		// BEFORE appending the provider, so resolving anything here finds no definitions
+		// and falls through to the reflection container: the Client would capture into an
+		// auto-wired Queue while shutdown flushed a different, shared one, and nothing
+		// would ever be sent.
+		add_action( 'gfexcel_container_loaded', [ $this, 'wire' ] );
+	}
 
-		if ( ! $container instanceof Container ) {
+	/**
+	 * Resolves the analytics services and attaches them to the request.
+	 *
+	 * @since $ver$
+	 *
+	 * @param ContainerInterface $container The container.
+	 *
+	 * @return void
+	 */
+	public function wire( ContainerInterface $container ): void {
+		$client = $container->get( Client::class );
+
+		if ( ! $client instanceof Client ) {
 			return;
 		}
 
-		Analytics::setLocalClient( $container->get( Client::class ) );
+		Analytics::setLocalClient( $client );
 
 		// Instantiating registers the hooks; both constructors are hook-only.
 		$container->get( DownloadCompletedListener::class );
@@ -97,10 +117,11 @@ class AnalyticsProvider extends AbstractServiceProvider {
 			$container->get( ConsentCard::class );
 		}
 
-		// Flush after the listener has had its shutdown turn (it runs at 10).
-		add_action( 'shutdown', function () use ( $container ): void {
+		// Flush after the listener has had its shutdown turn, which runs at 10.
+		add_action( 'shutdown', static function () use ( $container ): void {
 			$container->get( Queue::class )->flush();
 			$container->get( Allowlist::class )->flush();
 		}, 20 );
 	}
 }
+

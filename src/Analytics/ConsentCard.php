@@ -123,7 +123,7 @@ class ConsentCard {
 		if ( 'grant' === $choice ) {
 			Analytics::optIn( self::SOURCE, self::disclosure() );
 		} else {
-			$this->consent->revoke();
+			$this->consent->revoke( self::SOURCE );
 		}
 
 		wp_safe_redirect( wp_get_referer() ?: admin_url() );
