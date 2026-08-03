@@ -301,6 +301,7 @@ final class Schema {
 			'email' => '/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/',
 			'url' => '/https?:\\/\\/[^\\s]+/i',
 		],
+		'min_site_name_length' => 4,
 	];
 
 	public const LINKS = [

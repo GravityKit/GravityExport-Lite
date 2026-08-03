@@ -181,7 +181,9 @@
     "redact_value_patterns": {
       "email": "/[\\w.+-]+@[\\w-]+\\.[\\w.-]+/",
       "url": "/https?:\\/\\/[^\\s]+/i"
-    }
+    },
+    "min_site_name_length": 4,
+    "$comment": "Emails and URLs are redacted outright rather than masked. Easy Digital Downloads masks them (a*a@e*****e.com), which preserves length, first and last characters and the TLD; full redaction is stricter. Site-name scrubbing is taken FROM EDD, which strips the site name out of arbitrary strings before sending (EDD\\Telemetry\\Traits\\Anonymize::anonymize_site_name). min_site_name_length is a threshold, not a toggle: it guards against a site named \"A\" or \"My\" matching everywhere and destroying every string, which EDD does not guard against."
   },
   "links": {
     "host_allowlist": [

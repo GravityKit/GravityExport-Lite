@@ -23,13 +23,14 @@ class Scrub {
 	 */
 	public function scrub( array $props ): array {
 		$clean = [];
+		$site  = $this->siteName();
 
 		foreach ( $props as $key => $value ) {
 			if ( $this->keyIsDropped( (string) $key ) ) {
 				continue;
 			}
 
-			$clean[ $key ] = is_string( $value ) ? $this->scrubString( $value ) : $value;
+			$clean[ $key ] = is_string( $value ) ? $this->scrubString( $value, $site ) : $value;
 		}
 
 		return $clean;
@@ -44,6 +45,33 @@ class Scrub {
 	 *
 	 * @return bool Whether to drop it.
 	 */
+	/**
+	 * Returns the site name when it is safe to scrub for, otherwise null.
+	 *
+	 * Very short names are skipped deliberately. A site called "A" or "My" would
+	 * match inside almost every string and reduce the payload to redaction
+	 * markers, destroying data without protecting anything, since a two-letter
+	 * name identifies nobody. Easy Digital Downloads, which this behaviour is
+	 * taken from, does not guard against that.
+	 *
+	 * There is no off switch by design. The threshold is a minimum length, not a
+	 * toggle: a scrub that can be disabled is one that will be, and the consent
+	 * card's promise does not have an exception clause.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string|null The site name, or null when it should not be scrubbed for.
+	 */
+	private function siteName(): ?string {
+		if ( ! function_exists( 'get_bloginfo' ) ) {
+			return null;
+		}
+
+		$name = trim( (string) get_bloginfo( 'name' ) );
+
+		return strlen( $name ) >= (int) Schema::SCRUB['min_site_name_length'] ? $name : null;
+	}
+
 	private function keyIsDropped( string $key ): bool {
 		foreach ( Schema::SCRUB['drop_key_patterns'] as $pattern ) {
 			if ( 1 === preg_match( '/' . $pattern . '/', $key ) ) {
@@ -66,9 +94,16 @@ class Scrub {
 	 *
 	 * @return string The scrubbed value.
 	 */
-	private function scrubString( string $value ): string {
+	private function scrubString( string $value, ?string $site ): string {
 		foreach ( Schema::SCRUB['redact_value_patterns'] as $label => $pattern ) {
 			$value = (string) preg_replace( $pattern, '[' . $label . ' redacted]', $value );
+		}
+
+		// A registered key can still carry the site's own name inside free text —
+		// a form title, a feed label. Easy Digital Downloads strips this and we
+		// did not, which was the one place their telemetry was more careful.
+		if ( null !== $site ) {
+			$value = (string) str_ireplace( $site, '[site name redacted]', $value );
 		}
 
 		$cutoff = (int) Schema::SCRUB['free_text_cutoff'];

@@ -20,6 +20,14 @@ class ScrubTest extends TestCase {
 	private $scrub;
 
 	/**
+	 * Site name the mocked get_bloginfo() returns.
+	 *
+	 * @since $ver$
+	 * @var string
+	 */
+	private static $site_name = 'Example Site';
+
+	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
@@ -27,6 +35,17 @@ class ScrubTest extends TestCase {
 		parent::setUp();
 
 		$this->scrub = new Scrub();
+
+		// WP_Mock keeps the FIRST registration for a function, so a per-test
+		// andReturn() would be silently ignored. The stub reads this property
+		// instead, and each test sets it.
+		self::$site_name = 'Example Site';
+
+		\WP_Mock::userFunction( 'get_bloginfo' )->andReturnUsing(
+			static function () {
+				return self::$site_name;
+			}
+		);
 	}
 
 	/**
@@ -83,6 +102,63 @@ class ScrubTest extends TestCase {
 		$result = $this->scrub->scrub( [ 'a' => $value ] );
 
 		self::assertStringNotContainsString( 'zack@example.com', $result['a'] );
+	}
+
+	/**
+	 * A registered key can still carry the site's own name inside free text — a
+	 * form title, a feed label. Easy Digital Downloads strips this
+	 * (EDD\Telemetry\Traits\Anonymize::anonymize_site_name) and we did not, which
+	 * was the one place their telemetry was more careful than ours.
+	 *
+	 * @since $ver$
+	 */
+	public function testSiteNameIsRedactedFromFreeText(): void {
+		self::$site_name = 'Acme Widgets';
+
+		$result = $this->scrub->scrub( [ 'a' => 'Export for Acme Widgets monthly report' ] );
+
+		self::assertStringNotContainsString( 'Acme Widgets', $result['a'] );
+		self::assertSame( 'Export for [site name redacted] monthly report', $result['a'] );
+	}
+
+	/**
+	 * @since $ver$
+	 */
+	public function testSiteNameIsRedactedRegardlessOfCase(): void {
+		self::$site_name = 'Acme Widgets';
+
+		$result = $this->scrub->scrub( [ 'a' => 'exported from ACME WIDGETS today' ] );
+
+		self::assertStringNotContainsString( 'ACME WIDGETS', $result['a'] );
+	}
+
+	/**
+	 * A site called "A" or "My" would match inside almost every string and reduce
+	 * the payload to redaction markers, destroying data while protecting nobody.
+	 *
+	 * @since $ver$
+	 */
+	public function testAVeryShortSiteNameIsNotScrubbedFor(): void {
+		self::$site_name = 'My';
+
+		$result = $this->scrub->scrub( [ 'a' => 'My monthly summary' ] );
+
+		self::assertSame( 'My monthly summary', $result['a'] );
+	}
+
+	/**
+	 * @since $ver$
+	 */
+	public function testEmailRedactionIsStricterThanEddMasking(): void {
+		self::$site_name = 'Acme Widgets';
+
+		$result = $this->scrub->scrub( [ 'a' => 'ada@example.com' ] );
+
+		// EDD would produce a*a@e*****e.com, which keeps length, first and last
+		// characters, and the TLD. Nothing of the address survives here.
+		self::assertSame( '[email redacted]', $result['a'] );
+		self::assertStringNotContainsString( 'example', $result['a'] );
+		self::assertStringNotContainsString( '.com', $result['a'] );
 	}
 
 	/**
