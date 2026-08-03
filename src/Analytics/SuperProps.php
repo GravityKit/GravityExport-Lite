@@ -130,13 +130,23 @@ class SuperProps {
 	 * @return string The theme key.
 	 */
 	private function theme(): string {
-		$theme  = wp_get_theme();
-		$slugs  = array_filter( [ $theme->get_stylesheet(), $theme->get_template() ] );
+		$theme = wp_get_theme();
 
-		foreach ( Schema::THEMES as $key => $known ) {
-			foreach ( (array) $known as $candidate ) {
-				if ( in_array( $candidate, $slugs, true ) ) {
-					return (string) $key;
+		// The parent first, deliberately. A child theme is usually named after the
+		// agency or the client, so it is both the highest-cardinality value
+		// available and frequently a direct identifier, while its parent is a
+		// well-known framework. "Divi Child" and "Divi" are the same fact about
+		// the site, and only one of them is safe to record.
+		foreach ( [ $theme->get_template(), $theme->get_stylesheet() ] as $slug ) {
+			if ( '' === (string) $slug ) {
+				continue;
+			}
+
+			foreach ( Schema::THEMES as $key => $known ) {
+				foreach ( (array) $known as $candidate ) {
+					if ( 0 === strcasecmp( $candidate, (string) $slug ) ) {
+						return (string) $key;
+					}
 				}
 			}
 		}

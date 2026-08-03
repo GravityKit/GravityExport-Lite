@@ -278,12 +278,20 @@ final class Schema {
 		],
 		'theme' => [
 			'divi',
-			'avada',
+			'hello_elementor',
 			'astra',
+			'avada',
+			'beaver_builder',
+			'buddyboss',
 			'generatepress',
+			'betheme',
+			'enfold',
+			'oceanwp',
 			'kadence',
 			'blocksy',
-			'oceanwp',
+			'genesis',
+			'bricks',
+			'flatsome',
 			'twenty',
 			'other',
 		],
@@ -513,14 +521,33 @@ final class Schema {
 		'divi' => [
 			'Divi',
 		],
-		'avada' => [
-			'Avada',
+		'hello_elementor' => [
+			'hello-elementor',
 		],
 		'astra' => [
 			'astra',
 		],
+		'avada' => [
+			'Avada',
+		],
+		'beaver_builder' => [
+			'bb-theme',
+			'beaver-builder-theme',
+		],
+		'buddyboss' => [
+			'buddyboss-theme',
+		],
 		'generatepress' => [
 			'generatepress',
+		],
+		'betheme' => [
+			'betheme',
+		],
+		'enfold' => [
+			'enfold',
+		],
+		'oceanwp' => [
+			'oceanwp',
 		],
 		'kadence' => [
 			'kadence',
@@ -528,15 +555,25 @@ final class Schema {
 		'blocksy' => [
 			'blocksy',
 		],
-		'oceanwp' => [
-			'oceanwp',
+		'genesis' => [
+			'genesis',
+		],
+		'bricks' => [
+			'bricks',
+		],
+		'flatsome' => [
+			'flatsome',
 		],
 		'twenty' => [
+			'twentytwenty',
 			'twentytwentyone',
 			'twentytwentytwo',
 			'twentytwentythree',
 			'twentytwentyfour',
 			'twentytwentyfive',
+			'twentyseventeen',
+			'twentynineteen',
+			'twentysixteen',
 		],
 	];
 

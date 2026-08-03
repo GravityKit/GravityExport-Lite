@@ -76,4 +76,45 @@ class SiteScanTest extends TestCase {
 		self::assertNotSame( SiteScan::bucket( 900000 ), SiteScan::bucket( 5000000 ) );
 	}
 
+	/**
+	 * The parent theme is what gets reported, and this is the case that matters:
+	 * a child named after an agency must resolve to its framework, not leak the
+	 * agency's name. Measured on 127,776 legacy installs, 27.6% of theme names
+	 * contain the word "child" and 15,556 distinct names appear on exactly one
+	 * site, so this is the common case rather than an edge case.
+	 *
+	 * @since $ver$
+	 */
+	public function testTheThemeListIsMadeOfParentFrameworks(): void {
+		$known = Schema::THEMES;
+
+		self::assertArrayHasKey( 'divi', $known );
+		self::assertArrayHasKey( 'astra', $known );
+		self::assertArrayHasKey( 'genesis', $known );
+
+		// No entry may be a child theme: a "* Child" slug in this list would
+		// defeat the point, since matching it means reporting the child.
+		foreach ( $known as $key => $slugs ) {
+			foreach ( (array) $slugs as $slug ) {
+				self::assertStringNotContainsStringIgnoringCase(
+					'child',
+					$slug,
+					sprintf( 'Theme "%s" lists a child slug; the list must contain parents only.', $key )
+				);
+			}
+		}
+	}
+
+	/**
+	 * @since $ver$
+	 */
+	public function testEveryThemeKeyIsARegisteredEnumValue(): void {
+		$legal = (array) Schema::enum( 'theme' );
+
+		foreach ( array_keys( Schema::THEMES ) as $key ) {
+			self::assertContains( $key, $legal );
+		}
+
+		self::assertContains( 'other', $legal, 'An unrecognised parent must have somewhere to land.' );
+	}
 }

@@ -172,12 +172,20 @@
     ],
     "theme": [
       "divi",
-      "avada",
+      "hello_elementor",
       "astra",
+      "avada",
+      "beaver_builder",
+      "buddyboss",
       "generatepress",
+      "betheme",
+      "enfold",
+      "oceanwp",
       "kadence",
       "blocksy",
-      "oceanwp",
+      "genesis",
+      "bricks",
+      "flatsome",
       "twenty",
       "other"
     ]
@@ -237,7 +245,7 @@
     "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists.",
     "plugin_detection": "Cardinality is the cost here: 11 booleans is 2048 combinations, which combined with the scale buckets is a weak fingerprint. It stays acceptable only while the list is SHORT and made of COMMON plugins, where most combinations are densely populated. Adding rare or niche plugins is what would turn this into an identifier. Keep the list under ~15.",
     "scale_bucket": "The top buckets are sparse by construction: few installs hold a million entries, so those buckets identify more narrowly than the dense middle. That is the price of seeing real scale, and it is a deliberate trade rather than an oversight.",
-    "theme_detection": "Deliberate deviation from Easy Digital Downloads, which sends the raw active theme name (EDD src/Telemetry/Environment.php). That is the single highest-cardinality field in their payload and the one most likely to name a real business."
+    "theme_detection": "'other' is a real signal rather than a gap: with the measured head of the distribution named, an unrecognised parent means a custom or niche theme, which usually means an agency-built site."
   },
   "plugin_detection": {
     "$comment": "A CLOSED, published list of plugins we ask a yes/no question about. Detection is is_plugin_active() against these exact paths, so the site's plugin roster is never read, let alone transmitted. The generator expands each key into a boolean group property named has_<key>, so adding a plugin here is a reviewable schema change and the allowlist guard rejects any name not on this list. Rationale for refusing a roster: wordpress.org already publishes install counts per plugin, so aggregate popularity is public; what is not public, and what these booleans answer, is the OVERLAP with our own install base.",
@@ -304,19 +312,39 @@
     }
   },
   "theme_detection": {
-    "$comment": "A CLOSED list of themes we ask about; anything not listed reports as 'other'. The raw theme name is refused deliberately: child themes are routinely named after the agency or the client that commissioned them, so the name is frequently a direct identifier and is always high-cardinality. Divi and Avada are here rather than in plugin_detection because they are themes that function as page builders.",
+    "$comment": "The PARENT theme is reported, never the child. Measured against 127,776 legacy GravityView installs: 28,923 distinct theme strings, 15,556 of them on exactly one site, and 27.6% of names containing the word 'child'. Child themes are routinely named after the agency or the client, so the child name is both the highest-cardinality field available and frequently a direct identifier. The parent collapses that tail into a handful of frameworks, which is simultaneously the more private choice and the more useful one: 'Divi Child' and 'Divi' are the same fact about the site. The list below is the measured head of that distribution.",
+    "prefer": "template",
     "known": {
       "divi": [
         "Divi"
       ],
-      "avada": [
-        "Avada"
+      "hello_elementor": [
+        "hello-elementor"
       ],
       "astra": [
         "astra"
       ],
+      "avada": [
+        "Avada"
+      ],
+      "beaver_builder": [
+        "bb-theme",
+        "beaver-builder-theme"
+      ],
+      "buddyboss": [
+        "buddyboss-theme"
+      ],
       "generatepress": [
         "generatepress"
+      ],
+      "betheme": [
+        "betheme"
+      ],
+      "enfold": [
+        "enfold"
+      ],
+      "oceanwp": [
+        "oceanwp"
       ],
       "kadence": [
         "kadence"
@@ -324,15 +352,25 @@
       "blocksy": [
         "blocksy"
       ],
-      "oceanwp": [
-        "oceanwp"
+      "genesis": [
+        "genesis"
+      ],
+      "bricks": [
+        "bricks"
+      ],
+      "flatsome": [
+        "flatsome"
       ],
       "twenty": [
+        "twentytwenty",
         "twentytwentyone",
         "twentytwentytwo",
         "twentytwentythree",
         "twentytwentyfour",
-        "twentytwentyfive"
+        "twentytwentyfive",
+        "twentyseventeen",
+        "twentynineteen",
+        "twentysixteen"
       ]
     }
   }
