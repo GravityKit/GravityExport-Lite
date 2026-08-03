@@ -123,7 +123,7 @@ final class Schema {
 		'is_block_theme' => [
 			'type' => 'bool',
 		],
-		'is_child_theme' => [
+		'theme_is_child' => [
 			'type' => 'bool',
 		],
 	];
@@ -174,25 +174,31 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'consent_source',
 		],
-		'has_wpforms' => [
+		'has_gravity_pdf' => [
 			'type' => 'bool',
 		],
-		'has_ninja_forms' => [
+		'has_zapier' => [
 			'type' => 'bool',
 		],
-		'has_formidable' => [
+		'has_gravity_perks' => [
 			'type' => 'bool',
 		],
-		'has_fluent_forms' => [
-			'type' => 'bool',
-		],
-		'has_forminator' => [
+		'has_gravity_flow' => [
 			'type' => 'bool',
 		],
 		'has_woocommerce' => [
 			'type' => 'bool',
 		],
-		'has_gravity_flow' => [
+		'has_other_form_plugin' => [
+			'type' => 'bool',
+		],
+		'has_elementor' => [
+			'type' => 'bool',
+		],
+		'has_wpbakery' => [
+			'type' => 'bool',
+		],
+		'has_beaver_builder' => [
 			'type' => 'bool',
 		],
 		'has_gravityview' => [
@@ -202,24 +208,6 @@ final class Schema {
 			'type' => 'bool',
 		],
 		'has_gravityimport' => [
-			'type' => 'bool',
-		],
-		'has_elementor' => [
-			'type' => 'bool',
-		],
-		'has_beaver_builder' => [
-			'type' => 'bool',
-		],
-		'has_bricks' => [
-			'type' => 'bool',
-		],
-		'has_wpbakery' => [
-			'type' => 'bool',
-		],
-		'has_oxygen' => [
-			'type' => 'bool',
-		],
-		'has_seedprod' => [
 			'type' => 'bool',
 		],
 	];
@@ -414,47 +402,65 @@ final class Schema {
 	];
 
 	public const PLUGIN_PROPS = [
-		'has_wpforms' => [
-			'group' => 'competitors',
+		'has_gravity_pdf' => [
+			'group' => 'export_alternatives',
 			'paths' => [
-				'wpforms/wpforms.php',
-				'wpforms-lite/wpforms.php',
+				'gravity-forms-pdf-extended/pdf.php',
+				'gravity-pdf/pdf.php',
 			],
 		],
-		'has_ninja_forms' => [
-			'group' => 'competitors',
+		'has_zapier' => [
+			'group' => 'export_alternatives',
 			'paths' => [
-				'ninja-forms/ninja-forms.php',
+				'gravityformszapier/zapier.php',
 			],
 		],
-		'has_formidable' => [
-			'group' => 'competitors',
+		'has_gravity_perks' => [
+			'group' => 'ecosystem',
 			'paths' => [
-				'formidable/formidable.php',
+				'gravityperks/gravityperks.php',
 			],
 		],
-		'has_fluent_forms' => [
-			'group' => 'competitors',
+		'has_gravity_flow' => [
+			'group' => 'ecosystem',
 			'paths' => [
-				'fluentform/fluentform.php',
-			],
-		],
-		'has_forminator' => [
-			'group' => 'competitors',
-			'paths' => [
-				'forminator/forminator.php',
+				'gravityflow/gravityflow.php',
 			],
 		],
 		'has_woocommerce' => [
-			'group' => 'complements',
+			'group' => 'ecosystem',
 			'paths' => [
 				'woocommerce/woocommerce.php',
 			],
 		],
-		'has_gravity_flow' => [
-			'group' => 'complements',
+		'has_other_form_plugin' => [
+			'group' => 'form_platform',
 			'paths' => [
-				'gravityflow/gravityflow.php',
+				'wpforms/wpforms.php',
+				'wpforms-lite/wpforms.php',
+				'ninja-forms/ninja-forms.php',
+				'formidable/formidable.php',
+				'fluentform/fluentform.php',
+				'forminator/forminator.php',
+			],
+		],
+		'has_elementor' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'elementor/elementor.php',
+			],
+		],
+		'has_wpbakery' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'js_composer/js_composer.php',
+			],
+		],
+		'has_beaver_builder' => [
+			'group' => 'page_builders',
+			'paths' => [
+				'beaver-builder-lite-version/fl-builder.php',
+				'bb-plugin/fl-builder.php',
 			],
 		],
 		'has_gravityview' => [
@@ -474,45 +480,6 @@ final class Schema {
 			'group' => 'family',
 			'paths' => [
 				'gravityimport/gravityimport.php',
-				'gravityview-importer/gravityview-importer.php',
-			],
-		],
-		'has_elementor' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'elementor/elementor.php',
-			],
-		],
-		'has_beaver_builder' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'beaver-builder-lite-version/fl-builder.php',
-				'bb-plugin/fl-builder.php',
-			],
-		],
-		'has_bricks' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'bricks/bricks.php',
-			],
-		],
-		'has_wpbakery' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'js_composer/js_composer.php',
-			],
-		],
-		'has_oxygen' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'oxygen/functions.php',
-			],
-		],
-		'has_seedprod' => [
-			'group' => 'page_builders',
-			'paths' => [
-				'seedprod-coming-soon-pro-5/seedprod-coming-soon-pro-5.php',
-				'coming-soon/coming-soon.php',
 			],
 		],
 	];

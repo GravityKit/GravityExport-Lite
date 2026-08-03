@@ -108,7 +108,7 @@
     "is_block_theme": {
       "type": "bool"
     },
-    "is_child_theme": {
+    "theme_is_child": {
       "type": "bool"
     }
   },
@@ -243,36 +243,52 @@
   "notes": {
     "props_incomplete": "The canonical taxonomy enumerates Events as code (30, with a mandated count assertion) but never enumerates Props::ALL or Enums::* as code -- they exist only as prose across its per-product sections. The props/enums above are therefore the GravityExport-scoped subset, complete for what Lite emits. Foundation must widen them to all 14 products when it adopts this file, and the taxonomy should gain code-form Props/Enums blocks at that time.",
     "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists.",
-    "plugin_detection": "Cardinality is the cost here: 11 booleans is 2048 combinations, which combined with the scale buckets is a weak fingerprint. It stays acceptable only while the list is SHORT and made of COMMON plugins, where most combinations are densely populated. Adding rare or niche plugins is what would turn this into an identifier. Keep the list under ~15.",
+    "plugin_detection": "Cut on measurement, not taste: Bricks 0.4%, Oxygen 0.3%, SeedProd 0.3%, GP Google Sheets 0.07% were removed as noise, and the five form-platform competitors were collapsed into one boolean because individually each is under 1% and together only 3.8%. Caveat carried deliberately: those figures come from PAYING GravityView customers, and the wordpress.org Lite population may shop around more. That is why the aggregate survives at all \u2014 if it reads above ~10% on real Lite data, split it back into named booleans in a schema revision.",
     "scale_bucket": "The top buckets are sparse by construction: few installs hold a million entries, so those buckets identify more narrowly than the dense middle. That is the price of seeing real scale, and it is a deliberate trade rather than an oversight.",
     "theme_detection": "'other' is a real signal rather than a gap: with the measured head of the distribution named, an unrecognised parent means a custom or niche theme, which usually means an agency-built site."
   },
   "plugin_detection": {
-    "$comment": "A CLOSED, published list of plugins we ask a yes/no question about. Detection is is_plugin_active() against these exact paths, so the site's plugin roster is never read, let alone transmitted. The generator expands each key into a boolean group property named has_<key>, so adding a plugin here is a reviewable schema change and the allowlist guard rejects any name not on this list. Rationale for refusing a roster: wordpress.org already publishes install counts per plugin, so aggregate popularity is public; what is not public, and what these booleans answer, is the OVERLAP with our own install base.",
-    "competitors": {
-      "wpforms": [
-        "wpforms/wpforms.php",
-        "wpforms-lite/wpforms.php"
+    "$comment": "A CLOSED, published list of yes/no questions. Detection is is_plugin_active() against these exact paths, so the site's plugin roster is never read, let alone transmitted. Grouped by the QUESTION each answers, not by vendor. Presence figures below are measured against 12,175 GravityView installs (latest roster per site, last 12 months, telemetry.wp_gv_tracking_logs); anything under ~5% was cut as noise. Adding an entry is a reviewable schema change.",
+    "export_alternatives": {
+      "gravity_pdf": [
+        "gravity-forms-pdf-extended/pdf.php",
+        "gravity-pdf/pdf.php"
       ],
-      "ninja_forms": [
-        "ninja-forms/ninja-forms.php"
-      ],
-      "formidable": [
-        "formidable/formidable.php"
-      ],
-      "fluent_forms": [
-        "fluentform/fluentform.php"
-      ],
-      "forminator": [
-        "forminator/forminator.php"
+      "zapier": [
+        "gravityformszapier/zapier.php"
       ]
     },
-    "complements": {
-      "woocommerce": [
-        "woocommerce/woocommerce.php"
+    "ecosystem": {
+      "gravity_perks": [
+        "gravityperks/gravityperks.php"
       ],
       "gravity_flow": [
         "gravityflow/gravityflow.php"
+      ],
+      "woocommerce": [
+        "woocommerce/woocommerce.php"
+      ]
+    },
+    "form_platform": {
+      "other_form_plugin": [
+        "wpforms/wpforms.php",
+        "wpforms-lite/wpforms.php",
+        "ninja-forms/ninja-forms.php",
+        "formidable/formidable.php",
+        "fluentform/fluentform.php",
+        "forminator/forminator.php"
+      ]
+    },
+    "page_builders": {
+      "elementor": [
+        "elementor/elementor.php"
+      ],
+      "wpbakery": [
+        "js_composer/js_composer.php"
+      ],
+      "beaver_builder": [
+        "beaver-builder-lite-version/fl-builder.php",
+        "bb-plugin/fl-builder.php"
       ]
     },
     "family": {
@@ -284,30 +300,7 @@
         "gravitycharts/gravitycharts.php"
       ],
       "gravityimport": [
-        "gravityimport/gravityimport.php",
-        "gravityview-importer/gravityview-importer.php"
-      ]
-    },
-    "page_builders": {
-      "elementor": [
-        "elementor/elementor.php"
-      ],
-      "beaver_builder": [
-        "beaver-builder-lite-version/fl-builder.php",
-        "bb-plugin/fl-builder.php"
-      ],
-      "bricks": [
-        "bricks/bricks.php"
-      ],
-      "wpbakery": [
-        "js_composer/js_composer.php"
-      ],
-      "oxygen": [
-        "oxygen/functions.php"
-      ],
-      "seedprod": [
-        "seedprod-coming-soon-pro-5/seedprod-coming-soon-pro-5.php",
-        "coming-soon/coming-soon.php"
+        "gravityimport/gravityimport.php"
       ]
     }
   },

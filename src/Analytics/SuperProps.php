@@ -70,7 +70,7 @@ class SuperProps {
 			'mysql_version'               => $this->databaseVersion(),
 			'theme'                       => $this->theme(),
 			'is_block_theme'              => $this->isBlockTheme(),
-			'is_child_theme'              => is_child_theme(),
+			'theme_is_child'              => is_child_theme(),
 			'locale'                      => get_locale(),
 			'is_multisite'                => is_multisite(),
 			'license_tier'                => 'free',
