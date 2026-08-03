@@ -19,6 +19,11 @@ $root = dirname( __DIR__ );
 // not only in src/ — GravityView's worst offender is a view file.
 $scan_roots = [ 'src', 'templates', 'views', 'public', 'assets' ];
 
+// The plugin's root file too: it renders links and was never scanned. Its
+// header block is a comment, which the tokeniser already skips, so plugin
+// metadata URLs do not trip the gate.
+$scan_files = [ 'gfexcel.php' ];
+
 // Links.php owns the builder; Schema.php is generated from the schema JSON.
 $allowed_files = [
 	'src/Links/Links.php',
@@ -100,6 +105,25 @@ foreach ( $scan_roots as $scan_root ) {
 
 			$violations[] = sprintf( '%s:%d  %s', $relative, $number + 1, trim( $line ) );
 		}
+	}
+}
+
+foreach ( $scan_files as $scan_file ) {
+	$path = $root . '/' . $scan_file;
+	if ( ! is_readable( $path ) ) {
+		continue;
+	}
+
+	foreach ( token_get_all( (string) file_get_contents( $path ) ) as $token ) {
+		if ( ! is_array( $token ) || in_array( $token[0], [ T_COMMENT, T_DOC_COMMENT ], true ) ) {
+			continue;
+		}
+
+		if ( 1 !== preg_match( $pattern, $token[1] ) || $exempt( $token[1] ) ) {
+			continue;
+		}
+
+		$violations[] = sprintf( '%s:%d  %s', $scan_file, $token[2], trim( explode( "\n", $token[1] )[0] ) );
 	}
 }
 
