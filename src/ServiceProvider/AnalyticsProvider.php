@@ -14,6 +14,8 @@ use GFExcel\Analytics\SiteIdentity;
 use GFExcel\Analytics\SiteScan;
 use GFExcel\Analytics\SuperProps;
 use GFExcel\Container\ContainerInterface;
+use GFExcel\Upsell\DownloadChart;
+use GFExcel\Upsell\DownloadHistory;
 use GFExcel\Upsell\DownloadMilestone;
 use League\Container\Container;
 
@@ -42,6 +44,8 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		ConsentCard::class,
 		DownloadCompletedListener::class,
 		DownloadMilestone::class,
+		DownloadHistory::class,
+		DownloadChart::class,
 	];
 
 	/**
@@ -85,6 +89,11 @@ class AnalyticsProvider extends AbstractServiceProvider {
 
 		$container->add( DownloadCompletedListener::class )->setShared( true );
 		$container->add( DownloadMilestone::class )->setShared( true );
+		$container->add( DownloadHistory::class )->setShared( true );
+
+		$container->add( DownloadChart::class )
+		          ->addArgument( DownloadHistory::class )
+		          ->setShared( true );
 	}
 
 	/**
@@ -128,6 +137,11 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		// working for the installs that decline telemetry and after the
 		// analytics client is deleted at handover.
 		$container->get( DownloadMilestone::class );
+		$container->get( DownloadHistory::class );
+
+		if ( is_admin() ) {
+			$container->get( DownloadChart::class );
+		}
 
 		if ( is_admin() ) {
 			$container->get( ConsentCard::class );
