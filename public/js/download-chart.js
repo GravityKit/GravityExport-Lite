@@ -10,11 +10,15 @@
 ( function () {
 	'use strict';
 
-	// Google Charts' "silver", which is what GF asks for in its own chart options.
-	var BAR = '#c0c0c0';
-	var BAR_HOVER = '#a8a8a8';
-	var GRID = '#e5e5e5';
-	var TEXT = '#4f4f4f';
+	// GF's own charts use Google Charts' "silver" (#c0c0c0). That measures 1.82:1
+	// against white and fails WCAG 1.4.11, which requires 3:1 for a graphical
+	// object carrying meaning — so the bars here are WordPress admin grey, which
+	// keeps the neutral look and measures 3.24:1. Matching a design should not
+	// mean inheriting its accessibility failures.
+	var BAR = '#8c8f94';
+	var BAR_HOVER = '#50575e';
+	var GRID = '#c3c4c7';
+	var TEXT = '#3c434a';
 
 	function render( canvas ) {
 		var data;
@@ -49,6 +53,8 @@
 			options: {
 				responsive: true,
 				maintainAspectRatio: false,
+				// Off regardless of preference: this is a static admin figure, and
+				// an animated bar chart is motion nobody asked for.
 				animation: false,
 				plugins: {
 					// GF sets visibleInLegend false; one series needs no key.

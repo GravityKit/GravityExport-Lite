@@ -84,12 +84,11 @@ class ConsentCard {
 		$url = admin_url( 'admin-post.php' );
 		?>
 		<div class="notice notice-info">
-			<p>
-				<strong><?php esc_html_e( 'Help improve GravityExport', 'gk-gravityexport-lite' ); ?></strong><br>
-				<?php echo esc_html( self::disclosure() ); ?>
-			</p>
-			<p>
-				<form method="post" action="<?php echo esc_url( $url ); ?>" style="display:inline">
+			<h2 class="notice-title" style="margin:.5em 0;font-size:1em"><?php
+				esc_html_e( 'Help improve GravityExport', 'gk-gravityexport-lite' );
+			?></h2>
+			<p><?php echo esc_html( self::disclosure() ); ?></p>
+			<form method="post" action="<?php echo esc_url( $url ); ?>">
 					<?php wp_nonce_field( self::ACTION ); ?>
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 					<button type="submit" name="choice" value="grant" class="button button-primary">
@@ -98,8 +97,7 @@ class ConsentCard {
 					<button type="submit" name="choice" value="decline" class="button">
 						<?php esc_html_e( 'No thanks', 'gk-gravityexport-lite' ); ?>
 					</button>
-				</form>
-			</p>
+			</form>
 		</div>
 		<?php
 	}

@@ -167,16 +167,14 @@ class DownloadMilestone {
 
 		$url = admin_url( 'admin-post.php' );
 		?>
-		<div class="notice notice-success is-dismissible">
-			<p>
-				<strong><?php
-					printf(
-						/* translators: %s: the number of exports downloaded, already formatted. */
-						esc_html__( 'Your forms have been exported %s times.', 'gk-gravityexport-lite' ),
-						esc_html( number_format_i18n( $milestone ) )
-					);
-				?></strong>
-			</p>
+		<div class="notice notice-success">
+			<h2 class="notice-title" style="margin:.5em 0;font-size:1em"><?php
+				printf(
+					/* translators: %s: the number of exports downloaded, already formatted. */
+					esc_html__( 'Your forms have been exported %s times.', 'gk-gravityexport-lite' ),
+					esc_html( number_format_i18n( $milestone ) )
+				);
+			?></h2>
 			<p><?php esc_html_e(
 				'GravityExport adds scheduled exports that send themselves, delivery straight to Dropbox, Google Drive or FTP, and PDF output.',
 				'gk-gravityexport-lite'
@@ -185,8 +183,7 @@ class DownloadMilestone {
 				'This count is kept on your own site. It is only shared with us if you turned on usage data.',
 				'gk-gravityexport-lite'
 			); ?></p>
-			<p>
-				<form method="post" action="<?php echo esc_url( $url ); ?>" style="display:inline">
+			<form method="post" action="<?php echo esc_url( $url ); ?>">
 					<?php wp_nonce_field( self::ACTION ); ?>
 					<input type="hidden" name="action" value="<?php echo esc_attr( self::ACTION ); ?>">
 					<input type="hidden" name="milestone" value="<?php echo esc_attr( (string) $milestone ); ?>">
@@ -199,8 +196,7 @@ class DownloadMilestone {
 					<button type="submit" name="choice" value="never" class="button-link">
 						<?php esc_html_e( 'Don\'t show this again', 'gk-gravityexport-lite' ); ?>
 					</button>
-				</form>
-			</p>
+			</form>
 		</div>
 		<?php
 	}

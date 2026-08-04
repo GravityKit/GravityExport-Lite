@@ -121,12 +121,42 @@ class DownloadChart {
 			self::DAYS
 		);
 
+		// The canvas is opaque to assistive technology, so the same data is also
+		// rendered as a table. It is visually hidden rather than omitted: a chart
+		// with no text equivalent is simply unavailable to a screen reader, and a
+		// summary sentence alone loses the shape the chart exists to show.
+		$rows = '';
+
+		foreach ( $series as $day => $count ) {
+			$rows .= sprintf(
+				'<tr><th scope="row">%1$s</th><td>%2$s</td></tr>',
+				esc_html( date_i18n( get_option( 'date_format' ), strtotime( $day ) ) ),
+				esc_html( number_format_i18n( $count ) )
+			);
+		}
+
+		$caption = sprintf(
+			/* translators: %d: number of days. */
+			esc_html__( 'Exports per day for the last %d days', 'gk-gravityexport-lite' ),
+			self::DAYS
+		);
+
 		return sprintf(
 			'<p class="description">%1$s %2$s</p>'
-			. '<div style="height:180px"><canvas data-gfexcel-download-chart data-series="%3$s"></canvas></div>',
+			. '<div style="height:180px">'
+			. '<canvas data-gfexcel-download-chart data-series="%3$s" role="img" aria-label="%4$s"></canvas>'
+			. '</div>'
+			. '<table class="screen-reader-text"><caption>%5$s</caption>'
+			. '<thead><tr><th scope="col">%6$s</th><th scope="col">%7$s</th></tr></thead>'
+			. '<tbody>%8$s</tbody></table>',
 			$summary,
 			esc_html__( 'This is recorded on your site and is not sent anywhere.', 'gk-gravityexport-lite' ),
-			esc_attr( (string) wp_json_encode( $series ) )
+			esc_attr( (string) wp_json_encode( $series ) ),
+			esc_attr( $caption . '. ' . wp_strip_all_tags( $summary ) ),
+			$caption,
+			esc_html__( 'Date', 'gk-gravityexport-lite' ),
+			esc_html__( 'Exports', 'gk-gravityexport-lite' ),
+			$rows
 		);
 	}
 
