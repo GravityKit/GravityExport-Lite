@@ -90,15 +90,6 @@ class Client {
 			return; // No salt, so no non-reversible identity. Refuse rather than emit.
 		}
 
-		// Attached before filtering so they travel with every event, including the
-		// ones a caller built by hand. The IP is the one identifier the plugin
-		// cannot withhold at the transport layer, so it is countered by an
-		// explicit instruction the sink can honour and an auditor can see.
-		// Unconditional by design: a privacy control with an off switch is one
-		// that will eventually be switched off.
-		$props[ Schema::PRIVACY['ip_property'] ]            = null;
-		$props[ Schema::PRIVACY['geoip_disable_property'] ] = true;
-
 		$props = $this->allowlist->filterProps( $props );
 		$props = $this->scrub->scrub( $props );
 
