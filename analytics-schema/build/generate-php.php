@@ -66,6 +66,31 @@ if ( count( $json['plugin_props'] ) > 20 ) {
 	exit( 1 );
 }
 
+// The IP countermeasure has two halves and both must be present, or the payload
+// asserts a control it does not have — which is worse than asserting nothing,
+// because it looks correct. Checked here rather than in a test: the schema is a
+// compile-time constant, so static analysis folds any such assertion away.
+$privacy = $json['privacy'] ?? [];
+
+foreach ( [ 'ip_property', 'geoip_disable_property', 'proxy_requirement' ] as $required ) {
+	if ( empty( $privacy[ $required ] ) ) {
+		fwrite( STDERR, "The privacy block is missing \"{$required}\".\n" );
+		exit( 1 );
+	}
+}
+
+foreach ( [ $privacy['ip_property'], $privacy['geoip_disable_property'] ] as $prop ) {
+	if ( ! isset( $json['props'][ $prop ] ) ) {
+		fwrite( STDERR, "\"{$prop}\" is not a registered prop, so the allowlist guard would drop it.\n" );
+		exit( 1 );
+	}
+
+	if ( ! in_array( $prop, $json['scrub']['preserve_keys'] ?? [], true ) ) {
+		fwrite( STDERR, "\"{$prop}\" is not in scrub.preserve_keys, so the scrub would remove it.\n" );
+		exit( 1 );
+	}
+}
+
 // A hand-maintained list rots silently unless something says so. This is a
 // warning rather than a failure: a stale list still produces correct data, it
 // just stops asking about anything new.
@@ -165,6 +190,7 @@ $consts = [
 	'ATTRIBUTION'    => $json['attribution'],
 	'TRANSPORT'      => $json['transport'],
 	'SCRUB'          => $json['scrub'],
+	'PRIVACY'        => $json['privacy'],
 	'LINKS'          => $json['links'],
 	'PLUGIN_PROPS'   => $json['plugin_props'],
 	'THEMES'         => $json['theme_detection']['known'],

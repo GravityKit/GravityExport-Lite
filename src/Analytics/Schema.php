@@ -137,6 +137,12 @@ final class Schema {
 			'type' => 'enum',
 			'enum' => 'link_campaign',
 		],
+		'$ip' => [
+			'type' => 'null',
+		],
+		'$geoip_disable' => [
+			'type' => 'bool',
+		],
 		'file_format' => [
 			'type' => 'enum',
 			'enum' => 'file_format',
@@ -388,6 +394,17 @@ final class Schema {
 			'url' => '/https?:\\/\\/[^\\s]+/i',
 		],
 		'min_site_name_length' => 4,
+		'preserve_keys' => [
+			'$ip',
+			'$geoip_disable',
+		],
+	];
+
+	public const PRIVACY = [
+		'suppress_ip' => true,
+		'ip_property' => '$ip',
+		'geoip_disable_property' => '$geoip_disable',
+		'proxy_requirement' => 'understand.gravitykit.com MUST discard the connecting IP before forwarding to PostHog, MUST NOT set or forward X-Forwarded-For / X-Real-IP, and MUST NOT enable GeoIP enrichment. This is the authoritative control; the payload properties are defence in depth. Unverified until the proxy is specified and tested — the consent card\'s anonymity claim is not provable without it.',
 	];
 
 	public const LINKS = [

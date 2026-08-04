@@ -117,4 +117,5 @@ class SiteScanTest extends TestCase {
 
 		self::assertContains( 'other', $legal, 'An unrecognised parent must have somewhere to land.' );
 	}
+
 }

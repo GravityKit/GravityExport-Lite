@@ -174,4 +174,30 @@ class ScrubTest extends TestCase {
 
 		self::assertSame( [ 'column_count' => 7, 'is_multisite' => false ], $result );
 	}
+
+	/**
+	 * The drop rule removes every $-prefixed key so PostHog's location properties
+	 * can never leak. The instructions telling the sink NOT to collect an IP are
+	 * also $-prefixed, so they need an explicit exception — without it the payload
+	 * silently loses the control it is asserting, which is worse than not
+	 * asserting it, because it looks correct.
+	 *
+	 * @since $ver$
+	 */
+	public function testSuppressionInstructionsSurviveTheScrub(): void {
+		$result = $this->scrub->scrub( [
+			'$ip'             => null,
+			'$geoip_disable'  => true,
+			'$geoip_city_name' => 'Leverett',
+			'$geoip_latitude' => 42.45,
+		] );
+
+		self::assertArrayHasKey( '$ip', $result, 'The IP suppression instruction was scrubbed away.' );
+		self::assertNull( $result['$ip'] );
+		self::assertTrue( $result['$geoip_disable'] );
+
+		// Everything else $-prefixed must still be dropped, or the exception is a hole.
+		self::assertArrayNotHasKey( '$geoip_city_name', $result );
+		self::assertArrayNotHasKey( '$geoip_latitude', $result );
+	}
 }

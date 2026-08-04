@@ -120,6 +120,14 @@
     "link_campaign": {
       "type": "enum",
       "enum": "link_campaign"
+    },
+    "$ip": {
+      "type": "null",
+      "$comment": "Always null. Tells the sink to discard the connecting address."
+    },
+    "$geoip_disable": {
+      "type": "bool",
+      "$comment": "Always true. Suppresses GeoIP enrichment."
     }
   },
   "enums": {
@@ -234,7 +242,11 @@
       "url": "/https?:\\/\\/[^\\s]+/i"
     },
     "min_site_name_length": 4,
-    "$comment": "Emails and URLs are redacted outright rather than masked. Easy Digital Downloads masks them (a*a@e*****e.com), which preserves length, first and last characters and the TLD; full redaction is stricter. Site-name scrubbing is taken FROM EDD, which strips the site name out of arbitrary strings before sending (EDD\\Telemetry\\Traits\\Anonymize::anonymize_site_name). min_site_name_length is a threshold, not a toggle: it guards against a site named \"A\" or \"My\" matching everywhere and destroying every string, which EDD does not guard against."
+    "$comment": "Emails and URLs are redacted outright rather than masked. Easy Digital Downloads masks them (a*a@e*****e.com), which preserves length, first and last characters and the TLD; full redaction is stricter. Site-name scrubbing is taken FROM EDD, which strips the site name out of arbitrary strings before sending (EDD\\Telemetry\\Traits\\Anonymize::anonymize_site_name). min_site_name_length is a threshold, not a toggle: it guards against a site named \"A\" or \"My\" matching everywhere and destroying every string, which EDD does not guard against.",
+    "preserve_keys": [
+      "$ip",
+      "$geoip_disable"
+    ]
   },
   "links": {
     "host_allowlist": [
@@ -374,5 +386,12 @@
         "twentysixteen"
       ]
     }
+  },
+  "privacy": {
+    "$comment": "The originating IP is the one identifier a plugin cannot withhold: the TCP connection carries it whether we like it or not, and a server IP frequently reverse-resolves to the site, which would defeat every hash and bucket in this schema at once. The fix has two halves and only one of them lives here. The plugin sends an explicit instruction to discard IP and skip GeoIP, which is auditable in the payload and defends against the proxy being misconfigured. The proxy at understand.gravitykit.com must ALSO drop the connecting address before anything reaches PostHog, and must not forward it in X-Forwarded-For. Neither half is sufficient alone: the instruction depends on the sink honouring it, and the proxy depends on nobody re-enabling enrichment downstream.",
+    "suppress_ip": true,
+    "ip_property": "$ip",
+    "geoip_disable_property": "$geoip_disable",
+    "proxy_requirement": "understand.gravitykit.com MUST discard the connecting IP before forwarding to PostHog, MUST NOT set or forward X-Forwarded-For / X-Real-IP, and MUST NOT enable GeoIP enrichment. This is the authoritative control; the payload properties are defence in depth. Unverified until the proxy is specified and tested \u2014 the consent card's anonymity claim is not provable without it."
   }
 }

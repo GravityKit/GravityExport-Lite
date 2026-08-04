@@ -73,6 +73,15 @@ class Scrub {
 	}
 
 	private function keyIsDropped( string $key ): bool {
+		// A narrow exception, and the reason it exists matters: the drop rule below
+		// removes every $-prefixed key so PostHog's location properties can never
+		// leak. The instructions telling the sink NOT to collect an IP are also
+		// $-prefixed, so without this they would be scrubbed away and the payload
+		// would silently lose the very control it is asserting.
+		if ( in_array( $key, Schema::SCRUB['preserve_keys'], true ) ) {
+			return false;
+		}
+
 		foreach ( Schema::SCRUB['drop_key_patterns'] as $pattern ) {
 			if ( 1 === preg_match( '/' . $pattern . '/', $key ) ) {
 				return true;
