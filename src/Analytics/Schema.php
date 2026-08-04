@@ -126,6 +126,10 @@ final class Schema {
 		'theme_is_child' => [
 			'type' => 'bool',
 		],
+		'plugin_count_bucket' => [
+			'type' => 'enum',
+			'enum' => 'scale_bucket',
+		],
 	];
 
 	public const PROPS = [

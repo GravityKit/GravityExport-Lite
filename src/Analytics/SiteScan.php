@@ -185,6 +185,10 @@ class SiteScan {
 			$found[ $prop ] = $active;
 		}
 
+		// Site complexity, with no list to maintain. This is the part of the
+		// plugin question that never goes stale.
+		$found['plugin_count_bucket'] = self::bucket( count( (array) get_option( 'active_plugins', [] ) ) );
+
 		return $found;
 	}
 

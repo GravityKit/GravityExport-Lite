@@ -66,6 +66,24 @@ if ( count( $json['plugin_props'] ) > 20 ) {
 	exit( 1 );
 }
 
+// A hand-maintained list rots silently unless something says so. This is a
+// warning rather than a failure: a stale list still produces correct data, it
+// just stops asking about anything new.
+$reviewed = $json['plugin_detection']['reviewed'] ?? null;
+$interval = (int) ( $json['plugin_detection']['review_interval_months'] ?? 12 );
+
+if ( $reviewed ) {
+	$months = (int) floor( ( time() - strtotime( $reviewed ) ) / 2629800 );
+
+	if ( $months >= $interval ) {
+		fwrite( STDERR, sprintf(
+			"NOTICE: the plugin allowlist was last reviewed %s (%d months ago, interval %d).\n"
+			. "        Refresh it from data using plugin_detection.review_procedure, not from memory.\n",
+			$reviewed, $months, $interval
+		) );
+	}
+}
+
 foreach ( $json['plugin_props'] as $prop => $spec ) {
 	if ( empty( $spec['paths'] ) ) {
 		fwrite( STDERR, "Plugin \"{$prop}\" declares no detection path.\n" );

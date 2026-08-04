@@ -110,6 +110,10 @@
     },
     "theme_is_child": {
       "type": "bool"
+    },
+    "plugin_count_bucket": {
+      "type": "enum",
+      "enum": "scale_bucket"
     }
   },
   "props": {
@@ -245,10 +249,14 @@
     "days_since_install": "Removed from v1. The taxonomy declares it, but this product has no trustworthy install timestamp: the only date available is when analytics was first enabled, which is not the install date. Emitting that under this name would be a wrong number wearing a right one. Reinstate when a real install date exists.",
     "plugin_detection": "Cut on measurement, not taste: Bricks 0.4%, Oxygen 0.3%, SeedProd 0.3%, GP Google Sheets 0.07% were removed as noise, and the five form-platform competitors were collapsed into one boolean because individually each is under 1% and together only 3.8%. Caveat carried deliberately: those figures come from PAYING GravityView customers, and the wordpress.org Lite population may shop around more. That is why the aggregate survives at all \u2014 if it reads above ~10% on real Lite data, split it back into named booleans in a schema revision.",
     "scale_bucket": "The top buckets are sparse by construction: few installs hold a million entries, so those buckets identify more narrowly than the dense middle. That is the price of seeing real scale, and it is a deliberate trade rather than an oversight.",
-    "theme_detection": "'other' is a real signal rather than a gap: with the measured head of the distribution named, an unrecognised parent means a custom or niche theme, which usually means an agency-built site."
+    "theme_detection": "'other' is a real signal rather than a gap: with the measured head of the distribution named, an unrecognised parent means a custom or niche theme, which usually means an agency-built site.",
+    "plugin_detection_maintenance": "This list is hand-maintained, which is the price of not shipping a roster, and the trade is deliberate. What it costs: you only learn about plugins you thought to ask about, and adding one takes a plugin release plus however long sites take to update. What it buys: a disclosure anyone can read, bounded cardinality, and no inventory of a customer's site leaving their server. Three things keep the cost small. The questions are strategic rather than operational ('do our users pay for GF add-ons' does not change weekly). Discovery is answered from data we already hold rather than from this list, so the list only has to MEASURE, not FIND. And plugin_count_bucket gives site complexity with no maintenance at all."
   },
   "plugin_detection": {
     "$comment": "A CLOSED, published list of yes/no questions. Detection is is_plugin_active() against these exact paths, so the site's plugin roster is never read, let alone transmitted. Grouped by the QUESTION each answers, not by vendor. Presence figures below are measured against 12,175 GravityView installs (latest roster per site, last 12 months, telemetry.wp_gv_tracking_logs); anything under ~5% was cut as noise. Adding an entry is a reviewable schema change.",
+    "reviewed": "2026-08-03",
+    "review_interval_months": 12,
+    "review_procedure": "Do NOT refresh this list from intuition. Run the query below against the GravityView roster data, which already collects full plugin lists from ~12,000 installs, and let it choose. That population is paying customers rather than wordpress.org users, so treat it as a candidate generator, then confirm each candidate against Lite's own has_* rates before adding it. Anything under ~5% presence is noise and should be cut. Query: WITH latest AS (SELECT site_id, plugins, ROW_NUMBER() OVER (PARTITION BY site_id ORDER BY checkin_date DESC) rn FROM `monokit-475016.telemetry.wp_gv_tracking_logs` WHERE plugins IS NOT NULL AND checkin_date >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 365 DAY)) SELECT ... FROM latest WHERE rn = 1 -- then COUNTIF(plugins LIKE '%\"<slug>%') per candidate.",
     "export_alternatives": {
       "gravity_pdf": [
         "gravity-forms-pdf-extended/pdf.php",
