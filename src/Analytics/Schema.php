@@ -324,6 +324,7 @@ final class Schema {
 			'feed_settings_notification_docs',
 			'feed_settings_file_access_docs',
 			'consent_card',
+			'download_milestone',
 		],
 		'consent_source' => [
 			'lite_settings_card',

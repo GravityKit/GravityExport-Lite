@@ -14,6 +14,7 @@ use GFExcel\Analytics\SiteIdentity;
 use GFExcel\Analytics\SiteScan;
 use GFExcel\Analytics\SuperProps;
 use GFExcel\Container\ContainerInterface;
+use GFExcel\Upsell\DownloadMilestone;
 use League\Container\Container;
 
 /**
@@ -40,6 +41,7 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		SiteScan::class,
 		ConsentCard::class,
 		DownloadCompletedListener::class,
+		DownloadMilestone::class,
 	];
 
 	/**
@@ -82,6 +84,7 @@ class AnalyticsProvider extends AbstractServiceProvider {
 		          ->setShared( true );
 
 		$container->add( DownloadCompletedListener::class )->setShared( true );
+		$container->add( DownloadMilestone::class )->setShared( true );
 	}
 
 	/**
@@ -117,8 +120,14 @@ class AnalyticsProvider extends AbstractServiceProvider {
 
 		Analytics::setLocalClient( $client );
 
-		// Instantiating registers the hooks; both constructors are hook-only.
+		// Instantiating registers the hooks; these constructors are hook-only.
 		$container->get( DownloadCompletedListener::class );
+
+		// Deliberately outside the consent gate and outside the analytics
+		// lifecycle: it reads a local counter, sends nothing, and must keep
+		// working for the installs that decline telemetry and after the
+		// analytics client is deleted at handover.
+		$container->get( DownloadMilestone::class );
 
 		if ( is_admin() ) {
 			$container->get( ConsentCard::class );
