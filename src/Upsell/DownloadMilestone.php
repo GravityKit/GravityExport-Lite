@@ -20,6 +20,14 @@ use GFExcel\Links\Links;
  * offline, and it needs no consent. Deriving upsell targeting from opt-in data
  * would reach fewer people and cost a privacy argument to do it.
  *
+ * That independence is invisible to the person reading the notice, which is a
+ * problem in itself. Someone who declined the usage-data prompt and is then
+ * shown a precise count has every reason to conclude they were counted anyway
+ * and told otherwise. The notice therefore says where the number lives. The
+ * sentence is deliberately true in both consent states and needs no runtime
+ * check, so it carries no dependency on the analytics classes that get deleted
+ * at handover.
+ *
  * @since $ver$
  */
 class DownloadMilestone {
@@ -171,6 +179,10 @@ class DownloadMilestone {
 			</p>
 			<p><?php esc_html_e(
 				'GravityExport adds scheduled exports that send themselves, delivery straight to Dropbox, Google Drive or FTP, and PDF output.',
+				'gk-gravityexport-lite'
+			); ?></p>
+			<p class="description"><?php esc_html_e(
+				'This count is kept on your own site. It is only shared with us if you turned on usage data.',
 				'gk-gravityexport-lite'
 			); ?></p>
 			<p>

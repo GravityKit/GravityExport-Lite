@@ -124,4 +124,33 @@ class DownloadMilestoneTest extends TestCase {
 		// for money, so it waits longer.
 		self::assertGreaterThan( 14 * DAY_IN_SECONDS, DownloadMilestone::COOLDOWN );
 	}
+
+	/**
+	 * The notice must say where the number lives.
+	 *
+	 * Someone who declined the usage-data prompt and is then shown a precise
+	 * count has every reason to conclude they were counted anyway and told
+	 * otherwise. The counter genuinely is local and always was — it predates the
+	 * analytics by several years — but that is invisible to the reader, and an
+	 * invisible truth does not repair a broken impression.
+	 *
+	 * @since $ver$
+	 */
+	public function testTheNoticeDisclosesThatTheCountIsLocal(): void {
+		$source = file_get_contents( dirname( __DIR__, 2 ) . '/src/Upsell/DownloadMilestone.php' );
+
+		self::assertStringContainsString(
+			'kept on your own site',
+			$source,
+			'The milestone notice must state that the count is stored locally.'
+		);
+
+		// It must hold in both consent states without a runtime check, or it
+		// would need the analytics classes that are deleted at handover.
+		self::assertStringNotContainsString(
+			'Consent',
+			$source,
+			'The upsell must not depend on the analytics consent classes.'
+		);
+	}
 }
