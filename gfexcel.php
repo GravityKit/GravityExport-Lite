@@ -35,6 +35,11 @@ if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
 	define( 'GFEXCEL_MIN_PHP_VERSION', '7.2' );
 }
 
+if ( ! defined( 'GFEXCEL_ATTACHMENT_NOTIFICATIONS_API_VERSION' ) ) {
+	// Capability marker: attaching the single-entry export to multiple notifications is supported.
+	define( 'GFEXCEL_ATTACHMENT_NOTIFICATIONS_API_VERSION', 1 );
+}
+
 $src_folder    = __DIR__ . '/build/vendor_prefixed/gravitykit/gravityexport-lite-src';
 if ( ! is_readable( $src_folder ) ) {
 	$src_folder = __DIR__ . '/src';

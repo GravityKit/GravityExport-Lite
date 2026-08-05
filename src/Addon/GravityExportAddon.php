@@ -433,7 +433,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			],
 		];
 
-		$settings_sections = array_merge( $settings_sections, apply_filters(
+		$general_settings = apply_filters(
 			'gfexcel_general_settings',
 			[
 				[
@@ -510,7 +510,12 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					],
 				],
 			]
-		) );
+		);
+
+		// A filter callback can return anything; only merge usable sections.
+		if ( is_array( $general_settings ) ) {
+			$settings_sections = array_merge( $settings_sections, $general_settings );
+		}
 
 		$settings_sections[] = [
 			'id'          => 'gk-section-fields',
@@ -942,6 +947,23 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		$action = rgpost( 'gform-settings-save' );
 		// Keep old settings that were not provided (used for download_count).
 		$settings = array_merge( $this->get_previous_settings(), $settings );
+
+		/**
+		 * Modifies the feed settings before they are stored.
+		 *
+		 * Runs inside the save, so related settings are written in a single update.
+		 *
+		 * @since TBD
+		 *
+		 * @param array      $settings The settings about to be stored.
+		 * @param int|string $feed_id  The feed ID.
+		 * @param int|string $form_id  The form ID.
+		 */
+		$filtered = apply_filters( 'gk/gravityexport/feed/pre-save-settings', $settings, $feed_id, $form_id );
+
+		if ( is_array( $filtered ) ) {
+			$settings = $filtered;
+		}
 
 		if ( $this->hasAction( $action ) ) {
 			// Prevent indefinite loop in case action's fire() method calls save_feed_settings().
