@@ -5,7 +5,7 @@ namespace GFExcel\Action;
 /**
  * An action that reports a typed notice describing its outcome.
  *
- * @since TBD
+ * @since 2.7.0
  */
 interface NotifyingActionInterface extends ActionInterface {
 	/**
@@ -14,7 +14,7 @@ interface NotifyingActionInterface extends ActionInterface {
 	 * Used to re-surface the confirmation after a post-redirect GET, where the action itself
 	 * must not run again.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @return ActionNotice
 	 */
@@ -23,7 +23,7 @@ interface NotifyingActionInterface extends ActionInterface {
 	/**
 	 * Performs the action and returns the notice describing what happened.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @param \GFAddOn $addon The add-on instance.
 	 * @param array    $form  The [feed_id, form_id, settings] tuple.

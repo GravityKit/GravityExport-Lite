@@ -17,7 +17,7 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.0
 	 */
 	public function get_success_notice(): ActionNotice {
 		return ActionNotice::success( esc_html__( 'The download URL has been enabled.', 'gk-gravityexport-lite' ) );
@@ -25,7 +25,7 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.0
 	 */
 	public function fire_with_notice( \GFAddOn $addon, array $form ): ?ActionNotice {
 		if ( ! $addon instanceof GravityExportAddon ) {

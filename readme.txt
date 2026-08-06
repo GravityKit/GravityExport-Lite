@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.9.4
+Tested up to: 7.0.3
 Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -256,7 +256,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.7.0 on August 6, 2026 =
 
 * Added: The single-entry export attached to a notification is now saved to a unique temporary folder, so simultaneous submissions can no longer overwrite each other's attachment.
 * Fixed: Copy-to-clipboard button icons were vertically misaligned in WordPress 7.0.

@@ -41,7 +41,7 @@ class DownloadUrlResetAction extends AbstractAction implements NotifyingActionIn
 	 * service container during load (before after_setup_theme), and translating
 	 * there trips WordPress 6.7's just-in-time translation notice.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @return ActionNotice
 	 */
@@ -51,7 +51,7 @@ class DownloadUrlResetAction extends AbstractAction implements NotifyingActionIn
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.0
 	 */
 	public function fire_with_notice( \GFAddOn $addon, array $form ): ?ActionNotice {
 		if ( ! $addon instanceof GravityExportAddon ) {

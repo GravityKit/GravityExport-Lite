@@ -92,7 +92,7 @@ class FormsRepository {
 
 	/**
 	 * Returns the selected notification IDs the single-entry export is attached to.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @return string[] The notification IDs.
 	 */
 	public function getSelectedNotifications(): array {
@@ -109,7 +109,7 @@ class FormsRepository {
 		 * it. Runs before `gk/gravityexport/notification/attachment-ids`, so callbacks on that
 		 * filter receive the complete selection. Use that filter to add or remove IDs.
 		 *
-		 * @since TBD
+		 * @since 2.7.0
 		 *
 		 * @param string[] $ids     The notification IDs stored by GravityExport Lite.
 		 * @param int      $form_id The form ID.
@@ -121,7 +121,7 @@ class FormsRepository {
 		/**
 		 * Modifies the notification IDs the single-entry export is attached to.
 		 *
-		 * @since TBD
+		 * @since 2.7.0
 		 *
 		 * @param string[] $ids     The selected notification IDs.
 		 * @param int      $form_id The form ID.
@@ -133,7 +133,7 @@ class FormsRepository {
 
 	/**
 	 * Normalizes a stored or filtered notification selection to a list of ID strings.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @param mixed $value The raw value; a single ID or a list of IDs.
 	 * @return string[] The unique, non-empty notification IDs.
 	 */

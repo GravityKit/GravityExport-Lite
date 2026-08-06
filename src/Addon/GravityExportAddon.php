@@ -186,7 +186,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * admin_notices output lands in the document head). The specific cause is logged, not shown, so
 	 * internals do not leak to the browser.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @return void
 	 */
@@ -205,7 +205,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * Settings framework's postback message. The action name rides an allowlisted `gexcel_notice`
 	 * token on the redirect (see self::save_feed_settings()), so nothing is stored to survive it.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 */
 	public function feed_settings_init(): void {
 		parent::feed_settings_init();
@@ -237,7 +237,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * Prints a one-liner that removes the one-time `gexcel_notice`/`gexcel_error` tokens from the
 	 * current URL, so a browser refresh does not re-surface the message.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @return void
 	 */
@@ -953,7 +953,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		 *
 		 * Runs inside the save, so related settings are written in a single update.
 		 *
-		 * @since TBD
+		 * @since 2.7.0
 		 *
 		 * @param array      $settings The settings about to be stored.
 		 * @param int|string $feed_id  The feed ID.
@@ -1018,7 +1018,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	/**
 	 * Builds the current feed-settings URL, optionally carrying a one-time success or error token.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @param string|null $notice Allowlisted success token to confirm after the redirect.
 	 * @param string|null $error  Allowlisted error token to surface a failure after the redirect.
@@ -1051,7 +1051,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	/**
 	 * Whether the token identifies a download-URL action whose success message may be shown after a redirect.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @param string $notice The notice token.
 	 *
@@ -1069,7 +1069,7 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * Returns the translated success message for an allowlisted download-URL notice token, sourced
 	 * from the action itself so the string has a single source of truth.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 *
 	 * @param string $notice The notice token.
 	 *

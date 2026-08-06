@@ -14,7 +14,7 @@ use GFExcel\Repository\FormsRepository;
 final class NotificationAttachmentAction {
 	/**
 	 * The generated temporary files, as file path => private directory.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @var array<string, string>
 	 */
 	private $files = [];
@@ -25,7 +25,7 @@ final class NotificationAttachmentAction {
 	 * Registered before rendering, because the renderer exits the request on
 	 * failure, which skips `finally` blocks but not the shutdown handler.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 * @var array<string, string>
 	 */
 	private $directories = [];
@@ -124,7 +124,7 @@ final class NotificationAttachmentAction {
 	 * The directory is registered for shutdown cleanup up front, because a failed
 	 * render exits the request before the file can be registered.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 * @return string|null The directory path, or null when it could not be created.
 	 */
 	private function create_private_directory(): ?string {
@@ -180,7 +180,7 @@ final class NotificationAttachmentAction {
 
 	/**
 	 * Removes any generated files and directories that were not cleaned up after their email.
-	 * @since TBD
+	 * @since 2.7.0
 	 */
 	private function remove_leftover_files(): void {
 		foreach ( $this->files as $file => $directory ) {
@@ -203,7 +203,7 @@ final class NotificationAttachmentAction {
 	 * world-writable (`/tmp` on shared hosts), so anything else there is left alone:
 	 * validating a path someone else controls cannot be done without a race.
 	 *
-	 * @since TBD
+	 * @since 2.7.0
 	 * @param string $directory The directory path.
 	 */
 	private function remove_directory( string $directory ): void {

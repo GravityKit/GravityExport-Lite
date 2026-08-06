@@ -5,7 +5,7 @@ namespace GFExcel\Action;
 /**
  * An immutable, typed notice describing the outcome of an action.
  *
- * @since TBD
+ * @since 2.7.0
  */
 final class ActionNotice {
 	public const SUCCESS = 'success';
@@ -14,14 +14,14 @@ final class ActionNotice {
 
 	/**
 	 * The notice type; one of the class constants.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @var string
 	 */
 	private $type;
 
 	/**
 	 * The translated, display-ready message.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @var string
 	 */
 	private $message;
@@ -33,7 +33,7 @@ final class ActionNotice {
 
 	/**
 	 * Creates a success notice.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @param string $message The translated message.
 	 * @return self
 	 */
@@ -43,7 +43,7 @@ final class ActionNotice {
 
 	/**
 	 * Creates an error notice.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @param string $message The translated message.
 	 * @return self
 	 */
@@ -53,7 +53,7 @@ final class ActionNotice {
 
 	/**
 	 * Creates an informational notice.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @param string $message The translated message.
 	 * @return self
 	 */
@@ -63,7 +63,7 @@ final class ActionNotice {
 
 	/**
 	 * The notice type.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @return string One of self::SUCCESS, self::ERROR, self::INFO.
 	 */
 	public function type(): string {
@@ -72,7 +72,7 @@ final class ActionNotice {
 
 	/**
 	 * The translated message.
-	 * @since TBD
+	 * @since 2.7.0
 	 * @return string
 	 */
 	public function message(): string {

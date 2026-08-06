@@ -9,7 +9,7 @@ use GFExcel\Addon\GravityExportAddon;
  * notice into the add-on's message queue. Lets callers that predate the notice return value (e.g.
  * feed duplication) keep working unchanged.
  *
- * @since TBD
+ * @since 2.7.0
  */
 trait FiresWithNotice {
 	/**

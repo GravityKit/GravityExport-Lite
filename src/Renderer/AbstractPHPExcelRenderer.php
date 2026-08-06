@@ -103,7 +103,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
                  * Applies to every saved render: notification attachments, scheduled and bulk exports.
                  * A file saved for a notification attachment is deleted right after its email is sent.
                  *
-                 * @since TBD
+                 * @since 2.7.0
                  *
                  * @param string $file The full path to save the file to. Default: the temp directory plus the export file name.
                  * @param array  $form The form object. Can be empty for renders without a form context.

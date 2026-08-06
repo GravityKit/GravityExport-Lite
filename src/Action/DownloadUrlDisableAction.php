@@ -20,7 +20,7 @@ class DownloadUrlDisableAction extends AbstractAction implements NotifyingAction
 
     /**
      * @inheritDoc
-     * @since TBD
+     * @since 2.7.0
      */
     public function fire_with_notice(\GFAddOn $addon, array $form): ?ActionNotice
     {
@@ -41,7 +41,7 @@ class DownloadUrlDisableAction extends AbstractAction implements NotifyingAction
 
     /**
      * @inheritDoc
-     * @since TBD
+     * @since 2.7.0
      */
     public function get_success_notice(): ActionNotice
     {
