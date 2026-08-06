@@ -24,6 +24,7 @@ use GFExcel\Renderer\PHPExcelMultisheetRenderer;
 use GFExcel\Repository\FieldsRepository;
 use GFExcel\Routing\Router;
 use Gravity_Forms\Gravity_Forms\Settings\Fields;
+use Gravity_Forms\Gravity_Forms\Settings\Settings;
 
 /**
  * GravityExport Lite add-on.
@@ -215,6 +216,8 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			return;
 		}
 
+		// GFAddOn::get_settings_renderer() documents the wrong class name, so the type is restated here.
+		/** @var Settings|false $renderer */
 		$renderer = $this->get_settings_renderer();
 		if ( ! $renderer ) {
 			return;
@@ -955,9 +958,9 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param array      $settings The settings about to be stored.
-		 * @param int|string $feed_id  The feed ID.
-		 * @param int|string $form_id  The form ID.
+		 * @param array|mixed $settings The settings about to be stored.
+		 * @param int|string  $feed_id  The feed ID.
+		 * @param int|string  $form_id  The form ID.
 		 */
 		$filtered = apply_filters( 'gk/gravityexport/feed/pre-save-settings', $settings, $feed_id, $form_id );
 
