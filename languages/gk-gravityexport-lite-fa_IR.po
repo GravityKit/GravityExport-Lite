@@ -1,0 +1,588 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gk-gravityexport-lite\n"
+"PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: gfexcel.php
+msgid "GravityExport Lite"
+msgstr "GravityExport Lite"
+
+#: gfexcel.php
+msgid "https://gfexcel.com"
+msgstr "https://gfexcel.com"
+
+#: gfexcel.php
+msgid ""
+"Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
+"shareable URL."
+msgstr ""
+"صادرات تمام ورودی‌های Gravity Forms به Excel (.xlsx) یا CSV از طریق یک URL "
+"مخفی قابل اشتراک‌گذاری."
+
+#: gfexcel.php
+msgid "GravityKit"
+msgstr "GravityKit"
+
+#: gfexcel.php
+msgid "https://www.gravitykit.com/extensions/gravityexport/"
+msgstr "https://www.gravitykit.com/extensions/gravityexport/"
+
+#: gfexcel.php:46
+msgid "GravityExport Lite requires PHP %s or newer."
+msgstr "GravityExport Lite به PHP %s یا نسخه جدیدتر نیاز دارد."
+
+#: src/Action/DownloadUrlDisableAction.php:38
+msgid "The download URL has been disabled."
+msgstr "URL دانلود غیرفعال شده است."
+
+#: src/Action/DownloadUrlEnableAction.php:26
+msgid "The download URL has been enabled."
+msgstr "URL دانلود فعال شده است."
+
+#: src/Action/DownloadUrlResetAction.php:41
+msgid "The download URL has been reset."
+msgstr "URL دانلود بازنشانی شده است."
+
+#: src/Action/DownloadUrlResetAction.php:58
+msgid "There was an error generating the URL: %s"
+msgstr "خطا در تولید URL: %s"
+
+#: src/Action/NotificationsAction.php:65
+msgid "The notifications could not be retrieved."
+msgstr "اعلان‌ها قابل بازیابی نبودند."
+
+#: src/Addon/GravityExportAddon.php:186
+msgid "Activate GravityExport"
+msgstr "فعال‌سازی GravityExport"
+
+#: src/Addon/GravityExportAddon.php:217
+msgid "Download settings"
+msgstr "تنظیمات دانلود"
+
+#: src/Addon/GravityExportAddon.php:221
+msgid "Download URL"
+msgstr "URL دانلود"
+
+#: src/Addon/GravityExportAddon.php:229
+msgid "Embed shortcode"
+msgstr "کد کوتاه جاسازی"
+
+#: src/Addon/GravityExportAddon.php:235
+msgid "Custom Filename"
+msgstr "نام فایل سفارشی"
+
+#: src/Addon/GravityExportAddon.php:239
+msgid "Default: %s"
+msgstr "پیش‌فرض: %s"
+
+#: src/Addon/GravityExportAddon.php:243
+msgid ""
+"Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
+"for default."
+msgstr ""
+"بیشتر کاراکترهای غیرالفبایی-عددی با خط تیره جایگزین خواهند شد. برای پیش‌فرض "
+"خالی بگذارید."
+
+#: src/Addon/GravityExportAddon.php:252
+msgid "File Extension"
+msgstr "پسوند فایل"
+
+#: src/Addon/GravityExportAddon.php:257
+msgid ""
+"Note: You may override the file type by adding the desired extension (%s) "
+"to the end of the Download URL."
+msgstr ""
+"توجه: می‌توانید نوع فایل را با افزودن پسوند موردنظر (%s) به انتهای URL "
+"دانلود بازنویسی کنید."
+
+#: src/Addon/GravityExportAddon.php:278
+msgid "Instant Download ⚡️"
+msgstr "دانلود فوری ⚡️"
+
+#: src/Addon/GravityExportAddon.php:282
+msgid "Select Date Range (optional)"
+msgstr "انتخاب بازه زمانی (اختیاری)"
+
+#: src/Addon/GravityExportAddon.php:294
+msgid "Security Settings"
+msgstr "تنظیمات امنیتی"
+
+#: src/Addon/GravityExportAddon.php:298
+msgid "Secure Shortcodes"
+msgstr "کدهای کوتاه امن"
+
+#: src/Addon/GravityExportAddon.php:300
+msgid ""
+"A secure shortcode contains a unique <code>secret</code>-attribute which "
+"prevents generating the URL for a form without permission."
+msgstr ""
+"یک کد کوتاه امن شامل یک ویژگی منحصر به فرد <code>secret</code> است که از "
+"ایجاد URL برای فرم بدون اجازه جلوگیری می‌کند."
+
+#: src/Addon/GravityExportAddon.php:304
+msgid "Enable secure embed shortcode"
+msgstr "فعال‌سازی کد کوتاه جاسازی امن"
+
+#: src/Addon/GravityExportAddon.php:311
+msgid "Download Permissions"
+msgstr "مجوزهای دانلود"
+
+#: src/Addon/GravityExportAddon.php:314
+msgid ""
+"If set to \"Everyone can download\", anyone with the link can download. If "
+"\"Logged-in users who have 'Export Entries' access\" is selected, users "
+"must be logged-in and have the %s capability."
+msgstr ""
+"اگر روی «همه می‌توانند دانلود کنند» تنظیم شود، هر کسی که لینک را داشته باشد "
+"می‌تواند دانلود کند. اگر «کاربران وارد شده که دسترسی «صادرات ورودی‌ها» "
+"دارند» انتخاب شود، کاربران باید وارد شده باشند و قابلیت %s را داشته باشند."
+
+#: src/Addon/GravityExportAddon.php:326
+msgid "Everyone can download"
+msgstr "همه می‌توانند دانلود کنند"
+
+#: src/Addon/GravityExportAddon.php:332
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr "کاربران وارد شده که دسترسی «صادرات ورودی‌ها» دارند"
+
+#: src/Addon/GravityExportAddon.php:348
+msgid "General Settings"
+msgstr "تنظیمات عمومی"
+
+#: src/Addon/GravityExportAddon.php:352
+msgid "Include Entry Notes"
+msgstr "شامل یادداشت‌های ورودی"
+
+#: src/Addon/GravityExportAddon.php:357
+msgid "Yes, enable the notes for every entry"
+msgstr "بله، یادداشت‌ها برای هر ورودی فعال شود"
+
+#: src/Addon/GravityExportAddon.php:363
+msgid "Attach Single Entry to Notification"
+msgstr "ضمیمه کردن ورودی تکی به اعلان"
+
+#: src/Addon/GravityExportAddon.php:371
+msgid "Column Position"
+msgstr "موقعیت ستون"
+
+#: src/Addon/GravityExportAddon.php:376
+msgid "At the top (normal)"
+msgstr "در بالا (عادی)"
+
+#: src/Addon/GravityExportAddon.php:381
+msgid "At the left (transposed)"
+msgstr "در سمت چپ (معکوس)"
+
+#: src/Addon/GravityExportAddon.php:388
+msgid "Order By"
+msgstr "مرتب‌سازی بر اساس"
+
+#: src/Addon/GravityExportAddon.php:403
+msgid "Ascending"
+msgstr "صعودی"
+
+#: src/Addon/GravityExportAddon.php:407
+msgid "Descending"
+msgstr "نزولی"
+
+#: src/Addon/GravityExportAddon.php:424
+msgid "Field settings"
+msgstr "تنظیمات فیلد"
+
+#: src/Addon/GravityExportAddon.php:432
+msgid "Disabled Fields"
+msgstr "فیلدهای غیرفعال"
+
+#: src/Addon/GravityExportAddon.php:433
+msgid "Enabled Fields"
+msgstr "فیلدهای فعال"
+
+#: src/Addon/GravityExportAddon.php:494
+msgid "Default Settings"
+msgstr "تنظیمات پیش‌فرض"
+
+#: src/Addon/GravityExportAddon.php:499
+msgid "Labels"
+msgstr "برچسب‌ها"
+
+#: src/Addon/GravityExportAddon.php:503
+msgid "Use admin labels"
+msgstr "استفاده از برچسب‌های مدیریت"
+
+#: src/Addon/GravityExportAddon.php:513
+msgid "Multiple Columns"
+msgstr "ستون‌های چندگانه"
+
+#: src/Addon/GravityExportAddon.php:517
+msgid "Split multi-fields (name, address) into multiple columns"
+msgstr "تقسیم چندفیلدها (نام، آدرس) به چندین ستون"
+
+#: src/Addon/GravityExportAddon.php:531
+msgid "Enable notes by default"
+msgstr "فعال‌سازی یادداشت‌ها به‌صورت پیش‌فرض"
+
+#: src/Addon/GravityExportAddon.php:539
+msgid "Sections"
+msgstr "بخش‌ها"
+
+#: src/Addon/GravityExportAddon.php:543
+msgid "Enable (empty) section column"
+msgstr "فعال‌سازی ستون بخش (خالی)"
+
+#: src/Addon/GravityExportAddon.php:551
+msgid "File Uploads"
+msgstr "بارگذاری فایل‌ها"
+
+#: src/Addon/GravityExportAddon.php:556
+msgid "Enable file upload columns"
+msgstr "فعال‌سازی ستون‌های بارگذاری فایل"
+
+#: src/Addon/GravityExportAddon.php:564
+msgid "Hyperlinks"
+msgstr "پیوندهای ابرمتنی"
+
+#: src/Addon/GravityExportAddon.php:569
+msgid "Enable hyperlinks on URL-only columns"
+msgstr "فعال‌سازی پیوندهای ابرمتنی در ستون‌های فقط آدرس URL"
+
+#: src/Addon/GravityExportAddon.php:577
+msgid "Product Fields"
+msgstr "فیلدهای محصول"
+
+#: src/Addon/GravityExportAddon.php:582
+msgid "Export prices as numeric fields, without currency symbol ($)"
+msgstr "صادرات قیمت‌ها به‌صورت فیلدهای عددی، بدون نماد ارز ($)"
+
+#: src/Addon/GravityExportAddon.php:595
+msgid "Default Enabled Meta Fields"
+msgstr "فیلدهای متای فعال پیش‌فرض"
+
+#: src/Addon/GravityExportAddon.php:599
+msgid ""
+"Select all meta fields that are enabled by default. Once you've saved your "
+"form, these settings will not do anything any more."
+msgstr ""
+"تمام فیلدهای متایی که به‌صورت پیش‌فرض فعال هستند را انتخاب کنید. پس از "
+"ذخیره فرم، این تنظیمات دیگر تأثیری نخواهند داشت."
+
+#: src/Addon/GravityExportAddon.php:652
+msgid "Select a Notification"
+msgstr "انتخاب یک اعلان"
+
+#: src/Addon/GravityExportAddon.php:671
+msgid ""
+"If you like the plugin, 📣 %slet others know%s! We already have %s active "
+"users. Let's get to %s by spreading the news!"
+msgstr ""
+"اگر از این افزونه خوشتان آمد، 📣 %sبه دیگران اطلاع دهید%s! ما در حال حاضر "
+"%s کاربر فعال داریم. بیایید با پخش خبر به %s برسیم!"
+
+#: src/Addon/GravityExportAddon.php:675
+#: src/Addon/GravityExportAddon.php:742
+#: src/Component/Plugin.php:43
+msgid "This link opens in a new window"
+msgstr "این لینک در پنجره‌ای جدید باز می‌شود"
+
+#: src/Addon/GravityExportAddon.php:695
+msgid ""
+"These are global settings for new forms. You can overwrite them per form "
+"using the available hooks."
+msgstr ""
+"این تنظیمات جهانی برای فرم‌های جدید است. می‌توانید آنها را برای هر فرم با "
+"استفاده از هوک‌های موجود بازنویسی کنید."
+
+#: src/Addon/GravityExportAddon.php:711
+msgid "Upgrade to GravityExport for these useful features:"
+msgstr "برای این ویژگی‌های مفید، به GravityExport ارتقا دهید:"
+
+#: src/Addon/GravityExportAddon.php:715
+msgid "Save exports to Dropbox, FTP, &amp; local storage"
+msgstr "ذخیره خروجی‌ها در Dropbox، FTP و ذخیره محلی"
+
+#: src/Addon/GravityExportAddon.php:718
+msgid ""
+"Automatically upload exports to Dropbox, a remote server using SFTP and "
+"FTP, or store locally."
+msgstr ""
+"خروجی‌ها را به‌طور خودکار در Dropbox، سرور راه دور با استفاده از SFTP و FTP "
+"آپلود کنید یا به‌صورت محلی ذخیره نمایید."
+
+#: src/Addon/GravityExportAddon.php:724
+msgid "Filter exports with Conditional Logic"
+msgstr "فیلتر کردن خروجی‌ها با منطق شرطی"
+
+#: src/Addon/GravityExportAddon.php:726
+msgid ""
+"Create advanced filters, including exporting entries created by only the "
+"currently logged-in user."
+msgstr ""
+"فیلترهای پیشرفته ایجاد کنید، از جمله خروجی گرفتن فقط از ورودی‌های ایجاد شده "
+"توسط کاربر وارد شده کنونی."
+
+#: src/Addon/GravityExportAddon.php:732
+msgid "Exports are ready for data analysis"
+msgstr "خروجی‌ها آماده تحلیل داده‌ها هستند"
+
+#: src/Addon/GravityExportAddon.php:734
+msgid ""
+"When analyzing data, you want fields with multiple values broken into "
+"multiple rows each with one value. If you work with data, you&rsquo;ll love "
+"this feature!"
+msgstr ""
+"هنگام تحلیل داده‌ها، می‌خواهید فیلدهایی با چند مقدار به چند سطر جداگانه "
+"تقسیم شوند که هر کدام یک مقدار دارند. اگر با داده‌ها کار می‌کنید، این ویژگی "
+"را دوست خواهید داشت!"
+
+#: src/Addon/GravityExportAddon.php:743
+#: src/Component/Plugin.php:44
+msgid "Gain Powerful Features with GravityExport"
+msgstr "با GravityExport به قابلیت‌های قدرتمند دست یابید"
+
+#: src/Addon/GravityExportAddon.php:825
+msgid "Enable all"
+msgstr "فعال کردن همه"
+
+#: src/Addon/GravityExportAddon.php:826
+msgid "Disable all"
+msgstr "غیرفعال کردن همه"
+
+#: src/Addon/GravityExportAddon.php:827
+msgid "Enable visible"
+msgstr "فعال کردن قابل مشاهده"
+
+#: src/Addon/GravityExportAddon.php:828
+msgid "Disable visible"
+msgstr "غیرفعال کردن قابل مشاهده"
+
+#: src/Addon/GravityExportAddon.php:829
+msgid "No fields match your search."
+msgstr "هیچ فیلدی با جستجوی شما مطابقت ندارد."
+
+#: src/Addon/GravityExportAddon.php:830
+msgid "1 field matches your search."
+msgstr "1 فیلد با جستجوی شما مطابقت دارد."
+
+#: src/Addon/GravityExportAddon.php:961
+msgid "Download as one file"
+msgstr "دانلود به صورت یک فایل"
+
+#: src/Addon/GravityExportAddon.php:1035
+#: src/Addon/GravityExportAddon.php:1076
+#: src/GravityForms/Field/DownloadFile.php:75
+msgid "Download"
+msgstr "دانلود"
+
+#: src/Addon/GravityExportAddon.php:1036
+msgid "Download an Export"
+msgstr "دانلود یک خروجی"
+
+#: src/Addon/GravityExportAddon.php:1164
+msgid "Deselect All"
+msgstr "لغو انتخاب همه"
+
+#: src/Addon/GravityExportAddon.php:1165
+msgid "Select All"
+msgstr "انتخاب همه"
+
+#: src/Component/MetaBoxes.php:90
+msgid "Download this single entry as a file."
+msgstr "دانلود این ورودی به صورت یک فایل."
+
+#: src/Component/Plugin.php:34
+#: src/Component/Plugin.php:35
+msgid "Documentation"
+msgstr "مستندات"
+
+#: src/Component/Usage.php:33
+#: src/Component/Usage.php:52
+msgid "countless"
+msgstr "بی‌شمار"
+
+#: src/Component/Usage.php:53
+msgid "even more"
+msgstr "بیشتر"
+
+#: src/Field/Meta/DateCreated.php:18
+msgid "Date"
+msgstr "تاریخ"
+
+#: src/Field/Meta/DateCreated.php:19
+msgid "Time"
+msgstr "زمان"
+
+#: src/GravityForms/Field/CopyShortcode.php:47
+msgid "The shortcode has been copied to your clipboard."
+msgstr "کد کوتاه در کلیپ‌بورد شما کپی شد."
+
+#: src/GravityForms/Field/CopyShortcode.php:64
+msgid "Copy Shortcode"
+msgstr "کپی کد کوتاه"
+
+#: src/GravityForms/Field/DownloadFile.php:81
+msgid "Reset count"
+msgstr "بازنشانی شمارش"
+
+#: src/GravityForms/Field/DownloadFile.php:86
+msgid "Download count"
+msgstr "شمارش دانلود"
+
+#: src/GravityForms/Field/DownloadFile.php:115
+msgid ""
+"You are about to reset the download count for this form. This can’t be "
+"undone."
+msgstr "شما در حال بازنشانی شمارش دانلود این فرم هستید. این کار قابل بازگشت نیست."
+
+#: src/GravityForms/Field/DownloadUrl.php:66
+msgid "Regenerate URL"
+msgstr "بازتولید URL"
+
+#: src/GravityForms/Field/DownloadUrl.php:71
+msgid "Disable download URL"
+msgstr "غیرفعال کردن URL دانلود"
+
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr "کپی شد!"
+
+#: src/GravityForms/Field/DownloadUrl.php:80
+msgid "Copy URL to Clipboard"
+msgstr "کپی آدرس URL به کلیپ‌بورد"
+
+#: src/GravityForms/Field/DownloadUrl.php:160
+msgid "You are about to reset the URL for this form. This can’t be undone."
+msgstr "شما در حال بازنشانی آدرس URL این فرم هستید. این عمل قابل بازگشت نیست."
+
+#: src/GravityForms/Field/DownloadUrl.php:161
+msgid ""
+"You are about to disable the URL for this form. This will invalidate the "
+"URL, and can’t be undone."
+msgstr ""
+"شما در حال غیرفعال کردن آدرس URL این فرم هستید. این باعث باطل شدن آدرس URL "
+"می‌شود و قابل بازگشت نیست."
+
+#: src/GravityForms/Field/DownloadUrl.php:163
+msgid "The file URL has been copied to your clipboard."
+msgstr "آدرس فایل به کلیپ‌بورد شما کپی شد."
+
+#: src/GravityForms/Field/SortFields.php:69
+msgid "Filter fields…"
+msgstr "فیلتر کردن فیلدها…"
+
+#: src/GravityForms/Field/SortFields.php:70
+msgid "Filter fields"
+msgstr "فیلتر فیلدها"
+
+#: src/GravityForms/Field/SortFields.php:98
+msgid "Clear search"
+msgstr "پاک کردن جستجو"
+
+#: src/GravityForms/Field/SortFields.php:157
+msgid "Move %s"
+msgstr "انتقال %s"
+
+#: src/Migration/Migration/SingleFeedMigration.php:65
+msgid "The settings for %s 2.0 were migrated successfully."
+msgstr "تنظیمات %s 2.0 با موفقیت مهاجرت داده شدند."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:326
+msgid "GravityExport Lite: Something is broken"
+msgstr "GravityExport Lite: مشکلی پیش آمده است"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:327
+msgid "Error message:"
+msgstr "پیغام خطا:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:329
+msgid ""
+"If you need support, please contact us via <a target=\"_blank\" "
+"href=\"%s\">WordPress.org support forum</a>."
+msgstr ""
+"اگر به پشتیبانی نیاز دارید، لطفاً از طریق <a target=\"_blank\" "
+"href=\"%s\">انجمن پشتیبانی وردپرس</a> با ما تماس بگیرید."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:331
+msgid ""
+"Check if someone else had the same error before posting a new support "
+"question."
+msgstr ""
+"قبل از ارسال سوال جدید در پشتیبانی، بررسی کنید که آیا شخص دیگری قبلاً همین "
+"خطا را داشته است یا خیر."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:333
+msgid ""
+"And when opening a new question, <strong>please use the error message as "
+"the title</strong>."
+msgstr ""
+"و هنگام باز کردن سوال جدید، <strong>لطفاً از پیام خطا به عنوان عنوان "
+"استفاده کنید</strong>."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:335
+msgid "Include the following details in your message:"
+msgstr "جزئیات زیر را در پیام خود بگنجانید:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:337
+msgid "Plugin Version: %s"
+msgstr "نسخه افزونه: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:338
+msgid "Gravity Forms Version: %s"
+msgstr "نسخه Gravity Forms: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:339
+msgid "PHP Version: %s"
+msgstr "نسخه PHP: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:341
+msgid " (this version is too low, please update to at least PHP 5.6)"
+msgstr " (این نسخه خیلی پایین است، لطفاً حداقل به PHP 5.6 به‌روزرسانی کنید)"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:344
+msgid "WordPress Version: %s"
+msgstr "نسخه وردپرس: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:345
+msgid "Error message: %s"
+msgstr "پیغام خطا: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:346
+msgid "Error stack trace: %s"
+msgstr "ردیابی پشته خطا: %s"
+
+#: src/Repository/FieldsRepository.php:97
+#: src/Repository/FieldsRepository.php:270
+msgid "Date Updated"
+msgstr "تاریخ به‌روزرسانی"
+
+#: src/Repository/FieldsRepository.php:266
+msgid "Entry Date"
+msgstr "تاریخ ورود"
+
+#: src/Repository/FieldsRepository.php:274
+msgid "Entry ID"
+msgstr "شناسه ورود"
+
+#: src/Addon/GravityExportAddon.php:832
+msgid "[count] fields match your search."
+msgstr "[count] فیلد با جستجوی شما مطابقت دارد."
+
+#: src/Addon/GravityExportAddon.php:834
+msgid "[field] moved to [destination]."
+msgstr "[field] به [destination] منتقل شد."
+
+#: src/Addon/GravityExportAddon.php:836
+msgid "[count] fields moved to [destination]."
+msgstr "[count] فیلد به [destination] منتقل شدند."
+
+#: src/Addon/GravityExportAddon.php:838
+msgid "1 field moved to [destination]."
+msgstr "1 فیلد به [destination] منتقل شد."
+
+#: src/Shortcode/DownloadUrl.php:94
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
+msgstr "لطفاً یک ویژگی 'secret' معتبر به کد کوتاه '[shortcode]' اضافه کنید."

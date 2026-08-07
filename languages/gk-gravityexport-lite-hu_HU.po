@@ -1,0 +1,599 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gk-gravityexport-lite\n"
+"PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
+"Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: gfexcel.php
+msgid "GravityExport Lite"
+msgstr "GravityExport Lite"
+
+#: gfexcel.php
+msgid "https://gfexcel.com"
+msgstr "https://gfexcel.com"
+
+#: gfexcel.php
+msgid ""
+"Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
+"shareable URL."
+msgstr ""
+"Az összes Gravity Forms bejegyzés exportálása Excel (.xlsx) vagy CSV "
+"formátumban egy titkos, megosztható URL-en keresztül."
+
+#: gfexcel.php
+msgid "GravityKit"
+msgstr "GravityKit"
+
+#: gfexcel.php
+msgid "https://www.gravitykit.com/extensions/gravityexport/"
+msgstr "https://www.gravitykit.com/extensions/gravityexport/"
+
+#: gfexcel.php:46
+msgid "GravityExport Lite requires PHP %s or newer."
+msgstr "A GravityExport Lite PHP %s vagy újabb verziót igényel."
+
+#: src/Action/DownloadUrlDisableAction.php:38
+msgid "The download URL has been disabled."
+msgstr "A letöltési URL letiltva."
+
+#: src/Action/DownloadUrlEnableAction.php:26
+msgid "The download URL has been enabled."
+msgstr "A letöltési URL engedélyezve van."
+
+#: src/Action/DownloadUrlResetAction.php:41
+msgid "The download URL has been reset."
+msgstr "A letöltési URL visszaállítva."
+
+#: src/Action/DownloadUrlResetAction.php:58
+msgid "There was an error generating the URL: %s"
+msgstr "Hiba történt az URL generálása során: %s"
+
+#: src/Action/NotificationsAction.php:65
+msgid "The notifications could not be retrieved."
+msgstr "Nem sikerült lekérni az értesítéseket."
+
+#: src/Addon/GravityExportAddon.php:186
+msgid "Activate GravityExport"
+msgstr "GravityExport aktiválása"
+
+#: src/Addon/GravityExportAddon.php:217
+msgid "Download settings"
+msgstr "Letöltési beállítások"
+
+#: src/Addon/GravityExportAddon.php:221
+msgid "Download URL"
+msgstr "Letöltési URL"
+
+#: src/Addon/GravityExportAddon.php:229
+msgid "Embed shortcode"
+msgstr "Beágyazott shortcode"
+
+#: src/Addon/GravityExportAddon.php:235
+msgid "Custom Filename"
+msgstr "Egyedi fájlnév"
+
+#: src/Addon/GravityExportAddon.php:239
+msgid "Default: %s"
+msgstr "Alapértelmezett: %s"
+
+#: src/Addon/GravityExportAddon.php:243
+msgid ""
+"Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
+"for default."
+msgstr ""
+"A legtöbb nem alfanumerikus karaktert kötőjellel helyettesítjük. Hagyja "
+"üresen az alapértelmezetthez."
+
+#: src/Addon/GravityExportAddon.php:252
+msgid "File Extension"
+msgstr "Fájlkiterjesztés"
+
+#: src/Addon/GravityExportAddon.php:257
+msgid ""
+"Note: You may override the file type by adding the desired extension (%s) "
+"to the end of the Download URL."
+msgstr ""
+"Megjegyzés: Felülírhatja a fájltípust, ha a kívánt kiterjesztést (%s) "
+"hozzáadja a letöltési URL végéhez."
+
+#: src/Addon/GravityExportAddon.php:278
+msgid "Instant Download ⚡️"
+msgstr "Azonnali letöltés ⚡️"
+
+#: src/Addon/GravityExportAddon.php:282
+msgid "Select Date Range (optional)"
+msgstr "Dátumtartomány kiválasztása (opcionális)"
+
+#: src/Addon/GravityExportAddon.php:294
+msgid "Security Settings"
+msgstr "Biztonsági beállítások"
+
+#: src/Addon/GravityExportAddon.php:298
+msgid "Secure Shortcodes"
+msgstr "Biztonságos rövidkódok"
+
+#: src/Addon/GravityExportAddon.php:300
+msgid ""
+"A secure shortcode contains a unique <code>secret</code>-attribute which "
+"prevents generating the URL for a form without permission."
+msgstr ""
+"A biztonságos rövidkód egy egyedi <code>secret</code> attribútumot "
+"tartalmaz, amely megakadályozza a űrlap URL-jének engedély nélküli "
+"generálását."
+
+#: src/Addon/GravityExportAddon.php:304
+msgid "Enable secure embed shortcode"
+msgstr "Biztonságos beágyazott rövidkód engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:311
+msgid "Download Permissions"
+msgstr "Letöltési jogosultságok"
+
+#: src/Addon/GravityExportAddon.php:326
+msgid "Everyone can download"
+msgstr "Mindenki letöltheti"
+
+#: src/Addon/GravityExportAddon.php:332
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr ""
+"Bejelentkezett felhasználók, akik rendelkeznek az „Exportálás” "
+"jogosultsággal"
+
+#: src/Addon/GravityExportAddon.php:348
+msgid "General Settings"
+msgstr "Általános beállítások"
+
+#: src/Addon/GravityExportAddon.php:352
+msgid "Include Entry Notes"
+msgstr "Bejegyzés megjegyzések belefoglalása"
+
+#: src/Addon/GravityExportAddon.php:357
+msgid "Yes, enable the notes for every entry"
+msgstr "Igen, engedélyezze a megjegyzéseket minden bejegyzéshez"
+
+#: src/Addon/GravityExportAddon.php:363
+msgid "Attach Single Entry to Notification"
+msgstr "Egyetlen bejegyzés csatolása az értesítéshez"
+
+#: src/Addon/GravityExportAddon.php:371
+msgid "Column Position"
+msgstr "Oszlop pozíciója"
+
+#: src/Addon/GravityExportAddon.php:376
+msgid "At the top (normal)"
+msgstr "Felül (normál)"
+
+#: src/Addon/GravityExportAddon.php:381
+msgid "At the left (transposed)"
+msgstr "Bal oldalon (átfordítva)"
+
+#: src/Addon/GravityExportAddon.php:388
+msgid "Order By"
+msgstr "Rendezés"
+
+#: src/Addon/GravityExportAddon.php:403
+msgid "Ascending"
+msgstr "Növekvő"
+
+#: src/Addon/GravityExportAddon.php:407
+msgid "Descending"
+msgstr "Csökkenő"
+
+#: src/Addon/GravityExportAddon.php:424
+msgid "Field settings"
+msgstr "Mezőbeállítások"
+
+#: src/Addon/GravityExportAddon.php:432
+msgid "Disabled Fields"
+msgstr "Letiltott mezők"
+
+#: src/Addon/GravityExportAddon.php:433
+msgid "Enabled Fields"
+msgstr "Engedélyezett mezők"
+
+#: src/Addon/GravityExportAddon.php:494
+msgid "Default Settings"
+msgstr "Alapértelmezett beállítások"
+
+#: src/Addon/GravityExportAddon.php:499
+msgid "Labels"
+msgstr "Címkék"
+
+#: src/Addon/GravityExportAddon.php:503
+msgid "Use admin labels"
+msgstr "Adminisztrátori címkék használata"
+
+#: src/Addon/GravityExportAddon.php:513
+msgid "Multiple Columns"
+msgstr "Több oszlop"
+
+#: src/Addon/GravityExportAddon.php:517
+msgid "Split multi-fields (name, address) into multiple columns"
+msgstr "Többszörös mezők (név, cím) több oszlopra bontása"
+
+#: src/Addon/GravityExportAddon.php:531
+msgid "Enable notes by default"
+msgstr "Jegyzetek alapértelmezett engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:539
+msgid "Sections"
+msgstr "Szakaszok"
+
+#: src/Addon/GravityExportAddon.php:543
+msgid "Enable (empty) section column"
+msgstr "(Üres) szakasz oszlop engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:551
+msgid "File Uploads"
+msgstr "Fájl feltöltések"
+
+#: src/Addon/GravityExportAddon.php:556
+msgid "Enable file upload columns"
+msgstr "Fájl feltöltő oszlopok engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:564
+msgid "Hyperlinks"
+msgstr "Hiperhivatkozások"
+
+#: src/Addon/GravityExportAddon.php:569
+msgid "Enable hyperlinks on URL-only columns"
+msgstr "Hiperhivatkozások engedélyezése csak URL oszlopokon"
+
+#: src/Addon/GravityExportAddon.php:577
+msgid "Product Fields"
+msgstr "Termékmezők"
+
+#: src/Addon/GravityExportAddon.php:582
+msgid "Export prices as numeric fields, without currency symbol ($)"
+msgstr "Árak exportálása numerikus mezőként, pénznem jel nélkül ($)"
+
+#: src/Addon/GravityExportAddon.php:595
+msgid "Default Enabled Meta Fields"
+msgstr "Alapértelmezett engedélyezett meta mezők"
+
+#: src/Addon/GravityExportAddon.php:599
+msgid ""
+"Select all meta fields that are enabled by default. Once you've saved your "
+"form, these settings will not do anything any more."
+msgstr ""
+"Válassza ki az összes alapértelmezés szerint engedélyezett meta mezőt. "
+"Miután elmentette az űrlapot, ezek a beállítások már nem fognak működni."
+
+#: src/Addon/GravityExportAddon.php:652
+msgid "Select a Notification"
+msgstr "Értesítés kiválasztása"
+
+#: src/Addon/GravityExportAddon.php:671
+msgid ""
+"If you like the plugin, 📣 %slet others know%s! We already have %s active "
+"users. Let's get to %s by spreading the news!"
+msgstr ""
+"Ha tetszik a bővítmény, 📣 %smond el másoknak%s! Már %s aktív felhasználónk "
+"van. Terjesszük a hírt, hogy elérjük a %s számot!"
+
+#: src/Addon/GravityExportAddon.php:675
+#: src/Addon/GravityExportAddon.php:742
+#: src/Component/Plugin.php:43
+msgid "This link opens in a new window"
+msgstr "Ez a hivatkozás új ablakban nyílik meg"
+
+#: src/Addon/GravityExportAddon.php:695
+msgid ""
+"These are global settings for new forms. You can overwrite them per form "
+"using the available hooks."
+msgstr ""
+"Ezek az új űrlapokra vonatkozó globális beállítások. Űrlaponként "
+"felülírhatod őket a rendelkezésre álló hookok használatával."
+
+#: src/Addon/GravityExportAddon.php:711
+msgid "Upgrade to GravityExport for these useful features:"
+msgstr "Frissíts GravityExport-ra ezekért a hasznos funkciókért:"
+
+#: src/Addon/GravityExportAddon.php:715
+msgid "Save exports to Dropbox, FTP, &amp; local storage"
+msgstr "Mentés Dropboxba, FTP-re és helyi tárolóba"
+
+#: src/Addon/GravityExportAddon.php:718
+msgid ""
+"Automatically upload exports to Dropbox, a remote server using SFTP and "
+"FTP, or store locally."
+msgstr ""
+"Automatikusan tölti fel az exportokat Dropboxba, távoli szerverre SFTP és "
+"FTP használatával, vagy helyben tárolja."
+
+#: src/Addon/GravityExportAddon.php:724
+msgid "Filter exports with Conditional Logic"
+msgstr "Szűrje az exportokat feltételes logikával"
+
+#: src/Addon/GravityExportAddon.php:726
+msgid ""
+"Create advanced filters, including exporting entries created by only the "
+"currently logged-in user."
+msgstr ""
+"Hozz létre fejlett szűrőket, beleértve a csak az aktuálisan bejelentkezett "
+"felhasználó által létrehozott bejegyzések exportálását."
+
+#: src/Addon/GravityExportAddon.php:732
+msgid "Exports are ready for data analysis"
+msgstr "Az exportok készen állnak az adatelemzésre"
+
+#: src/Addon/GravityExportAddon.php:734
+msgid ""
+"When analyzing data, you want fields with multiple values broken into "
+"multiple rows each with one value. If you work with data, you&rsquo;ll love "
+"this feature!"
+msgstr ""
+"Adatok elemzésekor szeretnéd, ha a többértékű mezők több sorra lennének "
+"bontva, mindegyikben egy értékkel. Ha adatokkal dolgozol, imádni fogod ezt "
+"a funkciót!"
+
+#: src/Addon/GravityExportAddon.php:743
+#: src/Component/Plugin.php:44
+msgid "Gain Powerful Features with GravityExport"
+msgstr "Szerezz erőteljes funkciókat a GravityExport segítségével"
+
+#: src/Addon/GravityExportAddon.php:825
+msgid "Enable all"
+msgstr "Az összes engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:826
+msgid "Disable all"
+msgstr "Az összes letiltása"
+
+#: src/Addon/GravityExportAddon.php:827
+msgid "Enable visible"
+msgstr "Láthatók engedélyezése"
+
+#: src/Addon/GravityExportAddon.php:828
+msgid "Disable visible"
+msgstr "Láthatók letiltása"
+
+#: src/Addon/GravityExportAddon.php:829
+msgid "No fields match your search."
+msgstr "Egy mező sem felel meg a keresésnek."
+
+#: src/Addon/GravityExportAddon.php:830
+msgid "1 field matches your search."
+msgstr "1 mező felel meg a keresésnek."
+
+#: src/Addon/GravityExportAddon.php:961
+msgid "Download as one file"
+msgstr "Letöltés egy fájlként"
+
+#: src/Addon/GravityExportAddon.php:1035
+#: src/Addon/GravityExportAddon.php:1076
+#: src/GravityForms/Field/DownloadFile.php:75
+msgid "Download"
+msgstr "Letöltés"
+
+#: src/Addon/GravityExportAddon.php:1036
+msgid "Download an Export"
+msgstr "Export letöltése"
+
+#: src/Addon/GravityExportAddon.php:1164
+msgid "Deselect All"
+msgstr "Összes kijelölés törlése"
+
+#: src/Addon/GravityExportAddon.php:1165
+msgid "Select All"
+msgstr "Összes kijelölése"
+
+#: src/Component/MetaBoxes.php:90
+msgid "Download this single entry as a file."
+msgstr "Ez az egyetlen bejegyzés fájlként történő letöltése."
+
+#: src/Component/Plugin.php:34
+#: src/Component/Plugin.php:35
+msgid "Documentation"
+msgstr "Dokumentáció"
+
+#: src/Component/Usage.php:33
+#: src/Component/Usage.php:52
+msgid "countless"
+msgstr "számtalan"
+
+#: src/Component/Usage.php:53
+msgid "even more"
+msgstr "még több"
+
+#: src/Field/Meta/DateCreated.php:18
+msgid "Date"
+msgstr "Dátum"
+
+#: src/Field/Meta/DateCreated.php:19
+msgid "Time"
+msgstr "Idő"
+
+#: src/GravityForms/Field/CopyShortcode.php:47
+msgid "The shortcode has been copied to your clipboard."
+msgstr "A shortcode másolva lett a vágólapra."
+
+#: src/GravityForms/Field/CopyShortcode.php:64
+msgid "Copy Shortcode"
+msgstr "Shortcode másolása"
+
+#: src/GravityForms/Field/DownloadFile.php:81
+msgid "Reset count"
+msgstr "Számláló visszaállítása"
+
+#: src/GravityForms/Field/DownloadFile.php:86
+msgid "Download count"
+msgstr "Letöltések száma"
+
+#: src/GravityForms/Field/DownloadFile.php:115
+msgid ""
+"You are about to reset the download count for this form. This can’t be "
+"undone."
+msgstr ""
+"A letöltések számát vissza kívánja állítani ennél az űrlapnál. Ez nem "
+"vonható vissza."
+
+#: src/GravityForms/Field/DownloadUrl.php:66
+msgid "Regenerate URL"
+msgstr "URL újragenerálása"
+
+#: src/GravityForms/Field/DownloadUrl.php:71
+msgid "Disable download URL"
+msgstr "Letöltési URL letiltása"
+
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr "Másolva!"
+
+#: src/GravityForms/Field/DownloadUrl.php:80
+msgid "Copy URL to Clipboard"
+msgstr "URL másolása a vágólapra"
+
+#: src/GravityForms/Field/DownloadUrl.php:160
+msgid "You are about to reset the URL for this form. This can’t be undone."
+msgstr ""
+"Az URL visszaállítására készülsz ennél az űrlapnál. Ezt nem lehet "
+"visszavonni."
+
+#: src/GravityForms/Field/DownloadUrl.php:161
+msgid ""
+"You are about to disable the URL for this form. This will invalidate the "
+"URL, and can’t be undone."
+msgstr ""
+"Az URL letiltására készülsz ennél az űrlapnál. Ez érvényteleníti az URL-t, "
+"és nem lehet visszavonni."
+
+#: src/GravityForms/Field/DownloadUrl.php:163
+msgid "The file URL has been copied to your clipboard."
+msgstr "A fájl URL-je a vágólapra lett másolva."
+
+#: src/GravityForms/Field/SortFields.php:69
+msgid "Filter fields…"
+msgstr "Mezők szűrése…"
+
+#: src/GravityForms/Field/SortFields.php:70
+msgid "Filter fields"
+msgstr "Mezők szűrése"
+
+#: src/GravityForms/Field/SortFields.php:98
+msgid "Clear search"
+msgstr "Keresés törlése"
+
+#: src/GravityForms/Field/SortFields.php:157
+msgid "Move %s"
+msgstr "Mozgatás %s"
+
+#: src/Migration/Migration/SingleFeedMigration.php:65
+msgid "The settings for %s 2.0 were migrated successfully."
+msgstr "A %s 2.0 beállításai sikeresen át lettek migrálva."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:326
+msgid "GravityExport Lite: Something is broken"
+msgstr "GravityExport Lite: Valami elromlott"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:327
+msgid "Error message:"
+msgstr "Hibaüzenet:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:329
+msgid ""
+"If you need support, please contact us via <a target=\"_blank\" "
+"href=\"%s\">WordPress.org support forum</a>."
+msgstr ""
+"Ha támogatásra van szükséged, kérjük, lépj kapcsolatba velünk a <a "
+"target=\"_blank\" href=\"%s\">WordPress.org támogatói fórumán</a>."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:331
+msgid ""
+"Check if someone else had the same error before posting a new support "
+"question."
+msgstr ""
+"Ellenőrizd, hogy másnak nem volt-e már ugyanilyen hibája, mielőtt új "
+"támogatási kérdést tennél fel."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:333
+msgid ""
+"And when opening a new question, <strong>please use the error message as "
+"the title</strong>."
+msgstr ""
+"És új kérdés feltevésekor <strong>kérjük, használd a hibaüzenetet "
+"címként</strong>."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:335
+msgid "Include the following details in your message:"
+msgstr "A következő részleteket add meg az üzenetedben:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:337
+msgid "Plugin Version: %s"
+msgstr "Bővítmény verziója: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:338
+msgid "Gravity Forms Version: %s"
+msgstr "Gravity Forms verziója: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:339
+msgid "PHP Version: %s"
+msgstr "PHP verzió: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:341
+msgid " (this version is too low, please update to at least PHP 5.6)"
+msgstr " (ez a verzió túl alacsony, kérjük, frissíts legalább PHP 5.6-ra)"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:344
+msgid "WordPress Version: %s"
+msgstr "WordPress verzió: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:345
+msgid "Error message: %s"
+msgstr "Hibaüzenet: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:346
+msgid "Error stack trace: %s"
+msgstr "Hiba verem nyomkövetés: %s"
+
+#: src/Repository/FieldsRepository.php:97
+#: src/Repository/FieldsRepository.php:270
+msgid "Date Updated"
+msgstr "Frissítés dátuma"
+
+#: src/Repository/FieldsRepository.php:266
+msgid "Entry Date"
+msgstr "Bejegyzés dátuma"
+
+#: src/Repository/FieldsRepository.php:274
+msgid "Entry ID"
+msgstr "Bejegyzés azonosító"
+
+#: src/Addon/GravityExportAddon.php:314
+msgid ""
+"If set to \"Everyone can download\", anyone with the link can download. If "
+"\"Logged-in users who have 'Export Entries' access\" is selected, users "
+"must be logged-in and have the %s capability."
+msgstr ""
+"Ha \"Mindenki letöltheti\"-re van állítva, a linkkel rendelkező bárki "
+"letöltheti. Ha a \"Bejelentkezett felhasználók, akik rendelkeznek az "
+"'Bejegyzések exportálása' jogosultsággal\" van kiválasztva, a "
+"felhasználóknak be kell jelentkezniük, és rendelkezniük kell a %s "
+"képességgel."
+
+#: src/Addon/GravityExportAddon.php:832
+msgid "[count] fields match your search."
+msgstr "[count] mező megfelel a keresésnek."
+
+#: src/Addon/GravityExportAddon.php:834
+msgid "[field] moved to [destination]."
+msgstr "[field] áthelyezve ide: [destination]."
+
+#: src/Addon/GravityExportAddon.php:836
+msgid "[count] fields moved to [destination]."
+msgstr "[count] mező áthelyezve ide: [destination]."
+
+#: src/Addon/GravityExportAddon.php:838
+msgid "1 field moved to [destination]."
+msgstr "1 mező áthelyezve ide: [destination]."
+
+#: src/Shortcode/DownloadUrl.php:94
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
+msgstr ""
+"Kérjük, adj meg egy érvényes 'secret' attribútumot a '[shortcode]' "
+"shortcode-hoz."

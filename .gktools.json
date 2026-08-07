@@ -1,0 +1,20 @@
+{
+	"build": [
+		"npm install",
+		"grunt",
+		"composer build"
+	],
+	"package": {
+		"prefix": "gf-entries-in-excel",
+		"includeExtra": ["build"],
+		"excludeFromExtra": [
+			"build/composer.json",
+			"build/composer.lock",
+			"build/strauss.phar"
+		]
+	},
+	"release": {
+		"branch": "main",
+		"mergeTo": "develop"
+	}
+}

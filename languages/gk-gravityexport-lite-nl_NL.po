@@ -1,422 +1,593 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Entries in Excel\n"
-"POT-Creation-Date: 2020-07-01 14:23+0200\n"
-"PO-Revision-Date: 2020-07-01 15:09+0200\n"
-"Last-Translator: Doeke Norg <info@gfexcel.com>\n"
-"Language-Team: Doeke Norg <info@gfexcel.com>\n"
+"Project-Id-Version: gk-gravityexport-lite\n"
+"PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3.1\n"
-"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: gfexcel.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: src/Action/NotificationsAction.php:66
+#: gfexcel.php
+msgid "GravityExport Lite"
+msgstr "GravityExport Lite"
+
+#: gfexcel.php
+msgid "https://gfexcel.com"
+msgstr "https://gfexcel.com"
+
+#: gfexcel.php
+msgid ""
+"Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
+"shareable URL."
+msgstr ""
+"Exporteer alle Gravity Forms-inzendingen naar Excel (.xlsx) of CSV via een "
+"geheim deelbare URL."
+
+#: gfexcel.php
+msgid "GravityKit"
+msgstr "GravityKit"
+
+#: gfexcel.php
+msgid "https://www.gravitykit.com/extensions/gravityexport/"
+msgstr "https://www.gravitykit.com/extensions/gravityexport/"
+
+#: gfexcel.php:46
+msgid "GravityExport Lite requires PHP %s or newer."
+msgstr "GravityExport Lite vereist PHP %s of nieuwer."
+
+#: src/Action/DownloadUrlDisableAction.php:38
+msgid "The download URL has been disabled."
+msgstr "De download-URL is uitgeschakeld."
+
+#: src/Action/DownloadUrlEnableAction.php:26
+msgid "The download URL has been enabled."
+msgstr "De download-URL is ingeschakeld."
+
+#: src/Action/DownloadUrlResetAction.php:41
+msgid "The download URL has been reset."
+msgstr "De download-URL is gereset."
+
+#: src/Action/DownloadUrlResetAction.php:58
+msgid "There was an error generating the URL: %s"
+msgstr "Er is een fout opgetreden bij het genereren van de URL: %s"
+
+#: src/Action/NotificationsAction.php:65
 msgid "The notifications could not be retrieved."
-msgstr "De notificaties konden niet opgehaald worden."
+msgstr "De meldingen konden niet worden opgehaald."
 
-#: src/Field/Meta/DateCreated.php:19
-msgid "Date"
-msgstr "Datum"
+#: src/Addon/GravityExportAddon.php:186
+msgid "Activate GravityExport"
+msgstr "Activeer GravityExport"
 
-#: src/Field/Meta/DateCreated.php:20
-msgid "Time"
-msgstr "Tijd"
+#: src/Addon/GravityExportAddon.php:217
+msgid "Download settings"
+msgstr "Downloadinstellingen"
 
-#: src/Field/ProductField.php:26
-msgid "Qty: "
-msgstr "Aantal: "
+#: src/Addon/GravityExportAddon.php:221
+msgid "Download URL"
+msgstr "Download-URL"
 
-#: src/Field/ProductField.php:30
-msgid "Price: "
-msgstr "Prijs: "
+#: src/Addon/GravityExportAddon.php:229
+msgid "Embed shortcode"
+msgstr "Shortcode insluiten"
 
-#. Plugin Name of the plugin/theme
-#: src/GFExcelAdmin.php:61 views/notifications.php:30
-msgid "Gravity Forms Entries in Excel"
-msgstr "Gravity Forms Inzendingen in Excel"
+#: src/Addon/GravityExportAddon.php:235
+msgid "Custom Filename"
+msgstr "Aangepaste bestandsnaam"
 
-#: src/GFExcelAdmin.php:62
-msgid "Entries in Excel"
-msgstr "Inzendingen in Excel"
+#: src/Addon/GravityExportAddon.php:239
+msgid "Default: %s"
+msgstr "Standaard: %s"
 
-#: src/GFExcelAdmin.php:102
+#: src/Addon/GravityExportAddon.php:243
+msgid ""
+"Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
+"for default."
+msgstr ""
+"De meeste niet-alfanumerieke tekens worden vervangen door streepjes. Laat "
+"leeg voor standaard."
+
+#: src/Addon/GravityExportAddon.php:252
+msgid "File Extension"
+msgstr "Bestandsextensie"
+
+#: src/Addon/GravityExportAddon.php:257
+msgid ""
+"Note: You may override the file type by adding the desired extension (%s) "
+"to the end of the Download URL."
+msgstr ""
+"Opmerking: u kunt het bestandstype overschrijven door de gewenste extensie "
+"(%s) toe te voegen aan het einde van de download-URL."
+
+#: src/Addon/GravityExportAddon.php:278
+msgid "Instant Download ⚡️"
+msgstr "Directe download ⚡️"
+
+#: src/Addon/GravityExportAddon.php:282
+msgid "Select Date Range (optional)"
+msgstr "Selecteer datumbereik (optioneel)"
+
+#: src/Addon/GravityExportAddon.php:294
+msgid "Security Settings"
+msgstr "Beveiligingsinstellingen"
+
+#: src/Addon/GravityExportAddon.php:298
+msgid "Secure Shortcodes"
+msgstr "Beveiligde shortcodes"
+
+#: src/Addon/GravityExportAddon.php:300
+msgid ""
+"A secure shortcode contains a unique <code>secret</code>-attribute which "
+"prevents generating the URL for a form without permission."
+msgstr ""
+"Een beveiligde shortcode bevat een uniek <code>secret</code>-attribuut dat "
+"voorkomt dat de URL voor een formulier zonder toestemming wordt gegenereerd."
+
+#: src/Addon/GravityExportAddon.php:304
+msgid "Enable secure embed shortcode"
+msgstr "Beveiligde embed shortcode inschakelen"
+
+#: src/Addon/GravityExportAddon.php:311
+msgid "Download Permissions"
+msgstr "Downloadrechten"
+
+#: src/Addon/GravityExportAddon.php:314
+msgid ""
+"If set to \"Everyone can download\", anyone with the link can download. If "
+"\"Logged-in users who have 'Export Entries' access\" is selected, users "
+"must be logged-in and have the %s capability."
+msgstr ""
+"Als ingesteld op \"Iedereen kan downloaden\", kan iedereen met de link "
+"downloaden. Als \"Ingelogde gebruikers met toegang tot 'Export Entries'\" "
+"is geselecteerd, moeten gebruikers ingelogd zijn en over de %s-machtiging "
+"beschikken."
+
+#: src/Addon/GravityExportAddon.php:326
+msgid "Everyone can download"
+msgstr "Iedereen kan downloaden"
+
+#: src/Addon/GravityExportAddon.php:332
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr "Ingelogde gebruikers met toegang tot \"Export Entries\""
+
+#: src/Addon/GravityExportAddon.php:348
+msgid "General Settings"
+msgstr "Algemene instellingen"
+
+#: src/Addon/GravityExportAddon.php:352
+msgid "Include Entry Notes"
+msgstr "Invoernaaantekeningen opnemen"
+
+#: src/Addon/GravityExportAddon.php:357
+msgid "Yes, enable the notes for every entry"
+msgstr "Ja, notities voor elke invoer inschakelen"
+
+#: src/Addon/GravityExportAddon.php:363
+msgid "Attach Single Entry to Notification"
+msgstr "Enkele invoer aan melding toevoegen"
+
+#: src/Addon/GravityExportAddon.php:371
+msgid "Column Position"
+msgstr "Kolompositie"
+
+#: src/Addon/GravityExportAddon.php:376
+msgid "At the top (normal)"
+msgstr "Bovenaan (normaal)"
+
+#: src/Addon/GravityExportAddon.php:381
+msgid "At the left (transposed)"
+msgstr "Links (getransponeerd)"
+
+#: src/Addon/GravityExportAddon.php:388
+msgid "Order By"
+msgstr "Sorteren op"
+
+#: src/Addon/GravityExportAddon.php:403
+msgid "Ascending"
+msgstr "Oplopend"
+
+#: src/Addon/GravityExportAddon.php:407
+msgid "Descending"
+msgstr "Aflopend"
+
+#: src/Addon/GravityExportAddon.php:424
+msgid "Field settings"
+msgstr "Veldinstellingen"
+
+#: src/Addon/GravityExportAddon.php:432
+msgid "Disabled Fields"
+msgstr "Uitgeschakelde velden"
+
+#: src/Addon/GravityExportAddon.php:433
+msgid "Enabled Fields"
+msgstr "Ingeschakelde velden"
+
+#: src/Addon/GravityExportAddon.php:494
+msgid "Default Settings"
+msgstr "Standaardinstellingen"
+
+#: src/Addon/GravityExportAddon.php:499
+msgid "Labels"
+msgstr "Labels"
+
+#: src/Addon/GravityExportAddon.php:503
+msgid "Use admin labels"
+msgstr "Gebruik beheerderslabels"
+
+#: src/Addon/GravityExportAddon.php:513
 msgid "Multiple Columns"
 msgstr "Meerdere kolommen"
 
-#: src/GFExcelAdmin.php:107
+#: src/Addon/GravityExportAddon.php:517
 msgid "Split multi-fields (name, address) into multiple columns"
-msgstr "Deel een complex veld (naam, adres) op in meerdere kolommen"
+msgstr "Splits multi-velden (naam, adres) in meerdere kolommen"
 
-#: src/GFExcelAdmin.php:118 src/Repository/FieldsRepository.php:115
-msgid "Notes"
-msgstr "Opmerkingen"
-
-#: src/GFExcelAdmin.php:122
+#: src/Addon/GravityExportAddon.php:531
 msgid "Enable notes by default"
-msgstr "Acitveer 'Opmerkingen' als standaard"
+msgstr "Notities standaard inschakelen"
 
-#: src/GFExcelAdmin.php:130
+#: src/Addon/GravityExportAddon.php:539
 msgid "Sections"
 msgstr "Secties"
 
-#: src/GFExcelAdmin.php:134
+#: src/Addon/GravityExportAddon.php:543
 msgid "Enable (empty) section column"
-msgstr "Toon (lege) sectie-kolommen"
+msgstr "Schakel (lege) sectiekolom in"
 
-#: src/GFExcelAdmin.php:142
+#: src/Addon/GravityExportAddon.php:551
 msgid "File Uploads"
 msgstr "Bestandsuploads"
 
-#: src/GFExcelAdmin.php:147
+#: src/Addon/GravityExportAddon.php:556
 msgid "Enable file upload columns"
-msgstr "Toon upload kolommen"
+msgstr "Schakel bestandsuploadkolommen in"
 
-#: src/GFExcelAdmin.php:155
+#: src/Addon/GravityExportAddon.php:564
 msgid "Hyperlinks"
-msgstr "Links"
+msgstr "Hyperlinks"
 
-#: src/GFExcelAdmin.php:160
+#: src/Addon/GravityExportAddon.php:569
 msgid "Enable hyperlinks on URL-only columns"
-msgstr "Maak cellen met een URL klikbaar"
+msgstr "Schakel hyperlinks in op alleen-URL-kolommen"
 
-#: src/GFExcelAdmin.php:168
+#: src/Addon/GravityExportAddon.php:577
 msgid "Product Fields"
-msgstr "Product-velden"
+msgstr "Productvelden"
 
-#: src/GFExcelAdmin.php:174
+#: src/Addon/GravityExportAddon.php:582
 msgid "Export prices as numeric fields, without currency symbol ($)"
-msgstr "Exporteer prijzen als numerieke waarden zonder valuta-symbool (€)"
+msgstr "Exporteer prijzen als numerieke velden, zonder valutateken ($)"
 
-#: src/GFExcelAdmin.php:188
+#: src/Addon/GravityExportAddon.php:595
 msgid "Default Enabled Meta Fields"
-msgstr "Standaard geactiveerde meta-velden"
+msgstr "Standaard ingeschakelde metavelden"
 
-#: src/GFExcelAdmin.php:190
+#: src/Addon/GravityExportAddon.php:599
 msgid ""
 "Select all meta fields that are enabled by default. Once you've saved your "
 "form, these settings will not do anything any more."
 msgstr ""
-"Selecteer alle meta-velden die standaard getoond moeten worden. Een al bestaand "
-"formulier neemt deze instellingen niet meer over."
+"Selecteer alle metavelden die standaard zijn ingeschakeld. Zodra je je "
+"formulier hebt opgeslagen, zullen deze instellingen niet meer werken."
 
-#: src/GFExcelAdmin.php:270
-#, php-format
-msgid ""
-"If you like the plugin, 📣 %slet others know%s! We already have %s "
-"active users. Let's get to %s by spreading the news!"
-msgstr ""
-"Als je de plugin leuk vindt, 📣 %slaat anderen het weten%s! We hebben op dit moment al %s "
-"actieve gebruikers. Laten we daar %s van maken!"
-
-#: src/GFExcelAdmin.php:286 src/GFExcelAdmin.php:310 src/GFExcelAdmin.php:312
-msgid "Make a donation"
-msgstr "Doneer"
-
-#: src/GFExcelAdmin.php:306 src/GFExcelAdmin.php:308
-msgid "Documentation"
-msgstr "Documentatie"
-
-#: src/GFExcelAdmin.php:337
-msgid "Settings"
-msgstr "Instellingen"
-
-#: src/GFExcelAdmin.php:348 src/GFExcelAdmin.php:448 src/GFExcelAdmin.php:1236
-msgid "Download"
-msgstr "Downloaden"
-
-#: src/GFExcelAdmin.php:371
-msgid "The download url has been regenerated."
-msgstr "De download-link is opnieuw ingesteld."
-
-#: src/GFExcelAdmin.php:374
-msgid "The download URL has been enabled."
-msgstr "De download-link is ingeschakeld."
-
-#: src/GFExcelAdmin.php:377
-msgid "The download URL has been disabled."
-msgstr "De download-link is uitgeschakeld."
-
-#: src/GFExcelAdmin.php:389
-msgid "Download URL"
-msgstr "Download-link"
-
-#: src/GFExcelAdmin.php:397
-msgid ""
-"The download url is not (yet) enabled. Click the button to enable this "
-"feature."
-msgstr ""
-"De download-link is nog niet ingeschakeld. Klik op de knop om deze te "
-"activeren."
-
-#: src/GFExcelAdmin.php:404
-msgid "Enable download"
-msgstr "Downloaden inschakelen"
-
-#: src/GFExcelAdmin.php:417
-msgid "Regenerate URL"
-msgstr "Stel download-link opnieuw in"
-
-#: src/GFExcelAdmin.php:421
-msgid "Disable download URL"
-msgstr "Download-link uitschakelen"
-
-msgid "Copy URL to Clipboard"
-msgstr "Kopieer de download-link"
-
-msgid "Copied!"
-msgstr "Gekopieerd!"
-
-msgid "The file URL has been copied to your clipboard."
-msgstr "De download-link is gekopieerd naar je klembord."
-
-#: src/GFExcelAdmin.php:424
-msgid "You are about to reset the URL for this form. This can't be undone."
-msgstr "Je gaat de download-link vernieuwen. Dit kan niet ongedaan gemaakt worden."
-
-#: src/GFExcelAdmin.php:425
-msgid "You are about to disable the URL for this form. This will invalidate the URL, and can't be undone."
-msgstr "Je gaat de download-link uitschakelen. Hiermee vervalt de huidige link; dit kan niet ongedaan gemaakt worden."
-
-#: src/GFExcelAdmin.php:431
-msgid "Download file"
-msgstr "Download bestand"
-
-#: src/GFExcelAdmin.php:434
-msgid "Select (optional) Date Range"
-msgstr "Selecteer een (optioneel) datumbereik"
-
-#: src/GFExcelAdmin.php:439
-msgid "Start"
-msgstr "Begin"
-
-#: src/GFExcelAdmin.php:444
-msgid "End"
-msgstr "Tot"
-
-#: src/GFExcelAdmin.php:450
-msgid "Download count"
-msgstr "Aantal keer gedownload"
-
-#: src/GFExcelAdmin.php:454
-msgid "Reset count"
-msgstr "Reset teller"
-
-msgid "You are about to reset the download count for this form. This can’t be undone."
-msgstr "Je gaat de download teller resetten. Dit kan niet ongedaan gemaakt worden."
-
-#: src/GFExcelAdmin.php:468
-msgid "Save settings"
-msgstr "Instellingen opslaan"
-
-#: src/GFExcelAdmin.php:513
-msgid "Download as one Excel file"
-msgstr "Download als één Excel-bestand"
-
-#: src/GFExcelAdmin.php:553
-msgid "Date of entry"
-msgstr "Inzendingsdatum"
-
-#: src/GFExcelAdmin.php:576
-msgid "Ascending"
-msgstr "Oplopend"
-
-#: src/GFExcelAdmin.php:580
-msgid "Descending"
-msgstr "Aflopend"
-
-#: src/GFExcelAdmin.php:614
-msgid "The settings have been saved."
-msgstr "De instellingen zijn opgeslagen."
-
-#: src/GFExcelAdmin.php:653
-msgid "Security settings"
-msgstr "Beveiligingsinstellingen"
-
-msgid "Default Settings"
-msgstr "Algemene instellingen"
-
-#: src/GFExcelAdmin.php:657
-msgid "Download Permissions"
-msgstr "Downloadrechten"
-
-#: src/GFExcelAdmin.php:664
-msgid "Everyone can download"
-msgstr "Iedereen mag downloaden"
-
-#: src/GFExcelAdmin.php:669
-msgid "Logged-in users who have \"Export Entries\" access"
-msgstr "Alleen ingelogde gebruikers met \"Inzendingen exporteren\" rechten"
-
-msgid "If set to %s, anyone with the link can download. If %s is selected, users must be logged-in and have the %s capability."
-msgstr "Wanneer %s is geselecteerd, kan iedereen met de URL het bestand downloaden. Bij %s mogen alleen ingelogde gebruikers met de %s rechten het bestand downloaden."
-
-#: src/GFExcelAdmin.php:688
-msgid "General Settings"
-msgstr "Algemene instellingen"
-
-#: src/GFExcelAdmin.php:692
-msgid "Include Entry Notes"
-msgstr "Notities toevoegen"
-
-#: src/GFExcelAdmin.php:697
-msgid "Yes, enable the notes for every entry"
-msgstr "Ja, voeg de notities toe aan elke inzending"
-
-#: src/GFExcelAdmin.php:706
-msgid "Order By"
-msgstr "Sorteren op"
-
-#: src/GFExcelAdmin.php:716
-msgid "Column Position"
-msgstr "Kolommen"
-
-#: src/GFExcelAdmin.php:721
-msgid "At the top (normal)"
-msgstr "Aan de bovenkant (normaal)"
-
-#: src/GFExcelAdmin.php:726
-msgid "At the left (transposed)"
-msgstr "Aan de linkerkant (getransponeerd)"
-
-#: src/GFExcelAdmin.php:732
-msgid "Custom Filename"
-msgstr "Aangepaste bestandsnaam"
-
-msgid "Default: %s"
-msgstr "Standaard: %s"
-
-msgid "Most non-alphanumeric characters will be replaced with hyphens. Leave empty for default."
-msgstr "De meeste tekens anders dan cijfers en letters worden vervangen door een koppelteken. Laat leeg voor de standaard bestandsnaam."
-#: src/GFExcelAdmin.php:737
-msgid ""
-"Only letters, numbers and dashes are allowed. The rest will be stripped. "
-"Leave empty for default."
-msgstr ""
-"Alleen letters, nummers en streepjes zijn toegestaan. Bij leeg veld wordt de "
-"standaard waarde gebruikt."
-
-#: src/GFExcelAdmin.php:742
-msgid "File Extension"
-msgstr "Bestandsextensie"
-
-msgid "Note: You may override the file type by adding the desired extension (%s) to the end of the Download URL."
-msgstr "Tip: Je kunt een ander bestandstype forceren door de gewenste bestandsextensie (%s) achter de download URL te plaatsen."
-
-#: src/GFExcelAdmin.php:756
-msgid "Attach Single Entry to Notification"
-msgstr "Voeg bestand toe als bijlage aan melding"
-
-#: src/GFExcelAdmin.php:785
-msgid "Field Settings"
-msgstr "Veld-instellingen"
-
-#: src/GFExcelAdmin.php:789
-msgid "Disabled Fields"
-msgstr "Uitgeschakelde velden"
-
-msgid "Enabled Fields"
-msgstr "Actieve velden"
-
-#: src/GFExcelAdmin.php:1052
+#: src/Addon/GravityExportAddon.php:652
 msgid "Select a Notification"
-msgstr "Selecteer een melding"
+msgstr "Selecteer een notificatie"
 
-#: src/GFExcelAdmin.php:1054
-msgid "Unknown"
-msgstr "Onbekend"
+#: src/Addon/GravityExportAddon.php:671
+msgid ""
+"If you like the plugin, 📣 %slet others know%s! We already have %s active "
+"users. Let's get to %s by spreading the news!"
+msgstr ""
+"Als je de plugin leuk vindt, 📣 %slaat het anderen weten%s! We hebben al %s "
+"actieve gebruikers. Laten we naar %s gaan door het nieuws te verspreiden!"
 
-#: src/GFExcelAdmin.php:1108
-msgid "Download this single entry as a file."
-msgstr "Download deze inzending als los bestand."
+#: src/Addon/GravityExportAddon.php:675
+#: src/Addon/GravityExportAddon.php:742
+#: src/Component/Plugin.php:43
+msgid "This link opens in a new window"
+msgstr "Deze link opent in een nieuw venster"
 
-#: src/GFExcelAdmin.php:1110
-msgid "Excel"
-msgstr "Excel"
-
-#: src/GFExcelAdmin.php:1112
-msgid "CSV"
-msgstr "CSV"
-
-#: src/GFExcelAdmin.php:1121
+#: src/Addon/GravityExportAddon.php:695
 msgid ""
 "These are global settings for new forms. You can overwrite them per form "
 "using the available hooks."
 msgstr ""
-"Dit zijn algemene instellingen voor nieuwe formulieren. Je kunt ze per "
-"formulier overschrijven met de beschikbare filters."
+"Dit zijn globale instellingen voor nieuwe formulieren. Je kunt ze per "
+"formulier overschrijven met behulp van de beschikbare hooks."
 
-#: src/GFExcelAdmin.php:1168 src/GFExcelAdmin.php:1184
+#: src/Addon/GravityExportAddon.php:711
+msgid "Upgrade to GravityExport for these useful features:"
+msgstr "Upgrade naar GravityExport voor deze handige functies:"
+
+#: src/Addon/GravityExportAddon.php:715
+msgid "Save exports to Dropbox, FTP, &amp; local storage"
+msgstr "Sla exports op in Dropbox, FTP en lokale opslag"
+
+#: src/Addon/GravityExportAddon.php:718
+msgid ""
+"Automatically upload exports to Dropbox, a remote server using SFTP and "
+"FTP, or store locally."
+msgstr ""
+"Upload exports automatisch naar Dropbox, een externe server via SFTP en "
+"FTP, of sla lokaal op."
+
+#: src/Addon/GravityExportAddon.php:724
+msgid "Filter exports with Conditional Logic"
+msgstr "Filter exports met voorwaardelijke logica"
+
+#: src/Addon/GravityExportAddon.php:726
+msgid ""
+"Create advanced filters, including exporting entries created by only the "
+"currently logged-in user."
+msgstr ""
+"Maak geavanceerde filters, inclusief het exporteren van inzendingen die "
+"alleen door de momenteel ingelogde gebruiker zijn gemaakt."
+
+#: src/Addon/GravityExportAddon.php:732
+msgid "Exports are ready for data analysis"
+msgstr "Exports zijn klaar voor data-analyse"
+
+#: src/Addon/GravityExportAddon.php:734
+msgid ""
+"When analyzing data, you want fields with multiple values broken into "
+"multiple rows each with one value. If you work with data, you&rsquo;ll love "
+"this feature!"
+msgstr ""
+"Bij het analyseren van gegevens wil je velden met meerdere waarden "
+"opsplitsen in meerdere rijen, elk met één waarde. Als je met data werkt, "
+"zul je deze functie geweldig vinden!"
+
+#: src/Addon/GravityExportAddon.php:743
+#: src/Component/Plugin.php:44
+msgid "Gain Powerful Features with GravityExport"
+msgstr "Krijg krachtige functies met GravityExport"
+
+#: src/Addon/GravityExportAddon.php:825
+msgid "Enable all"
+msgstr "Alles inschakelen"
+
+#: src/Addon/GravityExportAddon.php:826
+msgid "Disable all"
+msgstr "Alles uitschakelen"
+
+#: src/Addon/GravityExportAddon.php:827
+msgid "Enable visible"
+msgstr "Zichtbare inschakelen"
+
+#: src/Addon/GravityExportAddon.php:828
+msgid "Disable visible"
+msgstr "Zichtbare uitschakelen"
+
+#: src/Addon/GravityExportAddon.php:829
+msgid "No fields match your search."
+msgstr "Geen velden komen overeen met je zoekopdracht."
+
+#: src/Addon/GravityExportAddon.php:830
+msgid "1 field matches your search."
+msgstr "1 veld komt overeen met je zoekopdracht."
+
+#: src/Addon/GravityExportAddon.php:961
+msgid "Download as one file"
+msgstr "Download als één bestand"
+
+#: src/Addon/GravityExportAddon.php:1035
+#: src/Addon/GravityExportAddon.php:1076
+#: src/GravityForms/Field/DownloadFile.php:75
+msgid "Download"
+msgstr "Download"
+
+#: src/Addon/GravityExportAddon.php:1036
+msgid "Download an Export"
+msgstr "Download een export"
+
+#: src/Addon/GravityExportAddon.php:1164
+msgid "Deselect All"
+msgstr "Alles deselecteren"
+
+#: src/Addon/GravityExportAddon.php:1165
+msgid "Select All"
+msgstr "Alles selecteren"
+
+#: src/Component/MetaBoxes.php:90
+msgid "Download this single entry as a file."
+msgstr "Download deze enkele invoer als een bestand."
+
+#: src/Component/Plugin.php:34
+#: src/Component/Plugin.php:35
+msgid "Documentation"
+msgstr "Documentatie"
+
+#: src/Component/Usage.php:33
+#: src/Component/Usage.php:52
 msgid "countless"
-msgstr "ontelbaar veel"
+msgstr "ontelbaar"
 
-#: src/GFExcelAdmin.php:1185
+#: src/Component/Usage.php:53
 msgid "even more"
 msgstr "nog meer"
 
-#: src/Migration/Migration_1_8_0.php:50
+#: src/Field/Meta/DateCreated.php:18
+msgid "Date"
+msgstr "Datum"
+
+#: src/Field/Meta/DateCreated.php:19
+msgid "Time"
+msgstr "Tijd"
+
+#: src/GravityForms/Field/CopyShortcode.php:47
+msgid "The shortcode has been copied to your clipboard."
+msgstr "De shortcode is naar uw klembord gekopieerd."
+
+#: src/GravityForms/Field/CopyShortcode.php:64
+msgid "Copy Shortcode"
+msgstr "Kopieer shortcode"
+
+#: src/GravityForms/Field/DownloadFile.php:81
+msgid "Reset count"
+msgstr "Reset teller"
+
+#: src/GravityForms/Field/DownloadFile.php:86
+msgid "Download count"
+msgstr "Download teller"
+
+#: src/GravityForms/Field/DownloadFile.php:115
 msgid ""
-"Hi! I wanted to let you know that a <strong>pro add-on</strong> is being "
-"developed to complement <strong>Entries in Excel</strong>. Please <a target="
-"\"_blank\" rel=\"nofollow\" href=\"https://subscribe.gfexcel.com/pro-add-on"
-"\">visit this page</a> if you want to learn more."
+"You are about to reset the download count for this form. This can’t be "
+"undone."
 msgstr ""
-"Hoi! Ik wilde laten weten dat er een <strong>pro add-on</strong> wordt "
-"ontwikkeld om <strong>Inzendingen in Excel</strong> uit te breiden. <a "
-"target=\"_blank\" rel=\"nofollow\" href=\"https://subscribe.gfexcel.com/pro-"
-"add-on\">Meld je aan voor de nieuwsbrief</a> om op de hoogte te blijven."
+"U staat op het punt om de download teller voor dit formulier te resetten. "
+"Dit kan niet ongedaan worden gemaakt."
 
-#. Plugin URI of the plugin/theme
-msgid "https://gfexcel.com"
-msgstr "https://gfexcel.com"
+#: src/GravityForms/Field/DownloadUrl.php:66
+msgid "Regenerate URL"
+msgstr "URL opnieuw genereren"
 
-#. Description of the plugin/theme
+#: src/GravityForms/Field/DownloadUrl.php:71
+msgid "Disable download URL"
+msgstr "Download-URL uitschakelen"
+
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr "Gekopieerd!"
+
+#: src/GravityForms/Field/DownloadUrl.php:80
+msgid "Copy URL to Clipboard"
+msgstr "URL naar klembord kopiëren"
+
+#: src/GravityForms/Field/DownloadUrl.php:160
+msgid "You are about to reset the URL for this form. This can’t be undone."
+msgstr ""
+"U staat op het punt de URL voor dit formulier te resetten. Dit kan niet "
+"ongedaan worden gemaakt."
+
+#: src/GravityForms/Field/DownloadUrl.php:161
 msgid ""
-"Export all Gravity Forms entries to Excel (.xlsx) via a secret (shareable) "
-"url."
+"You are about to disable the URL for this form. This will invalidate the "
+"URL, and can’t be undone."
 msgstr ""
-"Download alle inzendingen van Gravity Forms als een Excel-bestand (.xlsx) "
-"via een knop of een geheime (deelbare) link."
+"U staat op het punt de URL voor dit formulier uit te schakelen. Dit zal de "
+"URL ongeldig maken en kan niet ongedaan worden gemaakt."
 
-#. Author of the plugin/theme
-msgid "Doeke Norg"
-msgstr "Doeke Norg"
+#: src/GravityForms/Field/DownloadUrl.php:163
+msgid "The file URL has been copied to your clipboard."
+msgstr "De bestands-URL is naar uw klembord gekopieerd."
 
-#. Author URI of the plugin/theme
-msgid "https://paypal.me/doekenorg"
-msgstr "https://paypal.me/doekenorg"
+#: src/GravityForms/Field/SortFields.php:69
+msgid "Filter fields…"
+msgstr "Velden filteren…"
 
-msgid "Instant Download ⚡️"
-msgstr "Direct downloaden ⚡️"
+#: src/GravityForms/Field/SortFields.php:70
+msgid "Filter fields"
+msgstr "Velden filteren"
 
-msgid "Select Date Range (optional)"
-msgstr "Selecteer een periode (optioneel)"
+#: src/GravityForms/Field/SortFields.php:98
+msgid "Clear search"
+msgstr "Zoekopdracht wissen"
 
-msgid "Download Settings"
-msgstr "Download instellingen"
+#: src/GravityForms/Field/SortFields.php:157
+msgid "Move %s"
+msgstr "Verplaats %s"
 
-msgid "Security Settings"
-msgstr "Beveiligingsinstellingen"
+#: src/Migration/Migration/SingleFeedMigration.php:65
+msgid "The settings for %s 2.0 were migrated successfully."
+msgstr "De instellingen voor %s 2.0 zijn succesvol gemigreerd."
 
-#~ msgid "Download Excel"
-#~ msgstr "Excel downloaden"
+#: src/Renderer/AbstractPHPExcelRenderer.php:326
+msgid "GravityExport Lite: Something is broken"
+msgstr "GravityExport Lite: Er is iets kapot"
 
-#~ msgid "Download CSV"
-#~ msgstr "CSV downloaden"
+#: src/Renderer/AbstractPHPExcelRenderer.php:327
+msgid "Error message:"
+msgstr "Foutmelding:"
 
-#~ msgid "ID"
-#~ msgstr "ID"
+#: src/Renderer/AbstractPHPExcelRenderer.php:329
+msgid ""
+"If you need support, please contact us via <a target=\"_blank\" "
+"href=\"%s\">WordPress.org support forum</a>."
+msgstr ""
+"Als u ondersteuning nodig heeft, neem dan contact met ons op via <a "
+"target=\"_blank\" href=\"%s\">WordPress.org supportforum</a>."
 
-#~ msgid "IP address"
-#~ msgstr "IP-adres"
+#: src/Renderer/AbstractPHPExcelRenderer.php:331
+msgid ""
+"Check if someone else had the same error before posting a new support "
+"question."
+msgstr ""
+"Controleer of iemand anders dezelfde fout heeft gehad voordat u een nieuwe "
+"ondersteuningsvraag plaatst."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:333
+msgid ""
+"And when opening a new question, <strong>please use the error message as "
+"the title</strong>."
+msgstr ""
+"En bij het openen van een nieuwe vraag, <strong>gebruik dan alstublieft de "
+"foutmelding als titel</strong>."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:335
+msgid "Include the following details in your message:"
+msgstr "Neem de volgende details op in uw bericht:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:337
+msgid "Plugin Version: %s"
+msgstr "Pluginversie: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:338
+msgid "Gravity Forms Version: %s"
+msgstr "Gravity Forms-versie: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:339
+msgid "PHP Version: %s"
+msgstr "PHP-versie: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:341
+msgid " (this version is too low, please update to at least PHP 5.6)"
+msgstr " (deze versie is te laag, werk alstublieft bij naar minimaal PHP 5.6)"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:344
+msgid "WordPress Version: %s"
+msgstr "WordPress-versie: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:345
+msgid "Error message: %s"
+msgstr "Foutmelding: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:346
+msgid "Error stack trace: %s"
+msgstr "Foutstacktrace: %s"
+
+#: src/Repository/FieldsRepository.php:97
+#: src/Repository/FieldsRepository.php:270
+msgid "Date Updated"
+msgstr "Datum bijgewerkt"
+
+#: src/Repository/FieldsRepository.php:266
+msgid "Entry Date"
+msgstr "Invoerdatum"
+
+#: src/Repository/FieldsRepository.php:274
+msgid "Entry ID"
+msgstr "Invoer-ID"
+
+#: src/Addon/GravityExportAddon.php:832
+msgid "[count] fields match your search."
+msgstr "[count] velden komen overeen met uw zoekopdracht."
+
+#: src/Addon/GravityExportAddon.php:834
+msgid "[field] moved to [destination]."
+msgstr "[field] verplaatst naar [destination]."
+
+#: src/Addon/GravityExportAddon.php:836
+msgid "[count] fields moved to [destination]."
+msgstr "[count] velden verplaatst naar [destination]."
+
+#: src/Addon/GravityExportAddon.php:838
+msgid "1 field moved to [destination]."
+msgstr "1 veld verplaatst naar [destination]."
+
+#: src/Shortcode/DownloadUrl.php:94
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
+msgstr "Voeg een geldig 'secret'-attribuut toe aan de '[shortcode]' shortcode."

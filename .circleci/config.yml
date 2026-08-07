@@ -9,52 +9,186 @@ anchors:
     machine:
       image: default
 
+  test_job_config: &test_job_config
+    <<: *context
+    requires:
+      - prepare
+
 jobs:
-  build_package_release:
+  prepare:
     <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: Getting GravityKit test/build tools
-          command: |
-            git clone git@github.com:GravityKit/Tooling.git /home/circleci/tooling
+          name: Fetch tags
+          command: git fetch --tags
       - run:
-          name: Building and packaging
+          name: Create .npmrc
           command: |
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o "build"
-            if [ "${CIRCLE_BRANCH}" != "main" ]; then
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php --include-hash"
-            else
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gf-entries-in-excel gfexcel.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
+            echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
+            echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
+      - run:
+          name: Install dependencies
+          command: |
+            npx @gravitykit/gktools composer install
+            npx @gravitykit/gktools npm install
+      - run:
+          name: Configure E2E environment
+          command: |
+            npx @gravitykit/gktools gh release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp
+            unzip .tmp/gravityforms*.zip -d .tmp
+            cp .env.sample .env
+            sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
+            sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
+            sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - .
+
+  run_e2e_tests:
+    <<: *default_job_config
+    parallelism: 1
+    resource_class: xlarge
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Run E2E tests
+          command: |
+            attempt=0
+            max_attempts=3
+            sleep_time=5
+            while [ $attempt -lt $max_attempts ]; do
+              npm run tests:e2e:setup && break
+              attempt=$(( attempt + 1 ))
+              # Apache inside the wp-env container creates the bind-mounted
+              # mu-plugin files (e2e-fixtures.php, e2e-mail-capture.php) as
+              # uid 0, so a plain `rm -rf` from the circleci user fails on
+              # them and every retry hits the same "permission denied"
+              # state. Stop the containers first, then clean up with sudo
+              # which is available on CircleCI Linux machine runners.
+              (cd tests/E2E/setup && npx wp-env stop 2>/dev/null) || true
+              sudo rm -rf /home/circleci/.wp-env
+              echo "Retrying WP-ENV setup in $sleep_time seconds… (attempt $attempt/$max_attempts)"
+              sleep $sleep_time
+            done
+            if [ $attempt -eq $max_attempts ]; then
+              echo "WP-ENV setup failed."
+              exit 1
             fi
-            mkdir -p gf-entries-in-excel
-            cp -R build gf-entries-in-excel
-            rm -rf gf-entries-in-excel/build/composer.* gf-entries-in-excel/build/strauss.phar
-            zip -gr $(ls gf-entries-in-excel-*.zip) gf-entries-in-excel
-            zip -d $(ls gf-entries-in-excel-*.zip)  "gf-entries-in-excel/src/*" "gf-entries-in-excel/assets/*"
-            mkdir .release
-            cp gf-entries-in-excel-*.zip .release
+            TESTFILES=$(circleci tests glob "tests/E2E/tests/**/*.spec.js")
+            echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose
+      - store_artifacts:
+          path: tests/E2E/results
+      - store_artifacts:
+          path: tests/E2E/report
+      - store_test_results:
+          path: tests/E2E/results/junit.xml
+
+  build_package_release:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
       - run:
-          name: Creating a GitHub release
+          name: Configure git
+          command: |
+            git config user.email "support@gravitykit.com"
+            git config user.name "GravityKit - CI"
+      - run:
+          name: Replace @since tags
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravitykit.com"
-              git config user.name "GravityKit - CI"
-              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gfexcel.php $(ls gf-entries-in-excel-*.zip)"
+              npx @gravitykit/gktools replace-since --commit
+            else
+              echo "Skipping @since tag replacement (only runs on main, before release build)."
             fi
       - run:
-          name: Notifying GravityKit Release Manager
+          name: Build and package
+          command: npx @gravitykit/gktools build
+      - run:
+          name: Trigger translation pipeline
           command: |
-            if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-              /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gfexcel.php $(ls gf-entries-in-excel-*.zip) --with-circle"
+            if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "main" ]; then
+              npx @gravitykit/gktools translate gk-gravityexport-lite --commit --push
+            else
+              echo "Skipping translation pipeline."
             fi
+      - run:
+          name: Collect build artifacts
+          command: |
+            mkdir -p .release
+            cp gf-entries-in-excel-*.zip .release/
       - store_artifacts:
           path: .release
           destination: release
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - plugin/.release
+            - plugin/gf-entries-in-excel-*.zip
+
+  run_post_build_smoke:
+    <<: *default_job_config
+    machine:
+      image: default
+    resource_class: xlarge
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Post-build smoke
+          # Unzips .release/*.zip, restores dev deps via gktools' Docker composer,
+          # boots wp-env with retry, runs `playwright test --grep=@smoke` against
+          # the built artifact. See @gravitykit/e2e-bootstrap README for details.
+          command: |
+            npx @gravitykit/e2e-bootstrap smoke \
+              --composer-cmd "npx @gravitykit/gktools composer install"
+      - store_artifacts:
+          path: tests/E2E/results
+      - store_artifacts:
+          path: tests/E2E/report
+      - store_test_results:
+          path: tests/E2E/results/junit.xml
+
+  publish_release:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Configure git
+          command: |
+            git config user.email "support@gravitykit.com"
+            git config user.name "GravityKit - CI"
+      - run:
+          name: Create GitHub release
+          command: npx @gravitykit/gktools release
+      - run:
+          name: Announce build
+          command: |
+            if ! git log -1 --pretty=%B | grep -iq "\[skip notify\]"; then
+              npx @gravitykit/gktools announce
+            fi
 
 workflows:
   version: 2
-  test_and_package:
+  test_and_release:
     jobs:
+      - prepare:
+          <<: *context
+      - run_e2e_tests:
+          <<: *test_job_config
       - build_package_release:
           <<: *context
+          requires:
+            - prepare
+      - run_post_build_smoke:
+          <<: *context
+          requires:
+            - build_package_release
+      - publish_release:
+          <<: *context
+          requires:
+            - run_post_build_smoke

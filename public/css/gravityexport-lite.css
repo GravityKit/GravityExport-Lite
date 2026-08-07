@@ -397,3 +397,8 @@ fieldset.gk-gravityexport-download-file .gform-settings-panel__content {
     margin-right: 0;
     margin-left: 1rem;
 }
+
+/* WordPress 7's admin reskin adds `.wp-core-ui .button .dashicons { line-height: 1.9 }`, which inflates the icon's line box and pushes it out of alignment with the label. Restore the dashicons default for the copy buttons (Download URL and Copy Shortcode). */
+.wp-core-ui .button .dashicons.dashicons-clipboard {
+    line-height: 1;
+}

@@ -95,7 +95,35 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
             }
 
             if ($save) {
-                $file = get_temp_dir() . $this->getFileName();
+                $default_path = get_temp_dir() . $this->getFileName();
+
+                /**
+                 * Modifies the path the rendered export file is saved to.
+                 *
+                 * Applies to every saved render: notification attachments, scheduled and bulk exports.
+                 * A file saved for a notification attachment is deleted right after its email is sent.
+                 *
+                 * @since 2.7.0
+                 *
+                 * @param string $file The full path to save the file to. Default: the temp directory plus the export file name.
+                 * @param array  $form The form object. Can be empty for renders without a form context.
+                 */
+                $file = gf_apply_filters(
+                    ['gk/gravityexport/renderer/save-path', (int) \rgar($this->form, 'id', 0)],
+                    $default_path,
+                    $this->form
+                );
+
+                if (!is_string($file) || $file === '') {
+                    $file = $default_path;
+                }
+
+                // An unwritable target falls back to the default: save() would throw, and this
+                // class handles that by printing an error page and exiting the request.
+                if (!is_writable(file_exists($file) ? $file : dirname($file))) {
+                    $file = $default_path;
+                }
+
                 $objWriter->save($file);
 
                 return $file;

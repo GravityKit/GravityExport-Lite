@@ -9,19 +9,14 @@ use GFExcel\Generator\HashGeneratorInterface;
  * Action to reset the download URL for a form.
  * @since 2.0.0
  */
-class DownloadUrlResetAction extends AbstractAction {
+class DownloadUrlResetAction extends AbstractAction implements NotifyingActionInterface {
+	use FiresWithNotice;
+
 	/**
 	 * @inheritdoc
 	 * @since 2.0.0
 	 */
 	public static $name = 'download_url_reset';
-
-	/**
-	 * The message to show when the action was successful.
-	 * @since 2.0.0
-	 * @var string
-	 */
-	protected static $success_message = '';
 
 	/**
 	 * The hash generator.
@@ -37,30 +32,41 @@ class DownloadUrlResetAction extends AbstractAction {
 	 */
 	public function __construct( HashGeneratorInterface $generator ) {
 		$this->generator = $generator;
-
-		static::$success_message = 'The download URL has been reset.';
 	}
 
 	/**
-	 * @inheritdoc
-	 * @since 2.0.0
+	 * The success notice for this action.
+	 *
+	 * Translated lazily, not in the constructor: the action is resolved from the
+	 * service container during load (before after_setup_theme), and translating
+	 * there trips WordPress 6.7's just-in-time translation notice.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @return ActionNotice
 	 */
-	public function fire( \GFAddOn $addon, array $form ): void {
+	public function get_success_notice(): ActionNotice {
+		return ActionNotice::success( esc_html__( 'The download URL has been reset.', 'gk-gravityexport-lite' ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since 2.7.0
+	 */
+	public function fire_with_notice( \GFAddOn $addon, array $form ): ?ActionNotice {
 		if ( ! $addon instanceof GravityExportAddon ) {
-			return;
+			return null;
 		}
 
 		try {
 			$hash = $this->generator->generate();
 		} catch ( \Exception $exception ) {
-			$addon->add_error_message(
+			return ActionNotice::error(
 				sprintf(
 					esc_html__( 'There was an error generating the URL: %s', 'gk-gravityexport-lite' ),
 					$exception->getMessage()
 				)
 			);
-
-			return;
 		}
 
 		[ $feed_id, $form_id, $settings ] = $form;
@@ -72,7 +78,6 @@ class DownloadUrlResetAction extends AbstractAction {
 		$addon->set_settings( $settings );
 		$addon->set_previous_settings( $settings );
 
-		// Set notification of success.
-		$addon->add_message( esc_html__( static::$success_message, 'gk-gravityexport-lite' ) );
+		return $this->get_success_notice();
 	}
 }

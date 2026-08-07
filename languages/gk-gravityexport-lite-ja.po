@@ -1,0 +1,560 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: gk-gravityexport-lite\n"
+"PO-Revision-Date: 2026-04-15 23:59:43+0000\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: gfexcel.php
+msgid "GravityExport Lite"
+msgstr "GravityExport Lite"
+
+#: gfexcel.php
+msgid "https://gfexcel.com"
+msgstr "https://gfexcel.com"
+
+#: gfexcel.php
+msgid ""
+"Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret "
+"shareable URL."
+msgstr "すべての Gravity Forms エントリを秘密の共有可能なURL経由でExcel（.xlsx）またはCSVにエクスポートします。"
+
+#: gfexcel.php
+msgid "GravityKit"
+msgstr "GravityKit"
+
+#: gfexcel.php
+msgid "https://www.gravitykit.com/extensions/gravityexport/"
+msgstr "https://www.gravitykit.com/extensions/gravityexport/"
+
+#: gfexcel.php:46
+msgid "GravityExport Lite requires PHP %s or newer."
+msgstr "GravityExport Lite は PHP %s 以降が必要です。"
+
+#: src/Action/DownloadUrlDisableAction.php:38
+msgid "The download URL has been disabled."
+msgstr "ダウンロードURLは無効化されています。"
+
+#: src/Action/DownloadUrlEnableAction.php:26
+msgid "The download URL has been enabled."
+msgstr "ダウンロードURLは有効化されています。"
+
+#: src/Action/DownloadUrlResetAction.php:41
+msgid "The download URL has been reset."
+msgstr "ダウンロードURLはリセットされました。"
+
+#: src/Action/DownloadUrlResetAction.php:58
+msgid "There was an error generating the URL: %s"
+msgstr "URLの生成中にエラーが発生しました: %s"
+
+#: src/Action/NotificationsAction.php:65
+msgid "The notifications could not be retrieved."
+msgstr "通知を取得できませんでした。"
+
+#: src/Addon/GravityExportAddon.php:186
+msgid "Activate GravityExport"
+msgstr "GravityExport を有効化"
+
+#: src/Addon/GravityExportAddon.php:217
+msgid "Download settings"
+msgstr "ダウンロード設定"
+
+#: src/Addon/GravityExportAddon.php:221
+msgid "Download URL"
+msgstr "ダウンロードURL"
+
+#: src/Addon/GravityExportAddon.php:229
+msgid "Embed shortcode"
+msgstr "ショートコードを埋め込む"
+
+#: src/Addon/GravityExportAddon.php:235
+msgid "Custom Filename"
+msgstr "カスタムファイル名"
+
+#: src/Addon/GravityExportAddon.php:239
+msgid "Default: %s"
+msgstr "デフォルト: %s"
+
+#: src/Addon/GravityExportAddon.php:243
+msgid ""
+"Most non-alphanumeric characters will be replaced with hyphens. Leave empty "
+"for default."
+msgstr "ほとんどの英数字以外の文字はハイフンに置き換えられます。空欄にするとデフォルトになります。"
+
+#: src/Addon/GravityExportAddon.php:252
+msgid "File Extension"
+msgstr "ファイル拡張子"
+
+#: src/Addon/GravityExportAddon.php:257
+msgid ""
+"Note: You may override the file type by adding the desired extension (%s) "
+"to the end of the Download URL."
+msgstr "注意: ダウンロードURLの末尾に希望の拡張子（%s）を追加することで、ファイルタイプを上書きできます。"
+
+#: src/Addon/GravityExportAddon.php:278
+msgid "Instant Download ⚡️"
+msgstr "インスタントダウンロード ⚡️"
+
+#: src/Addon/GravityExportAddon.php:282
+msgid "Select Date Range (optional)"
+msgstr "日付範囲を選択（任意）"
+
+#: src/Addon/GravityExportAddon.php:294
+msgid "Security Settings"
+msgstr "セキュリティ設定"
+
+#: src/Addon/GravityExportAddon.php:298
+msgid "Secure Shortcodes"
+msgstr "セキュアショートコード"
+
+#: src/Addon/GravityExportAddon.php:300
+msgid ""
+"A secure shortcode contains a unique <code>secret</code>-attribute which "
+"prevents generating the URL for a form without permission."
+msgstr "セキュアショートコードには、許可なくフォームのURLを生成することを防ぐ一意の<code>secret</code>属性が含まれています。"
+
+#: src/Addon/GravityExportAddon.php:304
+msgid "Enable secure embed shortcode"
+msgstr "セキュア埋め込みショートコードを有効化"
+
+#: src/Addon/GravityExportAddon.php:311
+msgid "Download Permissions"
+msgstr "ダウンロード権限"
+
+#: src/Addon/GravityExportAddon.php:314
+msgid ""
+"If set to \"Everyone can download\", anyone with the link can download. If "
+"\"Logged-in users who have 'Export Entries' access\" is selected, users "
+"must be logged-in and have the %s capability."
+msgstr ""
+"「全員がダウンロード可能」に設定すると、リンクを持つ誰でもダウンロードできます。「'エントリをエクスポート'"
+"権限を持つログインユーザー」が選択されている場合、ユーザーはログインし、%s 権限を持っている必要があります。"
+
+#: src/Addon/GravityExportAddon.php:326
+msgid "Everyone can download"
+msgstr "全員がダウンロード可能"
+
+#: src/Addon/GravityExportAddon.php:332
+msgid "Logged-in users who have \"Export Entries\" access"
+msgstr "「エントリをエクスポート」権限を持つログインユーザー"
+
+#: src/Addon/GravityExportAddon.php:348
+msgid "General Settings"
+msgstr "一般設定"
+
+#: src/Addon/GravityExportAddon.php:352
+msgid "Include Entry Notes"
+msgstr "エントリノートを含める"
+
+#: src/Addon/GravityExportAddon.php:357
+msgid "Yes, enable the notes for every entry"
+msgstr "はい、すべてのエントリのノートを有効にする"
+
+#: src/Addon/GravityExportAddon.php:363
+msgid "Attach Single Entry to Notification"
+msgstr "通知に単一エントリを添付"
+
+#: src/Addon/GravityExportAddon.php:371
+msgid "Column Position"
+msgstr "列の位置"
+
+#: src/Addon/GravityExportAddon.php:376
+msgid "At the top (normal)"
+msgstr "上部に（通常）"
+
+#: src/Addon/GravityExportAddon.php:381
+msgid "At the left (transposed)"
+msgstr "左に（転置）"
+
+#: src/Addon/GravityExportAddon.php:388
+msgid "Order By"
+msgstr "並び順"
+
+#: src/Addon/GravityExportAddon.php:403
+msgid "Ascending"
+msgstr "昇順"
+
+#: src/Addon/GravityExportAddon.php:407
+msgid "Descending"
+msgstr "降順"
+
+#: src/Addon/GravityExportAddon.php:424
+msgid "Field settings"
+msgstr "フィールド設定"
+
+#: src/Addon/GravityExportAddon.php:432
+msgid "Disabled Fields"
+msgstr "無効なフィールド"
+
+#: src/Addon/GravityExportAddon.php:433
+msgid "Enabled Fields"
+msgstr "有効なフィールド"
+
+#: src/Addon/GravityExportAddon.php:494
+msgid "Default Settings"
+msgstr "デフォルト設定"
+
+#: src/Addon/GravityExportAddon.php:499
+msgid "Labels"
+msgstr "ラベル"
+
+#: src/Addon/GravityExportAddon.php:503
+msgid "Use admin labels"
+msgstr "管理者ラベルを使用"
+
+#: src/Addon/GravityExportAddon.php:513
+msgid "Multiple Columns"
+msgstr "複数列"
+
+#: src/Addon/GravityExportAddon.php:517
+msgid "Split multi-fields (name, address) into multiple columns"
+msgstr "複数フィールド（名前、住所）を複数列に分割"
+
+#: src/Addon/GravityExportAddon.php:531
+msgid "Enable notes by default"
+msgstr "デフォルトでメモを有効にする"
+
+#: src/Addon/GravityExportAddon.php:539
+msgid "Sections"
+msgstr "セクション"
+
+#: src/Addon/GravityExportAddon.php:543
+msgid "Enable (empty) section column"
+msgstr "（空の）セクション列を有効にする"
+
+#: src/Addon/GravityExportAddon.php:551
+msgid "File Uploads"
+msgstr "ファイルアップロード"
+
+#: src/Addon/GravityExportAddon.php:556
+msgid "Enable file upload columns"
+msgstr "ファイルアップロード列を有効にする"
+
+#: src/Addon/GravityExportAddon.php:564
+msgid "Hyperlinks"
+msgstr "ハイパーリンク"
+
+#: src/Addon/GravityExportAddon.php:569
+msgid "Enable hyperlinks on URL-only columns"
+msgstr "URLのみの列でハイパーリンクを有効にする"
+
+#: src/Addon/GravityExportAddon.php:577
+msgid "Product Fields"
+msgstr "商品フィールド"
+
+#: src/Addon/GravityExportAddon.php:582
+msgid "Export prices as numeric fields, without currency symbol ($)"
+msgstr "価格を通貨記号なしの数値フィールドとしてエクスポートする（$なし）"
+
+#: src/Addon/GravityExportAddon.php:595
+msgid "Default Enabled Meta Fields"
+msgstr "デフォルトで有効なメタフィールド"
+
+#: src/Addon/GravityExportAddon.php:599
+msgid ""
+"Select all meta fields that are enabled by default. Once you've saved your "
+"form, these settings will not do anything any more."
+msgstr "デフォルトで有効なメタフィールドをすべて選択してください。フォームを保存すると、これらの設定は以降効果がありません。"
+
+#: src/Addon/GravityExportAddon.php:652
+msgid "Select a Notification"
+msgstr "通知を選択"
+
+#: src/Addon/GravityExportAddon.php:671
+msgid ""
+"If you like the plugin, 📣 %slet others know%s! We already have %s active "
+"users. Let's get to %s by spreading the news!"
+msgstr "プラグインが気に入ったら、📣 %sみんなに知らせよう%s！現在すでに %s 人のアクティブユーザーがいます。ニュースを広めて %s に到達しましょう！"
+
+#: src/Addon/GravityExportAddon.php:675
+#: src/Addon/GravityExportAddon.php:742
+#: src/Component/Plugin.php:43
+msgid "This link opens in a new window"
+msgstr "このリンクは新しいウィンドウで開きます"
+
+#: src/Addon/GravityExportAddon.php:695
+msgid ""
+"These are global settings for new forms. You can overwrite them per form "
+"using the available hooks."
+msgstr "これは新しいフォームのためのグローバル設定です。利用可能なフックを使ってフォームごとに上書きできます。"
+
+#: src/Addon/GravityExportAddon.php:711
+msgid "Upgrade to GravityExport for these useful features:"
+msgstr "これらの便利な機能のためにGravityExportにアップグレードしましょう："
+
+#: src/Addon/GravityExportAddon.php:715
+msgid "Save exports to Dropbox, FTP, &amp; local storage"
+msgstr "エクスポートをDropbox、FTP、ローカルストレージに保存"
+
+#: src/Addon/GravityExportAddon.php:718
+msgid ""
+"Automatically upload exports to Dropbox, a remote server using SFTP and "
+"FTP, or store locally."
+msgstr "エクスポートを自動的にDropbox、SFTPやFTPを使用したリモートサーバー、またはローカルにアップロードします。"
+
+#: src/Addon/GravityExportAddon.php:724
+msgid "Filter exports with Conditional Logic"
+msgstr "条件付きロジックでエクスポートをフィルター"
+
+#: src/Addon/GravityExportAddon.php:726
+msgid ""
+"Create advanced filters, including exporting entries created by only the "
+"currently logged-in user."
+msgstr "現在ログインしているユーザーが作成したエントリをエクスポートするなど、高度なフィルターを作成します。"
+
+#: src/Addon/GravityExportAddon.php:732
+msgid "Exports are ready for data analysis"
+msgstr "エクスポートはデータ分析に対応済みです"
+
+#: src/Addon/GravityExportAddon.php:734
+msgid ""
+"When analyzing data, you want fields with multiple values broken into "
+"multiple rows each with one value. If you work with data, you&rsquo;ll love "
+"this feature!"
+msgstr "データ分析時には、複数の値を持つフィールドをそれぞれの値ごとに複数の行に分けたいものです。データを扱う方にはこの機能が喜ばれるでしょう！"
+
+#: src/Addon/GravityExportAddon.php:743
+#: src/Component/Plugin.php:44
+msgid "Gain Powerful Features with GravityExport"
+msgstr "GravityExportで強力な機能を手に入れましょう"
+
+#: src/Addon/GravityExportAddon.php:825
+msgid "Enable all"
+msgstr "すべて有効にする"
+
+#: src/Addon/GravityExportAddon.php:826
+msgid "Disable all"
+msgstr "すべて無効にする"
+
+#: src/Addon/GravityExportAddon.php:827
+msgid "Enable visible"
+msgstr "表示されているものを有効にする"
+
+#: src/Addon/GravityExportAddon.php:828
+msgid "Disable visible"
+msgstr "表示されているものを無効にする"
+
+#: src/Addon/GravityExportAddon.php:829
+msgid "No fields match your search."
+msgstr "検索に一致するフィールドがありません。"
+
+#: src/Addon/GravityExportAddon.php:830
+msgid "1 field matches your search."
+msgstr "検索に一致するフィールドが1つあります。"
+
+#: src/Addon/GravityExportAddon.php:961
+msgid "Download as one file"
+msgstr "1つのファイルとしてダウンロード"
+
+#: src/Addon/GravityExportAddon.php:1035
+#: src/Addon/GravityExportAddon.php:1076
+#: src/GravityForms/Field/DownloadFile.php:75
+msgid "Download"
+msgstr "ダウンロード"
+
+#: src/Addon/GravityExportAddon.php:1036
+msgid "Download an Export"
+msgstr "エクスポートをダウンロード"
+
+#: src/Addon/GravityExportAddon.php:1164
+msgid "Deselect All"
+msgstr "すべての選択を解除"
+
+#: src/Addon/GravityExportAddon.php:1165
+msgid "Select All"
+msgstr "すべて選択"
+
+#: src/Component/MetaBoxes.php:90
+msgid "Download this single entry as a file."
+msgstr "この単一のエントリをファイルとしてダウンロードします。"
+
+#: src/Component/Plugin.php:34
+#: src/Component/Plugin.php:35
+msgid "Documentation"
+msgstr "ドキュメント"
+
+#: src/Component/Usage.php:33
+#: src/Component/Usage.php:52
+msgid "countless"
+msgstr "無数"
+
+#: src/Component/Usage.php:53
+msgid "even more"
+msgstr "さらに多く"
+
+#: src/Field/Meta/DateCreated.php:18
+msgid "Date"
+msgstr "日付"
+
+#: src/Field/Meta/DateCreated.php:19
+msgid "Time"
+msgstr "時間"
+
+#: src/GravityForms/Field/CopyShortcode.php:47
+msgid "The shortcode has been copied to your clipboard."
+msgstr "ショートコードがクリップボードにコピーされました。"
+
+#: src/GravityForms/Field/CopyShortcode.php:64
+msgid "Copy Shortcode"
+msgstr "ショートコードをコピー"
+
+#: src/GravityForms/Field/DownloadFile.php:81
+msgid "Reset count"
+msgstr "カウントをリセット"
+
+#: src/GravityForms/Field/DownloadFile.php:86
+msgid "Download count"
+msgstr "ダウンロード数"
+
+#: src/GravityForms/Field/DownloadFile.php:115
+msgid ""
+"You are about to reset the download count for this form. This can’t be "
+"undone."
+msgstr "このフォームのダウンロード数をリセットしようとしています。元に戻すことはできません。"
+
+#: src/GravityForms/Field/DownloadUrl.php:66
+msgid "Regenerate URL"
+msgstr "URLを再生成"
+
+#: src/GravityForms/Field/DownloadUrl.php:71
+msgid "Disable download URL"
+msgstr "ダウンロードURLを無効にする"
+
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr "コピーしました！"
+
+#: src/GravityForms/Field/DownloadUrl.php:80
+msgid "Copy URL to Clipboard"
+msgstr "URLをクリップボードにコピー"
+
+#: src/GravityForms/Field/DownloadUrl.php:160
+msgid "You are about to reset the URL for this form. This can’t be undone."
+msgstr "このフォームのURLをリセットしようとしています。これは元に戻せません。"
+
+#: src/GravityForms/Field/DownloadUrl.php:161
+msgid ""
+"You are about to disable the URL for this form. This will invalidate the "
+"URL, and can’t be undone."
+msgstr "このフォームのURLを無効にしようとしています。これによりURLは無効になり、元に戻せません。"
+
+#: src/GravityForms/Field/DownloadUrl.php:163
+msgid "The file URL has been copied to your clipboard."
+msgstr "ファイルのURLがクリップボードにコピーされました。"
+
+#: src/GravityForms/Field/SortFields.php:69
+msgid "Filter fields…"
+msgstr "フィールドを絞り込む…"
+
+#: src/GravityForms/Field/SortFields.php:70
+msgid "Filter fields"
+msgstr "フィールドを絞り込む"
+
+#: src/GravityForms/Field/SortFields.php:98
+msgid "Clear search"
+msgstr "検索をクリア"
+
+#: src/GravityForms/Field/SortFields.php:157
+msgid "Move %s"
+msgstr "Move %s"
+
+#: src/Migration/Migration/SingleFeedMigration.php:65
+msgid "The settings for %s 2.0 were migrated successfully."
+msgstr "The settings for %s 2.0 were migrated successfully."
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:326
+msgid "GravityExport Lite: Something is broken"
+msgstr "GravityExport Lite: 何か問題があります"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:327
+msgid "Error message:"
+msgstr "エラーメッセージ:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:329
+msgid ""
+"If you need support, please contact us via <a target=\"_blank\" "
+"href=\"%s\">WordPress.org support forum</a>."
+msgstr ""
+"サポートが必要な場合は、<a target=\"_blank\" "
+"href=\"%s\">WordPress.orgサポートフォーラム</a>からお問い合わせください。"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:331
+msgid ""
+"Check if someone else had the same error before posting a new support "
+"question."
+msgstr "新しいサポート質問を投稿する前に、他の誰かが同じエラーを経験していないか確認してください。"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:333
+msgid ""
+"And when opening a new question, <strong>please use the error message as "
+"the title</strong>."
+msgstr "新しい質問を投稿する際は、<strong>エラーメッセージをタイトルとして使用してください</strong>。"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:335
+msgid "Include the following details in your message:"
+msgstr "メッセージに以下の詳細を含めてください:"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:337
+msgid "Plugin Version: %s"
+msgstr "プラグインバージョン: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:338
+msgid "Gravity Forms Version: %s"
+msgstr "Gravity Forms バージョン: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:339
+msgid "PHP Version: %s"
+msgstr "PHP バージョン: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:341
+msgid " (this version is too low, please update to at least PHP 5.6)"
+msgstr "（このバージョンは低すぎます。最低でもPHP 5.6にアップデートしてください）"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:344
+msgid "WordPress Version: %s"
+msgstr "WordPress バージョン: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:345
+msgid "Error message: %s"
+msgstr "エラーメッセージ: %s"
+
+#: src/Renderer/AbstractPHPExcelRenderer.php:346
+msgid "Error stack trace: %s"
+msgstr "エラースタックトレース: %s"
+
+#: src/Repository/FieldsRepository.php:97
+#: src/Repository/FieldsRepository.php:270
+msgid "Date Updated"
+msgstr "更新日"
+
+#: src/Repository/FieldsRepository.php:266
+msgid "Entry Date"
+msgstr "入力日"
+
+#: src/Repository/FieldsRepository.php:274
+msgid "Entry ID"
+msgstr "入力ID"
+
+#: src/Addon/GravityExportAddon.php:832
+msgid "[count] fields match your search."
+msgstr "[count] 個のフィールドが検索条件に一致しました。"
+
+#: src/Addon/GravityExportAddon.php:834
+msgid "[field] moved to [destination]."
+msgstr "[field] を [destination] に移動しました。"
+
+#: src/Addon/GravityExportAddon.php:836
+msgid "[count] fields moved to [destination]."
+msgstr "[count] 個のフィールドを [destination] に移動しました。"
+
+#: src/Addon/GravityExportAddon.php:838
+msgid "1 field moved to [destination]."
+msgstr "1 個のフィールドを [destination] に移動しました。"
+
+#: src/Shortcode/DownloadUrl.php:94
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
+msgstr "有効な'secret'属性を'[shortcode]'ショートコードに追加してください。"

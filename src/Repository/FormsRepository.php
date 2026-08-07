@@ -81,15 +81,86 @@ class FormsRepository {
 	}
 
 	/**
-	 * Returns the selected notification.
+	 * Returns the first selected notification.
 	 * @return string
 	 */
 	public function getSelectedNotification(): string {
-		return (string) $this->addon->get_feed_meta_field(
-			'attachment_notification',
-			\rgar( $this->form, 'id', 0 ),
-			''
+		$ids = $this->getSelectedNotifications();
+
+		return $ids[0] ?? '';
+	}
+
+	/**
+	 * Returns the selected notification IDs the single-entry export is attached to.
+	 * @since 2.7.0
+	 * @return string[] The notification IDs.
+	 */
+	public function getSelectedNotifications(): array {
+		$form_id = (int) \rgar( $this->form, 'id', 0 );
+
+		$ids = $this->normalizeNotificationIds(
+			$this->addon->get_feed_meta_field( 'attachment_notification', $form_id, '' )
 		);
+
+		/**
+		 * Replaces the stored notification selection with the one owned by another product.
+		 *
+		 * The last callback wins; this stage establishes the selection rather than modifying
+		 * it. Runs before `gk/gravityexport/notification/attachment-ids`, so callbacks on that
+		 * filter receive the complete selection. Use that filter to add or remove IDs.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string[] $ids     The notification IDs stored by GravityExport Lite.
+		 * @param int      $form_id The form ID.
+		 */
+		$ids = $this->normalizeNotificationIds(
+			gf_apply_filters( [ 'gk/gravityexport/notification/attachment-source-ids', $form_id ], $ids, $form_id )
+		);
+
+		/**
+		 * Modifies the notification IDs the single-entry export is attached to.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param string[] $ids     The selected notification IDs.
+		 * @param int      $form_id The form ID.
+		 */
+		$ids = gf_apply_filters( [ 'gk/gravityexport/notification/attachment-ids', $form_id ], $ids, $form_id );
+
+		return $this->normalizeNotificationIds( $ids );
+	}
+
+	/**
+	 * Normalizes a stored or filtered notification selection to a list of ID strings.
+	 * @since 2.7.0
+	 * @param mixed $value The raw value; a single ID or a list of IDs.
+	 * @return string[] The unique, non-empty notification IDs.
+	 */
+	private function normalizeNotificationIds( $value ): array {
+		if ( ! is_array( $value ) ) {
+			$value = [ $value ];
+		}
+
+		$ids = [];
+
+		foreach ( $value as $id ) {
+			if ( ! is_scalar( $id ) ) {
+				$this->addon->log_debug( __METHOD__ . '(): Skipping a non-scalar notification ID; check the stored attachment notification selection.' );
+
+				continue;
+			}
+
+			$id = (string) $id;
+
+			if ( $id === '' || in_array( $id, $ids, true ) ) {
+				continue;
+			}
+
+			$ids[] = $id;
+		}
+
+		return $ids;
 	}
 
 	/**

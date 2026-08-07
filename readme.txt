@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
-Tested up to: 6.9.4
-Stable tag: 2.6.0
+Tested up to: 7.0.3
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,19 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.7.0 on August 6, 2026 =
+
+* Added: The single-entry export attached to a notification is now saved to a unique temporary folder, so simultaneous submissions can no longer overwrite each other's attachment.
+* Fixed: Copy-to-clipboard button icons were vertically misaligned in WordPress 7.0.
+* Fixed: A "translation loading triggered too early" notice (WordPress 6.7+) caused by the download-URL feed actions loading translations during plugin bootstrap.
+* Fixed: The success message shown after regenerating, enabling, or disabling a download URL was lost because the page redirected before it could display.
+
+__Developer Updates:__
+* Added: `gk/gravityexport/notification/attachment-ids` filter to change the notification IDs the single-entry export is attached to.
+* Added: `gk/gravityexport/notification/attachment-source-ids` filter to replace the stored notification selection; it runs first, so callbacks on the filter above always receive the complete selection (used by GravityExport to attach the export to multiple notifications).
+* Added: `gk/gravityexport/renderer/save-path` filter to change the path a rendered export file is saved to.
+* Added: `gk/gravityexport/feed/pre-save-settings` filter to change the feed settings before they are stored; it runs inside the save, so related settings are written in a single update.
 
 = 2.6.0 on March 26, 2026 =
 
