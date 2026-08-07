@@ -122,7 +122,7 @@ msgid ""
 "A secure shortcode contains a unique <code>secret</code>-attribute which "
 "prevents generating the URL for a form without permission."
 msgstr ""
-"يحتوي الرمز القصير الآمن على سمة <code>سرية</code> فريدة تمنع توليد رابط "
+"يحتوي الرمز القصير الآمن على سمة <code>secret</code> فريدة تمنع توليد رابط "
 "النموذج بدون إذن."
 
 #: src/Addon/GravityExportAddon.php:304

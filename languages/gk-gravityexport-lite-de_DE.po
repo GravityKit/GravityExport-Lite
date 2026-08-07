@@ -547,7 +547,7 @@ msgstr "PHP-Version: %s"
 #: src/Renderer/AbstractPHPExcelRenderer.php:341
 msgid " (this version is too low, please update to at least PHP 5.6)"
 msgstr ""
-"(diese Version ist zu niedrig, bitte aktualisieren Sie auf mindestens PHP "
+" (diese Version ist zu niedrig, bitte aktualisieren Sie auf mindestens PHP "
 "5.6)"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:344

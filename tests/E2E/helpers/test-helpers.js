@@ -16,7 +16,23 @@ const base = createHelpers( {
 // empty. Re-derive the tests baseURL from the ports sidecar (which is
 // authoritative for this run) and push it into the api singleton.
 const ports = readPorts( setupDir );
-const testsBaseURL = `${ process.env.WP_ENV_URL || 'http://localhost' }:${ ports.wpTestsPort }`;
+
+// Honor a fully-specified WP_ENV_URL as-is; appending the port to one that already
+// carries it yields an invalid `http://localhost:8888:8801` (same rule as playwright.config.js).
+const testsBaseURL = ( () => {
+	const raw = process.env.WP_ENV_URL || 'http://localhost';
+	try {
+		const url = new URL( raw );
+		if ( ! url.port ) {
+			url.port = String( ports.wpTestsPort );
+		}
+
+		return url.toString().replace( /\/$/, '' );
+	} catch {
+		return `${ raw }:${ ports.wpTestsPort }`;
+	}
+} )();
+
 base.api.setConfig( { baseUrl: testsBaseURL } );
 
 const FORM_SETTINGS_PATH = ( formId ) =>

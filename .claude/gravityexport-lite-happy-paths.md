@@ -1,7 +1,7 @@
 # GravityExport Lite — Happy Paths
 
 > Source: https://www.gravitykit.com/docs/gravityexport/ (Lite-specific articles) + `readme.txt`, `gfexcel.php`, `src/` inspection
-> Target: `gk-gravityexport-lite` (the free WordPress.org plugin — main file `gfexcel.php`, version 2.6.0)
+> Target: `gk-gravityexport-lite` (the free WordPress.org plugin — main file `gfexcel.php`, version 2.7.0)
 > Environment: `@gravitykit/e2e-bootstrap` on `wpTestsPort` (see `tests/E2E/setup/playwright.config.js`); Gravity Forms is auto-provisioned by the bootstrap. Only `activation.spec.js` exists today.
 > Reference plugin: `gravitykit-qa2/GravityView/tests/E2E/` for layout/helpers/CI conventions. The full GravityExport (Pro) happy-paths file at `gravitykit-qa/GravityExport/.claude/gravityexport-happy-paths.md` is the structural template — Lite is a subset.
 
@@ -186,7 +186,7 @@ Observed in `gravitykit-qa2/GravityView/tests/E2E/` and `gravitykit-qa/GravityEx
 
 ## Final delivered suite (2026-05-11)
 
-**11 happy-path specs + the existing `activation.spec.js` = 14 specs total. Full suite runs 3× consecutively green in ~90s each.**
+**11 happy-path specs + the existing `activation.spec.js` = 12 specs total. Full suite runs 3× consecutively green in ~90s each.**
 
 ### Batch A — P0 download URL (4 specs)
 - `tests/E2E/tests/download-url/enable-download-url.spec.js`

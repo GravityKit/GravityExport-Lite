@@ -544,7 +544,7 @@ msgstr "Versão do PHP: %s"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:341
 msgid " (this version is too low, please update to at least PHP 5.6)"
-msgstr "(esta versão é muito baixa, por favor atualize para pelo menos PHP 5.6)"
+msgstr " (esta versão é muito baixa, por favor atualize para pelo menos PHP 5.6)"
 
 #: src/Renderer/AbstractPHPExcelRenderer.php:344
 msgid "WordPress Version: %s"

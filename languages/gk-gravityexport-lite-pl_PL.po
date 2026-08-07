@@ -588,4 +588,4 @@ msgstr "1 pole przeniesiono do [destination]."
 #: src/Shortcode/DownloadUrl.php:94
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Please add a valid 'secret' attribute to the '[shortcode]' shortcode."
-msgstr "Proszę dodać poprawny atrybut 'secret' do shortcode ' [shortcode] '."
+msgstr "Proszę dodać poprawny atrybut 'secret' do shortcode '[shortcode]'."

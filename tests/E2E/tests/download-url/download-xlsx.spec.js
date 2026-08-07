@@ -24,14 +24,15 @@ test.describe( 'GravityExport Lite — Download via URL (XLSX default)', () => {
 		}
 	} );
 
-	test( 'anonymous GET on the download URL returns a valid .xlsx attachment', async ( {
+	test( 'a GET on the download URL returns a valid .xlsx attachment', async ( {
 		page,
 		request,
 	} ) => {
 		await enableDownloadUrl( page, data.form_id );
 		const url = await readDownloadUrl( page );
 
-		// Use a fresh request context so we are NOT carrying the admin cookies.
+		// The `request` fixture inherits the bootstrap admin storage state, so this GET is
+		// authenticated; anonymous access is covered by permissions/logged-in-required.spec.js.
 		const response = await fetchDownload( request, url );
 
 		expect( response.status ).toBe( 200 );

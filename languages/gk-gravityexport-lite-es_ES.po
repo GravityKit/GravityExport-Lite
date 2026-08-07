@@ -121,7 +121,7 @@ msgid ""
 "A secure shortcode contains a unique <code>secret</code>-attribute which "
 "prevents generating the URL for a form without permission."
 msgstr ""
-"Un código corto seguro contiene un atributo <code>secreto</code> único que "
+"Un código corto seguro contiene un atributo <code>secret</code> único que "
 "impide generar la URL de un formulario sin permiso."
 
 #: src/Addon/GravityExportAddon.php:304
