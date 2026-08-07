@@ -28,3 +28,6 @@ tests/E2E/setup/mail-capture/
 .playwright-mcp/
 playwright-transform-*
 playwright_chromiumdev_profile-*
+
+# Claude Code
+.claude/
