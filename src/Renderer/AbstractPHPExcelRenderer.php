@@ -118,6 +118,12 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
                     $file = $default_path;
                 }
 
+                // An unwritable target falls back to the default: save() would throw, and this
+                // class handles that by printing an error page and exiting the request.
+                if (!is_writable(file_exists($file) ? $file : dirname($file))) {
+                    $file = $default_path;
+                }
+
                 $objWriter->save($file);
 
                 return $file;
