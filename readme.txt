@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= TBD =
+
+* Fixed: Sites running PHP 8.4 or newer logged repeated "deprecated" warnings on every page.
+
 = 2.7.0 on August 6, 2026 =
 
 * Added: The single-entry export attached to a notification is now saved to a unique temporary folder, so simultaneous submissions can no longer overwrite each other's attachment.

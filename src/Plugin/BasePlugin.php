@@ -37,7 +37,7 @@ abstract class BasePlugin
      * @param ContainerInterface $container The service container.
      * @param string|null $assets_dir The assets directory.
      */
-    public function __construct(ContainerInterface $container, string $assets_dir = null)
+    public function __construct(ContainerInterface $container, ?string $assets_dir = null)
     {
         $this->container = $container;
         $this->assets_dir = $assets_dir;
