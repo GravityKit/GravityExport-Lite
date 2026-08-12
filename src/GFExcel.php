@@ -278,6 +278,8 @@ class GFExcel {
 				self::$file_extension = $request->extension();
 			} else {
 				$query_vars['error'] = \WP_Http::FORBIDDEN;
+
+				self::refuseDownload();
 			}
 		} else {
 			// Not found
@@ -285,6 +287,38 @@ class GFExcel {
 		}
 
 		return $query_vars;
+	}
+
+	/**
+	 * Explains a refused download instead of returning an empty page.
+	 *
+	 * Setting the error alone produced a 403 with no body, so somebody sent a
+	 * secured export link saw a blank white page: nothing to read, and no way to
+	 * tell a permissions refusal from a broken link or a site that is down. A
+	 * recipient who is simply not signed in is given a way to.
+	 *
+	 * @since $ver$
+	 *
+	 * @return void
+	 */
+	private static function refuseDownload(): void {
+		$message = is_user_logged_in()
+			? esc_html__( 'This export is available to people who can export entries for this form, and your account cannot.', 'gk-gravityexport-lite' )
+			: sprintf(
+				/* translators: %s is a link to the login page. */
+				esc_html__( 'This export is only available to people signed in to this site. %s', 'gk-gravityexport-lite' ),
+				sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( wp_login_url() ),
+					esc_html__( 'Sign in and try again.', 'gk-gravityexport-lite' )
+				)
+			);
+
+		wp_die(
+			wp_kses_post( $message ),
+			esc_html__( 'Export not available', 'gk-gravityexport-lite' ),
+			[ 'response' => \WP_Http::FORBIDDEN ]
+		);
 	}
 
 	/**
