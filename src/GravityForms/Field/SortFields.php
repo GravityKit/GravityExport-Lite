@@ -69,7 +69,13 @@ class SortFields extends Base {
 
 		foreach ( $this->sections as $section => [$heading, $target] ) {
 			$html[] = sprintf( '<div><p><strong>%s</strong></p>', $heading );
-			$value  = rgars( $this->settings->get_current_values(), sprintf( '%s/%s', $this->get_parsed_name(), $section ), '' );
+			// A default applies only when this feed has never been saved. rgars()
+			// cannot express that: it treats a saved empty string, which is what a
+			// feed that deliberately disables nothing stores, as absent, and would
+			// hand that feed the default instead of its own choice.
+			$saved   = rgar( $this->settings->get_current_values(), $this->get_parsed_name() );
+			$default = is_array( $this->default_value ) ? rgar( $this->default_value, $section, '' ) : '';
+			$value   = is_array( $saved ) && array_key_exists( $section, $saved ) ? $saved[ $section ] : $default;
 
 			$html[] = sprintf(
 				'<input type="hidden" name="%s_%s[%s]" value="%s">',
