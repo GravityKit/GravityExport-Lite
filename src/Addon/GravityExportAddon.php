@@ -84,6 +84,18 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	protected $_capabilities_form_settings = 'gravityforms_export_entries';
 
 	/**
+	 * @since $ver$
+	 * @var string Global settings permissions.
+	 */
+	protected $_capabilities_settings_page = 'gravityforms_export_entries';
+
+	/**
+	 * @since $ver$
+	 * @var string Uninstall permissions.
+	 */
+	protected $_capabilities_uninstall = 'gravityforms_uninstall';
+
+	/**
 	 * @since 2.0.0
 	 * @var string Relative path to file from plugins directory.
 	 */
