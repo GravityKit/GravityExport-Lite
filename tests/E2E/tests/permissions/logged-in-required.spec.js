@@ -36,36 +36,36 @@ test.describe( 'GravityExport Lite — Restrict download to logged-in users', ()
 		}
 	} );
 
-	test( 'restricting access denies anonymous GETs but allows admin', async ( {
+	test( 'a new link is restricted until the site owner opens it', async ( {
 		page,
 		request,
 	} ) => {
 		await enableDownloadUrl( page, data.form_id );
 		const url = await readDownloadUrl( page );
 
+		// A link the site owner never asked for by name must not be public.
 		const baseline = await anonGet( url );
 		expect(
 			baseline.status,
-			'Baseline anonymous request should succeed when permissions are open'
-		).toBe( 200 );
-
-		// Flip permissions to "Logged-in only" via the persisted feed meta.
-		patchExportFeedMeta( data.form_id, { is_secured: '1' } );
-
-		// Anonymous request is now denied.
-		const anonAfter = await anonGet( url );
-		expect(
-			anonAfter.status,
-			'After enabling restriction, anonymous must not receive the export'
+			'A newly created link must not serve the export anonymously'
 		).not.toBe( 200 );
 
 		// Admin (the `request` fixture inherits the bootstrap login
-		// storage state) still gets the file.
+		// storage state) gets the file from the same URL.
 		const adminResponse = await fetchDownload( request, url );
 		expect(
 			adminResponse.status,
-			'Admin should still be able to download'
+			'Admin should be able to download a restricted link'
 		).toBe( 200 );
 		expect( adminResponse.body.length ).toBeGreaterThan( 512 );
+
+		// Opening it up is the deliberate step.
+		patchExportFeedMeta( data.form_id, { is_secured: '0' } );
+
+		const anonAfter = await anonGet( url );
+		expect(
+			anonAfter.status,
+			'Once opened, anonymous receives the export'
+		).toBe( 200 );
 	} );
 } );

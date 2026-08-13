@@ -4,11 +4,10 @@ const {
 	fixtures,
 	cleanup,
 	goToFormSettings,
-	enableDownloadUrl,
 	readDownloadUrl,
 } = require( '../../helpers/test-helpers' );
 
-test.describe( 'GravityExport Lite — Enable Download URL', () => {
+test.describe( 'GravityExport Lite — Download URL', () => {
 	let data;
 
 	test.beforeEach( async () => {
@@ -24,21 +23,24 @@ test.describe( 'GravityExport Lite — Enable Download URL', () => {
 		}
 	} );
 
-	test( 'enabling the download URL renders a copyable URL that persists across reloads', async ( {
+	test( 'opening the settings renders a copyable URL that persists across reloads', async ( {
 		page,
 	} ) => {
 		await goToFormSettings( page, data.form_id );
 
-		// Pristine state: only the activation button is present.
-		const activate = page.locator(
-			'button[name="gform-settings-save"][value="download_url_enable"]'
-		);
-		await expect( activate ).toBeVisible();
+		// The first visit mints the link, so there is nothing to activate and the
+		// download form is usable immediately.
+		await expect(
+			page.locator(
+				'button[name="gform-settings-save"][value="download_url_enable"]'
+			)
+		).toHaveCount( 0 );
 		await expect(
 			page.locator( 'input[name="_gform_setting_hash"]' )
-		).toHaveCount( 0 );
-
-		await enableDownloadUrl( page, data.form_id );
+		).toBeVisible();
+		await expect(
+			page.locator( '.gk-gravityexport-download-file button[type="submit"]' )
+		).toBeVisible();
 
 		const url = await readDownloadUrl( page );
 

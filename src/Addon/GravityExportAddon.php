@@ -212,6 +212,50 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	}
 
 	/**
+	 * Gives this form a download URL the first time its settings are opened.
+	 *
+	 * {@see DownloadFile} posts to the hash URL, so without a hash there is nothing
+	 * for the Download button to submit to and the screen can only offer to switch
+	 * itself on. Minting the hash here lets the screen lead with the download
+	 * instead. {@see DownloadUrlEnableAction} secures what it creates, so nothing
+	 * is reachable without a login until the site owner says otherwise.
+	 *
+	 * @since $ver$
+	 *
+	 * @return void
+	 */
+	private function provision_download_url(): void {
+		// A save is in flight; the POST carries the settings and owns the write.
+		if ( ! empty( $_POST ) ) {
+			return;
+		}
+
+		$form_id = (int) rgget( 'id' );
+
+		if ( ! $form_id ) {
+			return;
+		}
+
+		$can_edit_settings = GFCommon::current_user_can_any( $this->get_form_settings_capabilities() );
+
+		if ( ! $can_edit_settings ) {
+			return;
+		}
+
+		// A feed that already exists has been decided about: it either holds a link
+		// or had one switched off deliberately. Re-minting here would make Disable
+		// impossible, because its redirect lands back on this very page.
+		$has_feed = (bool) $this->get_default_feed_id( $form_id );
+
+		if ( $has_feed ) {
+			return;
+		}
+
+		$this->getAction( DownloadUrlEnableAction::$name )
+			->fire_with_notice( $this, [ 0, $form_id, [] ] );
+	}
+
+	/**
 	 * @inheritDoc
 	 *
 	 * Re-surfaces a successful download-URL action's confirmation after its PRG redirect via the
@@ -221,6 +265,9 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 	 * @since 2.7.0
 	 */
 	public function feed_settings_init(): void {
+		// Before the parent, which seeds the renderer from the feed meta as it stands.
+		$this->provision_download_url();
+
 		parent::feed_settings_init();
 
 		$message = $this->get_download_url_notice_message( sanitize_key( (string) rgget( 'gexcel_notice' ) ) );
@@ -288,23 +335,27 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		Fields::register( 'copy_shortcode', CopyShortcode::class );
 
 		$form = $this->get_current_form();
+		$hash = $this->get_setting( 'hash' );
 
-		// Only show
-		if ( ! $this->get_setting( 'hash' ) ) {
-			$settings_sections[] = [
-				'title'  => __( 'Activate GravityExport', 'gk-gravityexport-lite' ),
-				'fields' => [
-					[
-						'name' => 'hash',
-						'type' => 'download_url',
-					],
+		$settings_sections[] = [
+			'id'          => 'gk-gravityexport-download-file',
+			'class'       => 'gk-gravityexport-download-file',
+			'title'       => __( 'Download entries from this form', 'gk-gravityexport-lite' ),
+			'description' => esc_html__(
+				'Pick a date range and download this form\'s entries as a spreadsheet. Leave the dates empty to download everything.',
+				'gk-gravityexport-lite'
+			),
+			'fields'      => [
+				[
+					'name'          => 'download_file',
+					'label'         => esc_html__( 'Date range', 'gk-gravityexport-lite' ),
+					'tooltip'       => 'export_date_range',
+					'type'          => 'download_file',
+					'default_value' => $hash,
+					'url'           => $this->router->get_url_for_hash( $hash ),
 				],
-			];
-
-			add_filter( 'gform_settings_save_button', '__return_null' );
-
-			return $settings_sections;
-		}
+			],
+		];
 
 		if ( ! defined( 'GK_GRAVITYEXPORT_PLUGIN_VERSION' ) ) {
 			$settings_sections[] = [
@@ -320,11 +371,14 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 			];
 		}
 
-		$hash = $this->get_setting( 'hash' );
 		$settings_sections[] = [
-			'id'          => 'gk-gravityexport-download',
-			'title'       => __( 'Download settings', 'gk-gravityexport-lite' ),
+			'id'          => 'gk-gravityexport-share',
+			'title'       => __( 'Share a private link', 'gk-gravityexport-lite' ),
 			'collapsible' => true,
+			'description' => esc_html__(
+				'This link gives someone a spreadsheet of these entries, rebuilt fresh every time they open it. Right now it only works for people who can already sign in to this site and export entries. Let anyone with the link download it and you can send it to someone without an account, but then treat the link like a password. You can replace the link or switch it off at any time.',
+				'gk-gravityexport-lite'
+			),
 			'fields'      => [
 				[
 					'label'         => esc_html__( 'Download URL', 'gk-gravityexport-lite' ),
@@ -335,11 +389,52 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 					'url'           => $this->router->get_url_for_hash( $hash ),
 				],
 				[
+					'name'          => 'is_secured',
+					'label'         => esc_html__( 'Who can use this link', 'gk-gravityexport-lite' ),
+					'type'          => 'select',
+					'description'   => sprintf(
+						esc_html__(
+							'"Everyone with the link" needs no account. "Only people who can export entries" requires a sign-in and the %s capability.',
+							'gk-gravityexport-lite'
+						),
+						'<code>gravityforms_export_entries</code>'
+					),
+					// Feeds created before this setting was written store nothing, and
+					// GFExcel::isFormSecured() reads an absent value as public. Keep the
+					// fallback at 0 so those feeds render what they actually do.
+					'default_value' => 0,
+					'choices'       => ( static function (): array {
+						$options = [];
+						if ( ! GFExcel::isAllSecured() ) {
+							$options[] = [
+								'name'  => 'is_secured',
+								'label' => __( 'Everyone with the link', 'gk-gravityexport-lite' ),
+								'value' => 0,
+							];
+						}
+						$options[] = [
+							'name'  => 'is_secured',
+							'label' => __( 'Only people who can export entries', 'gk-gravityexport-lite' ),
+							'value' => 1,
+						];
+
+						return $options;
+					} )(),
+				],
+				[
 					'label'      => esc_html__( 'Embed shortcode', 'gk-gravityexport-lite' ),
 					'name'       => 'copy_shortcode',
 					'type'       => 'copy_shortcode',
 					'embed_type' => $this->get_setting( 'file_extension' ),
 				],
+			],
+		];
+
+		$settings_sections[] = [
+			'id'          => 'gk-gravityexport-file',
+			'title'       => __( 'File settings', 'gk-gravityexport-lite' ),
+			'collapsible' => true,
+			'fields'      => [
 				[
 					'label'         => esc_html__( 'Custom Filename', 'gk-gravityexport-lite' ),
 					'type'          => 'text',
@@ -382,22 +477,6 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 		];
 
 		$settings_sections[] = [
-			'id'     => 'gk-gravityexport-download-file',
-			'class'  => 'gk-gravityexport-download-file',
-			'title'  => __( 'Instant Download ⚡️', 'gk-gravityexport-lite' ),
-            'fields' => [
-                [
-                    'name'          => 'download_file',
-                    'label'         => esc_html__( 'Select Date Range (optional)', 'gk-gravityexport-lite' ),
-                    'tooltip'       => 'export_date_range',
-                    'type'          => 'download_file',
-                    'default_value' => $hash,
-                    'url'           => $this->router->get_url_for_hash( $hash ),
-                ],
-            ],
-		];
-
-		$settings_sections[] = [
 			'id'          => 'gk-section-security',
 			'collapsible' => true,
 			'title'       => __( 'Security Settings', 'gk-gravityexport-lite' ),
@@ -414,36 +493,6 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 							'value' => '1',
 						],
 					],
-				],
-				[
-					'name'          => 'is_secured',
-					'label'         => esc_html__( 'Download Permissions', 'gk-gravityexport-lite' ),
-					'type'          => 'select',
-					'description'   => sprintf(
-						esc_html__(
-							'If set to "Everyone can download", anyone with the link can download. If "Logged-in users who have \'Export Entries\' access" is selected, users must be logged-in and have the %s capability.',
-							'gk-gravityexport-lite'
-						),
-						'<code>gravityforms_export_entries</code>'
-					),
-					'default_value' => 0,
-					'choices'       => ( static function (): array {
-						$options = [];
-						if ( ! GFExcel::isAllSecured() ) {
-							$options[] = [
-								'name'  => 'is_secured',
-								'label' => __( 'Everyone can download', 'gk-gravityexport-lite' ),
-								'value' => 0,
-							];
-						}
-						$options[] = [
-							'name'  => 'is_secured',
-							'label' => __( 'Logged-in users who have "Export Entries" access', 'gk-gravityexport-lite' ),
-							'value' => 1,
-						];
-
-						return $options;
-					} )(),
 				],
 			],
 		];

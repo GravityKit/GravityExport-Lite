@@ -72,7 +72,7 @@ class DownloadFile extends Base {
                 </div>
 
                 <div class="download-button">
-                    <button type="submit" form="%1$s" class="button primary button-primary">' . esc_html__( 'Download', 'gk-gravityexport-lite' ) . '</button>
+                    <button type="submit" form="%1$s" class="button primary button-primary">' . esc_html__( 'Download entries', 'gk-gravityexport-lite' ) . '</button>
                     <button id="download-count-reset" name="gform-settings-save" value="%2$s" form="gform-settings" class="button button-secondary">%3$s</button>
                 </div>
             </div>',

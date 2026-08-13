@@ -45,11 +45,13 @@ class DownloadUrl extends Text {
 	public function markup(): string {
 		$html = [];
 
+		// The settings screen mints the link on first load, so this only shows when a
+		// site has switched the link off and wants it back.
 		if ( ! $this->get_value() ) {
 			$html[] = sprintf(
 				'<button type="submit" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
 				DownloadUrlEnableAction::$name,
-				'Enable download URL'
+				esc_html__( 'Create a new link', 'gk-gravityexport-lite' )
 			);
 
 			return implode( "\n", $html );

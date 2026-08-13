@@ -42,6 +42,11 @@ class DownloadUrlEnableAction extends DownloadUrlResetAction {
 		// Enable embed secret by default.
 		$form[2]['has_embed_secret'] = 1;
 
+		// A feed created here was never asked for by name, so it must not hand out
+		// the entries to the internet. `GFExcel::isFormSecured()` reads this key as
+		// a bool, so an absent value means public: write the 1 explicitly.
+		$form[2]['is_secured'] = 1;
+
 		return parent::fire_with_notice( $addon, $form );
 	}
 }

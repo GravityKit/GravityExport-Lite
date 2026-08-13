@@ -64,8 +64,10 @@ async function goToFormSettings( page, formId ) {
 }
 
 /**
- * Enable the download URL on a form by clicking the activation button.
- * Idempotent: if URL is already enabled, returns without clicking.
+ * Ensure the form has a download URL.
+ *
+ * Opening the settings mints one, so the activation button is only present on a
+ * form whose link was switched off. Either way this returns with a URL rendered.
  *
  * @param {import('@playwright/test').Page} page
  * @param {number} formId
