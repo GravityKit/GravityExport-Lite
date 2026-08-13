@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = TBD =
 
 * Fixed: Sites running PHP 8.4 or newer logged repeated "deprecated" warnings on every page.
+* Fixed: The global settings page was hidden for administrators when the Members plugin managed capabilities. The page now requires the "Export Entries" capability, which can be granted per role.
 
 = 2.7.0 on August 6, 2026 =
 
