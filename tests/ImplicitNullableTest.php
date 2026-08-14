@@ -13,7 +13,7 @@ use RecursiveIteratorIterator;
  * time — so the notice fires on every request that loads the class, not only when the method is called.
  * Tokenizing rather than reflecting keeps this runnable on every supported PHP version.
  *
- * @since TBD
+ * @since 2.7.1
  *
  * @see https://linear.app/gravitykit/issue/GEXPLIT-20
  */
@@ -21,7 +21,7 @@ class ImplicitNullableTest extends TestCase
 {
     /**
      * Asserts no source file declares an implicitly nullable parameter.
-     * @since TBD
+     * @since 2.7.1
      */
     public function testSourceHasNoImplicitlyNullableParameters(): void
     {
@@ -45,7 +45,7 @@ class ImplicitNullableTest extends TestCase
      * `gfexcel.php` and `uninstall.php` sit in the plugin root and ship too, so scanning `src/` alone would
      * leave them unguarded.
      *
-     * @since TBD
+     * @since 2.7.1
      * @return string[] Absolute paths.
      */
     private function shippedSourceFiles(): array
@@ -70,7 +70,7 @@ class ImplicitNullableTest extends TestCase
      * The patcher only runs during `composer build`, so without this the step could be dropped and every
      * test would stay green while the shipped plugin went back to emitting the notices.
      *
-     * @since TBD
+     * @since 2.7.1
      */
     public function testBuildPatchesVendoredDeprecations(): void
     {
@@ -97,7 +97,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Returns `file:line $param` for every implicitly nullable parameter in a file.
-     * @since TBD
+     * @since 2.7.1
      * @param string $path Absolute path to the PHP file.
      * @return string[] The offending parameters.
      */
@@ -148,7 +148,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Returns the index of the next occurrence of a literal token, or null.
-     * @since TBD
+     * @since 2.7.1
      * @param array $tokens The token list.
      * @param int $from The index to start at.
      * @param string $needle The literal token to find.
@@ -167,7 +167,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Splits a parameter list into one token list per parameter.
-     * @since TBD
+     * @since 2.7.1
      * @param array $tokens The token list.
      * @param int $open The index of the parameter list's opening parenthesis.
      * @return array[] One token list per declared parameter.
@@ -224,7 +224,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Returns the index of the `]` closing an attribute that opens at `$start`.
-     * @since TBD
+     * @since 2.7.1
      * @param array $tokens The token list.
      * @param int $start The index of the T_ATTRIBUTE token.
      * @return int The index of the closing bracket.
@@ -254,7 +254,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Returns `file:line $param` when the parameter is implicitly nullable, otherwise null.
-     * @since TBD
+     * @since 2.7.1
      * @param array $parameter The parameter's tokens.
      * @param string $file The file's basename, for the message.
      * @return string|null The description, or null when the parameter is fine.
@@ -331,7 +331,7 @@ class ImplicitNullableTest extends TestCase
 
     /**
      * Flattens a token list back into its source text.
-     * @since TBD
+     * @since 2.7.1
      * @param array $tokens The token list.
      * @return string The source text.
      */

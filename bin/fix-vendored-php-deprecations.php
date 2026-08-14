@@ -18,7 +18,7 @@
  * generated. Fails the build if a target signature no longer matches, so a dependency bump cannot silently
  * ship unpatched.
  *
- * @since TBD
+ * @since 2.7.1
  */
 
 $vendor_dir = __DIR__ . '/../build/vendor_prefixed';
