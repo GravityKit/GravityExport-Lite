@@ -21,6 +21,7 @@ phpstan-stubs export-ignore
 /.github export-ignore
 /.idea export-ignore
 /assets export-ignore
+/bin export-ignore
 /src export-ignore
 /tests export-ignore
 .env.sample export-ignore

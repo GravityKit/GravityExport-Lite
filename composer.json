@@ -106,6 +106,7 @@
             "composer remove gravityforms/gravityforms gravityforms/gravitysurvey --no-update --dev --working-dir=build",
             "composer require gravitykit/gravityexport-lite-src:@dev --update-no-dev --working-dir=build --no-scripts --ignore-platform-reqs",
             "cd build && ./strauss.phar",
+            "php bin/fix-vendored-php-deprecations.php",
             "composer dump-autoload -o --working-dir=build"
         ],
         "linter": "vendor/bin/phplint --no-cache",

@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.2
 Tested up to: 7.0.3
-Stable tag: 2.7.0
+Stable tag: 2.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,11 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.7.1 on August 14, 2026 =
+
+* Fixed: Sites running PHP 8.4 or newer logged repeated "deprecated" warnings on every page.
+* Fixed: The global settings page was hidden for administrators when the Members plugin managed capabilities. The page now requires the "Export Entries" capability, which can be granted per role.
 
 = 2.7.0 on August 6, 2026 =
 
