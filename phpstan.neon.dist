@@ -6,6 +6,8 @@ includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
   # Include this extension
   - vendor/szepeviktor/phpstan-wordpress/extension.neon
+  # Type inference for Mockery mocks (Mockery::mock(X::class) is X&MockInterface)
+  - vendor/phpstan/phpstan-mockery/extension.neon
 parameters:
   level: 5
   bootstrapFiles:
@@ -26,6 +28,11 @@ parameters:
   paths:
     - src
     - tests
+
+  excludePaths:
+    # Runtime-only test doubles for classes that already exist in the scanned
+    # vendor dirs; analyzing them would shadow the real Gravity Forms classes.
+    - tests/stubs
 
   scanDirectories:
     - vendor/gravityforms/gravityforms # Gravity Forms has no `autoload` section, so we need to configure the path.
