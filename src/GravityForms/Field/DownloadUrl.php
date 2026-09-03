@@ -148,10 +148,15 @@ $script = <<<JS
 })(jQuery);
 JS;
 
+		// A field instantiated without `assets_dir` (e.g. the "Activate GravityExport"
+		// section) must not emit a relative src: WordPress concatenates it straight
+		// onto site_url(), producing a malformed `<host>js/clipboard.js` request.
+		$assets_dir = $this->assets_dir ?: plugin_dir_url( GFEXCEL_PLUGIN_FILE ) . 'public/';
+
 		return [
 			[
 				'handle'   => 'gk-gravityexport-clipboard-js',
-				'src'      => $this->assets_dir . 'js/clipboard.js',
+				'src'      => $assets_dir . 'js/clipboard.js',
 				'callback' => function () use ( $script ) {
 					wp_add_inline_script(
 						'gk-gravityexport-clipboard-js',
