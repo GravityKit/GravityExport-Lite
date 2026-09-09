@@ -50,7 +50,7 @@ Save time generating exports in Gravity Forms: Configure the fields that are inc
 
 ### Documentation & support
 
-If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravitykit.com/category/791-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
+If you have any questions regarding GravityExport Lite, [check out our documentation](https://www.gravitykit.com/docs/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
 
 If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
 
