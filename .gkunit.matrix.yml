@@ -1,0 +1,15 @@
+# PHP/DB combinations the unit tests run against.
+#
+# PHPUnit is pinned to 8 because composer.json requires phpunit/phpunit 8.5.*
+# and 10up/wp_mock 0.4.2, whose TestCase calls PHPUnit's getAnnotations().
+# That method is gone in PHPUnit 9, which is what gkunit picks by default for
+# these PHP versions, and every WP_Mock-based test errors as a result.
+phpunit: '8'
+
+php:
+  - '7.4'
+  - '8.0'
+  - '8.4'
+
+db:
+  - mysql:8.0
