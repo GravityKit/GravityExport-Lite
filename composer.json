@@ -42,6 +42,7 @@
         },
         "allow-plugins": {
             "composer/installers": true,
+            "automattic/jetpack-autoloader": false,
             "frontpack/composer-assets-plugin": true
         }
     },
