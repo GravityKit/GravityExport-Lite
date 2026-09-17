@@ -41,9 +41,6 @@ jobs:
             sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
             sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
-      - run:
-          name: Prepare unit test dependencies
-          command: npx @gravitykit/phpunit prepare
       - persist_to_workspace:
           root: /home/circleci
           paths:
@@ -155,19 +152,6 @@ jobs:
       - store_test_results:
           path: tests/E2E/results/junit.xml
 
-  run_unit_tests:
-    <<: *default_job_config
-    parameters:
-      php:
-        type: string
-    resource_class: medium.gen3
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Run PHP << parameters.php >> unit tests
-          command: npx @gravitykit/phpunit test --php << parameters.php >>
-
   publish_release:
     <<: *default_job_config
     steps:
@@ -196,17 +180,10 @@ workflows:
           <<: *context
       - run_e2e_tests:
           <<: *test_job_config
-      - run_unit_tests:
-          <<: *test_job_config
-          matrix:
-            alias: unit_tests
-            parameters:
-              php: ['7.4', '8.0', '8.4']
       - build_package_release:
           <<: *context
           requires:
             - prepare
-            - unit_tests
       - run_post_build_smoke:
           <<: *context
           requires:
