@@ -10,8 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      # Report every version; without this one failing leg cancels the others
+      # and their real status is hidden.
+      fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4', '7.2']
+        php-versions: ['7.4', '8.0', '8.4']
     steps:
       - uses: actions/checkout@v4
       - name: Install PHP
