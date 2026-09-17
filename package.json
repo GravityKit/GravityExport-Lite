@@ -1,6 +1,6 @@
 {
   "name": "gk-gravityexport-lite",
-  "version": "1.0.0",
+  "version": "2.7.2",
   "license": "GPL-2.0",
   "scripts": {
     "wp-env:start": "cd tests/E2E/setup && wp-env start",

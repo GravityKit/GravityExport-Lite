@@ -3,9 +3,9 @@ Contributors: gravityview, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
-Requires PHP: 7.2
-Tested up to: 7.0.3
-Stable tag: 2.7.1
+Requires PHP: 7.4
+Tested up to: 7.1.1
+Stable tag: 2.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,13 +50,13 @@ Save time generating exports in Gravity Forms: Configure the fields that are inc
 
 ### Documentation & support
 
-If you have any questions regarding GravityExport Lite, [check out our documentation](https://docs.gravitykit.com/category/791-gravityexport?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
+If you have any questions regarding GravityExport Lite, [check out our documentation](https://www.gravitykit.com/docs/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-checkout-docs).
 
 If you need further assistance, [read this first](https://wordpress.org/support/topic/read-me-first-9/) and our support team will gladly give you a helping hand!
 
 #### Requirements
 
-* PHP 7.2
+* PHP 7.4
 * `php-xml` and `php-zip` libraries. The plugin will check for those.
 * Gravity Forms 2.5 or higher
 
@@ -255,6 +255,13 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.7.2 on September 17, 2026 =
+
+**Note: GravityExport Lite now requires PHP 7.4 or newer.**
+
+* Fixed: PDF exports were not sent with a PDF file type, which could cause browsers, proxies and file previewers to handle the downloaded file incorrectly.
+* Fixed: A browser console error appeared on a form's GravityExport Lite settings page before a download URL was enabled.
 
 = 2.7.1 on August 14, 2026 =
 

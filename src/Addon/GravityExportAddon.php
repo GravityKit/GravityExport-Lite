@@ -295,8 +295,9 @@ final class GravityExportAddon extends \GFFeedAddOn implements AddonInterface, A
 				'title'  => __( 'Activate GravityExport', 'gk-gravityexport-lite' ),
 				'fields' => [
 					[
-						'name' => 'hash',
-						'type' => 'download_url',
+						'name'       => 'hash',
+						'type'       => 'download_url',
+						'assets_dir' => $this->assets_dir,
 					],
 				],
 			];

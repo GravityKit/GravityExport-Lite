@@ -133,6 +133,8 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             } elseif ($extension === 'csv') {
                 header('Content-Type: text/csv');
+            } elseif ($extension === 'pdf') {
+                header('Content-Type: application/pdf');
             }
 
             header('Content-Disposition: attachment;filename="' . $this->getFileName() . '"');
