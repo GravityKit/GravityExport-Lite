@@ -49,7 +49,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
-        "php": "^7.4",
+        "php": ">=7.4",
         "league/container": "^3.3",
         "phpoffice/phpspreadsheet": "1.19.*",
         "symfony/polyfill-iconv": "^1.31",
