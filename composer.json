@@ -38,7 +38,7 @@
             ]
         },
         "platform": {
-            "php": "7.2.34"
+            "php": "7.4.0"
         },
         "allow-plugins": {
             "composer/installers": true,
@@ -48,7 +48,7 @@
     "minimum-stability": "stable",
     "require": {
         "ext-json": "*",
-        "php": "^7.2",
+        "php": "^7.4",
         "league/container": "^3.3",
         "phpoffice/phpspreadsheet": "1.19.*",
         "symfony/polyfill-iconv": "^1.31",
