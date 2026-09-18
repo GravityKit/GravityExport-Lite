@@ -34,3 +34,4 @@ translations.pot export-ignore
 .gkunit.env export-ignore
 .gkunit.matrix.yml export-ignore
 vendor_prefixed/.gitkeep export-ignore
+/vendor_prefixed export-ignore
