@@ -37,6 +37,13 @@
                 "PKSA-m4hk-rk8p-4t5p"
             ]
         },
+        "policy": {
+            "advisories": {
+                "ignore": [
+                    "phpoffice/phpspreadsheet"
+                ]
+            }
+        },
         "platform": {
             "php": "7.4.0"
         },
