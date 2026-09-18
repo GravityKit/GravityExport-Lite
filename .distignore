@@ -31,3 +31,17 @@ phpstan-stubs
 /vendor_prefixed
 /src
 /assets
+
+# Development files. Kept in step with .gitattributes, which only covers the
+# git-archive build; WordPress.org is packaged from this file instead. Note
+# that /build is export-ignored there because the packager copies it in
+# separately, so it must not be listed here.
+/.env.sample
+/.gktools.env
+/.gktools.json
+/.gkunit.env
+/.gkunit.matrix.yml
+/Gruntfile.js
+/package.json
+/package-lock.json
+/translations.pot
