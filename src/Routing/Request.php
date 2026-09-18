@@ -43,9 +43,14 @@ final class Request {
 	 * @return self The Request.
 	 */
 	public static function from_query_vars( array $query_vars ): self {
+		$action = $query_vars[ Router::KEY_ACTION ] ?? '';
+		$hash   = $query_vars[ Router::KEY_HASH ] ?? '';
+
 		$request         = new self;
-		$request->action = $query_vars[ Router::KEY_ACTION ] ?? '';
-		$request->hash   = $query_vars[ Router::KEY_HASH ] ?? '';
+		// Query vars are attacker-controlled and can arrive as an array, which the string operations below
+		// would fatal on.
+		$request->action = is_string( $action ) ? $action : '';
+		$request->hash   = is_string( $hash ) ? $hash : '';
 
 		return $request;
 	}

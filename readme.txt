@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= TBD =
+
+* Fixed: A download request that did not include a download URL hash could be served an entry export. Requests without a hash are now refused.
+
 = 2.7.2 on September 17, 2026 =
 
 **Note: GravityExport Lite now requires PHP 7.4 or newer.**

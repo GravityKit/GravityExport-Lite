@@ -98,6 +98,12 @@ final class WordPressRouter implements Router {
 
 		$hash = $request->hash();
 
+		// An empty hash matches every active feed via the LIKE below, and equals the stored value of a feed
+		// whose hash was cleared or never set, so it must never reach the lookup.
+		if ( '' === $hash ) {
+			return null;
+		}
+
 		$feeds = $wpdb->get_results( $wpdb->prepare(
 			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND meta LIKE '%s' ORDER BY `feed_order`, `id` LIMIT 1",
 			'%' . $wpdb->esc_like( $hash ) . '%'
