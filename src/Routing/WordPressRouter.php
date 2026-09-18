@@ -19,6 +19,19 @@ final class WordPressRouter implements Router {
 	public const DEFAULT_ACTION = 'gravityexport-lite';
 
 	/**
+	 * The add-on slugs whose feeds can hold a download hash.
+	 *
+	 * The feed table is shared with every other Gravity Forms add-on, so the lookup has to say which feeds
+	 * are ours. Feeds saved before 2.0 carry the add-on's former slug and still serve downloads, so both
+	 * are accepted.
+	 *
+	 * @since 2.7.3
+	 *
+	 * @var string[]
+	 */
+	private const FEED_SLUGS = [ 'gravityexport-lite', 'gf-entries-in-excel' ];
+
+	/**
 	 * Instantiates the router.
 	 *
 	 * @since 2.4.0
@@ -98,20 +111,45 @@ final class WordPressRouter implements Router {
 
 		$hash = $request->hash();
 
+		// An empty hash matches every active feed via the LIKE below, and equals the stored value of a feed
+		// whose hash was cleared or never set, so it must never reach the lookup.
+		if ( '' === $hash ) {
+			return null;
+		}
+
+		$slugs = implode( ', ', array_fill( 0, count( self::FEED_SLUGS ), '%s' ) );
+
+		// The LIKE is only a prefilter; every candidate is checked against its stored hash below.
 		$feeds = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND meta LIKE '%s' ORDER BY `feed_order`, `id` LIMIT 1",
-			'%' . $wpdb->esc_like( $hash ) . '%'
+			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND addon_slug IN ( $slugs ) AND meta LIKE %s ORDER BY `feed_order`, `id`",
+			array_merge( self::FEED_SLUGS, [ '%' . $wpdb->esc_like( $hash ) . '%' ] )
 		), ARRAY_A );
 
-		$feed = reset( $feeds );
-
-		if ( ! $feed || ! isset( $feed['meta'] ) ) {
+		if ( ! $feeds ) {
 			return apply_filters( 'gfexcel_hash_feed', null, $hash );
 		}
 
-		$feed['meta'] = json_decode( $feed['meta'], true );
+		foreach ( $feeds as $feed ) {
+			$meta = json_decode( (string) rgar( $feed, 'meta' ), true );
 
-		return $hash === rgars( $feed, 'meta/hash' ) ? $feed : null;
+			if ( ! is_array( $meta ) ) {
+				continue;
+			}
+
+			$stored_hash = rgar( $meta, 'hash' );
+
+			if ( ! is_string( $stored_hash ) || '' === $stored_hash ) {
+				continue;
+			}
+
+			if ( hash_equals( $stored_hash, $hash ) ) {
+				$feed['meta'] = $meta;
+
+				return $feed;
+			}
+		}
+
+		return null;
 	}
 
 

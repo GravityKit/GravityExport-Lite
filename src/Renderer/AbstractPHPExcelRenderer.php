@@ -344,12 +344,51 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
     }
 
     /**
+     * Whether the current visitor may see the technical details of a failure.
+     *
+     * Paths, versions and stack traces are useful to whoever maintains the site and to nobody else, so an
+     * anonymous visitor gets a plain message instead.
+     *
+     * @since 2.7.3
+     *
+     * @return bool Whether to show the details.
+     */
+    private static function can_see_diagnostics(): bool
+    {
+        // Debug constants say how a site reports errors, not who may read them, so they do not open this up.
+        return \GFCommon::current_user_can_any('gravityforms_export_entries');
+    }
+
+    /**
      * Helper method to handle an exception.
      * @param \Throwable|\Exception $exception
      */
     private function handleException($exception): void
     {
 	    global $wp_version;
+
+	    error_log( sprintf(
+		    'GravityExport Lite: %s in %s:%d. %s',
+		    $exception->getMessage(),
+		    $exception->getFile(),
+		    $exception->getLine(),
+		    $exception->getTraceAsString()
+	    ) );
+
+	    if ( ! self::can_see_diagnostics() ) {
+		    /* translators: placeholders in [brackets] are replaced and must not be translated. */
+		    $message = esc_html__(
+			    'The export could not be created. The reason was written to the server\'s error log. If you do not manage this site, please report this to [site].',
+			    'gk-gravityexport-lite'
+		    );
+
+		    echo wpautop(
+			    '<h3>' . esc_html__( 'GravityExport Lite: Something is broken', 'gk-gravityexport-lite' ) . '</h3>'
+			    . strtr( $message, [ '[site]' => esc_html( get_bloginfo( 'name' ) ) ] )
+		    );
+
+		    exit;
+	    }
 
 	    $output = [];
 

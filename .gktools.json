@@ -10,7 +10,8 @@
 		"excludeFromExtra": [
 			"build/composer.json",
 			"build/composer.lock",
-			"build/strauss.phar"
+			"build/strauss.phar",
+			"**/.gitkeep"
 		]
 	},
 	"release": {

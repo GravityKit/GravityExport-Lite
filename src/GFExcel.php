@@ -185,7 +185,14 @@ class GFExcel {
 	 * @return string The file extension.
 	 */
 	public static function getFileExtension( $form ) {
-		if ( ! self::$file_extension ) {
+		$extension = self::$file_extension;
+
+		// An unsupported extension from the download URL is ignored, so the form's own setting applies.
+		if ( $extension && ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
+			$extension = null;
+		}
+
+		if ( ! $extension ) {
 			$form_id   = rgar( $form, 'id', 0 );
 			$extension = gf_apply_filters(
 				[
@@ -195,15 +202,13 @@ class GFExcel {
 				GravityExportAddon::get_instance()->get_feed_meta_field( 'file_extension', $form_id, 'xlsx' ),
 				$form
 			);
-
-			if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
-				$extension = 'xlsx';
-			}
-
-			return $extension;
 		}
 
-		return self::$file_extension;
+		if ( ! in_array( $extension, static::getPluginFileExtensions(), true ) ) {
+			$extension = 'xlsx';
+		}
+
+		return $extension;
 	}
 
 	/**
