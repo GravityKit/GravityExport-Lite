@@ -40,6 +40,7 @@ parameters:
 
   scanFiles:
     - phpstan-stubs/gravityforms.php.stub # Needed until https://github.com/phpstan/phpstan/issues/11559 is resolved.
+    - vendor/10up/wp_mock/php/WP_Mock/Action.php # Declares WP_Mock\Action_Responder, which PSR-4 cannot find under this file name.
 
   #    excludes_analyse:
   #        - %currentWorkingDirectory%/inc/views/
