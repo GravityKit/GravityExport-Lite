@@ -31,3 +31,5 @@ package-lock.json export-ignore
 translations.pot export-ignore
 .gktools.json export-ignore
 .gktools.env export-ignore
+.gkunit.env export-ignore
+.gkunit.matrix.yml export-ignore
