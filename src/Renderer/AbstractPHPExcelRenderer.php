@@ -355,11 +355,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
      */
     private static function can_see_diagnostics(): bool
     {
-        // WP_DEBUG alone is often left on for live sites, so follow core and require the display flag too.
-        if (defined('WP_DEBUG') && WP_DEBUG && defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY) {
-            return true;
-        }
-
+        // Debug constants say how a site reports errors, not who may read them, so they do not open this up.
         return \GFCommon::current_user_can_any('gravityforms_export_entries');
     }
 
