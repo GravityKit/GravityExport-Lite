@@ -323,6 +323,117 @@ final class WordPressRouterTest extends TestCase {
 	}
 
 	/**
+	 * Returns a `$wpdb` double that serves several feed rows and records the query it was given.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $metas One stored meta array per row, in the order the query would return them.
+	 *
+	 * @return object The double.
+	 */
+	private function wpdb_serving_feeds( array $metas ) {
+		$wpdb = new class {
+			/**
+			 * @var string The table prefix.
+			 */
+			public $prefix = 'wp_';
+
+			/**
+			 * @var array The rows to serve.
+			 */
+			public $rows = [];
+
+			/**
+			 * @var string The query as it was prepared.
+			 */
+			public $query = '';
+
+			/**
+			 * @var array The arguments the query was prepared with.
+			 */
+			public $args = [];
+
+			public function prepare( $query, ...$args ) {
+				$this->query = $query;
+				$this->args  = isset( $args[0] ) && is_array( $args[0] ) ? $args[0] : $args;
+
+				return $query;
+			}
+
+			public function esc_like( $text ) {
+				return $text;
+			}
+
+			public function get_results( $query, $output = null ) {
+				return $this->rows;
+			}
+		};
+
+		foreach ( $metas as $index => $meta ) {
+			$wpdb->rows[] = [
+				'id'      => (string) ( $index + 1 ),
+				'form_id' => (string) ( $index + 1 ),
+				'meta'    => json_encode( $meta ),
+			];
+		}
+
+		return $wpdb;
+	}
+
+	/**
+	 * Test case for {@see WordPressRouter::get_feed_by_request()} looking past a non-owning feed.
+	 *
+	 * The lookup matches on a substring, so a feed that merely mentions the hash somewhere in its settings
+	 * can sort ahead of the feed that owns it. Every candidate has to be considered, not just the first.
+	 *
+	 * @since TBD
+	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
+	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
+	 */
+	public function test_get_feed_by_request_looks_past_a_feed_that_does_not_own_the_hash(): void {
+		global $wpdb;
+
+		$wpdb = $this->wpdb_serving_feeds( [
+			[ 'feedName' => 'Mentions https://example.test/gravityexport-lite/the-requested-hash' ],
+			[ 'hash' => 'the-requested-hash' ],
+		] );
+
+		$result = $this->router->get_feed_by_request( Request::from_query_vars( [
+			Router::KEY_ACTION => 'gravityexport-lite',
+			Router::KEY_HASH   => 'the-requested-hash',
+		] ) );
+
+		$this->assertIsArray( $result, 'The owning feed must be found behind a non-owning one.' );
+		$this->assertSame( '2', $result['id'] );
+	}
+
+	/**
+	 * Test case for {@see WordPressRouter::get_feed_by_request()} restricting the lookup to our own feeds.
+	 *
+	 * @since TBD
+	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
+	 */
+	public function test_get_feed_by_request_only_considers_this_addons_feeds(): void {
+		global $wpdb;
+
+		$wpdb = $this->wpdb_serving_feeds( [ [ 'hash' => 'the-requested-hash' ] ] );
+
+		$this->router->get_feed_by_request( Request::from_query_vars( [
+			Router::KEY_ACTION => 'gravityexport-lite',
+			Router::KEY_HASH   => 'the-requested-hash',
+		] ) );
+
+		$this->assertStringContainsString( 'addon_slug IN', $wpdb->query );
+		$this->assertContains( 'gravityexport-lite', $wpdb->args );
+		$this->assertContains(
+			'gf-entries-in-excel',
+			$wpdb->args,
+			'Feeds saved under the former slug must keep working.'
+		);
+		$this->assertStringNotContainsString( 'LIMIT 1', $wpdb->query );
+	}
+
+	/**
 	 * Data provider of stored feed meta that must not authorise a request.
 	 * @since TBD
 	 * @return array
@@ -337,6 +448,28 @@ final class WordPressRouterTest extends TestCase {
 			'different hash' => [ [ 'hash' => 'a-completely-different-hash' ] ],
 			'substring hit'  => [ [ 'hash' => 'xa-real-looking-hashx' ] ],
 		];
+	}
+
+	/**
+	 * Test case for {@see WordPressRouter::get_feed_by_request()} with a stored hash that is not a string.
+	 *
+	 * `hash_equals()` only accepts strings, so a feed holding anything else has to be skipped rather than
+	 * compared.
+	 *
+	 * @since TBD
+	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
+	 */
+	public function test_get_feed_by_request_skips_a_feed_whose_stored_hash_is_not_a_string(): void {
+		global $wpdb;
+
+		$wpdb = $this->wpdb_serving_feeds( [ [ 'hash' => 12345 ] ] );
+
+		$result = $this->router->get_feed_by_request( Request::from_query_vars( [
+			Router::KEY_ACTION => 'gravityexport-lite',
+			Router::KEY_HASH   => '12345',
+		] ) );
+
+		$this->assertNull( $result );
 	}
 
 	/**
