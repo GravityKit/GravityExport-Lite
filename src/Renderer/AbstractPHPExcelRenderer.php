@@ -344,10 +344,6 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
     }
 
     /**
-     * Helper method to handle an exception.
-     * @param \Throwable|\Exception $exception
-     */
-    /**
      * Whether the current visitor may see the technical details of a failure.
      *
      * Paths, versions and stack traces are useful to whoever maintains the site and to nobody else, so an
@@ -366,6 +362,10 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
         return \GFCommon::current_user_can_any('gravityforms_export_entries');
     }
 
+    /**
+     * Helper method to handle an exception.
+     * @param \Throwable|\Exception $exception
+     */
     private function handleException($exception): void
     {
 	    global $wp_version;
