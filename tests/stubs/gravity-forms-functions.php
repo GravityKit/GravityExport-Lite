@@ -9,7 +9,7 @@
  * {@see \GFExcel\Tests\Routing\WordPressRouterTest::test_rgars_returns_empty_string_for_a_missing_key}
  * pins that behavior so this copy cannot silently drift from Gravity Forms.
  *
- * @since TBD
+ * @since 2.7.3
  */
 
 if ( ! function_exists( 'rgar' ) ) {

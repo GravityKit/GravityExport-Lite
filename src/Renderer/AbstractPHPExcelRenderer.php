@@ -349,7 +349,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
      * Paths, versions and stack traces are useful to whoever maintains the site and to nobody else, so an
      * anonymous visitor gets a plain message instead.
      *
-     * @since TBD
+     * @since 2.7.3
      *
      * @return bool Whether to show the details.
      */

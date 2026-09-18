@@ -25,7 +25,7 @@ final class WordPressRouter implements Router {
 	 * are ours. Feeds saved before 2.0 carry the add-on's former slug and still serve downloads, so both
 	 * are accepted.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 *
 	 * @var string[]
 	 */

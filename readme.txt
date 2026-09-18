@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 4.0
 Requires PHP: 7.4
 Tested up to: 7.1.1
-Stable tag: 2.7.2
+Stable tag: 2.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,12 +256,14 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= TBD =
+= 2.7.3 on September 18, 2026 =
 
-* Fixed: A download request that did not include a download URL hash could be served an entry export. Requests without a hash are now refused.
-* Fixed: A download URL could return "not found" when another add-on's feed happened to mention the same hash in its settings. The download URL is now matched against this add-on's own feeds only.
-* Fixed: A file extension added to the download URL was used as-is, so a download could be rendered in a format the plugin does not offer. Unsupported extensions now fall back to the form's configured file type.
-* Fixed: When an export failed, the error page showed file paths, a stack trace and version details to anyone who could reach the download URL. Visitors now see a short message, and the details go to the server's error log and remain on screen for users who can export entries.
+* Security: On some sites, a request to the download URL that carried no security key returned a form's entries to a visitor who was not logged in. Thanks to Ashish Agarwal for the report.
+* Security: Disabling a form's download URL did not always stop downloads, because a request that carried no security key was still served.
+* Security: When an export failed, the error page showed server file paths, a stack trace and the plugin, Gravity Forms, PHP and WordPress versions to visitors.
+* Fixed: A download URL could return "not found" when another add-on's settings happened to contain the same security key.
+* Fixed: A file extension added to the end of a download URL was used as-is, so an export could be returned in a file format the plugin does not offer. Unsupported extensions now fall back to the file type configured for the form.
+* Fixed: A malformed download URL could trigger a PHP fatal error on the site. Malformed URLs are now rejected.
 
 = 2.7.2 on September 17, 2026 =
 

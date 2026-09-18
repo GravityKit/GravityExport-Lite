@@ -29,7 +29,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * The global `$wpdb` as it was before a test replaced it.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 *
 	 * @var mixed
 	 */
@@ -48,7 +48,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * {@inheritdoc}
-	 * @since TBD
+	 * @since 2.7.3
 	 */
 	public function tearDown(): void {
 		$GLOBALS['wpdb'] = $this->original_wpdb;
@@ -90,7 +90,7 @@ final class WordPressRouterTest extends TestCase {
 	 * Query vars can arrive as an array. `Request::action()` declares a string return type, so an array
 	 * must be discarded when the request is built rather than fatalling when the action is read.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\Request::from_query_vars
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
 	 */
@@ -120,7 +120,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Data provider of hashes that must never reach the feed lookup.
-	 * @since TBD
+	 * @since 2.7.3
 	 * @return array
 	 */
 	public function dataprovider_for_empty_hash_test(): array {
@@ -142,7 +142,7 @@ final class WordPressRouterTest extends TestCase {
 	 *
 	 * Pins the choice of `'' === $hash` over `empty()`, which would also reject a hash of "0".
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_does_not_refuse_a_zero_hash(): void {
@@ -165,7 +165,7 @@ final class WordPressRouterTest extends TestCase {
 	 * feed of every add-on, and then equals the stored hash of any feed whose hash was cleared or never
 	 * set. Such a request must be refused before the database is touched.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @dataProvider dataprovider_for_empty_hash_test
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
@@ -215,7 +215,7 @@ final class WordPressRouterTest extends TestCase {
 	 * The not-found path hands `gfexcel_hash_feed` a chance to resolve the feed. An empty hash must not
 	 * reach it, otherwise a third-party callback could reintroduce the very bypass this guard closes.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
 	 */
@@ -241,7 +241,7 @@ final class WordPressRouterTest extends TestCase {
 	 *
 	 * Guards the guard: refusing an empty hash must not stop a genuine download URL from being resolved.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_still_queries_a_real_hash(): void {
@@ -286,7 +286,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Returns a `$wpdb` double that serves one feed row.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 *
 	 * @param array $meta The feed's stored meta, as an array.
 	 *
@@ -325,7 +325,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Returns a `$wpdb` double that serves several feed rows and records the query it was given.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 *
 	 * @param array $metas One stored meta array per row, in the order the query would return them.
 	 *
@@ -386,7 +386,7 @@ final class WordPressRouterTest extends TestCase {
 	 * The lookup matches on a substring, so a feed that merely mentions the hash somewhere in its settings
 	 * can sort ahead of the feed that owns it. Every candidate has to be considered, not just the first.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
 	 */
@@ -410,7 +410,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Test case for {@see WordPressRouter::get_feed_by_request()} restricting the lookup to our own feeds.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_only_considers_this_addons_feeds(): void {
@@ -435,7 +435,7 @@ final class WordPressRouterTest extends TestCase {
 
 	/**
 	 * Data provider of stored feed meta that must not authorise a request.
-	 * @since TBD
+	 * @since 2.7.3
 	 * @return array
 	 */
 	public function dataprovider_for_non_matching_feed_test(): array {
@@ -456,7 +456,7 @@ final class WordPressRouterTest extends TestCase {
 	 * `hash_equals()` only accepts strings, so a feed holding anything else has to be skipped rather than
 	 * compared.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_skips_a_feed_whose_stored_hash_is_not_a_string(): void {
@@ -478,7 +478,7 @@ final class WordPressRouterTest extends TestCase {
 	 * Hashes are hexadecimal, so a value of the form `0e<digits>` is possible. PHP compares two numeric
 	 * strings numerically, which makes every such value loosely equal to every other.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @return array
 	 */
 	public function dataprovider_for_type_juggling_test(): array {
@@ -491,7 +491,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Test case for {@see WordPressRouter::get_feed_by_request()} comparing hashes strictly.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @dataProvider dataprovider_for_type_juggling_test
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
@@ -516,7 +516,7 @@ final class WordPressRouterTest extends TestCase {
 	 * row that comes back is not necessarily the one that owns the requested hash. This comparison is the
 	 * control that refuses it, and it must stay strict.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @dataProvider dataprovider_for_non_matching_feed_test
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 * @see https://linear.app/gravitykit/issue/GEXPLIT-24
@@ -537,7 +537,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Test case for {@see WordPressRouter::get_feed_by_request()} returning the owning feed.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_returns_the_feed_that_owns_the_hash(): void {
@@ -559,7 +559,7 @@ final class WordPressRouterTest extends TestCase {
 	/**
 	 * Test case for {@see WordPressRouter::get_feed_by_request()} with meta that is not valid JSON.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
 	 */
 	public function test_get_feed_by_request_refuses_a_feed_with_unreadable_meta(): void {
@@ -584,7 +584,7 @@ final class WordPressRouterTest extends TestCase {
 	 * The authorisation check depends on the exact semantics of `rgar()`, so the copy in
 	 * `tests/stubs/gravity-forms-functions.php` must stay identical to the vendored original.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 */
 	public function test_gravity_forms_helper_stubs_match_the_vendored_source(): void {
 		$vendored = file_get_contents( __DIR__ . '/../../vendor/gravityforms/gravityforms/gravityforms.php' );
@@ -620,7 +620,7 @@ final class WordPressRouterTest extends TestCase {
 	 * request carrying an empty hash used to satisfy the comparison against a feed that has no stored hash.
 	 * If this ever stops being true, the guard's reasoning needs revisiting.
 	 *
-	 * @since TBD
+	 * @since 2.7.3
 	 */
 	public function test_rgars_returns_empty_string_for_a_missing_key(): void {
 		$this->assertSame( '', rgars( [ 'meta' => [ 'feedName' => 'x' ] ], 'meta/hash' ) );
