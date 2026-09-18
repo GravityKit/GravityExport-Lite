@@ -260,6 +260,8 @@ You can hide a row by adding a hook. Checkout this example:
 
 * Fixed: A download request that did not include a download URL hash could be served an entry export. Requests without a hash are now refused.
 * Fixed: A download URL could return "not found" when another add-on's feed happened to mention the same hash in its settings. The download URL is now matched against this add-on's own feeds only.
+* Fixed: A file extension added to the download URL was used as-is, so a download could be rendered in a format the plugin does not offer. Unsupported extensions now fall back to the form's configured file type.
+* Fixed: When an export failed, the error page showed file paths, a stack trace and version details to anyone who could reach the download URL. Visitors now see a short message, and the details go to the server's error log and remain on screen for users who can export entries.
 
 = 2.7.2 on September 17, 2026 =
 
