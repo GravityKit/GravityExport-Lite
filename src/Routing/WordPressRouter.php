@@ -125,11 +125,7 @@ final class WordPressRouter implements Router {
 			array_merge( self::FEED_SLUGS, [ '%' . $wpdb->esc_like( $hash ) . '%' ] )
 		), ARRAY_A );
 
-		if ( ! $feeds ) {
-			return apply_filters( 'gfexcel_hash_feed', null, $hash );
-		}
-
-		foreach ( $feeds as $feed ) {
+		foreach ( (array) $feeds as $feed ) {
 			$meta = json_decode( (string) rgar( $feed, 'meta' ), true );
 
 			if ( ! is_array( $meta ) ) {
@@ -149,7 +145,18 @@ final class WordPressRouter implements Router {
 			}
 		}
 
-		return null;
+		/**
+		 * Claims a download hash none of this add-on's own feeds own.
+		 *
+		 * An add-on that stores its own download hash, such as GravityExport's export filters, keeps it in
+		 * a feed carrying that add-on's slug, which the query above excludes.
+		 *
+		 * @since 1.9
+		 *
+		 * @param array|null $feed The feed, or null when this add-on owns no feed with this hash.
+		 * @param string     $hash The download hash taken from the request.
+		 */
+		return apply_filters( 'gfexcel_hash_feed', null, $hash );
 	}
 
 

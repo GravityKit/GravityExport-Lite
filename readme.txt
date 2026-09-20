@@ -256,6 +256,10 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+* Fixed: A download URL that belongs to another GravityExport add-on returned "not found" when one of this plugin's own feeds happened to mention the same security key.
+
 = 2.7.3 on September 18, 2026 =
 
 * Security: On some sites, a request to the download URL that carried no security key returned a form's entries to a visitor who was not logged in. Thanks to Ashish Agarwal for the report.
