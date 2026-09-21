@@ -26,21 +26,28 @@
 const GK_E2E_EXPORT_FAILURE_ARG     = 'gk_e2e_force_export_failure';
 const GK_E2E_EXPORT_FAILURE_MESSAGE = 'E2E forced export failure marker 8f2c1d';
 
-add_action(
-	'plugins_loaded',
-	function () {
+add_filter(
+	'gform_include_bom_export_entries',
+	/**
+	 * Fails the export when the request asked for it, and is a no-op otherwise.
+	 *
+	 * The check belongs here rather than around the registration so the callback still returns a
+	 * value on the ordinary path, which is what the rest of the suite runs through.
+	 *
+	 * @param bool $use_bom Whether to write a byte order mark.
+	 *
+	 * @throws \RuntimeException When the request asked for a failure.
+	 *
+	 * @return bool
+	 */
+	function ( $use_bom ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only switch in a test-only plugin.
-		if ( empty( $_GET[ GK_E2E_EXPORT_FAILURE_ARG ] ) ) {
-			return;
+		if ( ! empty( $_GET[ GK_E2E_EXPORT_FAILURE_ARG ] ) ) {
+			throw new \RuntimeException( GK_E2E_EXPORT_FAILURE_MESSAGE );
 		}
 
-		add_filter(
-			'gform_include_bom_export_entries',
-			function ( $use_bom ) {
-				throw new \RuntimeException( GK_E2E_EXPORT_FAILURE_MESSAGE );
-			},
-			10,
-			1
-		);
-	}
+		return $use_bom;
+	},
+	10,
+	1
 );
