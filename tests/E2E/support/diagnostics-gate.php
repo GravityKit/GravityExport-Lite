@@ -73,19 +73,25 @@ $subscriber = wp_insert_user(
 	]
 );
 
-if ( ! is_wp_error( $subscriber ) ) {
-	wp_set_current_user( (int) $subscriber );
+// Skipping this case on failure would leave the signed-in-but-unauthorized path untested while the
+// script still reported everything it did run as passing.
+if ( is_wp_error( $subscriber ) ) {
+	fwrite( STDERR, 'Could not create the subscriber to test the refused case with: ' . $subscriber->get_error_message() . "\n" );
 
-	$cases[] = [
-		'a signed-in subscriber is refused the details',
-		false === $gate->invoke( null ) ? true : 'the gate opened for a subscriber',
-	];
-
-	wp_set_current_user( 0 );
-
-	require_once ABSPATH . 'wp-admin/includes/user.php';
-	wp_delete_user( (int) $subscriber );
+	exit( 1 );
 }
+
+wp_set_current_user( (int) $subscriber );
+
+$cases[] = [
+	'a signed-in subscriber is refused the details',
+	false === $gate->invoke( null ) ? true : 'the gate opened for a subscriber',
+];
+
+wp_set_current_user( 0 );
+
+require_once ABSPATH . 'wp-admin/includes/user.php';
+wp_delete_user( (int) $subscriber );
 
 $failures = 0;
 

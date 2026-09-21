@@ -10,8 +10,19 @@ const {
 } = require( '../../helpers/test-helpers' );
 
 // Raised by tests/E2E/setup/mu-plugins/e2e-export-failure.php.
-const FAILURE_ARG = 'gk_e2e_force_export_failure=1';
 const FAILURE_MARKER = 'E2E forced export failure marker 8f2c1d';
+
+/**
+ * Query string that makes this one request fail, tagged so its trace can be told apart from one
+ * another test left in the shared container log.
+ */
+function failureArg( token ) {
+	return `gk_e2e_force_export_failure=${ token }`;
+}
+
+function uniqueToken() {
+	return `t${ Date.now().toString( 36 ) }${ Math.random().toString( 36 ).slice( 2, 8 ) }`;
+}
 
 /**
  * Everything a failure used to reveal to whoever asked for the download.
@@ -59,7 +70,7 @@ test.describe( 'GravityExport Lite — What a failed export reveals', () => {
 		try {
 			const response = await fetchDownload(
 				anonymous,
-				`${ url }.csv?${ FAILURE_ARG }`
+				`${ url }.csv?${ failureArg( uniqueToken() ) }`
 			);
 
 			const body = response.body.toString();
@@ -91,7 +102,7 @@ test.describe( 'GravityExport Lite — What a failed export reveals', () => {
 		// `request` carries the signed-in administrator, who holds gravityforms_export_entries.
 		const response = await fetchDownload(
 			request,
-			`${ url }.csv?${ FAILURE_ARG }`
+			`${ url }.csv?${ failureArg( uniqueToken() ) }`
 		);
 
 		const body = response.body.toString();
@@ -118,8 +129,13 @@ test.describe( 'GravityExport Lite — What a failed export reveals', () => {
 
 		const anonymous = await playwrightRequest.newContext( { storageState: undefined } );
 
+		// Tagging this request is what ties the log entry to it. Matching the shared marker alone
+		// would also match an entry another test wrote, so the assertion would hold even if this
+		// request logged nothing.
+		const token = uniqueToken();
+
 		try {
-			await fetchDownload( anonymous, `${ url }.csv?${ FAILURE_ARG }` );
+			await fetchDownload( anonymous, `${ url }.csv?${ failureArg( token ) }` );
 		} finally {
 			await anonymous.dispose();
 		}
@@ -127,12 +143,10 @@ test.describe( 'GravityExport Lite — What a failed export reveals', () => {
 		// Hiding the reason from the visitor is only acceptable because it is kept somewhere the
 		// site's maintainer can read it.
 		const log = readServerErrorLog();
-		console.log( 'LOGLEN=' + log.length );
-		console.log( 'PHPLINES=' + log.split('\n').filter((l)=>/php:|GravityExport Lite:/.test(l)).slice(-4).join(' || ') );
 
 		expect(
 			log,
-			'the failure was hidden from the visitor and not written anywhere'
-		).toContain( FAILURE_MARKER );
+			'this request was hidden from the visitor and not written anywhere'
+		).toContain( `${ FAILURE_MARKER } ${ token }` );
 	} );
 } );

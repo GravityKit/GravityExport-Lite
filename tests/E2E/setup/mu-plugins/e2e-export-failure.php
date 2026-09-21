@@ -42,11 +42,18 @@ add_filter(
 	 */
 	function ( $use_bom ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only switch in a test-only plugin.
-		if ( ! empty( $_GET[ GK_E2E_EXPORT_FAILURE_ARG ] ) ) {
-			throw new \RuntimeException( GK_E2E_EXPORT_FAILURE_MESSAGE );
+		$token = isset( $_GET[ GK_E2E_EXPORT_FAILURE_ARG ] ) ? (string) $_GET[ GK_E2E_EXPORT_FAILURE_ARG ] : '';
+
+		if ( '' === $token ) {
+			return $use_bom;
 		}
 
-		return $use_bom;
+		// The value is carried into the exception message so a test can tell its own failure from
+		// one an earlier test left in the log. Reduced to a safe token first: the message reaches
+		// the error page for users who may see diagnostics.
+		$token = substr( preg_replace( '/[^A-Za-z0-9]/', '', $token ), 0, 32 );
+
+		throw new \RuntimeException( GK_E2E_EXPORT_FAILURE_MESSAGE . ' ' . $token );
 	},
 	10,
 	1
