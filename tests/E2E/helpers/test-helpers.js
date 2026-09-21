@@ -565,6 +565,93 @@ async function submitEntryTriggeringNotifications( formId, values ) {
 }
 
 /**
+ * Returns the tail of the server's error log for the tests instance.
+ *
+ * `WP_DEBUG_LOG` is on, but this image's PHP keeps `error_log` pointed at Apache's log rather than
+ * `wp-content/debug.log`, so that file stays empty and the entries arrive on the container's
+ * stderr. Read them from there.
+ *
+ * @param {number} lines - How many trailing lines to return.
+ * @returns {string}
+ */
+/**
+ * Resolves this run's tests-instance container by its published port.
+ *
+ * Every GravityKit product's wp-env stack has a `-tests-wordpress-1` container, so matching on the
+ * name alone reads whichever one docker happens to list first when more than one is up.
+ *
+ * @param {'wordpress'|'cli'} kind
+ * @returns {string}
+ */
+function testsContainer( kind = 'wordpress' ) {
+	const { spawnSync } = require( 'child_process' );
+
+	const byPort = spawnSync(
+		'docker',
+		[ 'ps', '--format', '{{.Names}}', '--filter', `publish=${ ports.wpTestsPort }` ],
+		{ encoding: 'utf8' }
+	);
+
+	const web =
+		( byPort.stdout || '' ).split( '\n' ).map( ( s ) => s.trim() ).find( Boolean ) ||
+		findTestsContainer();
+
+	return 'cli' === kind
+		? web.replace( '-tests-wordpress-1', '-tests-cli-1' )
+		: web;
+}
+
+/**
+ * Runs a PHP script from `tests/E2E/support/` inside the tests instance and returns its output.
+ *
+ * @param {string}   scriptName
+ * @param {object}   [options]
+ * @param {string}   [options.exec] - PHP evaluated before WordPress loads, for constants that
+ *                                    wp-config would otherwise fix for the whole environment.
+ * @returns {string}
+ */
+function runSupportScript( scriptName, { exec } = {} ) {
+	const { spawnSync } = require( 'child_process' );
+
+	const pluginDir = path.basename( path.resolve( __dirname, '../../..' ) );
+	const scriptPath = `/var/www/html/wp-content/plugins/${ pluginDir }/tests/E2E/support/${ scriptName }`;
+
+	const args = [ 'exec', testsContainer( 'cli' ), 'wp', '--allow-root' ];
+
+	if ( exec ) {
+		args.push( `--exec=${ exec }` );
+	}
+
+	args.push( 'eval-file', scriptPath );
+
+	const result = spawnSync( 'docker', args, {
+		encoding: 'utf8',
+		maxBuffer: 50 * 1024 * 1024,
+	} );
+
+	const output = `${ result.stdout || '' }${ result.stderr || '' }`;
+
+	if ( result.status !== 0 ) {
+		throw new Error( `${ scriptName } reported failures:\n${ output }` );
+	}
+
+	return output;
+}
+
+function readServerErrorLog( lines = 500 ) {
+	const { spawnSync } = require( 'child_process' );
+
+	const result = spawnSync(
+		'docker',
+		[ 'logs', '--tail', String( Number( lines ) ), testsContainer( 'wordpress' ) ],
+		{ encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 }
+	);
+
+	// Apache writes to the container's stderr, so both streams are folded together here.
+	return `${ result.stdout || '' }${ result.stderr || '' }`;
+}
+
+/**
  * Mutate the GravityExport feed meta for a form. Used by tests that need
  * deterministic configuration (disabled fields, custom order, notes flag,
  * transpose, attached notification) without driving the sortable UI.
@@ -607,6 +694,8 @@ module.exports = {
 	submitEntryTriggeringNotifications,
 	patchExportFeedMeta,
 	wpEval,
+	readServerErrorLog,
+	runSupportScript,
 	FORM_SETTINGS_PATH,
 	NOTIFICATIONS_LIST_PATH,
 	NEW_NOTIFICATION_PATH,
