@@ -2,11 +2,12 @@
 /**
  * Plugin Name:     GravityExport Lite
  * Version:         2.7.3
+ * Requires at least: 6.5
  * Plugin URI:      https://gfexcel.com
  * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
  * Author:          GravityKit
  * Author URI:      https://www.gravitykit.com/extensions/gravityexport/
- * Requires PHP:    7.4
+ * Requires PHP:    7.4.0
  * License:         GPL2
  * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:     gk-gravityexport-lite

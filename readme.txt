@@ -2,8 +2,8 @@
 Contributors: gravityview, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
-Requires at least: 4.0
-Requires PHP: 7.4
+Requires at least: 6.5
+Requires PHP: 7.4.0
 Tested up to: 7.1.1
 Stable tag: 2.7.3
 License: GPLv2 or later
@@ -259,6 +259,9 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: A download URL that belongs to another GravityExport add-on returned "not found" when one of this plugin's own feeds happened to mention the same security key.
+
+#### 🔧 Updated
+* The minimum required WordPress version is now 6.5 and the minimum PHP version is 7.4.
 
 = 2.7.3 on September 18, 2026 =
 
