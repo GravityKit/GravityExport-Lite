@@ -14,6 +14,52 @@ anchors:
     requires:
       - prepare
 
+  # Ends the job successfully unless this build is on a release branch (main,
+  # main-beta) or a PR targeting one. run_post_build_smoke tests the packaged
+  # zip, so the release PR is when it matters.
+  #
+  # Under git flow a release arrives as a PR from the matching development
+  # branch, so CIRCLE_BRANCH reads "develop" for both a release PR and an
+  # ordinary develop push. Only the base separates them and CircleCI exposes
+  # no variable for it, so this asks GitHub.
+  #
+  # A failed lookup runs the job: wrongly skipping ships an unsmoked zip.
+  release_branches_only: &release_branches_only
+    run:
+      name: Skip unless on a release branch or a PR into one
+      command: |
+        is_release_branch() {
+          case "$1" in
+            main|main-beta) return 0 ;;
+            *) return 1 ;;
+          esac
+        }
+        if is_release_branch "${CIRCLE_BRANCH}"; then
+          echo "On release branch ${CIRCLE_BRANCH} — running."
+          exit 0
+        fi
+        if [ -z "${CIRCLE_PULL_REQUEST}" ]; then
+          echo "Not a PR — skipping."
+          circleci-agent step halt
+          exit 0
+        fi
+        pr_number="${CIRCLE_PULL_REQUEST##*/}"
+        base=$(curl -sf \
+          -H "Authorization: Bearer ${GH_AUTH_TOKEN}" \
+          -H "Accept: application/vnd.github+json" \
+          "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${pr_number}" \
+          | python3 -c 'import sys, json; print(json.load(sys.stdin)["base"]["ref"])') || base=""
+        if [ -z "${base}" ]; then
+          echo "Could not read the base branch of PR #${pr_number} — running rather than risk an unsmoked release."
+          exit 0
+        fi
+        if is_release_branch "${base}"; then
+          echo "PR #${pr_number} targets ${base} — running."
+          exit 0
+        fi
+        echo "PR #${pr_number} targets ${base}, not a release branch — skipping."
+        circleci-agent step halt
+
 jobs:
   prepare:
     <<: *default_job_config
@@ -135,6 +181,7 @@ jobs:
       image: ubuntu-2604:current
     resource_class: medium.gen3
     steps:
+      - *release_branches_only
       - attach_workspace:
           at: /home/circleci
       - run:
