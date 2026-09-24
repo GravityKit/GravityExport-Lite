@@ -121,8 +121,8 @@ final class WordPressRouter implements Router {
 
 		// The LIKE is only a prefilter; every candidate is checked against its stored hash below.
 		$feeds = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM {$wpdb->prefix}gf_addon_feed WHERE is_active=1 AND addon_slug IN ( $slugs ) AND meta LIKE %s ORDER BY `feed_order`, `id`",
-			array_merge( self::FEED_SLUGS, [ '%' . $wpdb->esc_like( $hash ) . '%' ] )
+			"SELECT * FROM %i WHERE is_active=1 AND addon_slug IN ( $slugs ) AND meta LIKE %s ORDER BY `feed_order`, `id`",
+			array_merge( [ $wpdb->prefix . 'gf_addon_feed' ], self::FEED_SLUGS, [ '%' . $wpdb->esc_like( $hash ) . '%' ] )
 		), ARRAY_A );
 
 		foreach ( (array) $feeds as $feed ) {
