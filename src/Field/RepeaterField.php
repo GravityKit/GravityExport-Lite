@@ -26,6 +26,13 @@ class RepeaterField extends SeparableField implements RowsInterface
     protected $field;
 
     /**
+     * Whether this repeater sits inside another repeater.
+     * @since TBD
+     * @var bool
+     */
+    private $is_nested = false;
+
+    /**
      * @inheritdoc
      * @since 1.7.0
      */
@@ -93,7 +100,12 @@ class RepeaterField extends SeparableField implements RowsInterface
     private function getSubFields(): array
     {
         return array_map(function (\GF_Field $gf_field): FieldInterface {
-            return $this->transformer->transform($gf_field);
+            $field = $this->transformer->transform($gf_field);
+            if ($field instanceof self) {
+                $field->is_nested = true;
+            }
+
+            return $field;
         }, (array) $this->field->fields);
     }
 
@@ -133,16 +145,17 @@ class RepeaterField extends SeparableField implements RowsInterface
             }
         }
 
-        // implode the values into a new string
-        $cells = array_map(function (array $values) {
-            return implode(
-                gf_apply_filters([
-                    'gfexcel_field_repeater_implode',
-                    $this->field->formId,
-                    $this->field->id,
-                ], "\n---\n"),
-                $values
-            );
+        // A nested repeater's items share one cell of their parent's row, so they get a lighter separator
+        // than the "---" between rows.
+        $glue = gf_apply_filters([
+            'gfexcel_field_repeater_implode',
+            $this->field->formId,
+            $this->field->id,
+        ], $this->is_nested ? ', ' : "\n---\n");
+
+        $cells = array_map(static function (array $values) use ($glue): string {
+            // Keep empty values so the Nth value in every column belongs to the same row.
+            return array_filter($values, 'strlen') ? implode($glue, $values) : '';
         }, $result);
 
         // re-wrap values into cells.
