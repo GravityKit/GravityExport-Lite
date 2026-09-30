@@ -91,9 +91,10 @@ final class RepeaterFieldTest extends TestCase {
 			'fields' => [ $phones, $role, $name ],
 		] );
 
-		$transformer = new RepeaterTestTransformer();
+		$repeater = ( new RepeaterTestTransformer() )->transform( $people );
+		self::assertInstanceOf( RepeaterField::class, $repeater );
 
-		return $transformer->transform( $people );
+		return $repeater;
 	}
 
 	/**
@@ -221,6 +222,7 @@ final class RepeaterTestTransformer extends Transformer {
 		$repeater = ( new \ReflectionClass( RepeaterField::class ) )->newInstanceWithoutConstructor();
 
 		\Closure::bind( function () use ( $field ) {
+			/** @var \GF_Field_Repeater $field A `GF_Field` double standing in for the repeater. */
 			$this->field = $field;
 		}, $repeater, RepeaterField::class )();
 

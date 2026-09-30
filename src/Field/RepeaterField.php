@@ -155,7 +155,11 @@ class RepeaterField extends SeparableField implements RowsInterface
 
         $cells = array_map(static function (array $values) use ($glue): string {
             // Keep empty values so the Nth value in every column belongs to the same row.
-            return array_filter($values, 'strlen') ? implode($glue, $values) : '';
+            $has_values = array_filter($values, static function ($value): bool {
+                return '' !== (string) $value;
+            });
+
+            return $has_values ? implode($glue, $values) : '';
         }, $result);
 
         // re-wrap values into cells.
