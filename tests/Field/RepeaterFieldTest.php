@@ -5,6 +5,7 @@ namespace GFExcel\Tests\Field;
 use GFExcel\Field\FieldInterface;
 use GFExcel\Field\RepeaterField;
 use GFExcel\Tests\TestCase;
+use GFExcel\Transformer\Combiner;
 use GFExcel\Transformer\Transformer;
 use GFExcel\Values\BaseValue;
 use GFExcel\Values\StringValue;
@@ -20,15 +21,24 @@ use GFExcel\Values\StringValue;
  */
 final class RepeaterFieldTest extends TestCase {
 	/**
+	 * Glue the `gfexcel_combiner_glue` filter returns; null keeps the default.
+	 * @since TBD
+	 * @var string|null
+	 */
+	private static $combiner_glue;
+
+	/**
 	 * @inheritDoc
 	 * @since TBD
 	 */
 	public function setUp(): void {
 		parent::setUp();
 
+		self::$combiner_glue = null;
+
 		\WP_Mock::userFunction( 'gf_apply_filters', [
-			'return' => static function () {
-				return func_get_arg( 1 );
+			'return' => static function ( array $hooks, $value ) {
+				return 'gfexcel_combiner_glue' === $hooks[0] && null !== self::$combiner_glue ? self::$combiner_glue : $value;
 			},
 		] );
 	}
@@ -120,7 +130,7 @@ final class RepeaterFieldTest extends TestCase {
 
 		self::assertCount( 4, $field->getColumns() );
 		self::assertCount( 2, $rows );
-		self::assertSame( [ "111\n---\n222", 'Lead', 'Ada', 'Lovelace' ], self::values( $rows[0] ) );
+		self::assertSame( [ '111, 222', 'Lead', 'Ada', 'Lovelace' ], self::values( $rows[0] ) );
 		self::assertSame( [ '', 'Dev', 'Alan', 'Turing' ], self::values( $rows[1] ) );
 	}
 
@@ -141,6 +151,30 @@ final class RepeaterFieldTest extends TestCase {
 			[ "111\n---\n", "Lead\n---\nDev", "Ada\n---\nAlan", "Lovelace\n---\nTuring" ],
 			self::values( $cells )
 		);
+	}
+
+	/**
+	 * The export joins repeater rows with one separator in every column, whatever the sub-field type,
+	 * so the Nth value in each column belongs to the same repeater row.
+	 *
+	 * @since TBD
+	 */
+	public function testCombinerJoinsRepeaterRowsWithTheRepeaterSeparator(): void {
+		// A sub-field type with its own combiner glue, as the Checkbox transformer registers.
+		self::$combiner_glue = ', ';
+
+		$combiner = new Combiner();
+		$combiner->parseEntry( [ $this->repeater() ], [
+			10 => [
+				[ 11 => 'Lead', '12.3' => 'Ada', '12.6' => 'Lovelace' ],
+				[ 11 => 'Dev', '12.3' => 'Alan', '12.6' => 'Turing' ],
+			],
+		] );
+
+		$rows = iterator_to_array( $combiner->getRows() );
+
+		self::assertCount( 1, $rows );
+		self::assertSame( [ '', "Lead\n---\nDev", "Ada\n---\nAlan", "Lovelace\n---\nTuring" ], self::values( $rows[0] ) );
 	}
 
 	/**
