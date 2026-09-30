@@ -3,6 +3,7 @@
 namespace GFExcel\Field;
 
 use GFExcel\Transformer\Transformer;
+use GFExcel\Values\BaseValue;
 
 /**
  * A Field for the Transformer for `repeater` fields.
@@ -48,29 +49,73 @@ class RepeaterField extends SeparableField implements RowsInterface
 
     /**
      * @inheritDoc
+     *
+     * Every row holds exactly one cell per column. A sub-field that returns fewer cells (an empty nested
+     * repeater, a hidden input) is padded, so the values after it stay under their own headers.
+     *
      * @since 1.8.0
+     * @since TBD Rows keep their column positions; row index gaps and non-array values are handled.
      */
     public function getRows(?array $entry = null): array
     {
-        // get repeater entries.
-        if (!$entry) {
+        $items = $entry[$this->field->id] ?? [];
+        if (!is_array($items)) {
             return [];
         }
 
-        $entries = $entry[$this->field->id] ?? [];
+        $fields = $this->getSubFields();
+        $rows = [];
 
-        // Get the correct field values for every row.
-        return array_reduce($entries, function (array $rows, array $entry) {
-            $row = [];
-            foreach (array_map(function (\GF_Field $gf_field): FieldInterface {
-                return $this->transformer->transform($gf_field);
-            }, $this->field->fields) as $field) {
-                $row[] = $field->getCells($entry);
+        // Row indexes are not always contiguous, so iterate the rows as they are.
+        foreach ($items as $item) {
+            if (!is_array($item)) {
+                continue;
             }
-            $rows[] = array_merge([], ...$row);
 
-            return $rows;
-        }, []);
+            $row = [];
+            foreach ($fields as $field) {
+                $row[] = $this->fitCells($field->getCells($item), count($field->getColumns()));
+            }
+
+            $rows[] = array_merge([], ...$row);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Returns the transformers for the repeater's sub-fields.
+     *
+     * @since TBD
+     *
+     * @return FieldInterface[] The sub-field transformers.
+     */
+    private function getSubFields(): array
+    {
+        return array_map(function (\GF_Field $gf_field): FieldInterface {
+            return $this->transformer->transform($gf_field);
+        }, (array) $this->field->fields);
+    }
+
+    /**
+     * Pads or trims a sub-field's cells to its column count.
+     *
+     * @since TBD
+     *
+     * @param BaseValue[] $cells The cells the sub-field returned.
+     * @param int $count The number of columns the sub-field has.
+     *
+     * @return BaseValue[] Exactly `$count` cells.
+     */
+    private function fitCells(array $cells, int $count): array
+    {
+        $cells = array_slice(array_values($cells), 0, $count);
+
+        if (count($cells) < $count) {
+            $cells = array_merge($cells, $this->wrap(array_fill(0, $count - count($cells), '')));
+        }
+
+        return $cells;
     }
 
     /**
@@ -80,8 +125,8 @@ class RepeaterField extends SeparableField implements RowsInterface
      */
     public function getCells($entry)
     {
-        //flip the array
-        $result = [];
+        // One list of values per column, so an empty repeater still fills its columns.
+        $result = array_fill(0, count($this->getColumns()), []);
         foreach ($this->getRows($entry) as $row) {
             foreach ($row as $key => $value) {
                 $result[$key][] = $value->getValue();
