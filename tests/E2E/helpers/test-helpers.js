@@ -405,6 +405,38 @@ function readAttachmentBytes( attachment ) {
 
 const containerCache = {};
 
+let wpEnvInstance;
+
+/**
+ * Returns the container-name prefix of this checkout's wp-env instance.
+ *
+ * Every wp-env stack names its containers `<hash>-tests-cli-1` and so on, so a
+ * bare `name=tests-cli` filter picks whichever stack Docker lists first when
+ * another plugin's E2E stack is running on the same machine.
+ *
+ * @returns {string} The hash, or '' when wp-env cannot report it.
+ */
+function getWpEnvInstance() {
+	if ( wpEnvInstance !== undefined ) {
+		return wpEnvInstance;
+	}
+
+	const { execFileSync } = require( 'child_process' );
+	try {
+		const out = execFileSync( 'npx', [ 'wp-env', 'install-path' ], {
+			cwd: setupDir,
+			encoding: 'utf8',
+			stdio: [ 'ignore', 'pipe', 'ignore' ],
+		} );
+		const installPath = out.trim().split( '\n' ).pop() || '';
+		wpEnvInstance = path.basename( installPath.trim() );
+	} catch {
+		wpEnvInstance = '';
+	}
+
+	return wpEnvInstance;
+}
+
 /**
  * Resolve the docker container name matching `name=<filterName>`, memoising
  * the result per filter so repeated calls don't shell out.
@@ -418,9 +450,16 @@ function findContainer( filterName ) {
 	}
 
 	const { execFileSync } = require( 'child_process' );
+	const instance = getWpEnvInstance();
 	const out = execFileSync(
 		'docker',
-		[ 'ps', '--format', '{{.Names}}', '--filter', `name=${ filterName }` ],
+		[
+			'ps',
+			'--format',
+			'{{.Names}}',
+			'--filter',
+			`name=${ instance ? `${ instance }-${ filterName }` : filterName }`,
+		],
 		{ encoding: 'utf8' }
 	);
 

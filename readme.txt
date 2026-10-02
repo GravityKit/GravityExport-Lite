@@ -258,6 +258,9 @@ You can hide a row by adding a hook. Checkout this example:
 
 = develop =
 
+* Fixed: In exports of a form with a Repeater field, a row with no items in a nested repeater moved the rest of that row's values one column to the left.
+* Fixed: Without "Multiple Rows", Repeater rows are now separated by `---` in every column. A Checkbox inside a Repeater showed the values of two rows as one ("PHP, JS"). Items of a nested repeater are joined with a comma inside their row.
+* Fixed: The Repeater field is no longer offered as a sort field; sorting by it had no effect.
 * Fixed: A download URL that belongs to another GravityExport add-on returned "not found" when one of this plugin's own feeds happened to mention the same security key.
 
 #### 🔧 Updated
