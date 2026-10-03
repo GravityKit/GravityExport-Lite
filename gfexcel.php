@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name:     GravityExport Lite
- * Version:         2.7.3
+ * Plugin Name:       GravityExport Lite
+ * Version:           2.7.4
  * Requires at least: 6.5
- * Plugin URI:      https://gfexcel.com
- * Description:     Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
- * Author:          GravityKit
- * Author URI:      https://www.gravitykit.com/extensions/gravityexport/
- * Requires PHP:    7.4.0
- * License:         GPL2
- * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:     gk-gravityexport-lite
- * Domain Path:     /languages
+ * Plugin URI:        https://gfexcel.com
+ * Description:       Export all Gravity Forms entries to Excel (.xlsx) or CSV via a secret shareable URL.
+ * Author:            GravityKit
+ * Author URI:        https://www.gravitykit.com/extensions/gravityexport/
+ * Requires PHP:      7.4.0
+ * License:           GPL2
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       gk-gravityexport-lite
+ * Domain Path:       /languages
  *
- * @package         GFExcel
+ * @package           GFExcel
  */
 
 defined( 'ABSPATH' ) or die( 'No direct access!' );
@@ -30,7 +30,7 @@ if ( ! defined( 'GFEXCEL_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'GFEXCEL_PLUGIN_VERSION' ) ) {
-	define( 'GFEXCEL_PLUGIN_VERSION', '2.7.3' );
+	define( 'GFEXCEL_PLUGIN_VERSION', '2.7.4' );
 }
 
 if ( ! defined( 'GFEXCEL_MIN_PHP_VERSION' ) ) {
