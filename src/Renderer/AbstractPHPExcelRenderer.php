@@ -8,6 +8,7 @@ use GFExcel\Values\BaseValue;
 use GFExcel\Values\NumericValue;
 use GFForms;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -92,6 +93,7 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 
             if ($objWriter instanceof Csv) {
                 $this->setCsvProperties($objWriter);
+                $this->escapeCsvFormulas($objWriter);
             }
 
             if ($save) {
@@ -556,5 +558,94 @@ abstract class AbstractPHPExcelRenderer extends AbstractRenderer implements Rend
 			$objWriter->getOutputEncoding(),
 			$form_id
 		) );
+	}
+
+	/**
+	 * Prefixes every CSV text cell that a spreadsheet app would run as a formula with a single quote.
+	 *
+	 * A CSV file cannot mark a cell as text, so a visitor's `=HYPERLINK(...)` would run when the file is opened.
+	 *
+	 * @since TBD
+	 *
+	 * @param Csv $objWriter The CSV writer.
+	 */
+	private function escapeCsvFormulas( Csv $objWriter ): void {
+		$form_id = (int) \rgar( $this->form, 'id', 0 );
+
+		/**
+		 * Whether to prefix CSV cells that start with a formula character with a single quote.
+		 *
+		 * Text cells that start with `=`, `+`, `-`, `@` (after any spaces), a tab or a line break get the prefix,
+		 * following the OWASP guidance on CSV injection. Plain numbers like `-5` are never prefixed.
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $escape Whether to prefix formula cells. Default: true.
+		 * @param array $form   The form object.
+		 */
+		$escape = gf_apply_filters(
+			[ 'gk/gravityexport/renderer/csv/escape-formulas', $form_id ],
+			true,
+			$this->form
+		);
+
+		if ( ! $escape ) {
+			return;
+		}
+
+		// Without an enclosure, a delimiter inside a value would start a new cell that is never checked.
+		if ( ! $objWriter->getEnclosure() ) {
+			$objWriter->setEnclosure( '"' );
+		}
+
+		$worksheet = $this->spreadsheet->getSheet( $objWriter->getSheetIndex() );
+
+		foreach ( $worksheet->getCellCollection()->getCoordinates() as $coordinate ) {
+			$cell  = $worksheet->getCell( $coordinate );
+			$value = $cell->getValue();
+
+			if ( $value instanceof RichText ) {
+				$value = $value->getPlainText();
+			}
+
+			// Numbers and booleans are written as they are, whatever type the cell claims to have.
+			if ( ! is_string( $value ) ) {
+				continue;
+			}
+
+			$escaped = self::escapeCsvValue( $value );
+
+			if ( $escaped === $value ) {
+				continue;
+			}
+
+			$cell->setValueExplicit( $escaped, DataType::TYPE_STRING );
+		}
+	}
+
+	/**
+	 * Returns a CSV value with a single quote in front when a spreadsheet app would run it as a formula.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $value The cell value.
+	 *
+	 * @return string The value, with a single quote in front when it starts like a formula.
+	 */
+	public static function escapeCsvValue( string $value ): string {
+		// LibreOffice ignores NUL bytes, so a leading one must not hide the first character.
+		$trimmed = ltrim( $value, " \0" );
+
+		// A plain number such as -5 or +31 is data, and prefixing it would turn it into text.
+		if ( '' === $trimmed || is_numeric( trim( $value ) ) ) {
+			return $value;
+		}
+
+		// PhpSpreadsheet stores a carriage return as a line feed, so both are listed.
+		if ( ! in_array( $trimmed[0], [ '=', '+', '-', '@', "\t", "\r", "\n" ], true ) ) {
+			return $value;
+		}
+
+		return "'" . $value;
 	}
 }
