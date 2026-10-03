@@ -630,6 +630,35 @@ final class WordPressRouterTest extends TestCase {
 	}
 
 	/**
+	 * Test case for {@see WordPressRouter::get_feed_by_request()} offering an unowned hash to the filter.
+	 *
+	 * Another add-on can own the hash, and its feed is excluded from the query by slug. Whether a row of
+	 * ours happened to match the substring prefilter says nothing about that, so the filter has to run on
+	 * both paths out of the loop.
+	 *
+	 * @since TBD
+	 * @covers \GFExcel\Routing\WordPressRouter::get_feed_by_request
+	 */
+	public function test_get_feed_by_request_offers_an_unowned_hash_to_the_filter(): void {
+		global $wpdb;
+
+		$wpdb = $this->wpdb_serving_feeds( [
+			[ 'feedName' => 'Mentions the-requested-hash but does not own it' ],
+		] );
+
+		$claimed = [ 'id' => '42', 'form_id' => '9', 'meta' => [ 'hash' => 'the-requested-hash' ] ];
+
+		\WP_Mock::onFilter( 'gfexcel_hash_feed' )->with( null, 'the-requested-hash' )->reply( $claimed );
+
+		$result = $this->router->get_feed_by_request( Request::from_query_vars( [
+			Router::KEY_ACTION => 'gravityexport-lite',
+			Router::KEY_HASH   => 'the-requested-hash',
+		] ) );
+
+		$this->assertSame( $claimed, $result, 'A hash no feed of ours owns must be offered to the filter.' );
+	}
+
+	/**
 	 * Test case for {@see WordPressRouter::update_query_vars()}.
 	 * @since 2.4.0
 	 */
