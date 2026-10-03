@@ -40,7 +40,7 @@ class AbstractPHPExcelRendererCsvTest extends TestCase
      */
     public function tearDown(): void
     {
-        if (is_string($this->file) && file_exists($this->file)) {
+        if (file_exists($this->file)) {
             unlink($this->file);
         }
 
@@ -57,28 +57,29 @@ class AbstractPHPExcelRendererCsvTest extends TestCase
         // Every filter returns its default value.
         \WP_Mock::userFunction('gf_apply_filters', ['return_arg' => 1]);
 
+        // Pairs of [input, expected]; keyed arrays would turn '-5' into an integer key.
         $cases = [
-            '=HYPERLINK("https://evil.example","Claim")' => "'=HYPERLINK(\"https://evil.example\",\"Claim\")",
-            '@SUM(1+1)' => "'@SUM(1+1)",
-            '+1+1' => "'+1+1",
-            '-1+1' => "'-1+1",
-            "\t=1+1" => "'\t=1+1",
-            "\n=1+1" => "'\n=1+1",
-            "\r=1+1" => "'\n=1+1",
-            ' =1+1' => "' =1+1",
-            "\0=1+1" => "'\0=1+1",
-            "\0 \0=1+1" => "'\0 \0=1+1",
-            '-5 ' => '-5 ',
-            '-5' => '-5',
-            '+31' => '+31',
-            '-1.5' => '-1.5',
-            'Jane' => 'Jane',
-            '' => '',
+            ['=HYPERLINK("https://evil.example","Claim")', "'=HYPERLINK(\"https://evil.example\",\"Claim\")"],
+            ['@SUM(1+1)', "'@SUM(1+1)"],
+            ['+1+1', "'+1+1"],
+            ['-1+1', "'-1+1"],
+            ["\t=1+1", "'\t=1+1"],
+            ["\n=1+1", "'\n=1+1"],
+            ["\r=1+1", "'\n=1+1"],
+            [' =1+1', "' =1+1"],
+            ["\0=1+1", "'\0=1+1"],
+            ["\0 \0=1+1", "'\0 \0=1+1"],
+            ['-5 ', '-5 '],
+            ['-5', '-5'],
+            ['+31', '+31'],
+            ['-1.5', '-1.5'],
+            ['Jane', 'Jane'],
+            ['', ''],
         ];
 
-        $cells = $this->exportColumn(array_keys($cases));
+        $cells = $this->exportColumn(array_column($cases, 0));
 
-        $this->assertSame(array_merge(['Value'], array_values($cases)), $cells);
+        $this->assertSame(array_merge(['Value'], array_column($cases, 1)), $cells);
     }
 
     /**
