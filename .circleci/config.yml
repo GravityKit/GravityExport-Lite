@@ -69,6 +69,24 @@ commands:
             git config user.email "support@gravitykit.com"
             git config user.name "GravityKit - CI"
 
+  # Build and publish jobs start from their own checkout, never from the
+  # prepare workspace. On a branch, prepare runs tools from a shared cache, so
+  # anything they wrote into the plugin folder could otherwise ship in the zip
+  # or ride along in a translations commit. Only the built zip and
+  # translations.pot cross over, copied by name.
+  clean_checkout:
+    steps:
+      - checkout
+      - run:
+          name: Fetch tags and configure npm
+          command: |
+            git fetch --tags
+            echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
+            echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
+            echo "audit=false" >> ~/.npmrc
+            echo "fund=false" >> ~/.npmrc
+            echo "update-notifier=false" >> ~/.npmrc
+
   # Every branch publishes a build. Caches are shared by every branch, so the
   # zip is never built from one: a cache an unreviewed branch saved under the
   # same key could otherwise ship.
@@ -300,8 +318,7 @@ jobs:
   build_package:
     <<: *default_job_config
     steps:
-      - attach_workspace:
-          at: /home/circleci
+      - clean_checkout
       - install_build_deps_fresh
       - build_zip
       - persist_to_workspace:
@@ -314,27 +331,21 @@ jobs:
           destination: release
 
   # main and main-beta: replace-since commits before the build, so the build
-  # waits for the tests there. The whole checkout is handed on, not just the
-  # zip, because `release` tags and pushes this checkout: it carries the
-  # replace-since commit and the tracked files the build updated, as it did
-  # when the build and the release ran in one job.
+  # waits for the tests there.
   build_package_release:
     <<: *default_job_config
     steps:
-      - attach_workspace:
-          at: /home/circleci
+      - clean_checkout
       - install_build_deps_fresh
       - build_zip
-      - store_artifacts:
-          path: .release
-          destination: release
-      - run:
-          name: Leave node_modules out of the workspace
-          command: rm -rf node_modules
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - plugin
+            - plugin/.release
+            - plugin/.build-out
+      - store_artifacts:
+          path: .release
+          destination: release
 
   run_post_build_smoke:
     <<: *default_job_config
@@ -365,13 +376,14 @@ jobs:
   publish_release:
     <<: *default_job_config
     steps:
+      - clean_checkout
       - attach_workspace:
-          at: /home/circleci
+          at: /tmp/workspace
       - run:
           name: Restore the build's zip and translations.pot
           command: |
-            cp .release/gf-entries-in-excel-*.zip .
-            cp .build-out/translations.pot translations.pot
+            cp /tmp/workspace/plugin/.release/gf-entries-in-excel-*.zip .
+            cp /tmp/workspace/plugin/.build-out/translations.pot translations.pot
       - configure_git
       - publish_zip
 
