@@ -161,9 +161,18 @@ commands:
   # install_build_deps_fresh.
   restore_node_modules:
     steps:
-      - restore_cache:
-          keys:
-            - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
+      # Never on main or main-beta: caches are shared by every branch, so a
+      # release pipeline installs from scratch rather than run code a branch saved.
+      - when:
+          condition:
+            not:
+              matches:
+                pattern: "^main(-beta)?$"
+                value: << pipeline.git.branch >>
+          steps:
+            - restore_cache:
+                keys:
+                  - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
       - run:
           name: Install npm dependencies if the cache missed
           command: |
@@ -213,14 +222,32 @@ jobs:
       - when:
           condition: << parameters.restore_dep_caches >>
           steps:
-            - restore_cache:
-                keys:
-                  - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
-                  - npm-v1-
-            - restore_cache:
-                keys:
-                  - composer-v1-{{ checksum "/home/circleci/.ci-deps/composer.want" }}
-                  - composer-v1-
+            # Never on main or main-beta: caches are shared by every branch, so a
+            # release pipeline installs from scratch rather than run code a branch saved.
+            - when:
+                condition:
+                  not:
+                    matches:
+                      pattern: "^main(-beta)?$"
+                      value: << pipeline.git.branch >>
+                steps:
+                  - restore_cache:
+                      keys:
+                        - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
+                        - npm-v1-
+            # Never on main or main-beta: caches are shared by every branch, so a
+            # release pipeline installs from scratch rather than run code a branch saved.
+            - when:
+                condition:
+                  not:
+                    matches:
+                      pattern: "^main(-beta)?$"
+                      value: << pipeline.git.branch >>
+                steps:
+                  - restore_cache:
+                      keys:
+                        - composer-v1-{{ checksum "/home/circleci/.ci-deps/composer.want" }}
+                        - composer-v1-
       - run:
           name: Install dependencies
           # A restored cache whose `.have` matches `.want` was built from these
