@@ -60,8 +60,101 @@ anchors:
         echo "PR #${pr_number} targets ${base}, not a release branch — skipping."
         circleci-agent step halt
 
+commands:
+  configure_git:
+    steps:
+      - run:
+          name: Configure git
+          command: |
+            git config user.email "support@gravitykit.com"
+            git config user.name "GravityKit - CI"
+
+  # Every branch publishes a build. Caches are shared by every branch, so the
+  # zip is never built from one: a cache an unreviewed branch saved under the
+  # same key could otherwise ship.
+  # vendor_prefixed is not removed here: only its tracked .gitkeep lives
+  # there, and the build packages build/vendor_prefixed.
+  install_build_deps_fresh:
+    steps:
+      - run:
+          name: Install the build's dependencies from scratch
+          command: |
+            rm -rf node_modules vendor
+            npx @gravitykit/gktools composer install
+            npx @gravitykit/gktools npm install
+
+  build_zip:
+    steps:
+      - configure_git
+      - run:
+          name: Replace @since tags
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              npx @gravitykit/gktools replace-since --commit
+            else
+              echo "Skipping @since tag replacement (only runs on main, before release build)."
+            fi
+      - run:
+          name: Build and package
+          command: npx @gravitykit/gktools build
+      - run:
+          name: Collect build artifacts
+          command: |
+            mkdir -p .release .build-out
+            cp gf-entries-in-excel-*.zip .release/
+            # The build regenerates translations.pot (grunt makepot). The
+            # publish step hands it to the translation pipeline.
+            cp translations.pot .build-out/
+
+  # Runs only after the jobs that gate it, because it pushes translations and
+  # creates the GitHub release.
+  publish_zip:
+    steps:
+      - run:
+          name: Trigger translation pipeline
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "main" ]; then
+              npx @gravitykit/gktools translate gk-gravityexport-lite --commit --push
+            else
+              echo "Skipping translation pipeline."
+            fi
+      - run:
+          name: Create GitHub release
+          command: npx @gravitykit/gktools release
+      - run:
+          name: Announce build
+          command: |
+            if ! git log -1 --pretty=%B | grep -iq "\[skip notify\]"; then
+              npx @gravitykit/gktools announce
+            fi
+
+  # node_modules is kept out of the workspace, so only the test jobs that run
+  # node pay to download it. They restore the exact cache `prepare` saved; if
+  # that cache is missing (another pipeline held the key and its upload was
+  # skipped), this installs instead. Build jobs never use it: see
+  # install_build_deps_fresh.
+  restore_node_modules:
+    steps:
+      - restore_cache:
+          keys:
+            - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
+      - run:
+          name: Install npm dependencies if the cache missed
+          command: |
+            if [ -d node_modules ]; then
+              echo "node_modules restored from cache."
+              exit 0
+            fi
+            npx @gravitykit/gktools npm install
+
 jobs:
   prepare:
+    parameters:
+      # false on main and main-beta: their test dependencies are installed
+      # from scratch, never from a cache a branch could have written.
+      restore_dep_caches:
+        type: boolean
+        default: true
     <<: *default_job_config
     steps:
       - checkout
@@ -70,14 +163,59 @@ jobs:
           command: git fetch --tags
       - run:
           name: Create .npmrc
+          # npm's audit runs on every install and nothing here reads it.
           command: |
             echo "//npm.pkg.github.com/:_authToken=${GH_AUTH_TOKEN}" >> ~/.npmrc
             echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
+            echo "audit=false" >> ~/.npmrc
+            echo "fund=false" >> ~/.npmrc
+            echo "update-notifier=false" >> ~/.npmrc
+      # One hash per tool (npm and Composer), over everything that decides what its
+      # install produces. The cache keys and the skip check in "Install
+      # dependencies" both read these files, so they cannot disagree. The month
+      # is in the hash because gktools installs inside a Docker image whose tag
+      # can move, so each cache is rebuilt at least once a month.
+      - run:
+          name: Hash dependency inputs
+          command: |
+            mkdir -p ~/.ci-deps
+            { cat package-lock.json package.json; date -u +%Y-%m; } | sha256sum > ~/.ci-deps/npm.want
+            { cat composer.lock composer.json; date -u +%Y-%m; } | sha256sum > ~/.ci-deps/composer.want
+      # Keyed on the lockfiles, not the branch: two branches with the same
+      # lockfile need the same install. The bare prefix restores the newest
+      # cache when a lockfile changed, so the install only applies the change.
+      - when:
+          condition: << parameters.restore_dep_caches >>
+          steps:
+            - restore_cache:
+                keys:
+                  - npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
+                  - npm-v1-
+            - restore_cache:
+                keys:
+                  - composer-v1-{{ checksum "/home/circleci/.ci-deps/composer.want" }}
+                  - composer-v1-
       - run:
           name: Install dependencies
+          # A restored cache whose `.have` matches `.want` was built from these
+          # exact inputs, so its install is skipped. The Composer autoloader is
+          # still rebuilt: its classmap lists this branch's classes, and the
+          # cache may come from another branch.
           command: |
-            npx @gravitykit/gktools composer install
-            npx @gravitykit/gktools npm install
+            if cmp -s ~/.ci-deps/composer.want ~/.ci-deps/composer.have; then
+              echo "vendor was built from this composer.lock; rebuilding the autoloader only."
+              npx @gravitykit/gktools composer dump-autoload -o
+            else
+              npx @gravitykit/gktools composer install
+              cp ~/.ci-deps/composer.want ~/.ci-deps/composer.have
+            fi
+
+            if cmp -s ~/.ci-deps/npm.want ~/.ci-deps/npm.have; then
+              echo "node_modules was built from this package-lock.json; skipping npm install."
+            else
+              npx @gravitykit/gktools npm install
+              cp ~/.ci-deps/npm.want ~/.ci-deps/npm.have
+            fi
       - run:
           name: Configure E2E environment
           command: |
@@ -87,10 +225,33 @@ jobs:
             sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
             sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
+      - save_cache:
+          key: npm-v1-{{ checksum "/home/circleci/.ci-deps/npm.want" }}
+          paths:
+            - /home/circleci/plugin/node_modules
+            - /home/circleci/.ci-deps/npm.have
+      - save_cache:
+          key: composer-v1-{{ checksum "/home/circleci/.ci-deps/composer.want" }}
+          paths:
+            - /home/circleci/plugin/vendor
+            - /home/circleci/.ci-deps/composer.have
+      # The jobs that need node_modules restore the npm cache saved above.
+      # ~/.npm/_npx is created in case every install was skipped and npx never ran.
+      - run:
+          name: Leave node_modules out of the workspace
+          command: |
+            rm -rf node_modules
+            mkdir -p ~/.npm/_npx
+      # Only what later jobs use. Composer's download cache and auth file stay
+      # behind; gktools hands Docker its credentials as environment variables.
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - .
+            - plugin
+            - .npmrc
+            - .ssh
+            - .npm/_npx
+            - .ci-deps/npm.want
 
   run_e2e_tests:
     <<: *default_job_config
@@ -99,6 +260,7 @@ jobs:
     steps:
       - attach_workspace:
           at: /home/circleci
+      - restore_node_modules
       - run:
           name: Run E2E tests
           command: |
@@ -132,51 +294,51 @@ jobs:
       - store_test_results:
           path: tests/E2E/results/junit.xml
 
+  # Builds the zip. Off main and main-beta it runs beside the tests, because
+  # nothing in the build reads their results; publish_release waits for the
+  # jobs that gate it before anything leaves CI.
+  build_package:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - install_build_deps_fresh
+      - build_zip
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - plugin/.release
+            - plugin/.build-out
+      - store_artifacts:
+          path: .release
+          destination: release
+
+  # main and main-beta: replace-since commits before the build, so the build
+  # waits for the tests there. The whole checkout is handed on, not just the
+  # zip, because `release` tags and pushes this checkout: it carries the
+  # replace-since commit and the tracked files the build updated, as it did
+  # when the build and the release ran in one job.
   build_package_release:
     <<: *default_job_config
     steps:
       - attach_workspace:
           at: /home/circleci
-      - run:
-          name: Configure git
-          command: |
-            git config user.email "support@gravitykit.com"
-            git config user.name "GravityKit - CI"
-      - run:
-          name: Replace @since tags
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              npx @gravitykit/gktools replace-since --commit
-            else
-              echo "Skipping @since tag replacement (only runs on main, before release build)."
-            fi
-      - run:
-          name: Build and package
-          command: npx @gravitykit/gktools build
-      - run:
-          name: Trigger translation pipeline
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "develop" ] || [ "${CIRCLE_BRANCH}" == "main" ]; then
-              npx @gravitykit/gktools translate gk-gravityexport-lite --commit --push
-            else
-              echo "Skipping translation pipeline."
-            fi
-      - run:
-          name: Collect build artifacts
-          command: |
-            mkdir -p .release
-            cp gf-entries-in-excel-*.zip .release/
+      - install_build_deps_fresh
+      - build_zip
       - store_artifacts:
           path: .release
           destination: release
+      - run:
+          name: Leave node_modules out of the workspace
+          command: rm -rf node_modules
       - persist_to_workspace:
           root: /home/circleci
           paths:
-            - plugin/.release
-            - plugin/gf-entries-in-excel-*.zip
+            - plugin
 
   run_post_build_smoke:
     <<: *default_job_config
+    working_directory: /home/circleci/plugin
     machine:
       image: ubuntu-2604:current
     resource_class: medium.gen3
@@ -184,6 +346,7 @@ jobs:
       - *release_branches_only
       - attach_workspace:
           at: /home/circleci
+      - restore_node_modules
       - run:
           name: Post-build smoke
           # Unzips .release/*.zip, restores dev deps via gktools' Docker composer,
@@ -205,64 +368,59 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Configure git
+          name: Restore the build's zip and translations.pot
           command: |
-            git config user.email "support@gravitykit.com"
-            git config user.name "GravityKit - CI"
-      - run:
-          name: Create GitHub release
-          command: npx @gravitykit/gktools release
-      - run:
-          name: Announce build
-          command: |
-            if ! git log -1 --pretty=%B | grep -iq "\[skip notify\]"; then
-              npx @gravitykit/gktools announce
-            fi
+            cp .release/gf-entries-in-excel-*.zip .
+            cp .build-out/translations.pot translations.pot
+      - configure_git
+      - publish_zip
 
 workflows:
   version: 2
   # Every branch except main and main-beta. E2E runs but does not hold up the
-  # build, so a red E2E on develop still produces a dev build.
+  # build or its publication, so a red E2E on develop still produces a dev build.
   test_and_package:
     when:
-      not:
-        matches:
-          pattern: "^main(-beta)?$"
-          value: << pipeline.git.branch >>
+      and:
+        - not:
+            matches:
+              pattern: "^main(-beta)?$"
+              value: << pipeline.git.branch >>
     jobs:
       - prepare:
           <<: *context
       - run_e2e_tests:
           <<: *test_job_config
-      - build_package_release:
+      - build_package:
           <<: *context
           requires:
             - prepare
       - run_post_build_smoke:
           <<: *context
           requires:
-            - build_package_release
+            - build_package
       - publish_release:
           <<: *context
           requires:
             - run_post_build_smoke
 
   # main and main-beta publish releases, so a failed E2E run stops them.
-  # Keep the job list in step with test_and_package above.
+  # Keep the test jobs in step with test_and_package above.
   release:
     when:
-      matches:
-        pattern: "^main(-beta)?$"
-        value: << pipeline.git.branch >>
+      and:
+        - matches:
+            pattern: "^main(-beta)?$"
+            value: << pipeline.git.branch >>
     jobs:
       - prepare:
           <<: *context
+          restore_dep_caches: false
       - run_e2e_tests:
           <<: *test_job_config
       - build_package_release:
           <<: *context
           requires:
-            - prepare
             - run_e2e_tests
       - run_post_build_smoke:
           <<: *context
