@@ -123,6 +123,14 @@ commands:
             # The build regenerates translations.pot (grunt makepot). The
             # publish step hands it to the translation pipeline.
             cp translations.pot .build-out/
+            # The publish job runs translate and release against this tree: the
+            # replace-since commit on main and the tracked files the build changed,
+            # which `gktools release` commits. Ignored dependency folders stay out.
+            mkdir -p .build-out
+            tar -czf /tmp/build-tree.tgz \
+              --exclude=./node_modules --exclude=./vendor --exclude=./vendor_prefixed \
+              --exclude=./.tmp --exclude=./.release --exclude=./.build-out .
+            mv /tmp/build-tree.tgz .build-out/
 
   # Runs only after the jobs that gate it, because it pushes translations and
   # creates the GitHub release.
@@ -379,11 +387,13 @@ jobs:
       - clean_checkout
       - attach_workspace:
           at: /tmp/workspace
+      # The tree comes from the build job, which also started from a clean
+      # checkout, so nothing prepare wrote reaches it.
       - run:
-          name: Restore the build's zip and translations.pot
+          name: Restore the build's tree and zip
           command: |
+            tar -xzf /tmp/workspace/plugin/.build-out/build-tree.tgz
             cp /tmp/workspace/plugin/.release/gf-entries-in-excel-*.zip .
-            cp /tmp/workspace/plugin/.build-out/translations.pot translations.pot
       - configure_git
       - publish_zip
 
