@@ -2,10 +2,10 @@
 Contributors: gravityview, doekenorg
 Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plugin&utm_campaign=gravityexport-lite&utm_content=readme-donate
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
-Requires at least: 4.0
-Requires PHP: 7.4
-Tested up to: 7.1.1
-Stable tag: 2.7.3
+Requires at least: 6.5
+Requires PHP: 7.4.0
+Tested up to: 7.1.2
+Stable tag: 2.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,9 +256,15 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.7.4 on October 3, 2026 =
 
-* Fixed: A download URL that belongs to another GravityExport add-on returned "not found" when one of this plugin's own feeds happened to mention the same security key.
+**Note: GravityExport Lite now requires WordPress 6.5 or newer.**
+
+* Security: Field values starting with characters such as `=` could be interpreted as formulas when a CSV export was opened in a spreadsheet application. These values now begin with a single quote (`'`) so they display as plain text, while regular numbers such as `-5` are left unchanged (thanks to Ali Hidayat for the report).
+* Fixed: Download links created by other GravityExport add-ons could return a "not found" error when a GravityExport Lite feed's settings happened to contain the same security key. These links now work correctly.
+
+__Developer Updates:__
+* Added: `gk/gravityexport/renderer/csv/escape-formulas` filter to turn off formula escaping in CSV exports (useful when CSV files are imported into other systems rather than opened in a spreadsheet application).
 
 = 2.7.3 on September 18, 2026 =
 
