@@ -62,11 +62,12 @@ JS;
 		$shortcode      = esc_attr( DownloadUrl::generate_embed_short_code( $form_id, $this->embed_type ) );
 		$secret         = DownloadUrl::get_secret( $form_id );
 		$copy_shortcode = esc_html__( 'Copy Shortcode', 'gk-gravityexport-lite' );
+		$copied         = esc_html__( 'Copied!', 'gk-gravityexport-lite' );
 
 		return <<<HTML
 <div class="copy-short-code copy-to-clipboard-container">
     <div class="input"><input type="text" readonly value="{$shortcode}" id="embed_code" data-secret="{$secret}"></div>
-    <div class="success hidden" aria-hidden="true">Copied!</div>
+    <div class="success hidden" aria-hidden="true">{$copied}</div>
     <button id="copy-embed-code" type="button" class="button" data-clipboard-target="[id=embed_code]">
         <span class="dashicons dashicons-clipboard"></span> {$copy_shortcode}
     </button>
