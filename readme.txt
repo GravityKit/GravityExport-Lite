@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: New installs on PHP 8.1 or newer no longer log a PHP "deprecated" notice.
+* Fixed: On sites upgraded from a version before 2.0, the global and form export settings could go back to their pre-2.0 values.
 
 = 2.7.4 on October 3, 2026 =
 
