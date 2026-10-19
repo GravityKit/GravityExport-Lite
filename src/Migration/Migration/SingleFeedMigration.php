@@ -161,6 +161,11 @@ final class SingleFeedMigration extends Migration {
 		// Get all the old settings.
 		$settings = \get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
 
+		// A site that never ran a version before 2.0 has no old settings to move.
+		if ( ! is_array( $settings ) ) {
+			return;
+		}
+
 		foreach ( self::$addon_mapping as $old => $new ) {
 			// Update old to new setting name, if the new setting name isn't already present.
 			if ( isset( $settings[ $old ] ) && ! isset( $settings[ $new ] ) ) {
