@@ -68,9 +68,9 @@ $run = static function ( $old, $new ) use ( $migrate, $old_option, $new_option, 
 	return $raised;
 };
 
-/** The add-on's settings as the plugin reads them, or `false` when nothing is stored. */
-$stored = static function () use ( $addon, $new_option ) {
-	return $addon->get_encryptor()->decrypt( get_option( $new_option ) );
+/** The add-on's stored settings, or `false` when nothing is stored. The test site does not encrypt them. */
+$stored = static function () use ( $new_option ) {
+	return get_option( $new_option );
 };
 
 // Specs run in parallel and exports read these settings, so every stored value is the default.
