@@ -4,7 +4,7 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 6.5
 Requires PHP: 7.4.0
-Tested up to: 7.1.2
+Tested up to: 7.1.3
 Stable tag: 2.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -255,6 +255,10 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= develop =
+
+* Fixed: New installs on PHP 8.1 or newer no longer log a PHP "deprecated" notice.
 
 = 2.7.4 on October 3, 2026 =
 
