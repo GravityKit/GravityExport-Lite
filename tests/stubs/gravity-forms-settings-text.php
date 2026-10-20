@@ -30,3 +30,20 @@ if ( ! class_exists( __NAMESPACE__ . '\Text' ) ) {
 		}
 	}
 }
+
+if ( ! class_exists( __NAMESPACE__ . '\Base' ) ) {
+	// Same stand-in for the Base field that fields such as SortFields extend.
+	#[\AllowDynamicProperties]
+	class Base {
+		/** @var mixed The settings renderer instance. */
+		public $settings;
+
+		public function __construct( $props = [], $settings = null ) {
+			$this->settings = $settings;
+
+			foreach ( (array) $props as $prop => $value ) {
+				$this->{$prop} = $value;
+			}
+		}
+	}
+}
