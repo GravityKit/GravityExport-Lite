@@ -47,7 +47,7 @@ class SortFieldsTest extends TestCase {
 		parent::setUp();
 
 		$forms = [
-			'[count] fields match your search.'       => [ '[count] (0)', '[count] حقل يطابق', '[count] حقلان يطابقان', '[count] حقول تطابق', '[count] حقلاً يطابق', '[count] حقل يطابق' ],
+			'[count] fields match your search.'       => [ '[count] (0)', '[count] حقل يطابق &quot;بحثك&quot;', '[count] حقلان يطابقان', '[count] حقول تطابق', '[count] حقلاً يطابق', '[count] حقل يطابق' ],
 			'[count] fields moved to [destination].' => [ '[count] (0)', '[count] حقل نُقل إلى [destination]', '[count] حقلان نُقلا إلى [destination]', '[count] حقول نُقلت إلى [destination]', '[count] حقلاً نُقل إلى [destination]', '[count] حقل نُقل إلى [destination]' ],
 		];
 
@@ -59,9 +59,23 @@ class SortFieldsTest extends TestCase {
 			},
 		] );
 
+		// Marked, so a test can tell the localised number from the raw one.
 		\WP_Mock::userFunction( 'number_format_i18n', [
 			'return' => function ( $number ) {
-				return (string) $number;
+				return '«' . $number . '»';
+			},
+		] );
+
+		\WP_Mock::userFunction( 'wp_json_encode', [
+			'return' => function ( $data, $flags = 0 ) {
+				return json_encode( $data, $flags );
+			},
+		] );
+
+		\WP_Mock::userFunction( 'esc_attr', [
+			'return' => function ( $text ) {
+				// Like esc_attr(), an entity already in the text is not encoded again.
+				return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8', false );
 			},
 		] );
 	}
@@ -73,14 +87,28 @@ class SortFieldsTest extends TestCase {
 	public function testCountMessagesUseThePluralFormOfEachCount(): void {
 		$messages = SortFields::get_count_messages( 13 );
 
-		$this->assertSame( '1 حقل يطابق', $messages['match'][1] );
-		$this->assertSame( '2 حقلان يطابقان', $messages['match'][2] );
-		$this->assertSame( '5 حقول تطابق', $messages['match'][5] );
-		$this->assertSame( '13 حقلاً يطابق', $messages['match'][13] );
+		$this->assertSame( '«1» حقل يطابق &quot;بحثك&quot;', $messages['match'][1] );
+		$this->assertSame( '«2» حقلان يطابقان', $messages['match'][2] );
+		$this->assertSame( '«5» حقول تطابق', $messages['match'][5] );
+		$this->assertSame( '«13» حقلاً يطابق', $messages['match'][13] );
 
-		$this->assertSame( '2 حقلان نُقلا إلى [destination]', $messages['moved'][2] );
-		$this->assertSame( '5 حقول نُقلت إلى [destination]', $messages['moved'][5] );
-		$this->assertSame( '13 حقلاً نُقل إلى [destination]', $messages['moved'][13] );
+		$this->assertSame( '«2» حقلان نُقلا إلى [destination]', $messages['moved'][2] );
+		$this->assertSame( '«5» حقول نُقلت إلى [destination]', $messages['moved'][5] );
+		$this->assertSame( '«13» حقلاً نُقل إلى [destination]', $messages['moved'][13] );
+	}
+
+	/**
+	 * The attribute the browser decodes gives back every message unchanged, including an entity a translation contains.
+	 * @since TBD
+	 */
+	public function testCountMessagesAttributeDecodesToTheMessages(): void {
+		$attribute = SortFields::get_count_messages_attribute( 13 );
+
+		// What the browser does before jQuery parses the JSON.
+		$decoded = json_decode( html_entity_decode( $attribute, ENT_QUOTES, 'UTF-8' ), true );
+
+		$this->assertSame( SortFields::get_count_messages( 13 ), $decoded );
+		$this->assertStringContainsString( 'حقل', $attribute );
 	}
 
 	/**

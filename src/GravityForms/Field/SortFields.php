@@ -80,7 +80,7 @@ class SortFields extends Base {
 		$html = [
 			sprintf(
 				'<div class="gk-gravityexport-sort-fields" data-count-messages="%s">',
-				esc_attr( (string) wp_json_encode( self::get_count_messages( $total_choices ) ) )
+				self::get_count_messages_attribute( $total_choices )
 			),
 			sprintf(
 				'<div class="gk-gravityexport-sort-fields__search">
@@ -173,6 +173,25 @@ class SortFields extends Base {
 		}
 
 		return $messages;
+	}
+
+	/**
+	 * Returns the field count messages as an escaped HTML attribute value holding JSON.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $total The number of fields across the lists.
+	 *
+	 * @return string The attribute value.
+	 */
+	public static function get_count_messages_attribute( int $total ): string {
+		// The hex flags keep an entity a translation contains, such as &quot;, from decoding into a quote that ends a JSON string.
+		$json = wp_json_encode(
+			self::get_count_messages( $total ),
+			JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE
+		);
+
+		return esc_attr( (string) $json );
 	}
 
 	/**
