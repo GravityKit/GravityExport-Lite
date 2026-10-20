@@ -51,7 +51,8 @@ var gfexcel_sortable;
 		$lists.each( function () {
 			var $list = $( this );
 
-			$list.find( 'li' ).each( function () {
+			// Only the field items: a label may hold its own HTML list.
+			$list.children( 'li' ).each( function () {
 				var $item = $( this );
 				var fieldLabel = $item.find( '.field span' ).text().toLowerCase();
 
@@ -177,7 +178,7 @@ var gfexcel_sortable;
 				// Move visible items to the `send-to` list when clicked.
 				.on( 'click', function () {
 					// Only move items that are not hidden by search filter
-					var $itemsToMove = $list.find( 'li:not(.gk-gravityexport-sort-fields__hidden)' );
+					var $itemsToMove = $list.children( 'li:not(.gk-gravityexport-sort-fields__hidden)' );
 					var count = $itemsToMove.length;
 
 					if ( count === 0 ) {
@@ -212,8 +213,8 @@ var gfexcel_sortable;
 		 * @param {jQuery} $moveButton The move button that was activated.
 		 */
 		var moveField = function ( $moveButton ) {
-			var $element = $moveButton.closest( 'li' );
-			var $sourceList = $element.closest( 'ul' );
+			var $element = $moveButton.parent( 'li' );
+			var $sourceList = $element.parent( 'ul' );
 			var send_to = '#' + $sourceList.data( 'send-to' );
 			var $targetList = $( send_to );
 			var fieldLabel = $element.find( '.field span' ).text();
@@ -234,12 +235,13 @@ var gfexcel_sortable;
 			wp.a11y.speak( message );
 		};
 
+		// Only each field item's own button: a label printed as HTML can hold its own .move element.
 		$elements
-			.on( 'click', '.move', function () {
+			.on( 'click', '> li > .move', function () {
 				moveField( $( this ) );
 			} )
 			// Keyboard support for move button
-			.on( 'keydown', '.move', function ( e ) {
+			.on( 'keydown', '> li > .move', function ( e ) {
 				if ( e.key === 'Enter' || e.key === ' ' ) {
 					e.preventDefault();
 					moveField( $( this ) );

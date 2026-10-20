@@ -259,6 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: In the field settings, the number of fields matching a search, and the number of fields moved, used the wrong plural form in languages such as Arabic, Russian and Polish.
+* Fixed: In the field settings, "Enable all" and "Disable all" moved the items of a list inside a field label as if they were fields, and a field search hid those items.
 * Fixed: New installs on PHP 8.1 or newer no longer log a PHP "deprecated" notice.
 * Fixed: On sites upgraded from a version before 2.0, the global and form export settings could go back to their pre-2.0 values.
 
