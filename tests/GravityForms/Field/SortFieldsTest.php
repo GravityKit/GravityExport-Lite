@@ -7,13 +7,13 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see SortFields}.
- * @since TBD
+ * @since 2.7.5
  */
 class SortFieldsTest extends TestCase {
 	/**
 	 * Arabic plural rule: one form for 0, 1, 2, 3 to 10, 11 to 99, and 100 or more.
 	 *
-	 * @since TBD
+	 * @since 2.7.5
 	 *
 	 * @param int $count The number.
 	 *
@@ -41,7 +41,7 @@ class SortFieldsTest extends TestCase {
 
 	/**
 	 * {@inheritDoc}
-	 * @since TBD
+	 * @since 2.7.5
 	 */
 	public function setUp(): void {
 		parent::setUp();
@@ -82,7 +82,7 @@ class SortFieldsTest extends TestCase {
 
 	/**
 	 * Each count gets the sentence its language uses for that number, not one sentence for every count from 2 up.
-	 * @since TBD
+	 * @since 2.7.5
 	 */
 	public function testCountMessagesUseThePluralFormOfEachCount(): void {
 		$messages = SortFields::get_count_messages( 13 );
@@ -99,7 +99,7 @@ class SortFieldsTest extends TestCase {
 
 	/**
 	 * The attribute the browser decodes gives back every message unchanged, including an entity a translation contains.
-	 * @since TBD
+	 * @since 2.7.5
 	 */
 	public function testCountMessagesAttributeDecodesToTheMessages(): void {
 		$attribute = SortFields::get_count_messages_attribute( 13 );
@@ -113,7 +113,7 @@ class SortFieldsTest extends TestCase {
 
 	/**
 	 * Every count the lists can show has a message, and none beyond it.
-	 * @since TBD
+	 * @since 2.7.5
 	 */
 	public function testCountMessagesCoverEveryCountUpToTheTotal(): void {
 		$messages = SortFields::get_count_messages( 4 );

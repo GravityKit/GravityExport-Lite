@@ -7,13 +7,13 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see SingleFeedMigration}'s move of the pre-2.0 add-on settings.
- * @since TBD
+ * @since 2.7.5
  */
 class SingleFeedMigrationTest extends TestCase
 {
     /**
      * Data provider for {@see self::testNothingToMoveWhenTheOldOptionIsNotAnArray()}.
-     * @since TBD
+     * @since 2.7.5
      * @return array[]
      */
     public function dataProviderForNoOldSettings(): array
@@ -29,7 +29,7 @@ class SingleFeedMigrationTest extends TestCase
     /**
      * A site with no pre-2.0 settings array has nothing to move: the migration raises no notice or
      * error, and returns before it reaches the add-on to save settings.
-     * @since TBD
+     * @since 2.7.5
      * @covers \GFExcel\Migration\Migration\SingleFeedMigration::migrateAddonSettings
      * @see https://linear.app/gravitykit/issue/GEXPLIT-32
      * @dataProvider dataProviderForNoOldSettings

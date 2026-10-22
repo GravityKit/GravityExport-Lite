@@ -147,7 +147,7 @@ class SortFields extends Base {
 	 * plural translation instead of one sentence with the number swapped in. The messages are plain
 	 * text: the script writes them with jQuery's text() and wp.a11y.speak().
 	 *
-	 * @since TBD
+	 * @since 2.7.5
 	 *
 	 * @param int $total The number of fields across the lists.
 	 *
@@ -178,7 +178,7 @@ class SortFields extends Base {
 	/**
 	 * Returns the field count messages as an escaped HTML attribute value holding JSON.
 	 *
-	 * @since TBD
+	 * @since 2.7.5
 	 *
 	 * @param int $total The number of fields across the lists.
 	 *
