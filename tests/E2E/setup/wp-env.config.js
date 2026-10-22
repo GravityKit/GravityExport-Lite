@@ -21,6 +21,8 @@ generateWpEnvConfig( {
 	additionalMappings: {
 		// wp_mail short-circuit + REST inspection endpoint used by notification specs.
 		'wp-content/mu-plugins/e2e-mail-capture.php': './mu-plugins/e2e-mail-capture.php',
+		// Raises an export failure on demand, for the specs that assert what a failure reveals.
+		'wp-content/mu-plugins/e2e-export-failure.php': './mu-plugins/e2e-export-failure.php',
 		// Bind-mounted capture directory shared between tests-wordpress and
 		// tests-cli. Avoids the cross-container UID mismatch that prevented
 		// the cli (host UID) from writing into a www-data-owned uploads dir.

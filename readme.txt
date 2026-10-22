@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 6.5
 Requires PHP: 7.4.0
-Tested up to: 7.1.2
-Stable tag: 2.7.4
+Tested up to: 7.1.3
+Stable tag: 2.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,13 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.7.5 on October 22, 2026 =
+
+* Fixed: On sites upgraded from a version before 2.0, the global and form export settings could revert to their pre-2.0 values.
+* Fixed: In the field settings, the number of fields matching a search and the number of fields moved used the wrong plural form in languages such as Arabic, Russian and Polish.
+* Fixed: If a field label contained a list, "Enable all" and "Disable all" in the field settings moved its items as if they were fields, and searching for a field hid them.
+* Fixed: New installs on PHP 8.1 or newer logged a PHP "deprecated" notice.
 
 = 2.7.4 on October 3, 2026 =
 
