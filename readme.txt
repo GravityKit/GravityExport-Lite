@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 6.5
 Requires PHP: 7.4.0
 Tested up to: 7.1.3
-Stable tag: 2.7.4
+Stable tag: 2.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -256,12 +256,12 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
-= develop =
+= 2.7.5 on October 22, 2026 =
 
-* Fixed: In the field settings, the number of fields matching a search, and the number of fields moved, used the wrong plural form in languages such as Arabic, Russian and Polish.
-* Fixed: In the field settings, "Enable all" and "Disable all" moved the items of a list inside a field label as if they were fields, and a field search hid those items.
-* Fixed: New installs on PHP 8.1 or newer no longer log a PHP "deprecated" notice.
-* Fixed: On sites upgraded from a version before 2.0, the global and form export settings could go back to their pre-2.0 values.
+* Fixed: On sites upgraded from a version before 2.0, the global and form export settings could revert to their pre-2.0 values.
+* Fixed: In the field settings, the number of fields matching a search and the number of fields moved used the wrong plural form in languages such as Arabic, Russian and Polish.
+* Fixed: If a field label contained a list, "Enable all" and "Disable all" in the field settings moved its items as if they were fields, and searching for a field hid them.
+* Fixed: New installs on PHP 8.1 or newer logged a PHP "deprecated" notice.
 
 = 2.7.4 on October 3, 2026 =
 
