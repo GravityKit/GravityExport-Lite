@@ -256,6 +256,11 @@ You can hide a row by adding a hook. Checkout this example:
 
 == Changelog ==
 
+= develop =
+
+__Developer Updates:__
+* Added: `gk/gravityexport/download/can-download` filter to allow or refuse a secured download for a given feed and user. By default, only users with the `gravityforms_export_entries` capability can download secured exports; public download URLs are not affected.
+
 = 2.7.5 on October 22, 2026 =
 
 * Fixed: On sites upgraded from a version before 2.0, the global and form export settings could revert to their pre-2.0 values.

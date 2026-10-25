@@ -233,19 +233,42 @@ class GFExcel {
 	/**
 	 * Whether the current user can download the form.
 	 * @since 1.7.0
+	 * @since TBD Added the `$feed` parameter and the `gk/gravityexport/download/can-download` filter.
 	 *
-	 * @param int $form_id The form id of the form to download.
+	 * @param int        $form_id The form id of the form to download.
+	 * @param array|null $feed    The feed being downloaded. Looked up from the form when not provided.
 	 *
 	 * @return bool Whether the current user can download the file.
 	 */
-	public static function canDownloadForm( int $form_id ): bool {
+	public static function canDownloadForm( int $form_id, ?array $feed = null ): bool {
 		// public urls can always be downloaded.
 		if ( ! self::isFormSecured( $form_id ) ) {
 			return true;
 		}
 
 		// does the user have rights?
-		return \GFCommon::current_user_can_any( 'gravityforms_export_entries' );
+		$can_download = (bool) \GFCommon::current_user_can_any( 'gravityforms_export_entries' );
+
+		if ( null === $feed ) {
+			$feed = GravityExportAddon::get_instance()->get_feed_by_form_id( $form_id ) ?? [];
+		}
+
+		/**
+		 * Modifies whether the current user may download a secured export.
+		 *
+		 * Runs only for secured downloads; a public download URL is always served. Return `true` to
+		 * allow a user who lacks the `gravityforms_export_entries` capability, or `false` to refuse
+		 * one who has it.
+		 *
+		 * @filter gk/gravityexport/download/can-download
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $can_download Whether the user has the `gravityforms_export_entries` capability.
+		 * @param array $feed         The feed being downloaded.
+		 * @param int   $user_id      The current user's ID, or `0` for a visitor who is not logged in.
+		 */
+		return (bool) apply_filters( 'gk/gravityexport/download/can-download', $can_download, $feed, get_current_user_id() );
 	}
 
 
@@ -276,7 +299,7 @@ class GFExcel {
 		$feed_id = rgar( $feed, 'id' );
 
 		if ( $form_id ) {
-			if ( self::canDownloadForm( $form_id ) ) {
+			if ( self::canDownloadForm( (int) $form_id, $feed ) ) {
 				$query_vars['gfexcel_download_form'] = $form_id;
 				$query_vars['gfexcel_download_feed'] = $feed_id;
 
