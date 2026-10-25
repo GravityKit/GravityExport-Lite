@@ -259,7 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 __Developer Updates:__
-* Added: `gk/gravityexport/download/can-download` filter to allow or refuse a secured download for a given feed and user. By default, only users with the `gravityforms_export_entries` capability can download secured exports; public download URLs are not affected.
+* Added: `gk/gravityexport/download/can-download` filter to allow or refuse a secured GravityExport Lite download URL for a given feed and user. By default, only users with the `gravityforms_export_entries` capability can download secured exports; public download URLs are not affected.
 
 = 2.7.5 on October 22, 2026 =
 

@@ -162,6 +162,20 @@ final class GFExcelDownloadPermissionTest extends TestCase {
 	}
 
 	/**
+	 * A secured feed is not served as public when the form's main feed is public.
+	 *
+	 * @since TBD
+	 */
+	public function test_secured_feed_on_a_form_with_a_public_main_feed_is_checked(): void {
+		$public_feed = [ 'id' => 4, 'form_id' => 3, 'meta' => [ 'is_secured' => '' ] ];
+		$this->mockAddon( $public_feed );
+		$this->mockCapability( false );
+		$this->mockUser( 7 );
+
+		self::assertFalse( GFExcel::canDownloadForm( 3, $this->secured_feed ) );
+	}
+
+	/**
 	 * The download request passes the feed it matched to the filter.
 	 *
 	 * @since TBD

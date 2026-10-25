@@ -241,8 +241,11 @@ class GFExcel {
 	 * @return bool Whether the current user can download the file.
 	 */
 	public static function canDownloadForm( int $form_id, ?array $feed = null ): bool {
+		// A download is secured when the form is, or when the feed being downloaded is.
+		$is_secured = self::isFormSecured( $form_id ) || (bool) rgars( $feed ?? [], 'meta/is_secured' );
+
 		// public urls can always be downloaded.
-		if ( ! self::isFormSecured( $form_id ) ) {
+		if ( ! $is_secured ) {
 			return true;
 		}
 
@@ -256,16 +259,17 @@ class GFExcel {
 		/**
 		 * Modifies whether the current user may download a secured export.
 		 *
-		 * Runs only for secured downloads; a public download URL is always served. Return `true` to
-		 * allow a user who lacks the `gravityforms_export_entries` capability, or `false` to refuse
-		 * one who has it.
+		 * Runs only for secured GravityExport Lite download URLs; a public download URL is always served.
+		 * Downloads that other GravityExport add-ons serve through their own URLs are checked by those
+		 * add-ons. Return `true` to allow a user who lacks the `gravityforms_export_entries` capability,
+		 * or `false` to refuse one who has it.
 		 *
 		 * @filter gk/gravityexport/download/can-download
 		 *
 		 * @since TBD
 		 *
 		 * @param bool  $can_download Whether the user has the `gravityforms_export_entries` capability.
-		 * @param array $feed         The feed being downloaded.
+		 * @param array $feed         The feed being downloaded; an empty array when the form has no export feed.
 		 * @param int   $user_id      The current user's ID, or `0` for a visitor who is not logged in.
 		 */
 		return (bool) apply_filters( 'gk/gravityexport/download/can-download', $can_download, $feed, get_current_user_id() );
