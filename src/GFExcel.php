@@ -262,7 +262,8 @@ class GFExcel {
 		 * Runs only for secured GravityExport Lite download URLs; a public download URL is always served.
 		 * Downloads that other GravityExport add-ons serve through their own URLs are checked by those
 		 * add-ons. Return `true` to allow a user who lacks the `gravityforms_export_entries` capability,
-		 * or `false` to refuse one who has it.
+		 * or `false` to refuse one who has it. It can run more than once for one download (GravityExport
+		 * asks it again for its Filters download URLs), so a callback should give the same answer each time.
 		 *
 		 * @filter gk/gravityexport/download/can-download
 		 *
