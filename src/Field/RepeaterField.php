@@ -26,11 +26,11 @@ class RepeaterField extends SeparableField implements RowsInterface
     protected $field;
 
     /**
-     * Whether this repeater sits inside another repeater.
+     * How many repeaters this repeater sits inside: 0 for a repeater on the form itself.
      * @since TBD
-     * @var bool
+     * @var int
      */
-    private $is_nested = false;
+    private $depth = 0;
 
     /**
      * @inheritdoc
@@ -65,6 +65,22 @@ class RepeaterField extends SeparableField implements RowsInterface
      */
     public function getRows(?array $entry = null): array
     {
+        return array_map(static function (array $parts): array {
+            return array_column($parts, 'cell');
+        }, $this->getRowParts($entry));
+    }
+
+    /**
+     * Returns every repeater row as one part per column: the cell, and whether it holds a value.
+     *
+     * @since TBD
+     *
+     * @param array|null $entry The entry, or a row of the parent repeater.
+     *
+     * @return array<int, array{cell: BaseValue, filled: bool}>[] The rows.
+     */
+    private function getRowParts(?array $entry): array
+    {
         $items = $entry[$this->field->id] ?? [];
         if (!is_array($items)) {
             return [];
@@ -81,10 +97,21 @@ class RepeaterField extends SeparableField implements RowsInterface
 
             $row = [];
             foreach ($fields as $field) {
-                $row[] = $this->fitCells($field->getCells($item), count($field->getColumns()));
+                // A nested repeater says which of its columns hold values, so an empty "[]" group is not one.
+                if ($field instanceof self) {
+                    foreach ($field->joinColumns($field->getRowParts($item)) as $part) {
+                        $row[] = $part;
+                    }
+
+                    continue;
+                }
+
+                foreach ($this->fitCells($field->getCells($item), count($field->getColumns())) as $cell) {
+                    $row[] = ['cell' => $cell, 'filled' => '' !== (string) $cell->getValue()];
+                }
             }
 
-            $rows[] = array_merge([], ...$row);
+            $rows[] = $row;
         }
 
         return $rows;
@@ -102,7 +129,7 @@ class RepeaterField extends SeparableField implements RowsInterface
         return array_map(function (\GF_Field $gf_field): FieldInterface {
             $field = $this->transformer->transform($gf_field);
             if ($field instanceof self) {
-                $field->is_nested = true;
+                $field->depth = $this->depth + 1;
             }
 
             return $field;
@@ -131,38 +158,63 @@ class RepeaterField extends SeparableField implements RowsInterface
     }
 
     /**
-     * @inheritdoc
-     * Maps all subfields `getCells` calls to the repeater subfields with an amended $entry.
-     * @since 1.7.0
+     * Joins each column's values across the rows into one cell.
+     *
+     * Rows are separated by "---". A nested repeater's items share one cell of their parent's row and are
+     * separated by ", "; from the second nested level on, each group is wrapped in brackets, so
+     * `[a, b], []` tells which parent item each value belongs to.
+     *
+     * @since TBD
+     *
+     * @param array<int, array{cell: BaseValue, filled: bool}>[] $rows The rows from {@see getRowParts()}.
+     *
+     * @return array{cell: BaseValue, filled: bool}[] One part per column.
      */
-    public function getCells($entry)
+    private function joinColumns(array $rows): array
     {
-        // One list of values per column, so an empty repeater still fills its columns.
-        $result = array_fill(0, count($this->getColumns()), []);
-        foreach ($this->getRows($entry) as $row) {
-            foreach ($row as $key => $value) {
-                $result[$key][] = $value->getValue();
+        $columns = array_fill(0, count($this->getColumns()), []);
+        foreach ($rows as $row) {
+            foreach ($row as $key => $part) {
+                $columns[$key][] = $part;
             }
         }
 
-        // A nested repeater's items share one cell of their parent's row, so they get a lighter separator
-        // than the "---" between rows.
         $glue = gf_apply_filters([
             'gfexcel_field_repeater_implode',
             $this->field->formId,
             $this->field->id,
-        ], $this->is_nested ? ', ' : "\n---\n");
+        ], $this->depth > 0 ? ', ' : "\n---\n");
 
-        $cells = array_map(static function (array $values) use ($glue): string {
+        return array_map(function (array $parts) use ($glue): array {
+            $filled = in_array(true, array_column($parts, 'filled'), true);
+
             // Keep empty values so the Nth value in every column belongs to the same row.
-            $has_values = array_filter($values, static function ($value): bool {
-                return '' !== (string) $value;
-            });
+            $value = $filled ? implode($glue, array_map(static function (array $part): string {
+                return (string) $part['cell']->getValue();
+            }, $parts)) : '';
 
-            return $has_values ? implode($glue, $values) : '';
-        }, $result);
+            if ($this->depth > 1) {
+                $value = '[' . $value . ']';
+            }
 
-        // re-wrap values into cells.
-        return $this->wrap($cells);
+            return ['cell' => $this->wrap([$value])[0], 'filled' => $filled];
+        }, $columns);
+    }
+
+    /**
+     * @inheritdoc
+     * Maps all subfields `getCells` calls to the repeater subfields with an amended $entry.
+     * @since 1.7.0
+     * @since TBD A repeater with one row returns its sub-fields' own cells, so numbers and prices keep their type.
+     */
+    public function getCells($entry)
+    {
+        $rows = $this->getRowParts($entry);
+
+        if (1 === count($rows)) {
+            return array_column($rows[0], 'cell');
+        }
+
+        return array_column($this->joinColumns($rows), 'cell');
     }
 }

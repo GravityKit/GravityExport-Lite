@@ -8,6 +8,7 @@ use GFExcel\Tests\TestCase;
 use GFExcel\Transformer\Combiner;
 use GFExcel\Transformer\Transformer;
 use GFExcel\Values\BaseValue;
+use GFExcel\Values\NumericValue;
 use GFExcel\Values\StringValue;
 
 /**
@@ -202,6 +203,68 @@ final class RepeaterFieldTest extends TestCase {
 		self::assertSame( [], $field->getRows( [ 10 => '' ] ) );
 		self::assertSame( [], $field->getRows( [ 10 => [ 'not a row' ] ] ) );
 	}
+
+	/**
+	 * A repeater with one row keeps each sub-field's own cell, so a Number stays a number in Excel.
+	 *
+	 * @since TBD
+	 */
+	public function testSingleRowKeepsTheSubFieldsOwnCells(): void {
+		$score    = $this->gfField( [ 'id' => 16, 'label' => 'Score', 'inputIds' => [ '16' ], 'numeric' => true ] );
+		$repeater = ( new RepeaterTestTransformer() )->transform(
+			$this->gfField( [ 'id' => 10, 'type' => 'repeater', 'label' => 'People', 'fields' => [ $score ] ] )
+		);
+
+		$combiner = new Combiner();
+		$combiner->parseEntry( [ $repeater ], [ 10 => [ [ 16 => '7.5' ] ] ] );
+		$combiner->parseEntry( [ $repeater ], [ 10 => [ [ 16 => '7.5' ], [ 16 => '3' ] ] ] );
+		$rows = iterator_to_array( $combiner->getRows() );
+
+		self::assertInstanceOf( NumericValue::class, $rows[0][0] );
+		self::assertSame( '7.5', $rows[0][0]->getValue() );
+		self::assertSame( "7.5\n---\n3", $rows[1][0]->getValue() );
+	}
+
+	/**
+	 * From the second nested level on, each group is bracketed, so a value can be traced to its parent item.
+	 *
+	 * @since TBD
+	 */
+	public function testThirdLevelGroupsAreBracketed(): void {
+		$l3_text = $this->gfField( [ 'id' => 43, 'label' => 'L3Text', 'inputIds' => [ '43' ] ] );
+		$level3  = $this->gfField( [ 'id' => 42, 'type' => 'repeater', 'label' => 'Level3', 'fields' => [ $l3_text ] ] );
+		$l2_text = $this->gfField( [ 'id' => 41, 'label' => 'L2Text', 'inputIds' => [ '41' ] ] );
+		$level2  = $this->gfField( [ 'id' => 40, 'type' => 'repeater', 'label' => 'Level2', 'fields' => [ $l2_text, $level3 ] ] );
+		$after   = $this->gfField( [ 'id' => 36, 'label' => 'After', 'inputIds' => [ '36' ] ] );
+
+		$repeater = ( new RepeaterTestTransformer() )->transform(
+			$this->gfField( [ 'id' => 10, 'type' => 'repeater', 'label' => 'Things', 'fields' => [ $level2, $after ] ] )
+		);
+
+		$cells = $repeater->getCells( [
+			10 => [
+				[
+					40 => [
+						[ 41 => 'p1a', 42 => [ [ 43 => 'deep1' ], [ 43 => 'deep2' ] ] ],
+						[ 41 => 'p1b' ],
+					],
+					36 => 'after1',
+				],
+				[ 40 => [ [ 42 => [ [ 43 => 'deep3' ] ] ] ], 36 => 'after2' ],
+				// No third-level values at all: the column stays empty instead of showing "[]".
+				[ 40 => [ [ 41 => 'p3a' ], [ 41 => 'p3b' ] ], 36 => 'after3' ],
+			],
+		] );
+
+		self::assertSame(
+			[
+				"p1a, p1b\n---\n\n---\np3a, p3b",
+				"[deep1, deep2], []\n---\n[deep3]\n---\n",
+				"after1\n---\nafter2\n---\nafter3",
+			],
+			self::values( $cells )
+		);
+	}
 }
 
 /**
@@ -270,7 +333,9 @@ final class RepeaterTestField implements FieldInterface {
 	 */
 	public function getCells( $entry ) {
 		return array_map( function ( string $input_id ) use ( $entry ): BaseValue {
-			return new StringValue( $entry[ $input_id ] ?? '', $this->field );
+			$value = $entry[ $input_id ] ?? '';
+
+			return ( $this->field->numeric ?? false ) ? new NumericValue( $value, $this->field ) : new StringValue( $value, $this->field );
 		}, $this->field->inputIds );
 	}
 }
