@@ -259,7 +259,7 @@ You can hide a row by adding a hook. Checkout this example:
 = develop =
 
 * Fixed: In exports of a form with a Repeater field, a row with no items in a nested repeater moved the rest of that row's values one column to the left.
-* Fixed: Without "Multiple Rows", Repeater rows are now separated by `---` in every column. A Checkbox inside a Repeater showed the values of two rows as one ("PHP, JS"). Items of a nested repeater are joined with a comma inside their row.
+* Fixed: Without "Multiple Rows", Repeater rows are now separated by `---` in every column. A Checkbox inside a Repeater showed the values of two rows as one ("PHP, JS"). Items of a nested repeater are joined with a comma inside their row; one level deeper, each group is shown in brackets, such as `[a, b], []`.
 * Fixed: The Repeater field is no longer offered as a sort field; sorting by it had no effect.
 
 __Developer Updates:__
