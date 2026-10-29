@@ -18,19 +18,19 @@ use GFExcel\Values\StringValue;
  * a nested repeater "Phones" (13, with sub-field 14), a text field "Role" (11) and a
  * two-input Name field (12.3 / 12.6). Entries are in the hydrated shape `GF_Query` returns.
  *
- * @since TBD
+ * @since 2.7.6
  */
 final class RepeaterFieldTest extends TestCase {
 	/**
 	 * Glue the `gfexcel_combiner_glue` filter returns; null keeps the default.
-	 * @since TBD
+	 * @since 2.7.6
 	 * @var string|null
 	 */
 	private static $combiner_glue;
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function setUp(): void {
 		parent::setUp();
@@ -50,7 +50,7 @@ final class RepeaterFieldTest extends TestCase {
 	 * Keep the method list identical to {@see \GFExcel\Tests\Transformer\TransformerTest}: PHPUnit
 	 * reuses whichever `GF_Field` mock class is declared first.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param array $properties Public properties to set on the field.
 	 *
@@ -75,7 +75,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * Builds the repeater under test, with a nested repeater as its first sub-field.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @return RepeaterField The repeater transformer.
 	 */
@@ -101,7 +101,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * Reads the string values out of a list of cells.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param BaseValue[] $cells The cells.
 	 *
@@ -117,7 +117,7 @@ final class RepeaterFieldTest extends TestCase {
 	 * A row with no items in a nested repeater still fills the nested repeater's column, so the
 	 * values after it stay under their own headers.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testRowsKeepColumnsWhenANestedRepeaterIsEmpty(): void {
 		$field = $this->repeater();
@@ -139,7 +139,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * Without multi-row splitting every column joins its own rows' values.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testCellsJoinEachColumnsOwnValues(): void {
 		$cells = $this->repeater()->getCells( [
@@ -159,7 +159,7 @@ final class RepeaterFieldTest extends TestCase {
 	 * The export joins repeater rows with one separator in every column, whatever the sub-field type,
 	 * so the Nth value in each column belongs to the same repeater row.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testCombinerJoinsRepeaterRowsWithTheRepeaterSeparator(): void {
 		// A sub-field type with its own combiner glue, as the Checkbox transformer registers.
@@ -182,7 +182,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * An empty repeater still returns one (empty) cell per column.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testEmptyRepeaterReturnsOneEmptyCellPerColumn(): void {
 		$field = $this->repeater();
@@ -195,7 +195,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * A repeater value that is not a list of rows is treated as empty instead of causing a fatal error.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testNonArrayValueIsTreatedAsEmpty(): void {
 		$field = $this->repeater();
@@ -207,7 +207,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * A repeater with one row keeps each sub-field's own cell, so a Number stays a number in Excel.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testSingleRowKeepsTheSubFieldsOwnCells(): void {
 		$score    = $this->gfField( [ 'id' => 16, 'label' => 'Score', 'inputIds' => [ '16' ], 'numeric' => true ] );
@@ -228,7 +228,7 @@ final class RepeaterFieldTest extends TestCase {
 	/**
 	 * From the second nested level on, each group is bracketed, so a value can be traced to its parent item.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testThirdLevelGroupsAreBracketed(): void {
 		$l3_text = $this->gfField( [ 'id' => 43, 'label' => 'L3Text', 'inputIds' => [ '43' ] ] );
@@ -269,12 +269,12 @@ final class RepeaterFieldTest extends TestCase {
 
 /**
  * Transformer that returns {@see RepeaterTestField} for plain fields and a {@see RepeaterField} for repeaters.
- * @since TBD
+ * @since 2.7.6
  */
 final class RepeaterTestTransformer extends Transformer {
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function transform( \GF_Field $field ) {
 		if ( 'repeater' !== $field->get_input_type() ) {
@@ -299,19 +299,19 @@ final class RepeaterTestTransformer extends Transformer {
 
 /**
  * A sub-field transformer with one column per input id, reading the value straight from the row.
- * @since TBD
+ * @since 2.7.6
  */
 final class RepeaterTestField implements FieldInterface {
 	/**
 	 * The field.
-	 * @since TBD
+	 * @since 2.7.6
 	 * @var \GF_Field
 	 */
 	private $field;
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function __construct( \GF_Field $field ) {
 		$this->field = $field;
@@ -319,7 +319,7 @@ final class RepeaterTestField implements FieldInterface {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function getColumns() {
 		return array_map( function ( string $input_id ): BaseValue {
@@ -329,7 +329,7 @@ final class RepeaterTestField implements FieldInterface {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function getCells( $entry ) {
 		return array_map( function ( string $input_id ) use ( $entry ): BaseValue {

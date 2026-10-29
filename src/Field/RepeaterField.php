@@ -27,7 +27,7 @@ class RepeaterField extends SeparableField implements RowsInterface
 
     /**
      * How many repeaters this repeater sits inside: 0 for a repeater on the form itself.
-     * @since TBD
+     * @since 2.7.6
      * @var int
      */
     private $depth = 0;
@@ -61,7 +61,7 @@ class RepeaterField extends SeparableField implements RowsInterface
      * repeater, a hidden input) is padded, so the values after it stay under their own headers.
      *
      * @since 1.8.0
-     * @since TBD Rows keep their column positions; row index gaps and non-array values are handled.
+     * @since 2.7.6 Rows keep their column positions; row index gaps and non-array values are handled.
      */
     public function getRows(?array $entry = null): array
     {
@@ -73,7 +73,7 @@ class RepeaterField extends SeparableField implements RowsInterface
     /**
      * Returns every repeater row as one part per column: the cell, and whether it holds a value.
      *
-     * @since TBD
+     * @since 2.7.6
      *
      * @param array|null $entry The entry, or a row of the parent repeater.
      *
@@ -120,7 +120,7 @@ class RepeaterField extends SeparableField implements RowsInterface
     /**
      * Returns the transformers for the repeater's sub-fields.
      *
-     * @since TBD
+     * @since 2.7.6
      *
      * @return FieldInterface[] The sub-field transformers.
      */
@@ -139,7 +139,7 @@ class RepeaterField extends SeparableField implements RowsInterface
     /**
      * Pads or trims a sub-field's cells to its column count.
      *
-     * @since TBD
+     * @since 2.7.6
      *
      * @param BaseValue[] $cells The cells the sub-field returned.
      * @param int $count The number of columns the sub-field has.
@@ -164,7 +164,7 @@ class RepeaterField extends SeparableField implements RowsInterface
      * separated by ", "; from the second nested level on, each group is wrapped in brackets, so
      * `[a, b], []` tells which parent item each value belongs to.
      *
-     * @since TBD
+     * @since 2.7.6
      *
      * @param array<int, array{cell: BaseValue, filled: bool}>[] $rows The rows from {@see getRowParts()}.
      *
@@ -221,7 +221,7 @@ class RepeaterField extends SeparableField implements RowsInterface
      * @inheritdoc
      * Maps all subfields `getCells` calls to the repeater subfields with an amended $entry.
      * @since 1.7.0
-     * @since TBD A repeater with one row returns its sub-fields' own cells, so numbers and prices keep their type.
+     * @since 2.7.6 A repeater with one row returns its sub-fields' own cells, so numbers and prices keep their type.
      */
     public function getCells($entry)
     {
