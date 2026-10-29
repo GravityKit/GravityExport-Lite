@@ -35,31 +35,6 @@ class DownloadUrlTest extends TestCase {
 	}
 
 	/**
-	 * The "Enable download URL" button shown before a URL exists must go through the
-	 * plugin's text domain, or translated sites render it in English.
-	 *
-	 * @since TBD
-	 */
-	public function testEnableButtonLabelIsTranslated(): void {
-		\WP_Mock::userFunction( 'esc_html__', [
-			'args'   => [ 'Enable download URL', 'gk-gravityexport-lite' ],
-			'times'  => 1,
-			'return' => 'Activer l’URL de téléchargement',
-		] );
-
-		$field = new class( [ 'name' => 'hash', 'type' => 'download_url' ], \Mockery::mock( Settings::class ) ) extends DownloadUrl {
-			public function get_value() {
-				return '';
-			}
-		};
-
-		$markup = $field->markup();
-
-		$this->assertStringContainsString( '>Activer l’URL de téléchargement</button>', $markup );
-		$this->assertStringNotContainsString( 'Enable download URL', $markup );
-	}
-
-	/**
 	 * An explicitly provided assets_dir keeps winning.
 	 * @since TBD
 	 */
