@@ -7,7 +7,7 @@ use GFExcel\Tests\TestCase;
 
 /**
  * Unit tests for {@see FieldsRepository}.
- * @since TBD
+ * @since 2.7.6
  */
 final class FieldsRepositoryTest extends TestCase {
 	/**
@@ -16,7 +16,7 @@ final class FieldsRepositoryTest extends TestCase {
 	 * Keep the method list identical to {@see \GFExcel\Tests\Transformer\TransformerTest}: PHPUnit
 	 * reuses whichever `GF_Field` mock class is declared first.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param array      $properties Public properties to set on the field.
 	 * @param array|null $inputs     The entry inputs.
@@ -41,7 +41,7 @@ final class FieldsRepositoryTest extends TestCase {
 
 	/**
 	 * A repeater holds no value of its own, and its sub-fields have one value per row, so neither can sort entries.
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function testSortOptionsLeaveOutRepeaters(): void {
 		\WP_Mock::userFunction( '__', [ 'return_arg' => 0 ] );

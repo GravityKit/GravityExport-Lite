@@ -233,7 +233,7 @@ class GFExcel {
 	/**
 	 * Whether the current user can download the form.
 	 * @since 1.7.0
-	 * @since TBD Added the `$feed` parameter and the `gk/gravityexport/download/can-download` filter.
+	 * @since 2.7.6 Added the `$feed` parameter and the `gk/gravityexport/download/can-download` filter.
 	 *
 	 * @param int        $form_id The form id of the form to download.
 	 * @param array|null $feed    The feed being downloaded. Looked up from the form when not provided.
@@ -267,7 +267,7 @@ class GFExcel {
 		 *
 		 * @filter gk/gravityexport/download/can-download
 		 *
-		 * @since TBD
+		 * @since 2.7.6
 		 *
 		 * @param bool  $can_download Whether the user has the `gravityforms_export_entries` capability.
 		 * @param array $feed         The feed being downloaded; an empty array when the form has no export feed.

@@ -13,7 +13,7 @@ use GFExcel\Routing\Router;
  * Extends PHPUnit's TestCase rather than WP_Mock's: on PHP 8.4, loading WP_Mock 0.4's TestCase prints a deprecation
  * notice, and PHPUnit fails every separate-process test that prints one.
  *
- * @since TBD
+ * @since 2.7.6
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
@@ -23,7 +23,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -32,7 +32,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	protected function tearDown(): void {
 		\WP_Mock::tearDown();
@@ -42,14 +42,14 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * The filter under test.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	private const FILTER = 'gk/gravityexport/download/can-download';
 
 	/**
 	 * A secured feed for form 3.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @var array
 	 */
@@ -62,7 +62,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Replaces the add-on with a mock whose form feed is the given feed.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param array $feed The feed the add-on returns for the form.
 	 */
@@ -75,7 +75,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Sets whether the current user has the Gravity Forms export capability.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param bool $has_capability Whether the user has the capability.
 	 */
@@ -89,7 +89,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Sets the current user's ID.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 *
 	 * @param int $user_id The user ID.
 	 */
@@ -100,7 +100,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * With no filter added, a secured download still follows the capability check.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_secured_download_without_a_filter_follows_the_capability(): void {
 		$this->mockAddon( $this->secured_feed );
@@ -113,7 +113,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * With no filter added, a user without the capability is refused.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_secured_download_without_a_filter_refuses_a_user_without_the_capability(): void {
 		$this->mockAddon( $this->secured_feed );
@@ -126,7 +126,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * A filter can allow a user without the capability, and receives the feed and the user ID.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_filter_can_allow_a_user_without_the_capability(): void {
 		$this->mockAddon( $this->secured_feed );
@@ -141,7 +141,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * A filter can refuse a user who has the capability.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_filter_can_refuse_a_user_with_the_capability(): void {
 		$this->mockAddon( $this->secured_feed );
@@ -156,7 +156,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * Called without a feed, the filter receives the form's feed.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_filter_receives_the_forms_feed_when_none_is_passed(): void {
 		$this->mockAddon( $this->secured_feed );
@@ -171,7 +171,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * A public download URL is served without asking the filter, so a filter cannot refuse it.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_public_download_is_not_filtered(): void {
 		$public_feed = [ 'id' => 5, 'form_id' => 3, 'meta' => [ 'is_secured' => '' ] ];
@@ -187,7 +187,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * A secured feed is not served as public when the form's main feed is public.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_secured_feed_on_a_form_with_a_public_main_feed_is_checked(): void {
 		$public_feed = [ 'id' => 4, 'form_id' => 3, 'meta' => [ 'is_secured' => '' ] ];
@@ -201,7 +201,7 @@ final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * The download request passes the feed it matched to the filter.
 	 *
-	 * @since TBD
+	 * @since 2.7.6
 	 */
 	public function test_download_request_passes_its_feed_to_the_filter(): void {
 		$this->mockAddon( $this->secured_feed );
