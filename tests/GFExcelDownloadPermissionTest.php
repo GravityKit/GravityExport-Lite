@@ -10,12 +10,35 @@ use GFExcel\Routing\Router;
  *
  * `GFCommon` and `GravityExportAddon` need Gravity Forms, so they are alias mocks, which need a fresh process.
  *
+ * Extends PHPUnit's TestCase rather than WP_Mock's: on PHP 8.4, loading WP_Mock 0.4's TestCase prints a deprecation
+ * notice, and PHPUnit fails every separate-process test that prints one.
+ *
  * @since TBD
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-final class GFExcelDownloadPermissionTest extends TestCase {
+final class GFExcelDownloadPermissionTest extends \PHPUnit\Framework\TestCase {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
+	/**
+	 * @inheritDoc
+	 * @since TBD
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+		\WP_Mock::setUp();
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since TBD
+	 */
+	protected function tearDown(): void {
+		\WP_Mock::tearDown();
+		parent::tearDown();
+	}
+
 	/**
 	 * The filter under test.
 	 *
