@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-22T19:56:46-04:00\n"
+"POT-Creation-Date: 2026-10-29T15:34:16-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -398,6 +398,11 @@ msgstr ""
 msgid "Copy Shortcode"
 msgstr ""
 
+#: src/GravityForms/Field/CopyShortcode.php:65
+#: src/GravityForms/Field/DownloadUrl.php:75
+msgid "Copied!"
+msgstr ""
+
 #: src/GravityForms/Field/DownloadFile.php:81
 msgid "Reset count"
 msgstr ""
@@ -410,16 +415,16 @@ msgstr ""
 msgid "You are about to reset the download count for this form. This can’t be undone."
 msgstr ""
 
+#: src/GravityForms/Field/DownloadUrl.php:52
+msgid "Enable download URL"
+msgstr ""
+
 #: src/GravityForms/Field/DownloadUrl.php:66
 msgid "Regenerate URL"
 msgstr ""
 
 #: src/GravityForms/Field/DownloadUrl.php:71
 msgid "Disable download URL"
-msgstr ""
-
-#: src/GravityForms/Field/DownloadUrl.php:75
-msgid "Copied!"
 msgstr ""
 
 #: src/GravityForms/Field/DownloadUrl.php:80

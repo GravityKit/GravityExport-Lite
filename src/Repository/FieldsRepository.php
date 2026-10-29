@@ -278,6 +278,11 @@ class FieldsRepository {
 		$form_fields = \rgar( $form, 'fields', [] );
 
 		$sorting_function = static function ( array $fields, \GF_Field $field ): array {
+			// A repeater stores no value of its own, and a sub-field has one value per row, so neither can sort.
+			if ( 'repeater' === $field->get_input_type() ) {
+				return $fields;
+			}
+
 			// Fields that have no subfields can be added as they are.
 			if ( ! $field->get_entry_inputs() ) {
 				$fields[] = [
