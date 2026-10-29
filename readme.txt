@@ -261,9 +261,9 @@ You can hide a row by adding a hook. Checkout this example:
 This release fixes how Repeater fields export, translates two labels in the form settings, and adds a filter for who can download a secured export.
 
 * Fixed: Issues with Repeater fields in exports:
-  - values could appear under the wrong column;
-  - values from two rows could look like one row;
-  - the Repeater field was offered as a sort field, but sorting by it did nothing.
+  - Values could appear under the wrong column;
+  - Values from two rows could look like one row;
+  - The Repeater field was offered as a sort field, but sorting by it did nothing.
 * Fixed: The "Enable download URL" button and the "Copied!" label on a form's GravityExport Lite settings tab now show in the site's language.
 
 __Developer Updates:__
