@@ -139,9 +139,10 @@ final class SingleFeedMigration extends Migration {
 		$addon = GravityExportAddon::get_instance();
 		$feed  = $addon->get_feed_by_form_id( $form_id = \rgar( $form, 'id', 0 ) );
 		if ( $feed ) {
+			// The old form keys are never deleted, so a later run must not replace the feed settings saved since.
 			$result = \GFAPI::update_feed(
 				\rgar( $feed, 'id', 0 ),
-				array_merge( $feed['meta'], $new_settings ),
+				array_merge( $new_settings, $feed['meta'] ),
 				$form_id
 			);
 		} else {
@@ -161,6 +162,18 @@ final class SingleFeedMigration extends Migration {
 		// Get all the old settings.
 		$settings = \get_option( 'gravityformsaddon_gf-entries-in-excel_settings' );
 
+		// A site that never ran a version before 2.0 has no old settings to move.
+		if ( ! is_array( $settings ) ) {
+			return;
+		}
+
+		$addon = GravityExportAddon::get_instance();
+
+		// The pre-2.0 option is never deleted, so a later run must not replace the settings saved since.
+		if ( $addon->get_plugin_settings() ) {
+			return;
+		}
+
 		foreach ( self::$addon_mapping as $old => $new ) {
 			// Update old to new setting name, if the new setting name isn't already present.
 			if ( isset( $settings[ $old ] ) && ! isset( $settings[ $new ] ) ) {
@@ -171,7 +184,7 @@ final class SingleFeedMigration extends Migration {
 			unset( $settings[ $old ] );
 		}
 
-		GravityExportAddon::get_instance()->update_plugin_settings( $settings );
+		$addon->update_plugin_settings( $settings );
 	}
 
 	/**

@@ -71,8 +71,17 @@ class SortFields extends Base {
 
 		$status_id = $this->name . '-search-status';
 
+		$total_choices = 0;
+
+		foreach ( array_keys( $this->sections ) as $section ) {
+			$total_choices += count( $this->choices[ $section ] ?? [] );
+		}
+
 		$html = [
-			'<div class="gk-gravityexport-sort-fields">',
+			sprintf(
+				'<div class="gk-gravityexport-sort-fields" data-count-messages="%s">',
+				self::get_count_messages_attribute( $total_choices )
+			),
 			sprintf(
 				'<div class="gk-gravityexport-sort-fields__search">
 					<label for="%s" class="screen-reader-text">%s</label>
@@ -129,6 +138,60 @@ class SortFields extends Base {
 		$html[] = '</div>';
 
 		return implode( "\n", $html );
+	}
+
+	/**
+	 * Returns the field count messages the lists can show, one per count.
+	 *
+	 * Languages word a count differently by number (Arabic has six forms), so each count gets its own
+	 * plural translation instead of one sentence with the number swapped in. The messages are plain
+	 * text: the script writes them with jQuery's text() and wp.a11y.speak().
+	 *
+	 * @since 2.7.5
+	 *
+	 * @param int $total The number of fields across the lists.
+	 *
+	 * @return array{match: array<int, string>, moved: array<int, string>} Messages keyed by count. `moved` keeps the [destination] placeholder for the script.
+	 */
+	public static function get_count_messages( int $total ): array {
+		$messages = [
+			'match' => [],
+			'moved' => [],
+		];
+
+		for ( $count = 1; $count <= $total; $count++ ) {
+			$number = number_format_i18n( $count );
+
+			/* translators: [count] is replaced with the number of matching fields. Do not translate text inside square brackets. */
+			$match = _n( '[count] field matches your search.', '[count] fields match your search.', $count, 'gk-gravityexport-lite' );
+
+			/* translators: [count] is the number of fields, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets. */
+			$moved = _n( '[count] field moved to [destination].', '[count] fields moved to [destination].', $count, 'gk-gravityexport-lite' );
+
+			$messages['match'][ $count ] = str_replace( '[count]', $number, $match );
+			$messages['moved'][ $count ] = str_replace( '[count]', $number, $moved );
+		}
+
+		return $messages;
+	}
+
+	/**
+	 * Returns the field count messages as an escaped HTML attribute value holding JSON.
+	 *
+	 * @since 2.7.5
+	 *
+	 * @param int $total The number of fields across the lists.
+	 *
+	 * @return string The attribute value.
+	 */
+	public static function get_count_messages_attribute( int $total ): string {
+		// The hex flags keep an entity a translation contains, such as &quot;, from decoding into a quote that ends a JSON string.
+		$json = wp_json_encode(
+			self::get_count_messages( $total ),
+			JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE
+		);
+
+		return esc_attr( (string) $json );
 	}
 
 	/**

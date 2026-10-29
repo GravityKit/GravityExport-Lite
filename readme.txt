@@ -4,8 +4,8 @@ Donate link: https://www.gravitykit.com/extensions/gravityexport/?utm_source=plu
 Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 6.5
 Requires PHP: 7.4.0
-Tested up to: 7.1.1
-Stable tag: 2.7.3
+Tested up to: 7.1.3
+Stable tag: 2.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -261,10 +261,26 @@ You can hide a row by adding a hook. Checkout this example:
 * Fixed: In exports of a form with a Repeater field, a row with no items in a nested repeater moved the rest of that row's values one column to the left.
 * Fixed: Without "Multiple Rows", Repeater rows are now separated by `---` in every column. A Checkbox inside a Repeater showed the values of two rows as one ("PHP, JS"). Items of a nested repeater are joined with a comma inside their row.
 * Fixed: The Repeater field is no longer offered as a sort field; sorting by it had no effect.
-* Fixed: A download URL that belongs to another GravityExport add-on returned "not found" when one of this plugin's own feeds happened to mention the same security key.
 
-#### 🔧 Updated
-* The minimum required WordPress version is now 6.5 and the minimum PHP version is 7.4.
+__Developer Updates:__
+* Added: `gk/gravityexport/download/can-download` filter to allow or refuse a secured GravityExport Lite download URL for a given feed and user. By default, only users with the `gravityforms_export_entries` capability can download secured exports; public download URLs are not affected.
+
+= 2.7.5 on October 22, 2026 =
+
+* Fixed: On sites upgraded from a version before 2.0, the global and form export settings could revert to their pre-2.0 values.
+* Fixed: In the field settings, the number of fields matching a search and the number of fields moved used the wrong plural form in languages such as Arabic, Russian and Polish.
+* Fixed: If a field label contained a list, "Enable all" and "Disable all" in the field settings moved its items as if they were fields, and searching for a field hid them.
+* Fixed: New installs on PHP 8.1 or newer logged a PHP "deprecated" notice.
+
+= 2.7.4 on October 3, 2026 =
+
+**Note: GravityExport Lite now requires WordPress 6.5 or newer.**
+
+* Security: Field values starting with characters such as `=` could be interpreted as formulas when a CSV export was opened in a spreadsheet application. These values now begin with a single quote (`'`) so they display as plain text, while regular numbers such as `-5` are left unchanged (thanks to Ali Hidayat for the report).
+* Fixed: Download links created by other GravityExport add-ons could return a "not found" error when a GravityExport Lite feed's settings happened to contain the same security key. These links now work correctly.
+
+__Developer Updates:__
+* Added: `gk/gravityexport/renderer/csv/escape-formulas` filter to turn off formula escaping in CSV exports (useful when CSV files are imported into other systems rather than opened in a spreadsheet application).
 
 = 2.7.3 on September 18, 2026 =
 

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityExport Lite 2.7.2\n"
+"Project-Id-Version: GravityExport Lite 2.7.5\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-18T10:55:23-04:00\n"
+"POT-Creation-Date: 2026-10-22T19:56:46-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "https://www.gravitykit.com/extensions/gravityexport/"
 msgstr ""
 
-#: gfexcel.php:52
+#: gfexcel.php:53
 #, php-format
 msgid "GravityExport Lite requires PHP %s or newer."
 msgstr ""
@@ -337,49 +337,30 @@ msgstr ""
 msgid "No fields match your search."
 msgstr ""
 
-#: src/Addon/GravityExportAddon.php:945
-msgid "1 field matches your search."
-msgstr ""
-
-#. translators: [count] is replaced with the number of matching fields. Do not translate text inside square brackets.
-#: src/Addon/GravityExportAddon.php:947
-msgid "[count] fields match your search."
-msgstr ""
-
 #. translators: [field] is the field name, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
-#: src/Addon/GravityExportAddon.php:949
+#: src/Addon/GravityExportAddon.php:946
 msgid "[field] moved to [destination]."
 msgstr ""
 
-#. translators: [count] is the number of fields, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
-#: src/Addon/GravityExportAddon.php:951
-msgid "[count] fields moved to [destination]."
-msgstr ""
-
-#. translators: [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
-#: src/Addon/GravityExportAddon.php:953
-msgid "1 field moved to [destination]."
-msgstr ""
-
-#: src/Addon/GravityExportAddon.php:1182
+#: src/Addon/GravityExportAddon.php:1175
 msgid "Download as one file"
 msgstr ""
 
-#: src/Addon/GravityExportAddon.php:1256
-#: src/Addon/GravityExportAddon.php:1297
+#: src/Addon/GravityExportAddon.php:1249
+#: src/Addon/GravityExportAddon.php:1290
 #: src/GravityForms/Field/DownloadFile.php:75
 msgid "Download"
 msgstr ""
 
-#: src/Addon/GravityExportAddon.php:1257
+#: src/Addon/GravityExportAddon.php:1250
 msgid "Download an Export"
 msgstr ""
 
-#: src/Addon/GravityExportAddon.php:1385
+#: src/Addon/GravityExportAddon.php:1378
 msgid "Deselect All"
 msgstr ""
 
-#: src/Addon/GravityExportAddon.php:1386
+#: src/Addon/GravityExportAddon.php:1379
 msgid "Select All"
 msgstr ""
 
@@ -465,12 +446,26 @@ msgstr ""
 msgid "Filter fields"
 msgstr ""
 
-#: src/GravityForms/Field/SortFields.php:98
+#: src/GravityForms/Field/SortFields.php:107
 msgid "Clear search"
 msgstr ""
 
+#. translators: [count] is replaced with the number of matching fields. Do not translate text inside square brackets.
+#: src/GravityForms/Field/SortFields.php:166
+msgid "[count] field matches your search."
+msgid_plural "[count] fields match your search."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: [count] is the number of fields, [destination] is the list name (e.g., "Enabled Fields"). Do not translate text inside square brackets.
+#: src/GravityForms/Field/SortFields.php:169
+msgid "[count] field moved to [destination]."
+msgid_plural "[count] fields moved to [destination]."
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %s: field label
-#: src/GravityForms/Field/SortFields.php:157
+#: src/GravityForms/Field/SortFields.php:220
 #, php-format
 msgid "Move %s"
 msgstr ""
@@ -481,66 +476,66 @@ msgid "The settings for %s 2.0 were migrated successfully."
 msgstr ""
 
 #. translators: placeholders in [brackets] are replaced and must not be translated.
-#: src/Renderer/AbstractPHPExcelRenderer.php:384
+#: src/Renderer/AbstractPHPExcelRenderer.php:382
 msgid "The export could not be created. The reason was written to the server's error log. If you do not manage this site, please report this to [site]."
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:390
-#: src/Renderer/AbstractPHPExcelRenderer.php:399
+#: src/Renderer/AbstractPHPExcelRenderer.php:388
+#: src/Renderer/AbstractPHPExcelRenderer.php:397
 msgid "GravityExport Lite: Something is broken"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:400
+#: src/Renderer/AbstractPHPExcelRenderer.php:398
 msgid "Error message:"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:402
+#: src/Renderer/AbstractPHPExcelRenderer.php:400
 #, php-format
 msgid "If you need support, please contact us via <a target=\"_blank\" href=\"%s\">WordPress.org support forum</a>."
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:404
+#: src/Renderer/AbstractPHPExcelRenderer.php:402
 msgid "Check if someone else had the same error before posting a new support question."
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:406
+#: src/Renderer/AbstractPHPExcelRenderer.php:404
 msgid "And when opening a new question, <strong>please use the error message as the title</strong>."
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:408
+#: src/Renderer/AbstractPHPExcelRenderer.php:406
 msgid "Include the following details in your message:"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:410
+#: src/Renderer/AbstractPHPExcelRenderer.php:408
 #, php-format
 msgid "Plugin Version: %s"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:411
+#: src/Renderer/AbstractPHPExcelRenderer.php:409
 #, php-format
 msgid "Gravity Forms Version: %s"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:412
+#: src/Renderer/AbstractPHPExcelRenderer.php:410
 #, php-format
 msgid "PHP Version: %s"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:414
+#: src/Renderer/AbstractPHPExcelRenderer.php:412
 msgid " (this version is too low, please update to at least PHP 5.6)"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:417
+#: src/Renderer/AbstractPHPExcelRenderer.php:415
 #, php-format
 msgid "WordPress Version: %s"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:418
+#: src/Renderer/AbstractPHPExcelRenderer.php:416
 #, php-format
 msgid "Error message: %s"
 msgstr ""
 
-#: src/Renderer/AbstractPHPExcelRenderer.php:419
+#: src/Renderer/AbstractPHPExcelRenderer.php:417
 #, php-format
 msgid "Error stack trace: %s"
 msgstr ""
