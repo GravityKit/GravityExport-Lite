@@ -49,7 +49,7 @@ class DownloadUrl extends Text {
 			$html[] = sprintf(
 				'<button type="submit" name="gform-settings-save" value="%s" form="gform-settings" class="button button-secondary">%s</button>',
 				DownloadUrlEnableAction::$name,
-				'Enable download URL'
+				esc_html__( 'Enable download URL', 'gk-gravityexport-lite' )
 			);
 
 			return implode( "\n", $html );
