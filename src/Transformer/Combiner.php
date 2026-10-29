@@ -4,6 +4,7 @@ namespace GFExcel\Transformer;
 
 use GF_Field;
 use GFExcel\Field\FieldInterface;
+use GFExcel\Field\RepeaterField;
 use GFExcel\Field\RowsInterface;
 use GFExcel\Values\BaseValue;
 use GFExcel\Values\StringValue;
@@ -32,7 +33,9 @@ class Combiner implements CombinerInterface {
 		$combined_row = [];
 
 		foreach ( $fields as $field ) {
-			$rows     = $this->getFieldRows( $field, $entry );
+			// A repeater joins its own rows with one separator for every column. Combining them here would
+			// use each sub-field type's glue, and the values of one row would no longer line up.
+			$rows     = $field instanceof RepeaterField ? [ $field->getCells( $entry ) ] : $this->getFieldRows( $field, $entry );
 			$has_rows = false;
 			foreach ( $rows as $cells ) {
 				$has_rows = true;
