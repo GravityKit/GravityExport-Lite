@@ -179,6 +179,22 @@ class RepeaterField extends SeparableField implements RowsInterface
             }
         }
 
+        /**
+         * Modifies the separator between a Repeater field's values in one export cell.
+         *
+         * Used when an export puts all of a Repeater's rows in one cell (without GravityExport's "Multiple
+         * Rows"). For a Repeater on the form it separates the rows, by default with a line holding `---`. For a
+         * Repeater inside another Repeater it separates that nested Repeater's items inside one row of its
+         * parent, by default with a comma and a space; before 2.7.6 that was also a line holding `---`.
+         * The field ID in the hook name is the Repeater's own, so a nested Repeater can get its own separator.
+         *
+         * @filter gfexcel_field_repeater_implode
+         *
+         * @since 1.7.0
+         *
+         * @param string $glue The separator: `"\n---\n"` for a Repeater on the form, a comma and a space for a
+         *                     Repeater inside another Repeater.
+         */
         $glue = gf_apply_filters([
             'gfexcel_field_repeater_implode',
             $this->field->formId,
