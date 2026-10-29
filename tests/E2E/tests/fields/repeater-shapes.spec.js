@@ -110,45 +110,8 @@ const FORM_PHP = `
 	echo 'ok';
 `;
 
-/**
- * Sets GravityExport Lite's global settings and returns the previous ones.
- *
- * @param {object} settings
- * @returns {object} The settings before the change.
- */
-function setPluginSettings( settings ) {
-	return JSON.parse(
-		wpEval(
-			{ settings },
-			`
-			$addon    = \\GFExcel\\Addon\\GravityExportAddon::get_instance();
-			$previous = $addon->get_plugin_settings();
-			$previous = is_array( $previous ) ? $previous : [];
-			$addon->update_plugin_settings( array_merge( $previous, $data['settings'] ) );
-			echo wp_json_encode( (object) $previous );
-			`
-		)
-	);
-}
-
-/**
- * Restores GravityExport Lite's global settings exactly.
- *
- * @param {object} settings
- */
-function restorePluginSettings( settings ) {
-	wpEval(
-		{ settings },
-		`
-		\\GFExcel\\Addon\\GravityExportAddon::get_instance()->update_plugin_settings( (array) $data['settings'] );
-		echo 'ok';
-		`
-	);
-}
-
 test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 	let data;
-	let previousSettings;
 
 	test.beforeEach( async () => {
 		data = await fixtures.createFromTemplate( {
@@ -157,14 +120,9 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 		} );
 
 		wpEval( { formId: data.form_id }, FORM_PHP );
-		previousSettings = null;
 	} );
 
 	test.afterEach( async () => {
-		if ( previousSettings ) {
-			restorePluginSettings( previousSettings );
-		}
-
 		if ( data?.test_id ) {
 			await cleanup( data.test_id );
 		}
@@ -173,14 +131,19 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 	/**
 	 * Downloads the form's export and returns its header and rows, keyed by entry email.
 	 *
+	 * "Multiple Columns" and numeric prices are set for this one request (`e2e-export-settings.php`),
+	 * never in the global settings, which other specs running in parallel read.
+	 *
 	 * @param {import('@playwright/test').Page} page
 	 * @param {import('@playwright/test').APIRequestContext} request
 	 * @param {'csv'|'xlsx'} type
+	 * @param {{separation: boolean, numericPrice: boolean}} settings
 	 */
-	async function download( page, request, type ) {
+	async function download( page, request, type, { separation, numericPrice } ) {
 		await enableDownloadUrl( page, data.form_id );
 		const url = await readDownloadUrl( page );
-		const response = await fetchDownload( request, `${ url }.${ type }` );
+		const query = `gk_e2e_field_separation=${ separation ? 1 : 0 }&gk_e2e_numeric_price=${ numericPrice ? 1 : 0 }`;
+		const response = await fetchDownload( request, `${ url }.${ type }?${ query }` );
 		expect( response.status, `The ${ type } download should succeed` ).toBe( 200 );
 
 		const rows =
@@ -207,9 +170,7 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 		page,
 		request,
 	} ) => {
-		previousSettings = setPluginSettings( { field_separation_enabled: 1, numeric_price_enabled: 1 } );
-
-		const { byEmail } = await download( page, request, 'xlsx' );
+		const { byEmail } = await download( page, request, 'xlsx', { separation: true, numericPrice: true } );
 
 		const one = byEmail( 'one@example.test' );
 		expect( one( 'Score' ) ).toEqual( { value: '7.5', type: 'number' } );
@@ -226,7 +187,7 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 		page,
 		request,
 	} ) => {
-		const { byEmail } = await download( page, request, 'csv' );
+		const { byEmail } = await download( page, request, 'csv', { separation: false, numericPrice: false } );
 		const two = byEmail( 'two@example.test' );
 
 		expect( two( 'L2 Text' ).value ).toBe( 'p1a, p1b\n---\n\n---\np3a, p3b' );
@@ -242,16 +203,14 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 		request,
 	} ) => {
 		// Numeric prices on: with them off, a separated Price column exports 0.00 (GEXPLIT-41).
-		previousSettings = setPluginSettings( { field_separation_enabled: 1, numeric_price_enabled: 1 } );
-
-		const { columns, entries, byEmail } = await download( page, request, 'csv' );
+		const { columns, entries, byEmail } = await download( page, request, 'csv', { separation: true, numericPrice: true } );
 
 		// Hidden Name inputs get no column.
 		for ( const hidden of [ 'Prefix', 'Middle', 'Suffix' ] ) {
 			expect( columns, `Hidden input "${ hidden }" should have no column` ).not.toContain( hidden );
 		}
 		for ( const row of entries ) {
-			expect( row.length, 'Every row has one cell per header' ).toBeLessThanOrEqual( columns.length );
+			expect( row.length, 'Every row has one cell per header' ).toBe( columns.length );
 		}
 
 		const two = byEmail( 'two@example.test' );
@@ -268,9 +227,7 @@ test.describe( 'GravityExport Lite — Repeater field shapes', () => {
 		page,
 		request,
 	} ) => {
-		previousSettings = setPluginSettings( { field_separation_enabled: 0, numeric_price_enabled: 0 } );
-
-		const { byEmail } = await download( page, request, 'csv' );
+		const { byEmail } = await download( page, request, 'csv', { separation: false, numericPrice: false } );
 		const two = byEmail( 'two@example.test' );
 
 		expect( two( 'Score' ).value ).toBe( '7.5\n---\n3' );
