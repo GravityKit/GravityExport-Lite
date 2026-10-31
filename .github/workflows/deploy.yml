@@ -17,9 +17,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          # Pinned to match the Composer in the release build image. 2.9+ refuses
-          # to resolve phpoffice/phpspreadsheet 1.19, so `composer build` fails
-          # here and the plugin never reaches WordPress.org.
+          # Pinned to the Composer version in the release build image.
           tools: composer:2.8.12
       - name: Build
         run: composer build
