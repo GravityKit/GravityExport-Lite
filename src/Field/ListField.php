@@ -85,7 +85,7 @@ class ListField extends BaseField implements RowsInterface {
 		} else {
 			$value   = $this->getFieldValue( $entry );
 			$columns = array_column( $this->field['choices'], 'value' );
-			if ( ! $result = json_decode( $value, true ) ) {
+			if ( ! $result = $this->getListRows( $value ) ) {
 				yield $this->wrap( array_map( static function () {
 					return '';
 				}, $columns ) );
@@ -99,5 +99,30 @@ class ListField extends BaseField implements RowsInterface {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns the rows of a List field value.
+	 *
+	 * For a List saved as `a:0:{}`, Gravity Forms returns an empty array instead of a JSON string.
+	 *
+	 * @since TBD
+	 *
+	 * @param mixed $value The field value.
+	 *
+	 * @return array The rows, or an empty array if there are none.
+	 */
+	private function getListRows( $value ): array {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+
+		if ( ! is_string( $value ) ) {
+			return [];
+		}
+
+		$rows = json_decode( $value, true );
+
+		return is_array( $rows ) ? $rows : [];
 	}
 }

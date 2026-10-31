@@ -258,6 +258,7 @@ You can hide a row by adding a hook. Checkout this example:
 
 = develop =
 
+* Fixed: Exporting a form failed with a critical error on PHP 8 or newer when an entry created through the Gravity Forms REST API had an empty List field with columns.
 * Security: Updated the bundled PhpSpreadsheet library from 1.19.0 to 1.30.7. This removes CVE-2026-34084, CVE-2026-45034 and the other known vulnerabilities in the library that security scanners report for GravityExport Lite. Other plugins that use GravityExport Lite's copy of PhpSpreadsheet also get the updated version.
 
 = 2.7.6 on October 29, 2026 =
