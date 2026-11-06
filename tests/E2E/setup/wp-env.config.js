@@ -23,6 +23,8 @@ generateWpEnvConfig( {
 		'wp-content/mu-plugins/e2e-mail-capture.php': './mu-plugins/e2e-mail-capture.php',
 		// Raises an export failure on demand, for the specs that assert what a failure reveals.
 		'wp-content/mu-plugins/e2e-export-failure.php': './mu-plugins/e2e-export-failure.php',
+		// Sets "Multiple Columns" and numeric prices for one download request.
+		'wp-content/mu-plugins/e2e-export-settings.php': './mu-plugins/e2e-export-settings.php',
 		// Bind-mounted capture directory shared between tests-wordpress and
 		// tests-cli. Avoids the cross-container UID mismatch that prevented
 		// the cli (host UID) from writing into a www-data-owned uploads dir.

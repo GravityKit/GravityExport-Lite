@@ -5,7 +5,7 @@ Tags: Gravity Forms, GravityForms, Excel, Export, Entries
 Requires at least: 6.5
 Requires PHP: 7.4.0
 Tested up to: 7.1.4
-Stable tag: 2.7.6
+Stable tag: 2.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -255,6 +255,13 @@ You can hide a row by adding a hook. Checkout this example:
 3. Or download it from the list via the bulk selector
 
 == Changelog ==
+
+= 2.7.7 on November 5, 2026 =
+
+This release updates the bundled PhpSpreadsheet library to clear security scanner reports, and fixes exports of List fields that failed on PHP 8.
+
+* Security: Updated the bundled PhpSpreadsheet library from 1.19.0 to 1.30.7 to clear CVE-2026-34084, CVE-2026-45034, and other vulnerabilities that security scanners report, none of which affected GravityExport Lite.
+* Fixed: Exporting a form failed with a critical error on PHP 8 or newer when an entry created through the Gravity Forms REST API had an empty List field with columns.
 
 = 2.7.6 on October 29, 2026 =
 

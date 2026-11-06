@@ -235,6 +235,107 @@ function parseCsv( body ) {
 	return rows.filter( ( r ) => r.some( ( c ) => c.length > 0 ) );
 }
 
+/**
+ * Read one file out of a ZIP archive (an .xlsx is one) with Node's own zlib.
+ *
+ * @param {Buffer} zip
+ * @param {string} name - The entry's path inside the archive, e.g. `xl/worksheets/sheet1.xml`.
+ * @returns {string|null} The entry as UTF-8 text, or null when the archive has no such entry.
+ */
+function readZipEntry( zip, name ) {
+	const zlib = require( 'zlib' );
+	const endOfDirectory = zip.lastIndexOf( Buffer.from( [ 0x50, 0x4b, 0x05, 0x06 ] ) );
+	if ( endOfDirectory < 0 ) {
+		throw new Error( 'Not a ZIP archive.' );
+	}
+
+	const count = zip.readUInt16LE( endOfDirectory + 10 );
+	let offset = zip.readUInt32LE( endOfDirectory + 16 );
+
+	for ( let i = 0; i < count; i++ ) {
+		const method = zip.readUInt16LE( offset + 10 );
+		const compressedSize = zip.readUInt32LE( offset + 20 );
+		const nameLength = zip.readUInt16LE( offset + 28 );
+		const extraLength = zip.readUInt16LE( offset + 30 );
+		const commentLength = zip.readUInt16LE( offset + 32 );
+		const localOffset = zip.readUInt32LE( offset + 42 );
+		const entryName = zip.toString( 'utf8', offset + 46, offset + 46 + nameLength );
+
+		if ( entryName === name ) {
+			// The local header's own name and extra lengths can differ from the central directory's.
+			const start = localOffset + 30 + zip.readUInt16LE( localOffset + 26 ) + zip.readUInt16LE( localOffset + 28 );
+			const data = zip.subarray( start, start + compressedSize );
+
+			return ( 0 === method ? data : zlib.inflateRawSync( data ) ).toString( 'utf8' );
+		}
+
+		offset += 46 + nameLength + extraLength + commentLength;
+	}
+
+	return null;
+}
+
+/**
+ * Parse the first worksheet of an .xlsx body into rows of cells, keeping each cell's type.
+ *
+ * A CSV cannot tell a number from text; this can. `type` is `number` for a numeric cell, `string`
+ * for text, `bool`, or `empty` for a cell with no value.
+ *
+ * @param {Buffer} body
+ * @returns {{value: string, type: string}[][]} Rows, each indexed by column (A = 0).
+ */
+function parseXlsx( body ) {
+	const decode = ( text ) =>
+		text
+			.replace( /&#(\d+);/g, ( _, code ) => String.fromCodePoint( Number( code ) ) )
+			.replace( /&#x([0-9a-f]+);/gi, ( _, code ) => String.fromCodePoint( parseInt( code, 16 ) ) )
+			.replace( /&lt;/g, '<' )
+			.replace( /&gt;/g, '>' )
+			.replace( /&quot;/g, '"' )
+			.replace( /&apos;/g, "'" )
+			.replace( /&amp;/g, '&' );
+	const texts = ( xml ) => [ ...xml.matchAll( /<t\b[^>]*>([\s\S]*?)<\/t>/g ) ].map( ( m ) => decode( m[ 1 ] ) ).join( '' );
+
+	const sharedXml = readZipEntry( body, 'xl/sharedStrings.xml' ) || '';
+	const shared = [ ...sharedXml.matchAll( /<si>([\s\S]*?)<\/si>/g ) ].map( ( m ) => texts( m[ 1 ] ) );
+
+	const sheet = readZipEntry( body, 'xl/worksheets/sheet1.xml' );
+	if ( null === sheet ) {
+		throw new Error( 'The .xlsx has no first worksheet.' );
+	}
+
+	const columnIndex = ( ref ) =>
+		[ ...ref.replace( /\d+$/, '' ) ].reduce( ( index, letter ) => index * 26 + letter.charCodeAt( 0 ) - 64, 0 ) - 1;
+
+	return [ ...sheet.matchAll( /<row\b[^>]*>([\s\S]*?)<\/row>/g ) ].map( ( rowMatch ) => {
+		const cells = [];
+
+		for ( const cell of rowMatch[ 1 ].matchAll( /<c\b([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g ) ) {
+			const ref = ( cell[ 1 ].match( /\br="([A-Z]+\d+)"/ ) || [] )[ 1 ];
+			const kind = ( cell[ 1 ].match( /\bt="([a-zA-Z]+)"/ ) || [] )[ 1 ] || 'n';
+			const inner = cell[ 2 ] || '';
+			const raw = ( inner.match( /<v>([\s\S]*?)<\/v>/ ) || [] )[ 1 ];
+
+			let entry = { value: '', type: 'empty' };
+			if ( 's' === kind && undefined !== raw ) {
+				entry = { value: shared[ Number( raw ) ], type: 'string' };
+			} else if ( 'inlineStr' === kind ) {
+				entry = { value: texts( inner ), type: 'string' };
+			} else if ( 'str' === kind && undefined !== raw ) {
+				entry = { value: decode( raw ), type: 'string' };
+			} else if ( 'b' === kind && undefined !== raw ) {
+				entry = { value: raw, type: 'bool' };
+			} else if ( undefined !== raw ) {
+				entry = { value: raw, type: 'number' };
+			}
+
+			cells[ columnIndex( ref ) ] = entry;
+		}
+
+		return Array.from( cells, ( entry ) => entry || { value: '', type: 'empty' } );
+	} );
+}
+
 const MAIL_URL = () => `${ testsBaseURL }/wp-json/gk-e2e/v1/mail`;
 const MAIL_HEADERS = { 'X-E2E-TEST-TOKEN': 'gravitykit-e2e-test' };
 
@@ -725,6 +826,7 @@ module.exports = {
 	submitSettingsForm,
 	fetchDownload,
 	parseCsv,
+	parseXlsx,
 	getCapturedEmails,
 	waitForCapturedEmail,
 	clearCapturedEmails,
