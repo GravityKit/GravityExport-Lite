@@ -6,13 +6,13 @@
  * Other tests declare `GF_Field` as a PHPUnit double without array access, so only require this
  * file in a process where no `GF_Field` exists yet.
  *
- * @since TBD
+ * @since 2.7.7
  */
 class GF_Field extends stdClass implements ArrayAccess {
 	/**
 	 * The value {@see GF_Field::get_value_export()} returns.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @var mixed
 	 */
@@ -21,7 +21,7 @@ class GF_Field extends stdClass implements ArrayAccess {
 	/**
 	 * Returns the field type.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @return string
 	 */
@@ -32,7 +32,7 @@ class GF_Field extends stdClass implements ArrayAccess {
 	/**
 	 * Returns the configured export value.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @return mixed
 	 */

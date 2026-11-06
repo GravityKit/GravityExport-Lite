@@ -106,7 +106,7 @@ class ListField extends BaseField implements RowsInterface {
 	 *
 	 * For a List saved as `a:0:{}`, Gravity Forms returns an empty array instead of a JSON string.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @param mixed $value The field value.
 	 *

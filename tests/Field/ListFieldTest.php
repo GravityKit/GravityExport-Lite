@@ -17,7 +17,7 @@ use WP_Mock;
  * TestCase because WP_Mock 0.4's TestCase prints a deprecation on PHP 8.4, which fails every
  * separate-process test.
  *
- * @since TBD
+ * @since 2.7.7
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
@@ -25,7 +25,7 @@ use WP_Mock;
 final class ListFieldTest extends TestCase {
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.7
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -42,7 +42,7 @@ final class ListFieldTest extends TestCase {
 
 	/**
 	 * @inheritDoc
-	 * @since TBD
+	 * @since 2.7.7
 	 */
 	protected function tearDown(): void {
 		WP_Mock::tearDown();
@@ -52,7 +52,7 @@ final class ListFieldTest extends TestCase {
 	/**
 	 * Returns the cell values of every row the field exports when Gravity Forms returns `$value`.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @param mixed $value The value `GF_Field::get_value_export()` returns.
 	 *
@@ -90,7 +90,7 @@ final class ListFieldTest extends TestCase {
 	 * A List saved as `a:0:{}` (the REST API stores that for `[]`) comes back from Gravity Forms as
 	 * an empty array, and exports one empty row.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 */
 	public function testEmptyArrayExportsOneEmptyRow(): void {
 		self::assertSame( [ [ '', '' ] ], $this->exportedRows( [] ) );
@@ -99,7 +99,7 @@ final class ListFieldTest extends TestCase {
 	/**
 	 * Rows that are already decoded are exported as they are.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 */
 	public function testDecodedRowsAreExported(): void {
 		$rows = [
@@ -113,7 +113,7 @@ final class ListFieldTest extends TestCase {
 	/**
 	 * The JSON string Gravity Forms returns for a filled List is exported row by row.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 */
 	public function testJsonRowsAreExported(): void {
 		$json = json_encode( [ [ 'Item' => 'Apple', 'Qty' => '3' ] ] );
@@ -124,7 +124,7 @@ final class ListFieldTest extends TestCase {
 	/**
 	 * A value that holds no rows exports one empty row.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @dataProvider valuesWithoutRowsProvider
 	 *
@@ -137,7 +137,7 @@ final class ListFieldTest extends TestCase {
 	/**
 	 * Data provider for {@see self::testValueWithoutRowsExportsOneEmptyRow()}.
 	 *
-	 * @since TBD
+	 * @since 2.7.7
 	 *
 	 * @return array[]
 	 */
